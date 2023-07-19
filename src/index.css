@@ -1,13 +1,164 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+
+label:hover {
+  cursor: pointer;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.memolock {
+  height:calc(100vh - 100px);
+}
+
+body {
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+  background: rgb(0,1,255);
+background: linear-gradient(90deg, rgba(0,1,255,0.10127801120448177) 0%, rgba(154,0,255,0.10127801120448177) 100%);
+}
+
+pre {
+  white-space: pre-wrap;
+}
+
+.ql-container {
+  height:150px!important;
+  background-color:white;
+}
+
+.ql-editor {
+  height:150px!important;
+}
+
+.blurred-editor .ql-toolbar{
+  display: none;
+}
+
+
+.ql-size-huge {
+  font-size:1.875rem;
+  line-height:2.25rem;
+}
+.ql-size-large {
+  font-size:1.25rem;
+  line-height:1.75rem
+}
+.ql-size-normal {
+  font-size:1rem;
+  line-height:1.5rem;
+}
+
+.ql-size-small {
+  font-size:0.8rem;
+  line-height:1.2rem;
+}
+
+.ql-align-center {
+  text-align: center;
+}
+
+.ql-align-left {
+  text-align:left;
+}
+
+.ql-align-right {
+  text-align:right;
+}
+
+.signature-canvas {
+  width: 100%;
+  min-height:200px;
+  border: 1px solid #e5e7eb;
+  background-color:#fafafa;
+}
+
+.memo > ul > li:before {
+  content:'- ';
+  display:inline;
+}
+
+.memo > ol {
+  margin-left:30px;
+}
+
+.memo > ol > li {
+  list-style:decimal-leading-zero;
+}
+
+.giftcategory {
+  word-break:keep-all;
+  white-space:nowrap;
+}
+
+@media (max-width:800px){
+  .giftCategoryMenu {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .giftCategoryMenu::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox에서 화살표를 숨기기 위해 필요합니다 */
+}
+
+#content {
+ min-height:540px;
+}
+
+
+#chkArea, #loginArea {
+  max-width:400px;
+}
+#joinArea {
+  max-width:540px;
+}
+
+ #editArea {
+  max-width:1000px;
+}
+
+
+#addrAPI {
+  max-width:600px;
+  height:600px;
+}
+
+.addrAPIInput {
+  width:100%!important;
+  height:100%!important;
+}
+
+.popupModal {
+  position:absolute;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popupModal > #addrAPI > .addrAPIInput > div {
+  margin:0 auto;
+}
+
+#goodsList {
+  min-height:100vh;
+  overflow: auto;
 }

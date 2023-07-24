@@ -3,7 +3,7 @@ module.exports = function (app) {
   app.use(
     "/api",
     createProxyMiddleware({
-      target: "https://inssain.com",
+      target: "https://inssain.co.kr",
       changeOrigin: true,
     })
   );

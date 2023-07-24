@@ -42,7 +42,7 @@ function App() {
   return (
     <>
       <Helmet>
-        <title>채용 No.1 코리아티엠</title>
+        <title>알바선물 | 면접보고 선물받자! v230724</title>
       </Helmet>
       <Header />
       <div id="content" className={`${bg} w-full xl:container mx-auto p-2`}>

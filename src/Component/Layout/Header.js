@@ -46,14 +46,7 @@ function Header() {
             <UserInfo />
             <div className="text-center">
               <a href="/" className="inline-block px-2">
-                <img
-                  src={logo}
-                  className="h-10 mx-auto"
-                  alt="채용 No.1 코리아티엠 로고"
-                />
-                <span className="font-medium text-sm">
-                  채용 No.1 코리아티엠 면접샵
-                </span>
+                <img src={logo} className="h-16 mx-auto" alt="알바선물 로고" />
               </a>
             </div>
           </div>

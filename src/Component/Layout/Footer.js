@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 
 import { RiCustomerService2Fill } from "react-icons/ri";
 
-import logo from "../../Asset/kotilogo_mono.svg";
+import logo from "../../Asset/albaseonmul_mono.svg";
 import homepage from "../../Asset/sns/homepage.png";
 import facebook from "../../Asset/sns/facebook.png";
 import instagram from "../../Asset/sns/instagram.png";

@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import GiftCategory from "./Menu/GiftCategory";
 import GiftBrand from "./Menu/GiftBrand";
 
-import logo from "../../Asset/kotilogo.svg";
+import logo from "../../Asset/albaseonmul.svg";
 
 import UserInfo from "./UserInfo";
 import { path } from "../../path/path";

@@ -48,6 +48,7 @@ function List() {
       listUrl = listUrl + "/" + b;
     }
     setGoods([]);
+    console.log("불러오기 시작");
     await axios
       .get(listUrl, { headers: { Authorization: user.accessToken } })
       .then(res => {
@@ -65,9 +66,10 @@ function List() {
           setLoaded(true);
         }
         setRenderCount(40);
+        console.log("불러오기 끝");
       })
       .catch(e => {
-        console.log(e);
+        console.log(e, "에러");
       });
   };
 

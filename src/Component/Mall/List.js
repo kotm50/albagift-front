@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import Search from "./Search";
-import { getNewToken } from "../../Reducer/userSlice";
 
 function List() {
-  const dispatch = useDispatch();
   const [goods, setGoods] = useState([]);
   const location = useLocation();
   const { category, brand } = useParams();
@@ -53,15 +51,6 @@ function List() {
       .get(listUrl, { headers: { Authorization: user.accessToken } })
       .then(res => {
         console.log(res.headers);
-        /*
-        if (res.headers.authorization !== user.accessToken) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
-        */
         setLoadMsg(res.data.message);
         setGoods(res.data.goodsList);
         if (res.data.goodsList.length > 0) {

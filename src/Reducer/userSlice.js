@@ -24,9 +24,6 @@ const userSlice = createSlice({
       state.admin = false;
       state.point = 0;
     },
-    getNewToken: (state, action) => {
-      state.accessToken = action.payload.accessToken;
-    },
     buyGift: (state, action) => {
       state.point = action.payload.point;
     },

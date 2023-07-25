@@ -207,7 +207,6 @@ function EditUser(props) {
   //최초 로딩시 전화번호 '-'표시
   const setPhone = e => {
     if (e !== undefined) {
-      console.log(e);
       const rawValue = e.replace(/-/g, ""); // remove all dashes
 
       if (rawValue.length > 11) {

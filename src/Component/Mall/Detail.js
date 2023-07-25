@@ -51,7 +51,6 @@ function Detail() {
     let data = {
       goodsCode: goodscode,
     };
-    console.log(data);
     let buy = Number(user.point) - Number(goods.realPrice);
     await axios
       .post("/api/v1/shop/goods/send", data, {

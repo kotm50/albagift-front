@@ -6,13 +6,11 @@ function GiftReset() {
   const user = useSelector(state => state.user);
 
   const resetGoods = async () => {
-    console.log(user.accessToken);
     await axios
       .post("/api/v1/shop/admin/bizapi", null, {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        console.log(res);
         if (res.data.code === "200") {
           alert("상품리셋 완료");
         }
@@ -28,7 +26,6 @@ function GiftReset() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        console.log(res);
         alert("브랜드리셋 완료");
       })
       .catch(e => {

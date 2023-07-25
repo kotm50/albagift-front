@@ -28,7 +28,6 @@ function Admin() {
       .catch(e => {
         console.log(e);
       });
-    console.log("테스트");
   };
   return (
     <>

@@ -54,15 +54,12 @@ function Join() {
       email: email,
       promo: false,
     };
-    console.log(data);
     if (promo !== undefined) {
       data.promo = true;
     }
-    console.log(data);
     await axios
       .post("/api/v1/user/join", data)
       .then(res => {
-        console.log(res.data);
         if (res.data.code === "C000") {
           alert("환영합니다 ^^\n로그인을 진행해 주세요");
           navi("/login");
@@ -139,7 +136,6 @@ function Join() {
         await axios
           .get("/api/v1/user/dupchkid", { params: { userId: id } })
           .then(res => {
-            console.log(res);
             if (res.data.code === null) {
               setCorrectId(true);
               setDupId(true);

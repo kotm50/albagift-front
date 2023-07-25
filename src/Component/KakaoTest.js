@@ -78,7 +78,7 @@ function KakaoTest() {
               className="w-full bg-green-500 hover:bg-green-700 p-2 text-white"
               onClick={test}
             >
-              검색
+              검색.
             </button>
           </div>
         </div>

@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { getNewToken } from "../../../Reducer/userSlice";
 import axios from "axios";
 
 function PwdChk(props) {
-  const dispatch = useDispatch();
   const [id, setId] = useState("");
   const [pwd, setPwd] = useState("");
 
@@ -23,13 +20,6 @@ function PwdChk(props) {
         headers: { Authorization: props.user.accessToken },
       })
       .then(res => {
-        if (res.headers.authorization !== props.user.accessToken) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         if (res.data.code === "C000") {
           props.setCheckPwd(true);
         }

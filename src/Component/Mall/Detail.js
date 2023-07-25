@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { buyGift, getNewToken } from "../../Reducer/userSlice";
+import { buyGift } from "../../Reducer/userSlice";
 
 import axios from "axios";
 
@@ -27,13 +27,6 @@ function Detail() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        if (res.headers.authorization !== user.accessToken) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         setGoods(res.data.goods);
         contentForm(res.data.goods.content);
       })
@@ -65,13 +58,6 @@ function Detail() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        if (res.headers.authorization !== user.accessToken) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         if (res.data.code === "C000") {
           alert("구매 완료!");
           dispatch(

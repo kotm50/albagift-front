@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-import { useDispatch } from "react-redux";
-import { getNewToken } from "../../../Reducer/userSlice";
-
 import axios from "axios";
 
 import PopupDom from "../../Kakao/PopupDom";
 import PopupPostCode from "../../Kakao/PopupPostCode";
 
 function EditUser(props) {
-  const dispatch = useDispatch();
   const [userInfo, setUserInfo] = useState({});
   useEffect(() => {
     getUserInfo();
@@ -163,13 +159,6 @@ function EditUser(props) {
         },
       })
       .then(res => {
-        if (res.headers.authorization !== props.user.accessToken) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         if (res.data.code === "C000") {
           alert("수정이 완료되었습니다");
         }

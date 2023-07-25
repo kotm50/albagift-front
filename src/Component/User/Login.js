@@ -21,6 +21,7 @@ function Login() {
     await axios
       .post("/api/v1/user/login", data)
       .then(res => {
+        console.log(res);
         const token = res.headers.authorization;
         if (res.data.code === "C000") {
           dispatch(

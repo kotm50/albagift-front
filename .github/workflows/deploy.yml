@@ -1,39 +1,59 @@
-name: Build React App
-on:
+name: Test Front build workflow # workflow 이름
+
+on: # workflow 실행 조건
   push:
     branches:
-      - master
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
+      - main # 메인 브랜치가 푸쉬된 경우
 
+jobs: # job 설정
+  build: # job id
+    name: react build & deploy
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        working-directory: ./fe # 기본 워킹 디렉토리 설정
     steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+      - name: checkout Github Action
+        uses: actions/checkout@v3 # github actions 가상 환경에 해당 레포 소스 가져오기
+
+      # npm package cache 사용하기 : https://github.com/actions/cache/blob/main/examples.md#node---npm
+      - name: Get npm cache directory
+        id: npm-cache-dir
+        run: |
+          echo "::set-output name=dir::$(npm config get cache)"
+      - uses: actions/cache@v3
+        id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
         with:
-          node-version: ${{ matrix.node-version }}
-      - name: Create env file
-        run: |
-          touch .env
-          echo REACT_APP_API_ENDPOINT=${{ secrets.REACT_APP_API_ENDPOINT }} >> .env
-          cat .env
-      - name: Npm Install
-        run: |
-          npm install
-      - name: Npm Build
-        run: |
-          npm run build
-      - name: Deploy to S3
-        uses: jakejarvis/s3-sync-action@master
+          path: ${{ steps.npm-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: install npm dependencies
+        run: npm install
+      - name: react build
+        run: npm run build
+
+      # aws user 연결
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          args: --acl public-read --delete
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      # react 빌드한 /build를 s3로 업로드
+      - name: Upload to S3
         env:
-          AWS_S3_BUCKET: ${{ secrets.AWS_STAGING_BUCKET_NAME }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
-          SOURCE_DIR: "build"
+          BUCKET_NAME: ${{ secrets.AWS_STAGING_BUCKET_NAME}}
+        run: |
+          aws s3 sync \
+            ./build s3://$BUCKET_NAME
+
+      # 업로드한 s3 파일을 각 CDN 캐시 무효화하여 리프레시 하기
+      - name: CloudFront Invalidation
+        env:
+          CLOUD_FRONT_ID: ${{ secrets.AWS_CLOUDFRONT_ID}}
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id $CLOUD_FRONT_ID --paths /*

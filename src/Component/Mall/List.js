@@ -39,6 +39,7 @@ function List() {
 
   const getGoods = async (c, b) => {
     let listUrl = "https://inssain.co.kr/api/v1/shop/goods/list";
+    /*
     if (c !== undefined && b === undefined) {
       listUrl = "https://inssain.co.kr/api/v1/shop/goods/list";
       listUrl = listUrl + "/" + c;
@@ -47,6 +48,7 @@ function List() {
       listUrl = "https://inssain.co.kr/api/v1/shop/goods/list";
       listUrl = listUrl + "/" + b;
     }
+    */
     setGoods([]);
     console.log("불러오기 시작");
     await axios

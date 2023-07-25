@@ -53,6 +53,7 @@ function List() {
       .get(listUrl, { headers: { Authorization: user.accessToken } })
       .then(res => {
         console.log(res.headers);
+        /*
         if (res.headers.authorization !== user.accessToken) {
           dispatch(
             getNewToken({
@@ -60,6 +61,7 @@ function List() {
             })
           );
         }
+        */
         setLoadMsg(res.data.message);
         setGoods(res.data.goodsList);
         if (res.data.goodsList.length > 0) {

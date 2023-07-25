@@ -84,15 +84,13 @@ function Footer() {
               <div className="flex flex-col justify-center my-auto">
                 <h1 className="w-1/2 mx-auto mb-5 lg:mb-0">
                   <Link to="/">
-                    <img src={logo} className="logoImg mx-auto" alt="logo" />
+                    <img
+                      src={logo}
+                      className="logoImg mx-auto h-10"
+                      alt="logo"
+                    />
                   </Link>
                 </h1>
-                <div className="text-gray-500 font-bold w-1/2 mx-auto">
-                  <Link to="/">
-                    <span className="text-gray-400">No.1</span> 채용포털
-                    코리아티엠
-                  </Link>
-                </div>
               </div>
               <div className="flex flex-col justify-start gap-1 text-gray-500 pl-2 xl:pl-0">
                 <div className="text-left font-bold">주식회사 코리아티엠</div>

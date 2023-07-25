@@ -52,6 +52,7 @@ function List() {
     await axios
       .get(listUrl, { headers: { Authorization: user.accessToken } })
       .then(res => {
+        console.log(res);
         console.log(res.headers);
         if (res.headers.authorization !== user.accessToken) {
           dispatch(

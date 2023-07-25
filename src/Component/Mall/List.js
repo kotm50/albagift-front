@@ -38,13 +38,13 @@ function List() {
   }, [handleScroll]); // handleScroll 함수가 변경될 때마다 useEffect를 실행
 
   const getGoods = async (c, b) => {
-    let listUrl = "/api/v1/shop/goods/list";
+    let listUrl = "https://inssain.co.kr/api/v1/shop/goods/list";
     if (c !== undefined && b === undefined) {
-      listUrl = "/api/v1/shop/goods/list";
+      listUrl = "https://inssain.co.kr/api/v1/shop/goods/list";
       listUrl = listUrl + "/" + c;
     }
     if (b !== undefined) {
-      listUrl = "/api/v1/shop/brand/goods/list";
+      listUrl = "https://inssain.co.kr/api/v1/shop/goods/list";
       listUrl = listUrl + "/" + b;
     }
     setGoods([]);

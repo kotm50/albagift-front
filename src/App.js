@@ -20,6 +20,7 @@ import Detail from "./Component/Mall/Detail";
 import Result from "./Component/Mall/Result";
 import Coupon from "./Component/User/Coupon/Coupon";
 import SearchResult from "./Component/Mall/SearchResult";
+import GiftReset from "./Component/Admin/GiftReset";
 
 function App() {
   const [bg, setBg] = useState("bg-transparent");
@@ -59,6 +60,7 @@ function App() {
           <Route path="/admin" element={<Admin />}>
             <Route path="" element={<AdminMain />} />
             <Route path="user" element={<UserList />} />
+            <Route path="reset" element={<GiftReset />} />
           </Route>
           <Route path="/test" element={<KakaoTest />} />
         </Routes>

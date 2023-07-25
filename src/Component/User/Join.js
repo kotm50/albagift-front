@@ -132,6 +132,7 @@ function Join() {
       setDupId(true);
       const regex = /^[a-z0-9]+$/;
       let correct = regex.test(id);
+      console.log(id);
       if (correct) {
         await axios
           .get("/api/v1/user/dupchkid", { params: { userId: id } })

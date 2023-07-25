@@ -36,7 +36,7 @@ function Admin() {
         <div className="mb-2 text-center text-xl xl:text-3xl">
           안녕하세요 면접샵 관리자 페이지 입니다
         </div>
-        <div className="grid grid-cols-3 bg-indigo-50 mb-2">
+        <div className="grid grid-cols-4 bg-indigo-50 mb-2">
           <Link to="/admin/" className="hover:bg-indigo-100 p-2 text-center">
             메인으로
           </Link>
@@ -45,6 +45,12 @@ function Admin() {
             className="hover:bg-indigo-100 p-2 text-center"
           >
             회원목록
+          </Link>
+          <Link
+            to="/admin/reset"
+            className="hover:bg-indigo-100 p-2 text-center"
+          >
+            상품/브랜드 재설정
           </Link>
           <Link
             to="/admin/"

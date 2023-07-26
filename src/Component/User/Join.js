@@ -135,7 +135,7 @@ function Join() {
       console.log(id);
       if (correct) {
         await axios
-          .get(`/api/v1/user/dupchkid?userId=${id}`)
+          .get(`/api/v1/user/dupchkid/${id}`)
           .then(res => {
             console.log(res);
             if (res.data.code === null) {
@@ -154,7 +154,7 @@ function Join() {
       setCorrectId(false);
     }
   };
-  /*
+
   //이메일 및 중복검사
   const chkEmail = async () => {
     await axios
@@ -169,7 +169,7 @@ function Join() {
       setDupId(false);
     }
   };
-*/
+
   // 팝업창 열기
   const openPostCode = () => {
     setIsPopupOpen(true);
@@ -537,6 +537,8 @@ function Join() {
               onChange={e => setEmail(e.currentTarget.value)}
               onBlur={e => {
                 setEmail(e.currentTarget.value);
+
+                if (email !== "") chkEmail();
               }}
               placeholder="이메일 주소를 입력하세요"
             />

@@ -135,7 +135,7 @@ function Join() {
       console.log(id);
       if (correct) {
         await axios
-          .get(`/api/v1/user/dupchkid/${id}`)
+          .get(`/api/v1/user/dupchkid`, { params: { userId: id } })
           .then(res => {
             console.log(res);
             if (res.data.code === null) {

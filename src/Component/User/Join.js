@@ -138,7 +138,7 @@ function Join() {
           .get("/api/v1/user/dupchkid", { params: { userId: id } })
           .then(res => {
             console.log(res);
-            if (res.data.code === null) {
+            if (res.data.code === "C000") {
               setCorrectId(true);
               setDupId(true);
             } else {

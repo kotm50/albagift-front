@@ -33,6 +33,7 @@ function UserList() {
         },
       })
       .then(res => {
+        console.log(res);
         setUsers(res.data.userList);
         if (res.data.length === 0) {
           setLoading("회원이 없습니다");

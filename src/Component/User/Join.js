@@ -136,7 +136,8 @@ function Join() {
       if (correct) {
         await axios
           .get("/api/v1/user/dupchkid", { params: { userId: id } })
-          .then(res => {
+          .then((req, res) => {
+            console.log(req);
             console.log(res);
             if (res.data.code === null) {
               setCorrectId(true);

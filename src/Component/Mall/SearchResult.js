@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link, useParams, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { getNewToken } from "../../Reducer/userSlice";
 import axios from "axios";
 import Search from "./Search";
 
 function SearchResult() {
+  const dispatch = useDispatch();
   const { keyword } = useParams();
   const [goods, setGoods] = useState([]);
   const [resultNum, setResultNum] = useState();

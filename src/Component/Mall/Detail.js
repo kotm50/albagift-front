@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { buyGift } from "../../Reducer/userSlice";
 
+import { getNewToken } from "../../Reducer/userSlice";
 import axios from "axios";
 
 import dompurify from "dompurify";

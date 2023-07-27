@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import { useDispatch } from "react-redux";
 import { getNewToken } from "../../Reducer/userSlice";
 
 import Search from "./Search";

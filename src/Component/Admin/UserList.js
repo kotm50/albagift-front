@@ -90,6 +90,15 @@ function UserList() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
+        if (res.headers.authorization) {
+          if (res.headers.authorization !== user.accessToken) {
+            dispatch(
+              getNewToken({
+                accessToken: res.headers.authroiztion,
+              })
+            );
+          }
+        }
         console.log(res.data);
         console.log(res.headers);
         if (res.data.code === "C000") {
@@ -116,6 +125,15 @@ function UserList() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
+        if (res.headers.authorization) {
+          if (res.headers.authorization !== user.accessToken) {
+            dispatch(
+              getNewToken({
+                accessToken: res.headers.authroiztion,
+              })
+            );
+          }
+        }
         console.log(res.data);
         console.log(res.headers);
         if (res.data.code === "C000") {

@@ -43,6 +43,15 @@ function SearchResult() {
         token: user.accessToken,
       })
       .then(res => {
+        if (res.headers.authorization) {
+          if (res.headers.authorization !== user.accessToken) {
+            dispatch(
+              getNewToken({
+                accessToken: res.headers.authroiztion,
+              })
+            );
+          }
+        }
         setGoods(res.data.goodsList);
         setResultNum(res.data.listNum);
         setLoadMsg(res.data.message);

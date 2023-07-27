@@ -27,6 +27,15 @@ function Detail() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
+        if (res.headers.authorization) {
+          if (res.headers.authorization !== user.accessToken) {
+            dispatch(
+              getNewToken({
+                accessToken: res.headers.authroiztion,
+              })
+            );
+          }
+        }
         setGoods(res.data.goods);
         contentForm(res.data.goods.content);
       })

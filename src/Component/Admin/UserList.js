@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { getNewToken } from "../../Reducer/userSlice";
 
 import axios from "axios";
 
 //import { dummyUser } from "./dummy";
 
 function UserList() {
+  const dispatch = useDispatch();
   const user = useSelector(state => state.user);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [selectedUsersId, setSelectedUsersId] = useState([]);

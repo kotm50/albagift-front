@@ -80,7 +80,7 @@ function UserList() {
 
   const incPoint = async () => {
     const request = {
-      userList: selectedUsersId,
+      idList: selectedUsersId,
       point: point,
     };
     console.log(request.userList);
@@ -106,7 +106,7 @@ function UserList() {
 
   const decPoint = async () => {
     const request = {
-      userList: selectedUsersId,
+      idList: selectedUsersId,
       point: point,
     };
     console.log(request.userList);

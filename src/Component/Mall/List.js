@@ -49,7 +49,6 @@ function List() {
       listUrl = "/api/v1/shop/brand/goods/list";
       listUrl = listUrl + "/" + b;
     }
-    console.log(user.accessToken);
     setGoods([]);
     await axios
       .get(listUrl, { headers: { Authorization: user.accessToken } })

@@ -57,11 +57,14 @@ function List() {
       .then(res => {
         if (res.headers.authorization) {
           if (res.headers.authorization !== user.accessToken) {
+            console.log("액세스토큰을 갱신합니다");
             dispatch(
               getNewToken({
                 accessToken: res.headers.authroiztion,
               })
             );
+          } else {
+            console.log("액세스토큰이 유지됩니다");
           }
         }
         setLoadMsg(res.data.message);

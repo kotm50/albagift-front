@@ -15,11 +15,13 @@ function PwdChk(props) {
     const data = {
       userPwd: pwd,
     };
+    console.log(data);
     await axios
       .post("/api/v1/user/myinfo/pwdchk", data, {
         headers: { Authorization: props.user.accessToken },
       })
       .then(res => {
+        console.log(res);
         if (res.data.code === "C000") {
           props.setCheckPwd(true);
         }

@@ -24,11 +24,14 @@ const userSlice = createSlice({
       state.admin = false;
       state.point = 0;
     },
+    getNewToken: state => {
+      state.accessToken = action.payload.accessToken;
+    },
     buyGift: (state, action) => {
       state.point = action.payload.point;
     },
   },
 });
 
-export const { loginUser, clearUser, buyGift } = userSlice.actions;
+export const { loginUser, clearUser, buyGift, getNewToken } = userSlice.actions;
 export default userSlice.reducer;

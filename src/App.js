@@ -21,6 +21,7 @@ import Result from "./Component/Mall/Result";
 import Coupon from "./Component/User/Coupon/Coupon";
 import SearchResult from "./Component/Mall/SearchResult";
 import GiftReset from "./Component/Admin/GiftReset";
+import ChkUser from "./Component/User/ChkUser";
 
 function App() {
   const [bg, setBg] = useState("bg-transparent");
@@ -46,6 +47,7 @@ function App() {
         <title>알바선물 | 면접보고 선물받자! v230726</title>
       </Helmet>
       <Header />
+      <ChkUser />
       <div id="content" className={`${bg} w-full xl:container mx-auto p-2`}>
         <Routes>
           <Route path="/" element={<List />} />

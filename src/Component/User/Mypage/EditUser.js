@@ -111,6 +111,7 @@ function EditUser(props) {
 
   const editIt = async (url, type, value) => {
     let data;
+    let bValue = beforeValue;
     if (value === "") {
       return alert("내용이 입력되지 않았습니다\n확인 후 다시 시도해 주세요");
     }
@@ -128,6 +129,7 @@ function EditUser(props) {
       data = {
         userPwd: pwd,
       };
+      bValue.userPwd = pwd;
     }
     if (type === "birth") {
       if (value === beforeValue.birth) {
@@ -136,6 +138,7 @@ function EditUser(props) {
       data = {
         birth: inputBirth,
       };
+      bValue.birth = inputBirth;
     }
 
     if (type === "mainAddr") {
@@ -145,6 +148,7 @@ function EditUser(props) {
       data = {
         mainAddr: mainAddr,
       };
+      bValue.mainAddr = mainAddr;
     }
 
     if (type === "gender") {
@@ -162,6 +166,7 @@ function EditUser(props) {
         if (res.data.code === "C000") {
           alert("수정이 완료되었습니다");
         }
+        setBeforeValue(bValue);
       })
       .catch(e => {
         console.log(e);

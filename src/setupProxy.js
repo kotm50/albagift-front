@@ -3,7 +3,7 @@ module.exports = function (app) {
   app.use(
     "/api",
     createProxyMiddleware({
-      target: "https://inssain.co.kr/",
+      target: "http://192.168.0.56:8080",
       changeOrigin: true,
     })
   );

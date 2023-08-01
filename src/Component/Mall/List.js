@@ -49,11 +49,11 @@ function List() {
       listUrl = "/api/v1/shop/brand/goods/list";
       listUrl = listUrl + "/" + b;
     }
-    console.log(user.accessToken);
     setGoods([]);
     await axios
       .get(listUrl, { headers: { Authorization: user.accessToken } })
       .then(res => {
+        console.log(res);
         if (res.headers.authorization) {
           if (res.headers.authorization !== user.accessToken) {
             console.log("액세스토큰을 갱신합니다");

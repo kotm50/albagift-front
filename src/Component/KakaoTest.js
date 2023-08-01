@@ -12,13 +12,8 @@ function KakaoTest() {
     //eslint-disable-next-line
   }, []);
   const test = async () => {
-    console.log(start, end);
-    const data = {
-      startDate: start,
-      endDate: end,
-    };
     await axios
-      .post("/api/v1/user/admin/search/datePnt", data, {
+      .patch("/api/v1/user/myinfo/delete", null, {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
@@ -78,7 +73,7 @@ function KakaoTest() {
               className="w-full bg-green-500 hover:bg-green-700 p-2 text-white"
               onClick={test}
             >
-              검색.
+              탈퇴
             </button>
           </div>
         </div>

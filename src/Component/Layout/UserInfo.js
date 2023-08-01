@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { clearUser } from "../../Reducer/userSlice";
+import { clearUser, refreshPoint } from "../../Reducer/userSlice";
 
 import axios from "axios";
 
@@ -18,6 +18,7 @@ function UserInfo() {
     // const now = new Date();
     if (user.userId !== "") {
       // const diffTime = Math.floor((now - user.lastLogin) / 1000 / 60);
+      refreshPoints();
       setIsLogin(true);
       if (user.admin) {
         setIsAdmin(true);
@@ -25,6 +26,25 @@ function UserInfo() {
     }
     //eslint-disable-next-line
   }, [location]);
+
+  const refreshPoints = async () => {
+    await axios
+      .post("/api/v1/user/get/point", null, {
+        headers: { Authorization: user.accessToken },
+      })
+      .then(res => {
+        if (res.data.user.point !== user.point) {
+          dispatch(
+            refreshPoint({
+              point: res.data.user.point,
+            })
+          );
+        }
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
 
   const logout = async () => {
     await axios

@@ -62,6 +62,11 @@ function Detail() {
       goodsCode: goodscode,
     };
     let buy = Number(user.point) - Number(goods.realPrice);
+    if (buy < 0) {
+      return alert(
+        "포인트가 부족합니다.\n포인트를 지급받았는데 이 메세지가 보이면 페이지를 새로고침 하고 다시 확인해 주세요"
+      );
+    }
     await axios
       .post("/api/v1/shop/goods/send", data, {
         headers: { Authorization: user.accessToken },
@@ -71,7 +76,7 @@ function Detail() {
           alert("구매 완료!");
           dispatch(
             buyGift({
-              point: buy,
+              point: res.data.point,
             })
           );
           navi(`/result`);

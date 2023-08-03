@@ -1,16 +1,41 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-
+import { useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function KakaoTest() {
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const user = useSelector(state => state.user);
   useEffect(() => {
     //test2();
+
+    setSortParams();
     //eslint-disable-next-line
   }, []);
+
+  const setSortParams = () => {
+    setSearchParams(searchParams);
+    const code = searchParams.get("code");
+    if (code) {
+      kakaoLoginCheck(code);
+    }
+  };
+
+  const kakaoLoginCheck = async code => {
+    console.log(code);
+    const loginUrl = `/api/v1/user/login/kakao?code=${code}`;
+    await axios
+      .get(loginUrl)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(e => {
+        console.log(e, "에러");
+      });
+  };
   const test = async () => {
     await axios
       .patch("/api/v1/user/myinfo/delete", null, {
@@ -41,6 +66,14 @@ function KakaoTest() {
       });
   };
   */
+
+  const kakaoLogin = () => {
+    const apiKey = "e8b025aca3eb87648da9d341528bca5a";
+    const redirectUrl = "http://localhost:3000/test";
+    const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${apiKey}&redirect_uri=${redirectUrl}&response_type=code`;
+    window.location.href = kakaoURL;
+  };
+
   return (
     <>
       <div className="grid grid-cols-2 bg-gray-50 p-2 my-2">
@@ -78,6 +111,13 @@ function KakaoTest() {
           </div>
         </div>
       </div>
+
+      <button
+        className="bg-yellow-300 hover:bg-yellow-500 text-black font-medium p-2 w-48"
+        onClick={kakaoLogin}
+      >
+        카카오 로그인
+      </button>
     </>
   );
 }

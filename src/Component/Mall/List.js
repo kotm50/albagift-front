@@ -92,14 +92,14 @@ function List() {
                 <div className="w-30 h-30 xl:w-60 xl:h-60 mx-auto rounded overflow-hidden">
                   <img
                     src={good.goodsImgS}
-                    alt={good.goosName}
+                    alt={good.goodsName}
                     className="fixed top-0 left-0 w-0 h-0 opacity-0"
                     onLoad={e => setImgLoaded(true)}
                   />
                   {imgLoaded ? (
                     <img
                       src={good.goodsImgS}
-                      alt={good.goosName}
+                      alt={good.goodsName}
                       className="w-full mx-auto my-auto duration-100 transition-all group-hover:scale-110"
                     />
                   ) : (

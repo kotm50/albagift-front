@@ -69,7 +69,7 @@ function KakaoTest() {
 
   const kakaoLogin = () => {
     const apiKey = "e8b025aca3eb87648da9d341528bca5a";
-    const redirectUrl = "https://albagift.shop/test";
+    const redirectUrl = "http://localhost:3000/test";
     const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${apiKey}&redirect_uri=${redirectUrl}&response_type=code`;
     window.location.href = kakaoURL;
   };

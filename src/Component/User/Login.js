@@ -21,12 +21,13 @@ function Login() {
     await axios
       .post("/api/v1/user/login", data)
       .then(res => {
-        console.log(res.data);
+        console.log(res.data.user.userName);
         const token = res.headers.authorization;
         if (res.data.code === "C000") {
           dispatch(
             loginUser({
               userId: id,
+              userName: res.data.user.userName,
               accessToken: token,
               lastLogin: new Date(),
               point: res.data.user.point,

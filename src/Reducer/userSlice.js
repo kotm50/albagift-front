@@ -4,6 +4,7 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     userId: "",
+    userName: "",
     accessToken: "",
     lastLogin: "",
     admin: false,
@@ -12,6 +13,7 @@ const userSlice = createSlice({
   reducers: {
     loginUser: (state, action) => {
       state.userId = action.payload.userId;
+      state.userName = action.payload.userName;
       state.accessToken = action.payload.accessToken;
       state.lastLogin = action.payload.lastLogin;
       state.admin = action.payload.admin;
@@ -19,6 +21,7 @@ const userSlice = createSlice({
     },
     clearUser: state => {
       state.userId = "";
+      state.userName = "";
       state.accessToken = "";
       state.lastLogin = "";
       state.admin = false;

@@ -78,7 +78,7 @@ function UserInfo() {
           {isAdmin ? (
             <>
               {" "}
-              <span className="font-medium text-black">{user.userId} </span>
+              <span className="font-medium text-black">{user.userName} </span>
               관리자님 안녕하세요 |
               <Link to="/admin" className="hover:text-indigo-500">
                 관리자페이지
@@ -87,7 +87,7 @@ function UserInfo() {
             </>
           ) : (
             <>
-              <span className="font-medium text-black">{user.userId} </span>님
+              <span className="font-medium text-black">{user.userName} </span>님
               안녕하세요 | {user.point}p 보유중 |{" "}
               <Link to="/coupon" className="hover:text-indigo-500">
                 보유쿠폰

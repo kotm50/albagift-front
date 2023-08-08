@@ -18,6 +18,7 @@ function List() {
   const [loaded, setLoaded] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
   useEffect(() => {
+    console.log(user);
     setLoadMsg("상품을 불러오고 있습니다");
     getGoods(category, brand);
     //eslint-disable-next-line
@@ -49,9 +50,16 @@ function List() {
       listUrl = "/api/v1/shop/brand/goods/list";
       listUrl = listUrl + "/" + b;
     }
+    const data = {
+      page: 1,
+      size: 20,
+    };
     setGoods([]);
     await axios
-      .get(listUrl, { headers: { Authorization: user.accessToken } })
+      .get(listUrl, {
+        params: data,
+        headers: { Authorization: user.accessToken },
+      })
       .then(res => {
         console.log(res);
         if (res.headers.authorization) {

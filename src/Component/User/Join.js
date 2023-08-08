@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 
 import axios from "axios";
 
@@ -9,6 +9,7 @@ import PopupPostCode from "../Kakao/PopupPostCode";
 import Modal from "../doc/Modal";
 
 function Join() {
+  const location = useLocation();
   let navi = useNavigate();
   const { promo } = useParams();
   const [id, setId] = useState("");
@@ -26,6 +27,7 @@ function Join() {
   const [mainAddr, setMainAddr] = useState("주소찾기를 눌러주세요");
   const [gender, setGender] = useState("");
   const [email, setEmail] = useState("");
+  const [socialType, setSocialType] = useState("");
 
   const [termsAgree, setTermsAgree] = useState(false);
   const [priAgree, setPriAgree] = useState(false);
@@ -36,6 +38,20 @@ function Join() {
   // 팝업창 상태 관리
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
+  const [isSocialLogin, setIsSocialLogin] = useState(false);
+
+  useEffect(() => {
+    if (location.state) {
+      setId(location.state.id);
+      setEmail(location.state.email);
+      setSocialType(location.state.socialType);
+      setIsSocialLogin(true);
+    } else {
+      setIsSocialLogin(false);
+    }
+    //eslint-disable-next-line
+  }, []);
+
   //회원가입 실행
   const join = async e => {
     e.preventDefault();
@@ -44,21 +60,34 @@ function Join() {
       return alert(correctChk + "\n확인 후 다시 시도해 주세요");
     }
     const data = {
-      userId: id,
-      userPwd: pwd,
       userName: name,
       phone: inputPhone,
       birth: inputBirth,
       mainAddr: mainAddr,
       gender: gender,
       email: email,
+      socialType: socialType,
       promo: false,
     };
+    if (!isSocialLogin) {
+      data.userId = id;
+    } else {
+      data.id = id;
+    }
+    if (!isSocialLogin) {
+      data.userPwd = pwd;
+    }
     if (promo !== undefined) {
       data.promo = true;
     }
+    console.log(data);
+    let url = "/api/v1/user/join";
+    if (isSocialLogin) {
+      url = `${url}/${socialType}`;
+    }
+    console.log(url);
     await axios
-      .post("/api/v1/user/join", data)
+      .post(url, data)
       .then(res => {
         if (res.data.code === "C000") {
           alert("환영합니다 ^^\n로그인을 진행해 주세요");
@@ -71,20 +100,22 @@ function Join() {
   };
 
   const chkForm = () => {
-    if (id === "") {
-      return "아이디가 입력되지 않았습니다";
-    }
-    if (!correctId) {
-      return "아이디 양식이 잘못되었습니다";
-    }
-    if (pwd === "") {
-      return "비밀번호가 입력되지 않았습니다";
-    }
-    if (!correctPwd) {
-      return "비밀번호 양식이 잘못되었습니다";
-    }
-    if (!correctPwdChk) {
-      return "비밀번호 확인에 실패했습니다";
+    if (!isSocialLogin) {
+      if (id === "") {
+        return "아이디가 입력되지 않았습니다";
+      }
+      if (!correctId) {
+        return "아이디 양식이 잘못되었습니다";
+      }
+      if (pwd === "") {
+        return "비밀번호가 입력되지 않았습니다";
+      }
+      if (!correctPwd) {
+        return "비밀번호 양식이 잘못되었습니다";
+      }
+      if (!correctPwdChk) {
+        return "비밀번호 확인에 실패했습니다";
+      }
     }
     if (name === "") {
       return "이름이 입력되지 않았습니다";
@@ -255,25 +286,31 @@ function Join() {
           >
             아이디
           </label>
-          <div className="xl:col-span-4">
-            <input
-              type="text"
-              id="inputId"
-              className={`border ${
-                !correctId || (!dupId ? "xl:border-red-500" : undefined)
-              } xl:border-0 p-2 w-full text-sm`}
-              value={id}
-              onChange={e => {
-                setId(e.currentTarget.value);
-              }}
-              onBlur={e => {
-                setId(e.currentTarget.value);
-                if (id !== "") chkId();
-              }}
-              placeholder="영어와 숫자만 입력하세요"
-              autoComplete="off"
-            />
-          </div>
+          {isSocialLogin ? (
+            <div className="xl:col-span-4 p-2 bg-gray-50">
+              간편로그인 이용회원입니다
+            </div>
+          ) : (
+            <div className="xl:col-span-4">
+              <input
+                type="text"
+                id="inputId"
+                className={`border ${
+                  !correctId || (!dupId ? "xl:border-red-500" : undefined)
+                } xl:border-0 p-2 w-full text-sm`}
+                value={id}
+                onChange={e => {
+                  setId(e.currentTarget.value);
+                }}
+                onBlur={e => {
+                  setId(e.currentTarget.value);
+                  if (id !== "") chkId();
+                }}
+                placeholder="영어와 숫자만 입력하세요"
+                autoComplete="off"
+              />
+            </div>
+          )}
         </div>
         {!correctId && (
           <div className="text-sm text-rose-500">
@@ -288,85 +325,89 @@ function Join() {
             확인 후 다시 입력해 주세요
           </div>
         )}
-        <div
-          id="pwd"
-          className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
-            !correctPwd ? "xl:border-red-500" : null
-          }`}
-        >
-          <label
-            htmlFor="inputPwd"
-            className={`text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 ${
-              correctPwd ? "xl:bg-gray-100" : "xl:bg-red-100"
-            } `}
-          >
-            비밀번호
-          </label>
-          <div className="xl:col-span-4">
-            <input
-              type="password"
-              id="inputPwd"
-              className={`border ${
-                !correctPwd ? "border-red-500" : undefined
-              } xl:border-0 p-2 w-full text-sm`}
-              value={pwd}
-              onChange={e => {
-                setPwd(e.currentTarget.value);
-              }}
-              onBlur={e => {
-                setPwd(e.currentTarget.value);
-                if (pwd !== "") testPwd();
-              }}
-              placeholder="영어/숫자/특수문자 중 2가지 이상"
-              autoComplete="off"
-            />
-          </div>
-        </div>
-        {!correctPwd && (
-          <div className="text-sm text-rose-500">
-            비밀번호 양식이 틀렸습니다 <br className="block xl:hidden" />
-            확인 후 다시 입력해 주세요
-          </div>
-        )}
-        <div
-          id="pwdChk"
-          className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
-            !correctPwdChk ? "xl:border-red-500" : undefined
-          }`}
-        >
-          <label
-            htmlFor="inputPwdChk"
-            className={`text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 ${
-              correctPwdChk ? "xl:bg-gray-100" : "xl:bg-red-100"
-            } `}
-          >
-            비밀번호확인
-          </label>
-          <div className="xl:col-span-4">
-            <input
-              type="password"
-              id="inputPwdChk"
-              className={`border ${
-                !correctPwdChk ? "border-red-500" : undefined
-              } xl:border-0 p-2 w-full text-sm`}
-              value={pwdChk}
-              onChange={e => {
-                setPwdChk(e.currentTarget.value);
-              }}
-              onBlur={e => {
-                setPwdChk(e.currentTarget.value);
-                if (pwdChk !== "") chkPwd();
-              }}
-              placeholder="비밀번호를 한번 더 입력해 주세요"
-              autoComplete="off"
-            />
-          </div>
-        </div>
-        {!correctPwdChk && (
-          <div className="text-sm text-rose-500">
-            비밀번호가 일치하지 않습니다 <br className="block xl:hidden" />
-            확인 후 다시 입력해 주세요
-          </div>
+        {!isSocialLogin && (
+          <>
+            <div
+              id="pwd"
+              className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
+                !correctPwd ? "xl:border-red-500" : null
+              }`}
+            >
+              <label
+                htmlFor="inputPwd"
+                className={`text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 ${
+                  correctPwd ? "xl:bg-gray-100" : "xl:bg-red-100"
+                } `}
+              >
+                비밀번호
+              </label>
+              <div className="xl:col-span-4">
+                <input
+                  type="password"
+                  id="inputPwd"
+                  className={`border ${
+                    !correctPwd ? "border-red-500" : undefined
+                  } xl:border-0 p-2 w-full text-sm`}
+                  value={pwd}
+                  onChange={e => {
+                    setPwd(e.currentTarget.value);
+                  }}
+                  onBlur={e => {
+                    setPwd(e.currentTarget.value);
+                    if (pwd !== "") testPwd();
+                  }}
+                  placeholder="영어/숫자/특수문자 중 2가지 이상"
+                  autoComplete="off"
+                />
+              </div>
+            </div>
+            {!correctPwd && (
+              <div className="text-sm text-rose-500">
+                비밀번호 양식이 틀렸습니다 <br className="block xl:hidden" />
+                확인 후 다시 입력해 주세요
+              </div>
+            )}
+            <div
+              id="pwdChk"
+              className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
+                !correctPwdChk ? "xl:border-red-500" : undefined
+              }`}
+            >
+              <label
+                htmlFor="inputPwdChk"
+                className={`text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 ${
+                  correctPwdChk ? "xl:bg-gray-100" : "xl:bg-red-100"
+                } `}
+              >
+                비밀번호확인
+              </label>
+              <div className="xl:col-span-4">
+                <input
+                  type="password"
+                  id="inputPwdChk"
+                  className={`border ${
+                    !correctPwdChk ? "border-red-500" : undefined
+                  } xl:border-0 p-2 w-full text-sm`}
+                  value={pwdChk}
+                  onChange={e => {
+                    setPwdChk(e.currentTarget.value);
+                  }}
+                  onBlur={e => {
+                    setPwdChk(e.currentTarget.value);
+                    if (pwdChk !== "") chkPwd();
+                  }}
+                  placeholder="비밀번호를 한번 더 입력해 주세요"
+                  autoComplete="off"
+                />
+              </div>
+            </div>
+            {!correctPwdChk && (
+              <div className="text-sm text-rose-500">
+                비밀번호가 일치하지 않습니다 <br className="block xl:hidden" />
+                확인 후 다시 입력해 주세요
+              </div>
+            )}
+          </>
         )}
 
         <div
@@ -539,6 +580,7 @@ function Join() {
                 setEmail(e.currentTarget.value);
               }}
               placeholder="이메일 주소를 입력하세요"
+              disabled={isSocialLogin}
             />
           </div>
         </div>
@@ -600,13 +642,18 @@ function Join() {
             </div>
           </div>
         </div>
-        <div className="text-center text-sm text-gray-500 border-b pb-2">
-          <Link to="/login" className="transition duration-100 hover:scale-105">
-            이미 가입하셨다면? 여기를 눌러 <br className="block xl:hidden" />
-            <span className="text-emerald-500 border-b">로그인</span>을 진행해
-            주세요
-          </Link>
-        </div>
+        {!isSocialLogin && (
+          <div className="text-center text-sm text-gray-500 border-b pb-2">
+            <Link
+              to="/login"
+              className="transition duration-100 hover:scale-105"
+            >
+              이미 가입하셨다면? 여기를 눌러 <br className="block xl:hidden" />
+              <span className="text-emerald-500 border-b">로그인</span>을 진행해
+              주세요
+            </Link>
+          </div>
+        )}
         <div className="w-full">
           <button
             className="transition duration-100 w-full bg-blue-500 hover:bg-blue-700 p-2 text-white rounded hover:animate-wiggle"

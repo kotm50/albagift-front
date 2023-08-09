@@ -21,6 +21,7 @@ import Result from "./Component/Mall/Result";
 import Coupon from "./Component/User/Coupon/Coupon";
 import SearchResult from "./Component/Mall/SearchResult";
 import GiftReset from "./Component/Admin/GiftReset";
+import Main from "./Component/Main";
 function App() {
   const [bg, setBg] = useState("bg-transparent");
   const thisLocation = useLocation();
@@ -30,7 +31,7 @@ function App() {
       behavior: "smooth",
     });
     if (!path.some(chkBg)) {
-      setBg("bg-white");
+      setBg("bg-gray-50");
     } else {
       setBg("bg-transparent");
     }
@@ -45,9 +46,12 @@ function App() {
         <title>알바선물 | 면접보고 선물받자! v230726</title>
       </Helmet>
       <Header />
-      <div id="content" className={`${bg} w-full xl:container mx-auto p-2`}>
+      <div
+        id="content"
+        className={`${bg} w-full xl:container mx-auto p-2 font-pretendard`}
+      >
         <Routes>
-          <Route path="/" element={<List />} />
+          <Route path="/" element={<Main />} />
           <Route path="/list/:category?/:brand?" element={<List />} />
           <Route path="/detail/:goodscode?" element={<Detail />} />
           <Route path="/result" element={<Result />} />

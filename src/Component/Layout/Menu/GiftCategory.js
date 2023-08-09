@@ -2,34 +2,44 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { category } from "./Category";
-
+import { AiFillHome } from "react-icons/ai";
 import CategoryIcons from "./CategoryIcons";
 
 function GiftCategory(props) {
   return (
     <>
-      <div>
+      <div className="flex flex-row flex-nowrap">
+        <Link
+          to="/"
+          className="bg-teal-500 text-white p-2 hover:bg-teal-100 hover:text-black giftcategory"
+        >
+          <div>
+            <AiFillHome size={24} />
+          </div>
+        </Link>
         <div
           id="touch-target"
-          className="container mx-auto text-lg flex flex-row flex-nowrap overflow-x-auto giftCategoryMenu"
+          className="container mx-auto flex flex-row flex-nowrap overflow-x-auto giftCategoryMenu"
         >
           <Link
-            to="/"
+            to="/list"
             className={
-              props.cateno === "" || props.cateno === undefined
-                ? "bg-indigo-50 text-black p-3 hover:bg-indigo-500 hover:text-white giftcategory"
-                : "bg-white text-black p-3 hover:bg-indigo-500 hover:text-white giftcategory"
+              props.path === "list"
+                ? props.cateno === "" || props.cateno === undefined
+                  ? "bg-teal-50 text-gray-500 p-2 hover:bg-teal-100 hover:font-tmoney hover:text-black giftcategory"
+                  : "bg-white text-gray-500 p-2 hover:bg-teal-100 hover:font-tmoney hover:text-black giftcategory"
+                : "bg-white text-gray-500 p-2 hover:bg-teal-100 hover:font-tmoney hover:text-black giftcategory"
             }
           >
-            <div>전체</div>
+            <div>전체상품</div>
           </Link>
           {category.map(cat => (
             <Link
               to={`/list/${cat.category1Seq}`}
               className={
                 Number(props.cateno) === cat.category1Seq
-                  ? "bg-indigo-50 text-gray-500 p-3 hover:bg-indigo-500 hover:text-white giftcategory"
-                  : "bg-white text-gray-500 p-3 hover:bg-indigo-500 hover:text-white giftcategory"
+                  ? "bg-teal-50 text-gray-500 p-2 hover:bg-teal-100 hover:font-tmoney hover:text-black giftcategory"
+                  : "bg-white text-gray-500 p-2 hover:bg-teal-100 hover:font-tmoney hover:text-black giftcategory"
               }
               key={cat.category1Seq}
             >

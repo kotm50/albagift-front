@@ -93,9 +93,11 @@ function Footer() {
                 </h1>
               </div>
               <div className="flex flex-col justify-start gap-1 text-gray-500 pl-2 xl:pl-0">
-                <div className="text-left font-bold">주식회사 코리아티엠</div>
-                <div className="text-left">서울 중구 다산로 153 코리아티엠</div>
-                <div className="text-left">사업자등록번호: 789-81-02395</div>
+                <div className="text-left font-bold">유한회사 코리아밸리</div>
+                <div className="text-left">
+                  서울 중구 다산로38길 66-45 코리아밸리
+                </div>
+                <div className="text-left">사업자등록번호: 227-87-02579</div>
               </div>
               <div className="flex flex-col justify-start gap-1 text-gray-500 pl-2 xl:pl-0">
                 <div className="text-left font-bold">취업상담 / 채용문의 </div>
@@ -110,13 +112,13 @@ function Footer() {
                   점심시간 : 12:00 ~ 13:00
                 </div>
               </div>
-              <div className="flex flex-col justify-center gap-1 text-gray-500 pl-2 xl:pl-0">
+              <div className="hidden flex-col justify-center gap-1 text-gray-500 pl-2 xl:pl-0">
                 <div className="text-left pb-2 mb-2">
-                  코리아티엠의 다양한 소식들을 만나보세요!
+                  코리아밸리의 다양한 소식들을 만나보세요!
                 </div>
                 <div className="flex justify-start gap-2   mb-5 lg:mb-0">
                   <a
-                    href="http://코리아티엠.kr"
+                    href="http://코리아밸리.kr"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -147,8 +149,7 @@ function Footer() {
               </div>
             </div>
             <div className="text-center py-1 text-sm bg-gray-500 text-white">
-              Copyright ⓒ Korea<i className="font-bold">TM</i>. All rights
-              reserved
+              Copyright ⓒ Albagift. All rights reserved
             </div>
           </footer>
         </>

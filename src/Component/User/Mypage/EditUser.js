@@ -9,9 +9,47 @@ function EditUser(props) {
   const [userInfo, setUserInfo] = useState({});
   useEffect(() => {
     getUserInfo();
+    if (props.code) {
+      kakaoLoginCheck(props.code);
+    }
     //setUserInfo(dummyUser);
     //eslint-disable-next-line
   }, []);
+
+  //카카오연동해제
+  const deleteKakao = async () => {
+    await axios
+      .post("/api/v1/user/rel/integ/kakao", null, {
+        headers: {
+          Authorization: props.user.accessToken,
+        },
+      })
+      .then(res => {
+        alert(`연동이 해제되었습니다 (${res.data.code})`);
+        getUserInfo();
+      })
+      .catch(error => console.log(error));
+  };
+  //카카오연동체크
+  const kakaoLoginCheck = async code => {
+    const editUrl = `/api/v1/user/integ/kakao?code=${code}`;
+    await axios
+      .get(editUrl, {
+        headers: {
+          Authorization: props.user.accessToken,
+        },
+      })
+      .then(res => {
+        const data = res.data;
+        if (data.code === "C000") {
+          alert("연동이 완료되었습니다 앞으로 간편로그인이 가능합니다");
+        }
+        getUserInfo();
+      })
+      .catch(e => {
+        console.log(e, "에러");
+      });
+  };
   const getUserInfo = async () => {
     await axios
       .post("/api/v1/user/myinfo", null, {
@@ -38,6 +76,7 @@ function EditUser(props) {
   const [mainAddr, setMainAddr] = useState("주소찾기를 눌러주세요");
   const [gender, setGender] = useState("");
   const [email, setEmail] = useState("");
+  const [socialType, setSocialType] = useState("");
 
   const [beforeValue, setBeforeValue] = useState({});
 
@@ -59,6 +98,7 @@ function EditUser(props) {
       gender: userInfo.gender,
       email: userInfo.email,
     });
+    setSocialType(userInfo.socialType);
   }, [userInfo]);
 
   //비밀번호 양식 확인
@@ -568,6 +608,33 @@ function EditUser(props) {
             }}
           >
             수정하기
+          </button>
+        </div>
+        <div
+          id="social"
+          className="grid grid-cols-1 xl:grid-cols-7 xl:divide-x xl:border"
+        >
+          <span className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100">
+            간편로그인
+          </span>
+          <div className="xl:col-span-5">
+            {socialType ? (
+              <div className="p-2">이미 연동된 계정입니다</div>
+            ) : (
+              <button
+                className="transition duration-100 w-full bg-yellow-300 hover:bg-yellow-500 p-2 text-black rounded hover:animate-wiggle"
+                onClick={props.kakaoLogin}
+              >
+                카카오 간편로그인
+              </button>
+            )}
+          </div>
+          <button
+            className="bg-teal-500 hover:bg-teal-700 text-white p-2 disabled:bg-gray-500"
+            onClick={deleteKakao}
+            disabled={!socialType}
+          >
+            연동해제
           </button>
         </div>
         <div className="text-center text-sm text-gray-500 border-b pb-2">

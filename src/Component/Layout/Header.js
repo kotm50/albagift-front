@@ -50,8 +50,8 @@ function Header() {
               </a>
             </div>
           </div>
-          <div className="w-full xl:container mx-auto border-b-2 border-indigo-500 bg-white">
-            <GiftCategory cateno={cateNum} />
+          <div className="w-full xl:container mx-auto border-b border-teal-500 bg-white">
+            <GiftCategory cateno={cateNum} path={thisLocation.pathname} />
           </div>
           {loadBrand && (
             <div className="bg-indigo-100 container mx-auto">

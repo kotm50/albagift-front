@@ -12,6 +12,10 @@ module.exports = {
       animation: {
         wiggle: "wiggle 200ms ease-in-out",
       },
+      fontFamily: {
+        pretendard: ['"Pretendard-Regular"'],
+        tmoney: ['"TmoneyRoundWindExtraBold"'],
+      },
     },
   },
   plugins: [],

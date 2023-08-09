@@ -12,6 +12,7 @@ function Join() {
   const location = useLocation();
   let navi = useNavigate();
   const { promo } = useParams();
+  const [socialId, setSocialId] = useState("");
   const [id, setId] = useState("");
   const [pwd, setPwd] = useState("");
   const [pwdChk, setPwdChk] = useState("");
@@ -35,14 +36,14 @@ function Join() {
   const [modalOn, setModalOn] = useState(false);
   const [modalCount, setModalCount] = useState(0);
 
+  const [isSocialLogin, setIsSocialLogin] = useState(false);
+
   // 팝업창 상태 관리
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-  const [isSocialLogin, setIsSocialLogin] = useState(false);
-
   useEffect(() => {
     if (location.state) {
-      setId(location.state.id);
+      setSocialId(location.state.id);
       setEmail(location.state.email);
       setSocialType(location.state.socialType);
       setIsSocialLogin(true);
@@ -60,6 +61,9 @@ function Join() {
       return alert(correctChk + "\n확인 후 다시 시도해 주세요");
     }
     const data = {
+      userId: id,
+      socialId: socialId,
+      userPwd: pwd,
       userName: name,
       phone: inputPhone,
       birth: inputBirth,
@@ -69,14 +73,6 @@ function Join() {
       socialType: socialType,
       promo: false,
     };
-    if (!isSocialLogin) {
-      data.userId = id;
-    } else {
-      data.id = id;
-    }
-    if (!isSocialLogin) {
-      data.userPwd = pwd;
-    }
     if (promo !== undefined) {
       data.promo = true;
     }
@@ -100,22 +96,20 @@ function Join() {
   };
 
   const chkForm = () => {
-    if (!isSocialLogin) {
-      if (id === "") {
-        return "아이디가 입력되지 않았습니다";
-      }
-      if (!correctId) {
-        return "아이디 양식이 잘못되었습니다";
-      }
-      if (pwd === "") {
-        return "비밀번호가 입력되지 않았습니다";
-      }
-      if (!correctPwd) {
-        return "비밀번호 양식이 잘못되었습니다";
-      }
-      if (!correctPwdChk) {
-        return "비밀번호 확인에 실패했습니다";
-      }
+    if (id === "") {
+      return "아이디가 입력되지 않았습니다";
+    }
+    if (!correctId) {
+      return "아이디 양식이 잘못되었습니다";
+    }
+    if (pwd === "") {
+      return "비밀번호가 입력되지 않았습니다";
+    }
+    if (!correctPwd) {
+      return "비밀번호 양식이 잘못되었습니다";
+    }
+    if (!correctPwdChk) {
+      return "비밀번호 확인에 실패했습니다";
     }
     if (name === "") {
       return "이름이 입력되지 않았습니다";
@@ -286,31 +280,25 @@ function Join() {
           >
             아이디
           </label>
-          {isSocialLogin ? (
-            <div className="xl:col-span-4 p-2 bg-gray-50">
-              간편로그인 이용회원입니다
-            </div>
-          ) : (
-            <div className="xl:col-span-4">
-              <input
-                type="text"
-                id="inputId"
-                className={`border ${
-                  !correctId || (!dupId ? "xl:border-red-500" : undefined)
-                } xl:border-0 p-2 w-full text-sm`}
-                value={id}
-                onChange={e => {
-                  setId(e.currentTarget.value);
-                }}
-                onBlur={e => {
-                  setId(e.currentTarget.value);
-                  if (id !== "") chkId();
-                }}
-                placeholder="영어와 숫자만 입력하세요"
-                autoComplete="off"
-              />
-            </div>
-          )}
+          <div className="xl:col-span-4">
+            <input
+              type="text"
+              id="inputId"
+              className={`border ${
+                !correctId || (!dupId ? "xl:border-red-500" : undefined)
+              } xl:border-0 p-2 w-full text-sm`}
+              value={id}
+              onChange={e => {
+                setId(e.currentTarget.value);
+              }}
+              onBlur={e => {
+                setId(e.currentTarget.value);
+                if (id !== "") chkId();
+              }}
+              placeholder="영어와 숫자만 입력하세요"
+              autoComplete="off"
+            />
+          </div>
         </div>
         {!correctId && (
           <div className="text-sm text-rose-500">
@@ -318,98 +306,92 @@ function Join() {
             확인 후 다시 입력해 주세요
           </div>
         )}
-
         {!dupId && (
           <div className="text-sm text-rose-500">
             사용중인 아이디 입니다. <br className="block xl:hidden" />
             확인 후 다시 입력해 주세요
           </div>
         )}
-        {!isSocialLogin && (
-          <>
-            <div
-              id="pwd"
-              className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
-                !correctPwd ? "xl:border-red-500" : null
-              }`}
-            >
-              <label
-                htmlFor="inputPwd"
-                className={`text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 ${
-                  correctPwd ? "xl:bg-gray-100" : "xl:bg-red-100"
-                } `}
-              >
-                비밀번호
-              </label>
-              <div className="xl:col-span-4">
-                <input
-                  type="password"
-                  id="inputPwd"
-                  className={`border ${
-                    !correctPwd ? "border-red-500" : undefined
-                  } xl:border-0 p-2 w-full text-sm`}
-                  value={pwd}
-                  onChange={e => {
-                    setPwd(e.currentTarget.value);
-                  }}
-                  onBlur={e => {
-                    setPwd(e.currentTarget.value);
-                    if (pwd !== "") testPwd();
-                  }}
-                  placeholder="영어/숫자/특수문자 중 2가지 이상"
-                  autoComplete="off"
-                />
-              </div>
-            </div>
-            {!correctPwd && (
-              <div className="text-sm text-rose-500">
-                비밀번호 양식이 틀렸습니다 <br className="block xl:hidden" />
-                확인 후 다시 입력해 주세요
-              </div>
-            )}
-            <div
-              id="pwdChk"
-              className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
-                !correctPwdChk ? "xl:border-red-500" : undefined
-              }`}
-            >
-              <label
-                htmlFor="inputPwdChk"
-                className={`text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 ${
-                  correctPwdChk ? "xl:bg-gray-100" : "xl:bg-red-100"
-                } `}
-              >
-                비밀번호확인
-              </label>
-              <div className="xl:col-span-4">
-                <input
-                  type="password"
-                  id="inputPwdChk"
-                  className={`border ${
-                    !correctPwdChk ? "border-red-500" : undefined
-                  } xl:border-0 p-2 w-full text-sm`}
-                  value={pwdChk}
-                  onChange={e => {
-                    setPwdChk(e.currentTarget.value);
-                  }}
-                  onBlur={e => {
-                    setPwdChk(e.currentTarget.value);
-                    if (pwdChk !== "") chkPwd();
-                  }}
-                  placeholder="비밀번호를 한번 더 입력해 주세요"
-                  autoComplete="off"
-                />
-              </div>
-            </div>
-            {!correctPwdChk && (
-              <div className="text-sm text-rose-500">
-                비밀번호가 일치하지 않습니다 <br className="block xl:hidden" />
-                확인 후 다시 입력해 주세요
-              </div>
-            )}
-          </>
+        <div
+          id="pwd"
+          className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
+            !correctPwd ? "xl:border-red-500" : null
+          }`}
+        >
+          <label
+            htmlFor="inputPwd"
+            className={`text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 ${
+              correctPwd ? "xl:bg-gray-100" : "xl:bg-red-100"
+            } `}
+          >
+            비밀번호
+          </label>
+          <div className="xl:col-span-4">
+            <input
+              type="password"
+              id="inputPwd"
+              className={`border ${
+                !correctPwd ? "border-red-500" : undefined
+              } xl:border-0 p-2 w-full text-sm`}
+              value={pwd}
+              onChange={e => {
+                setPwd(e.currentTarget.value);
+              }}
+              onBlur={e => {
+                setPwd(e.currentTarget.value);
+                if (pwd !== "") testPwd();
+              }}
+              placeholder="영어/숫자/특수문자 중 2가지 이상"
+              autoComplete="off"
+            />
+          </div>
+        </div>
+        {!correctPwd && (
+          <div className="text-sm text-rose-500">
+            비밀번호 양식이 틀렸습니다 <br className="block xl:hidden" />
+            확인 후 다시 입력해 주세요
+          </div>
         )}
-
+        <div
+          id="pwdChk"
+          className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
+            !correctPwdChk ? "xl:border-red-500" : undefined
+          }`}
+        >
+          <label
+            htmlFor="inputPwdChk"
+            className={`text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 ${
+              correctPwdChk ? "xl:bg-gray-100" : "xl:bg-red-100"
+            } `}
+          >
+            비밀번호확인
+          </label>
+          <div className="xl:col-span-4">
+            <input
+              type="password"
+              id="inputPwdChk"
+              className={`border ${
+                !correctPwdChk ? "border-red-500" : undefined
+              } xl:border-0 p-2 w-full text-sm`}
+              value={pwdChk}
+              onChange={e => {
+                setPwdChk(e.currentTarget.value);
+              }}
+              onBlur={e => {
+                setPwdChk(e.currentTarget.value);
+                if (pwdChk !== "") chkPwd();
+              }}
+              placeholder="비밀번호를 한번 더 입력해 주세요"
+              autoComplete="off"
+            />
+          </div>
+        </div>
+        {!correctPwdChk && (
+          <div className="text-sm text-rose-500">
+            비밀번호가 일치하지 않습니다 <br className="block xl:hidden" />
+            확인 후 다시 입력해 주세요
+          </div>
+        )}
         <div
           id="name"
           className="grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border"

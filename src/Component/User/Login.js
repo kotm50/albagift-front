@@ -21,6 +21,14 @@ function Login() {
     //eslint-disable-next-line
   }, []);
 
+  const setSortParams = () => {
+    setSearchParams(searchParams);
+    const code = searchParams.get("code");
+    if (code) {
+      kakaoLoginCheck(code);
+    }
+  };
+
   const extractDomain = () => {
     let protocol = window.location.protocol; // 프로토콜을 가져옵니다. (예: http: 또는 https:)
     let hostname = window.location.hostname; // 도메인 이름을 가져옵니다.
@@ -45,7 +53,6 @@ function Login() {
     await axios
       .post("/api/v1/user/login", data)
       .then(res => {
-        console.log(res);
         const token = res.headers.authorization;
         if (res.data.code === "E002") {
           let restore = window.confirm(
@@ -59,15 +66,6 @@ function Login() {
           }
         }
         if (res.data.code === "C000") {
-          dispatch(
-            loginUser({
-              userId: id,
-              userName: res.data.user.userName,
-              accessToken: token,
-              lastLogin: new Date(),
-              point: res.data.user.point,
-            })
-          );
           chkAdmin(token, res.data.user);
         }
       })
@@ -106,6 +104,7 @@ function Login() {
           dispatch(
             loginUser({
               userId: id,
+              userName: user.userName,
               accessToken: token,
               lastLogin: new Date(),
               point: user.point,
@@ -118,6 +117,7 @@ function Login() {
           dispatch(
             loginUser({
               userId: id,
+              userName: user.userName,
               accessToken: token,
               lastLogin: new Date(),
               point: user.point,
@@ -160,27 +160,20 @@ function Login() {
           );
           navi("/");
         }
-        console.log(res);
       })
       .catch(e => {
         console.log(e, "에러");
       });
   };
 
-  const kakaoLogin = () => {
+  const kakaoLogin = e => {
+    e.preventDefault();
     const apiKey = "e8b025aca3eb87648da9d341528bca5a";
-    const redirectUrl = `${domain}/test`;
+    const redirectUrl = `${domain}/login`;
     const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${apiKey}&redirect_uri=${redirectUrl}&response_type=code`;
     window.location.href = kakaoURL;
   };
 
-  const setSortParams = () => {
-    setSearchParams(searchParams);
-    const code = searchParams.get("code");
-    if (code) {
-      kakaoLoginCheck(code);
-    }
-  };
   return (
     <form onSubmit={e => login(e)}>
       <div

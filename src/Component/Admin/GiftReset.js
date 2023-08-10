@@ -11,6 +11,7 @@ function GiftReset() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
+        console.log(res);
         if (res.data.code === "200") {
           alert("상품리셋 완료");
         }

@@ -24,7 +24,7 @@ function UserInfo() {
         setIsAdmin(true);
       }
     }
-    console.log(user);
+
     //eslint-disable-next-line
   }, [location]);
 

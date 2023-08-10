@@ -5,6 +5,12 @@ import { getNewToken } from "../../Reducer/userSlice";
 import queryString from "query-string";
 import axios from "axios";
 import Search from "./Search";
+import {
+  FaAngleLeft,
+  FaAngleRight,
+  FaAngleDoubleLeft,
+  FaAngleDoubleRight,
+} from "react-icons/fa";
 
 function SearchResult() {
   const dispatch = useDispatch();
@@ -62,12 +68,11 @@ function SearchResult() {
         console.log(e);
       });
   };
-
   function generatePaginationArray(currentPage, totalPage) {
     let paginationArray = [];
 
     // 최대 페이지가 4 이하인 경우
-    if (totalPage <= 4) {
+    if (Number(totalPage) <= 4) {
       for (let i = 1; i <= totalPage; i++) {
         paginationArray.push(i);
       }
@@ -75,28 +80,28 @@ function SearchResult() {
     }
 
     // 현재 페이지가 1 ~ 3인 경우
-    if (currentPage <= 3) {
+    if (Number(currentPage) <= 3) {
       return [1, 2, 3, 4, 5];
     }
 
     // 현재 페이지가 totalPage ~ totalPage - 2인 경우
-    if (currentPage >= totalPage - 2) {
+    if (Number(currentPage) >= Number(totalPage) - 2) {
       return [
-        totalPage - 4,
-        totalPage - 3,
-        totalPage - 2,
-        totalPage - 1,
-        totalPage,
+        Number(totalPage) - 4,
+        Number(totalPage) - 3,
+        Number(totalPage) - 2,
+        Number(totalPage) - 1,
+        Number(totalPage),
       ];
     }
 
     // 그 외의 경우
     return [
-      currentPage - 2,
-      currentPage - 1,
-      currentPage,
-      currentPage + 1,
-      currentPage + 2,
+      Number(currentPage) - 2,
+      Number(currentPage) - 1,
+      Number(currentPage),
+      Number(currentPage) + 1,
+      Number(currentPage) + 2,
     ];
   }
 
@@ -126,35 +131,41 @@ function SearchResult() {
             <span className="font-medium text-red-500">{resultNum}</span>개의
             상품을 발견했습니다
           </h3>
-          <div
-            id="goodsList"
-            className="my-2 grid grid-cols-2 xl:grid-cols-4 gap-2"
-          >
+          <div className="my-2 grid grid-cols-2 xl:grid-cols-5 gap-2">
             {goods.map((good, idx) => (
-              <Link key={idx} to={`/detail/${good.goodsCode}`}>
-                <div className="group p-2 border-2 hover:border-indigo-500 hover:bg-indigo-50 rounded">
-                  <div className="w-30 h-30 xl:w-60 xl:h-60 mx-auto rounded overflow-hidden">
-                    <img
-                      src={good.goodsImgS}
-                      alt={good.goosName}
-                      className="fixed top-0 left-0 w-0 h-0 opacity-0"
-                      onLoad={e => setImgLoaded(true)}
-                    />
+              <Link
+                key={idx}
+                to={`/detail/${good.goodsCode}`}
+                className="pb-0 min-h-0 h-fit"
+              >
+                <div className="group p-2 bg-white hover:border-2 hover:border-indigo-500 hover:bg-indigo-50 rounded drop-shadow hover:drop-shadow-xl">
+                  <div className="w-32 h-32 xl:w-60 xl:h-60 mx-auto rounded overflow-hidden max-w-full">
                     {imgLoaded ? (
                       <img
                         src={good.goodsImgS}
-                        alt={good.goosName}
-                        className="w-full mx-auto my-auto duration-100 transition-all group-hover:scale-110"
+                        alt={good.goodsName}
+                        className="w-full mx-auto my-auto duration-300 transition-all ease-in-out group-hover:scale-125"
                       />
                     ) : (
-                      <div className="bg-slate-200 animate-pulse w-30 h-30 xl:w-60 xl:h-60"></div>
+                      <>
+                        <img
+                          src={good.goodsImgS}
+                          alt={good.goodsName}
+                          className="fixed top-0 left-0 w-0 h-0 opacity-0"
+                          onLoad={e => setImgLoaded(true)}
+                        />
+                        <div className="bg-slate-200 animate-pulse w-32 h-32 xl:w-60 xl:h-60"></div>
+                      </>
                     )}
                   </div>
-                  <div className="p-2 grid grid-cols-1 xl:grid-cols-4 mt-2">
-                    <p className="text-lg group-hover:font-medium keep-all overflow-hidden text-ellipsis whitespace-nowrap xl:col-span-3">
+                  <div className="w-32 xl:w-60 mx-auto grid grid-cols-1 mt-2 pt-1 border-t border-gray-100 max-w-full">
+                    <p className="text-base group-hover:font-lineseed keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left font-lineseed text-blue-500">
+                      {good.brandName}
+                    </p>
+                    <p className="text-lg group-hover:font-lineseed keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left">
                       {good.goodsName}
                     </p>
-                    <p className="text-lg xl:text-right">
+                    <p className="text-lg text-left">
                       <span className="text-xl text-rose-500">
                         {Number(good.realPrice)}
                       </span>{" "}
@@ -170,10 +181,22 @@ function SearchResult() {
         <div>{loadMsg}</div>
       )}
       {pagenate.length > 0 && (
-        <div className="flex flex-row justify-center gap-3">
+        <div className="flex flex-row justify-center gap-3 my-5">
           {page > 1 && (
-            <Link to={`${pathName}?page=${page - 1}`} className="pageButton">
-              &lt;
+            <Link
+              to={`${pathName}?page=1`}
+              className="transition duration-300 ease-in-out pageButton hover:scale-125"
+            >
+              <FaAngleDoubleLeft size={24} />
+            </Link>
+          )}
+
+          {page > 1 && (
+            <Link
+              to={`${pathName}?page=${page - 1}`}
+              className="transition duration-300 ease-in-out pageButton hover:scale-125"
+            >
+              <FaAngleLeft size={24} />
             </Link>
           )}
           <div className="grid grid-cols-5 gap-3">
@@ -181,21 +204,28 @@ function SearchResult() {
               <Link
                 to={`${pathName}?page=${pageNum}`}
                 key={idx}
-                className="pageButton"
+                className={`transition duration-300 ease-in-out pageButton hover:scale-125 font-tmoney ${
+                  Number(page) === pageNum ? "selectedPage" : null
+                }`}
               >
-                <span
-                  className={`${
-                    Number(page) === pageNum ? "font-bold text-blue-500" : null
-                  }`}
-                >
-                  {pageNum}
-                </span>
+                <span>{pageNum}</span>
               </Link>
             ))}
           </div>
           {page < totalPage && (
-            <Link to={`${pathName}?page=${page + 1}`} className="pageButton">
-              &gt;
+            <Link
+              to={`${pathName}?page=${page + 1}`}
+              className="transition duration-300 ease-in-out pageButton hover:scale-125"
+            >
+              <FaAngleRight size={24} />
+            </Link>
+          )}
+          {page < totalPage && (
+            <Link
+              to={`${pathName}?page=${totalPage}`}
+              className="transition duration-300 ease-in-out pageButton hover:scale-125"
+            >
+              <FaAngleDoubleRight size={24} />
             </Link>
           )}
         </div>

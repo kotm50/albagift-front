@@ -39,16 +39,20 @@ function Recommend() {
   };
 
   return (
-    <div>
+    <div className="overflow-x-auto">
       {loaded ? (
         <div
-          id="goodsList"
-          className="my-2 grid grid-cols-2 xl:grid-cols-6 gap-2 xl:w-11/12 mx-auto"
+          id="recommendList"
+          className="mx-auto my-2 flex flex-row flex-nowrap overflow-x-auto xl:grid xl:grid-cols-6 gap-2 xl:w-11/12 w-full"
         >
           {goods.map((good, idx) => (
-            <Link key={idx} to={`/detail/${good.goodsCode}`}>
-              <div className="group p-2 hover:border-2 hover:border-indigo-500 hover:bg-indigo-50 rounded">
-                <div className="w-30 h-30 xl:w-60 xl:h-60 mx-auto rounded overflow-hidden max-w-full">
+            <Link
+              key={idx}
+              to={`/detail/${good.goodsCode}`}
+              className="giftcategory flex-shrink-0 w-32 xl:w-auto"
+            >
+              <div className="group p-2 hover:border-2 bg-white hover:border-indigo-500 hover:bg-indigo-50 rounded recommendListItem">
+                <div className="w-32 h-32 xl:w-64 xl:h-64 mx-auto rounded overflow-hidden max-w-full">
                   <img
                     src={good.goodsImgS}
                     alt={good.goodsName}

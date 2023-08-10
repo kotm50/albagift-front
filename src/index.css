@@ -110,7 +110,7 @@ pre {
   list-style:decimal-leading-zero;
 }
 
-.giftcategory {
+.giftcategory, .recommendListItem {
   word-break:keep-all;
   white-space:nowrap;
 }
@@ -181,4 +181,17 @@ input[type="number"] {
 #goodsList {
   min-height:100vh;
   overflow: auto;
+}
+
+.pageButton {
+  background-color:white;
+  padding:5px 10px;
+  border-radius:25%;
+  box-shadow:0 0 3px rgba(0, 0, 0, 0.1);
+  text-align:center;
+}
+
+.selectedPage {
+  background-color: #3b82f6!important;
+  color:#fff!important
 }

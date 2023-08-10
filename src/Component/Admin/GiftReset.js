@@ -12,7 +12,7 @@ function GiftReset() {
       })
       .then(res => {
         console.log(res);
-        if (res.data.code === "200") {
+        if (res.data.code === "C200") {
           alert("상품리셋 완료");
         }
       })

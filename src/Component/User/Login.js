@@ -39,7 +39,6 @@ function Login() {
       return `${protocol}//${hostname}:${port}`;
     }
     let fullDomain = `${protocol}//${hostname}`;
-    console.log(fullDomain);
     // 일반 도메인인 경우 프로토콜과 함께 반환
     return fullDomain;
   };
@@ -79,7 +78,6 @@ function Login() {
     let data = {
       userId: id,
     };
-    console.log(data);
     await axios
       .post("/api/v1/user/recusr", data)
       .then(res => {

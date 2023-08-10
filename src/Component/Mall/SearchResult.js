@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useParams, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getNewToken } from "../../Reducer/userSlice";
+import queryString from "query-string";
 import axios from "axios";
 import Search from "./Search";
 
@@ -11,40 +12,34 @@ function SearchResult() {
   const [goods, setGoods] = useState([]);
   const [resultNum, setResultNum] = useState();
   const location = useLocation();
-  const [renderCount, setRenderCount] = useState(0);
+  const pathName = location.pathname;
+  const parsed = queryString.parse(location.search);
+  const page = parsed.page || 1;
   const [load, setLoad] = useState(false);
   const [loadMsg, setLoadMsg] = useState("상품을 불러오고 있습니다");
   const user = useSelector(state => state.user);
   const [imgLoaded, setImgLoaded] = useState(false);
+  const [totalPage, setTotalPage] = useState(1);
+  const [pagenate, setPagenate] = useState([]);
 
   useEffect(() => {
-    searchIt();
+    searchIt(page);
     //eslint-disable-next-line
   }, [location]);
-
-  const handleScroll = useCallback(() => {
-    const bottom =
-      window.innerHeight + document.documentElement.scrollTop ===
-      document.documentElement.offsetHeight;
-
-    if (bottom) {
-      setRenderCount(prevCount => prevCount + 20); // 아래로 스크롤했을 때 추가로 20개씩 렌더링
-    }
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]); // handleScroll 함수가 변경될 때마다 useEffect를 실행
-
-  const searchIt = async () => {
+  const searchIt = async p => {
     setGoods([]);
+
+    const data = {
+      page: p,
+      size: 20,
+    };
     await axios
       .get(`/api/v1/shop/goods/search/${keyword}`, {
-        token: user.accessToken,
+        params: data,
+        headers: { Authorization: user.accessToken },
       })
       .then(res => {
+        setTotalPage(res.data.totalPages);
         if (res.headers.authorization) {
           if (res.headers.authorization !== user.accessToken) {
             dispatch(
@@ -54,18 +49,56 @@ function SearchResult() {
             );
           }
         }
+        const pagenate = generatePaginationArray(p, res.data.totalPages);
+        setPagenate(pagenate);
         setGoods(res.data.goodsList);
         setResultNum(res.data.listNum);
         setLoadMsg(res.data.message);
         if (res.data.goodsList.length > 0) {
           setLoad(true);
-          setRenderCount(40);
         }
       })
       .catch(e => {
         console.log(e);
       });
   };
+
+  function generatePaginationArray(currentPage, totalPage) {
+    let paginationArray = [];
+
+    // 최대 페이지가 4 이하인 경우
+    if (totalPage <= 4) {
+      for (let i = 1; i <= totalPage; i++) {
+        paginationArray.push(i);
+      }
+      return paginationArray;
+    }
+
+    // 현재 페이지가 1 ~ 3인 경우
+    if (currentPage <= 3) {
+      return [1, 2, 3, 4, 5];
+    }
+
+    // 현재 페이지가 totalPage ~ totalPage - 2인 경우
+    if (currentPage >= totalPage - 2) {
+      return [
+        totalPage - 4,
+        totalPage - 3,
+        totalPage - 2,
+        totalPage - 1,
+        totalPage,
+      ];
+    }
+
+    // 그 외의 경우
+    return [
+      currentPage - 2,
+      currentPage - 1,
+      currentPage,
+      currentPage + 1,
+      currentPage + 2,
+    ];
+  }
 
   function checkName(name) {
     //name의 마지막 음절의 유니코드(UTF-16)
@@ -97,7 +130,7 @@ function SearchResult() {
             id="goodsList"
             className="my-2 grid grid-cols-2 xl:grid-cols-4 gap-2"
           >
-            {goods.slice(0, renderCount).map((good, idx) => (
+            {goods.map((good, idx) => (
               <Link key={idx} to={`/detail/${good.goodsCode}`}>
                 <div className="group p-2 border-2 hover:border-indigo-500 hover:bg-indigo-50 rounded">
                   <div className="w-30 h-30 xl:w-60 xl:h-60 mx-auto rounded overflow-hidden">
@@ -135,6 +168,37 @@ function SearchResult() {
         </>
       ) : (
         <div>{loadMsg}</div>
+      )}
+      {pagenate.length > 0 && (
+        <div className="flex flex-row justify-center gap-3">
+          {page > 1 && (
+            <Link to={`${pathName}?page=${page - 1}`} className="pageButton">
+              &lt;
+            </Link>
+          )}
+          <div className="grid grid-cols-5 gap-3">
+            {pagenate.map((pageNum, idx) => (
+              <Link
+                to={`${pathName}?page=${pageNum}`}
+                key={idx}
+                className="pageButton"
+              >
+                <span
+                  className={`${
+                    Number(page) === pageNum ? "font-bold text-blue-500" : null
+                  }`}
+                >
+                  {pageNum}
+                </span>
+              </Link>
+            ))}
+          </div>
+          {page < totalPage && (
+            <Link to={`${pathName}?page=${page + 1}`} className="pageButton">
+              &gt;
+            </Link>
+          )}
+        </div>
       )}
     </div>
   );

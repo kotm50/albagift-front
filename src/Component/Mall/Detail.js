@@ -120,7 +120,7 @@ function Detail() {
                 </span>
                 <span className="text-xl xl:text-2xl ml-1">Point</span>
               </div>
-              <div className="mt-5 ">
+              <div className="mt-5 flex flex-row gap-3">
                 <span className="xl:text-lg font-bold basis-1/4 xl:basis-1/6">
                   교환처
                 </span>
@@ -128,7 +128,7 @@ function Detail() {
                   {goods.affiliate}
                 </span>
               </div>
-              <div className="mt-5 ">
+              <div className="mt-5 flex flex-row gap-3">
                 <span className="xl:text-lg font-bold basis-1/4 xl:basis-1/6">
                   유효기간
                 </span>
@@ -136,7 +136,7 @@ function Detail() {
                   {goods.limitDay}일/유효기간 만료 후 연장 및 환불 불가
                 </span>
               </div>
-              <div className="mt-5 ">
+              <div className="mt-5 flex flex-row gap-3">
                 <span className="xl:text-lg font-bold basis-1/4 xl:basis-1/6">
                   구매방식
                 </span>
@@ -159,7 +159,7 @@ function Detail() {
               상품 상세정보 및 유의사항
             </h3>
             <div
-              className="xl:w-5/6 mx-auto"
+              className="xl:w-5/6 mx-auto leading-7"
               dangerouslySetInnerHTML={{
                 __html: sanitizer(content).replace(
                   /href/g,

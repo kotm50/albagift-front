@@ -14,7 +14,6 @@ function List() {
   const [goods, setGoods] = useState([]);
   const location = useLocation();
   const pathName = location.pathname;
-  console.log(pathName);
   const { category, brand } = useParams();
   const parsed = queryString.parse(location.search);
   const page = parsed.page || 1;
@@ -51,7 +50,6 @@ function List() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        console.log(res);
         const totalP = res.data.totalPages;
         setTotalPage(res.data.totalPages);
 
@@ -120,18 +118,16 @@ function List() {
       {loaded ? (
         <div
           id="goodsList"
-          className="my-2 grid grid-cols-2 xl:grid-cols-4 gap-2"
+          className="my-2 grid grid-cols-2 xl:grid-cols-5 gap-2"
         >
           {goods.map((good, idx) => (
-            <Link key={idx} to={`/detail/${good.goodsCode}`}>
+            <Link
+              key={idx}
+              to={`/detail/${good.goodsCode}`}
+              className="pb-0 min-h-0"
+            >
               <div className="group p-2 hover:border-2 hover:border-indigo-500 hover:bg-indigo-50 rounded">
                 <div className="w-30 h-30 xl:w-60 xl:h-60 mx-auto rounded overflow-hidden max-w-full">
-                  <img
-                    src={good.goodsImgS}
-                    alt={good.goodsName}
-                    className="fixed top-0 left-0 w-0 h-0 opacity-0"
-                    onLoad={e => setImgLoaded(true)}
-                  />
                   {imgLoaded ? (
                     <img
                       src={good.goodsImgS}
@@ -139,14 +135,25 @@ function List() {
                       className="w-full mx-auto my-auto duration-100 transition-all group-hover:scale-110"
                     />
                   ) : (
-                    <div className="bg-slate-200 animate-pulse w-30 h-30 xl:w-60 xl:h-60"></div>
+                    <>
+                      <img
+                        src={good.goodsImgS}
+                        alt={good.goodsName}
+                        className="fixed top-0 left-0 w-0 h-0 opacity-0"
+                        onLoad={e => setImgLoaded(true)}
+                      />
+                      <div className="bg-slate-200 animate-pulse w-30 h-30 xl:w-60 xl:h-60"></div>
+                    </>
                   )}
                 </div>
-                <div className="p-2 grid grid-cols-1 mt-2">
-                  <p className="text-lg group-hover:font-tmoney keep-all overflow-hidden text-ellipsis whitespace-nowrap text-center">
+                <div className="w-30 xl:w-60 mx-auto grid grid-cols-1 mt-2 max-w-full">
+                  <p className="text-base group-hover:font-lineseed keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left font-lineseed text-blue-500">
+                    {good.brandName}
+                  </p>
+                  <p className="text-lg group-hover:font-lineseed keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left">
                     {good.goodsName}
                   </p>
-                  <p className="text-lg text-center">
+                  <p className="text-lg text-left">
                     <span className="text-xl text-rose-500">
                       {Number(good.realPrice)}
                     </span>{" "}

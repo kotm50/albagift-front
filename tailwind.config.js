@@ -15,6 +15,7 @@ module.exports = {
       fontFamily: {
         pretendard: ['"Pretendard-Regular"'],
         tmoney: ['"TmoneyRoundWindExtraBold"'],
+        lineseed: ['"LINESeedKR-Bd"'],
       },
     },
   },

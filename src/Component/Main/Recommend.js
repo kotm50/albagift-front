@@ -65,11 +65,14 @@ function Recommend() {
                     <div className="bg-slate-200 animate-pulse w-30 h-30 xl:w-60 xl:h-60"></div>
                   )}
                 </div>
-                <div className="p-2 grid grid-cols-1">
-                  <p className="text-lg group-hover:font-tmoney keep-all overflow-hidden text-ellipsis whitespace-nowrap text-center">
+                <div className="w-30 xl:w-60 mx-auto grid grid-cols-1 mt-2 max-w-full">
+                  <p className="text-base group-hover:font-lineseed keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left font-lineseed text-blue-500">
+                    {good.brandName}
+                  </p>
+                  <p className="text-lg group-hover:font-lineseed keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left">
                     {good.goodsName}
                   </p>
-                  <p className="text-lg text-center">
+                  <p className="text-lg text-left">
                     <span className="text-xl text-rose-500">
                       {Number(good.realPrice)}
                     </span>{" "}

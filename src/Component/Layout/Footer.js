@@ -93,24 +93,28 @@ function Footer() {
                 </h1>
               </div>
               <div className="flex flex-col justify-start gap-1 text-gray-500 pl-2 xl:pl-0">
-                <div className="text-left font-bold">유한회사 코리아밸리</div>
-                <div className="text-left">
+                <div className="text-left font-neoextra">
+                  유한회사 코리아밸리
+                </div>
+                <div className="text-left font-neo">
                   서울 중구 다산로38길 66-45 코리아밸리
                 </div>
-                <div className="text-left">사업자등록번호: 227-87-02579</div>
+                <div className="text-left font-neo">
+                  사업자등록번호: 227-87-02579
+                </div>
               </div>
               <div className="flex flex-col justify-start gap-1 text-gray-500 pl-2 xl:pl-0">
-                <div className="text-left font-bold">취업상담 / 채용문의 </div>
+                <div className="text-left font-neoextra">
+                  취업상담 / 채용문의{" "}
+                </div>
                 <div className="text-2xl flex flex-row flex-nowrap gap-2">
                   <RiCustomerService2Fill size={32} />
-                  <span className="text-indigo-500 font-bold">1644-4223</span>
+                  <span className="text-indigo-500 font-neoextra">
+                    1644-4223
+                  </span>
                 </div>
-                <div className="font-normal text-sm">
-                  영업시간 : 09:00 ~ 18:00
-                </div>
-                <div className="font-normal text-sm">
-                  점심시간 : 12:00 ~ 13:00
-                </div>
+                <div className="font-neo text-sm">영업시간 : 09:00 ~ 18:00</div>
+                <div className="font-neo text-sm">점심시간 : 12:00 ~ 13:00</div>
               </div>
               <div className="hidden flex-col justify-center gap-1 text-gray-500 pl-2 xl:pl-0">
                 <div className="text-left pb-2 mb-2">

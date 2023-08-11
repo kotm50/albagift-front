@@ -4,7 +4,7 @@ import Recommend from "./Main/Recommend";
 function Main() {
   return (
     <>
-      <Recommend />
+      <Recommend category={1} />
     </>
   );
 }

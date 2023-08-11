@@ -1,20 +1,29 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { category } from "../Layout/Menu/Category";
 
-function Recommend() {
+function Recommend(props) {
+  const location = useLocation();
   const user = useSelector(state => state.user);
   const [goods, setGoods] = useState([]);
   const [loadMsg, setLoadMsg] = useState("상품을 불러오고 있습니다");
   const [imgLoaded, setImgLoaded] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [categoryName, setCategoryName] = useState("");
 
   useEffect(() => {
-    getGoods();
+    getCategory(props.category);
+    getGoods(props.category);
     //eslint-disable-next-line
   }, [location]);
-  const getGoods = async (c, b) => {
+
+  const getCategory = c => {
+    const categoryItem = category.find(cat => cat.category1Seq === parseInt(c));
+    setCategoryName(categoryItem.category1Name);
+  };
+  const getGoods = async c => {
     let listUrl = "/api/v1/shop/goods/list";
     const data = {
       page: 1,
@@ -40,6 +49,7 @@ function Recommend() {
 
   return (
     <div className="overflow-x-auto">
+      <h3 className="xl:text-2xl font-lineseed">{categoryName}의 추천상품</h3>
       {loaded ? (
         <div
           id="recommendList"

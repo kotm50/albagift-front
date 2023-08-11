@@ -42,7 +42,7 @@ function Header() {
     <>
       {!headless && (
         <>
-          <div className="text-center pb-5 w-full xl:container mx-auto bg-white xl:mt-0">
+          <div className="text-center pb-5 w-full xl:container mx-auto bg-white xl:mt-0 dark:text-white">
             <UserInfo />
             <div className="text-center">
               <a href="/" className="inline-block px-2">

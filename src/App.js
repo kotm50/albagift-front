@@ -31,7 +31,7 @@ function App() {
       behavior: "smooth",
     });
     if (!path.some(chkBg)) {
-      setBg("bg-gray-50");
+      setBg("bg-gray-100 shadow-xl");
     } else {
       setBg("bg-transparent");
     }
@@ -48,7 +48,7 @@ function App() {
       <Header />
       <div
         id="content"
-        className={`${bg} w-full xl:container mx-auto p-2 font-pretendard`}
+        className={`${bg} w-full xl:container mx-auto xl:p-2 font-pretendard dark:text-white`}
       >
         <Routes>
           <Route path="/" element={<Main />} />

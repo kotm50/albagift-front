@@ -16,7 +16,7 @@ function Modal(props) {
       >
         <div className="relative lg:w-auto my-6 mx-auto w-11/12 lg:max-w-3xl">
           <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none max-h-96 p-6">
-            <h3 className="text-lg font-medium mb-3">
+            <h3 className="text-lg font-neoextra mb-3">
               {props.modalCount === 1
                 ? "개인정보 처리방침"
                 : props.modalCount === 2

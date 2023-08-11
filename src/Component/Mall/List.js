@@ -8,13 +8,7 @@ import queryString from "query-string";
 import { getNewToken } from "../../Reducer/userSlice";
 
 import Search from "./Search";
-
-import {
-  FaAngleLeft,
-  FaAngleRight,
-  FaAngleDoubleLeft,
-  FaAngleDoubleRight,
-} from "react-icons/fa";
+import Pagenate from "../Layout/Pagenate";
 
 function List() {
   const dispatch = useDispatch();
@@ -37,6 +31,7 @@ function List() {
   }, [location]);
 
   const getGoods = async (c, b, p) => {
+    console.log(c);
     let listUrl = "/api/v1/shop/goods/list";
     if (c !== undefined && b === undefined) {
       listUrl = "/api/v1/shop/goods/list";
@@ -57,6 +52,7 @@ function List() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
+        console.log(res);
         const totalP = res.data.totalPages;
         setTotalPage(res.data.totalPages);
 
@@ -151,10 +147,10 @@ function List() {
                   )}
                 </div>
                 <div className="w-32 xl:w-60 mx-auto grid grid-cols-1 mt-2 pt-1 border-t border-gray-100 max-w-full">
-                  <p className="text-base group-hover:font-lineseed keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left font-lineseed text-blue-500">
+                  <p className="text-base group-hover:font-neobold keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left font-neobold text-blue-500">
                     {good.brandName}
                   </p>
-                  <p className="text-lg group-hover:font-lineseed keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left">
+                  <p className="text-lg group-hover:font-neobold keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left">
                     {good.goodsName}
                   </p>
                   <p className="text-lg text-left">
@@ -171,56 +167,12 @@ function List() {
       ) : (
         <div>{loadMsg}</div>
       )}
-      {pagenate.length > 0 && (
-        <div className="flex flex-row justify-center gap-3 my-5">
-          {page > 1 && (
-            <Link
-              to={`${pathName}?page=1`}
-              className="transition duration-300 ease-in-out pageButton hover:scale-125"
-            >
-              <FaAngleDoubleLeft size={24} />
-            </Link>
-          )}
-
-          {page > 1 && (
-            <Link
-              to={`${pathName}?page=${page - 1}`}
-              className="transition duration-300 ease-in-out pageButton hover:scale-125"
-            >
-              <FaAngleLeft size={24} />
-            </Link>
-          )}
-          <div className="grid grid-cols-5 gap-3">
-            {pagenate.map((pageNum, idx) => (
-              <Link
-                to={`${pathName}?page=${pageNum}`}
-                key={idx}
-                className={`transition duration-300 ease-in-out pageButton hover:scale-125 font-tmoney ${
-                  Number(page) === pageNum ? "selectedPage" : null
-                }`}
-              >
-                <span>{pageNum}</span>
-              </Link>
-            ))}
-          </div>
-          {page < totalPage && (
-            <Link
-              to={`${pathName}?page=${page + 1}`}
-              className="transition duration-300 ease-in-out pageButton hover:scale-125"
-            >
-              <FaAngleRight size={24} />
-            </Link>
-          )}
-          {page < totalPage && (
-            <Link
-              to={`${pathName}?page=${totalPage}`}
-              className="transition duration-300 ease-in-out pageButton hover:scale-125"
-            >
-              <FaAngleDoubleRight size={24} />
-            </Link>
-          )}
-        </div>
-      )}
+      <Pagenate
+        pagenate={pagenate}
+        page={Number(page)}
+        totalPage={Number(totalPage)}
+        pathName={pathName}
+      />
     </>
   );
 }

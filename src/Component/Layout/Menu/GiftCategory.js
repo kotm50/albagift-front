@@ -11,7 +11,7 @@ function GiftCategory(props) {
       <div className="flex flex-row flex-nowrap">
         <Link
           to="/"
-          className="bg-teal-500 text-white p-2 hover:bg-teal-100 hover:text-black giftcategory"
+          className="bg-teal-500 text-white  p-2 hover:bg-teal-100 hover:text-black giftcategory"
         >
           <div>
             <AiFillHome size={24} />
@@ -24,11 +24,11 @@ function GiftCategory(props) {
           <Link
             to="/list"
             className={
-              props.path === "list"
-                ? props.cateno === "" || props.cateno === undefined
-                  ? "bg-teal-50 text-gray-500 p-2 hover:bg-teal-100 hover:font-tmoney hover:text-black giftcategory"
-                  : "bg-white text-gray-500 p-2 hover:bg-teal-100 hover:font-tmoney hover:text-black giftcategory"
-                : "bg-white text-gray-500 p-2 hover:bg-teal-100 hover:font-tmoney hover:text-black giftcategory"
+              props.path === "/list"
+                ? props.cateno
+                  ? "bg-white text-gray-500 p-2 hover:bg-teal-100 hover:text-black giftcategory"
+                  : "bg-teal-50 text-gray-500 border-b-2 border-teal-500 p-2 hover:bg-teal-100 hover:text-black giftcategory"
+                : "bg-white text-gray-500 p-2 hover:bg-teal-100 hover:text-black giftcategory"
             }
           >
             <div>전체상품</div>
@@ -38,8 +38,8 @@ function GiftCategory(props) {
               to={`/list/${cat.category1Seq}`}
               className={
                 Number(props.cateno) === cat.category1Seq
-                  ? "bg-teal-50 text-gray-500 p-2 hover:bg-teal-100 hover:font-tmoney hover:text-black giftcategory"
-                  : "bg-white text-gray-500 p-2 hover:bg-teal-100 hover:font-tmoney hover:text-black giftcategory"
+                  ? "bg-teal-50 text-gray-500 p-2 border-b-2 border-teal-500 hover:bg-teal-100 hover:text-black giftcategory"
+                  : "bg-white text-gray-500 p-2 hover:bg-teal-100 hover:text-black giftcategory"
               }
               key={cat.category1Seq}
             >

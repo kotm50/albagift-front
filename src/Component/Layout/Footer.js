@@ -82,7 +82,7 @@ function Footer() {
           ) : null}
           <footer id="footer" className="bg-white w-full mb-3 xl:mb-0">
             <div className="lg:container mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-4 gap-5 py-2">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 py-2">
                 <div className="flex flex-col justify-center my-auto">
                   <h1 className="w-1/2 mx-auto mb-5 lg:mb-0">
                     <Link to="/">
@@ -94,7 +94,7 @@ function Footer() {
                     </Link>
                   </h1>
                 </div>
-                <div className="flex flex-col justify-start gap-1 text-gray-500 pl-2 xl:pl-0">
+                <div className="flex flex-col justify-start gap-1 text-gray-500 pl-2 xl:pl-0 text-sm">
                   <div className="text-left font-neoextra">
                     유한회사 코리아밸리
                   </div>
@@ -107,7 +107,7 @@ function Footer() {
                     사업자등록번호: 227-87-02579
                   </div>
                 </div>
-                <div className="flex flex-col justify-start gap-1 text-gray-500 pl-2 xl:pl-0">
+                <div className="flex flex-col justify-start gap-1 text-gray-500 pl-2 xl:pl-0 text-sm">
                   <div className="text-left font-neoextra">
                     취업상담 / 채용문의{" "}
                   </div>

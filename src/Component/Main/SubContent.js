@@ -7,7 +7,7 @@ import ticket from "../../Asset/subContent/ticket.png";
 
 function SubContent() {
   return (
-    <div className="xl:w-5/6 mx-auto px-2 xl:px-0 py-2 grid grid-cols-1 xl:grid-cols-2 gap-3">
+    <div className="xl:container mx-auto px-2 xl:px-0 py-2 grid grid-cols-1 xl:grid-cols-2 gap-3">
       <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-2 pt-4 rounded-lg flex flex-col justify-center overflow-hidden relative group">
         <Link to="/list/1" className="z-40">
           <div className="text-center xl:text-left xl:text-xl mb-1">

@@ -1,55 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-        <loc>https://ikoreatm.com/login</loc>
+        <loc>https://albagift.shop/login</loc>
         <lastmod>2023-05-16</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://ikoreatm.com/loginadmin</loc>
+        <loc>https://albagift.shop/error</loc>
         <lastmod>2023-05-16</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://ikoreatm.com/adminregist</loc>
+        <loc>https://albagift.shop/complete</loc>
         <lastmod>2023-05-16</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://ikoreatm.com/error</loc>
+        <loc>https://albagift.shop/giftlist/:cateno?/:brandno?</loc>
         <lastmod>2023-05-16</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://ikoreatm.com/complete</loc>
+        <loc>https://albagift.shop/giftdetail/:gid?</loc>
         <lastmod>2023-05-16</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://ikoreatm.com/adminlogin</loc>
-        <lastmod>2023-05-16</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    <url>
-        <loc>https://ikoreatm.com/giftlist/:cateno?/:brandno?</loc>
-        <lastmod>2023-05-16</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    <url>
-        <loc>https://ikoreatm.com/giftdetail/:gid?</loc>
-        <lastmod>2023-05-16</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    <url>
-        <loc>https://ikoreatm.com/</loc>
+        <loc>https://albagift.shop/</loc>
         <lastmod>2023-05-16</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>

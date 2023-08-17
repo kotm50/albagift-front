@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 import axios from "axios";
@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { loginUser } from "../../Reducer/userSlice";
 
 function Login() {
+  const inputRef = useRef();
   let navi = useNavigate();
   const dispatch = useDispatch();
   const [id, setId] = useState("");
@@ -18,6 +19,7 @@ function Login() {
     setSortParams();
     let domain = extractDomain();
     setDomain(domain);
+    inputRef.current.focus();
     //eslint-disable-next-line
   }, []);
 
@@ -198,6 +200,7 @@ function Login() {
               onChange={e => setId(e.currentTarget.value)}
               onBlur={e => setId(e.currentTarget.value)}
               autoComplete="on"
+              ref={inputRef}
             />
           </div>
         </div>

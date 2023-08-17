@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { clearUser } from "../../../Reducer/userSlice";
 
 import axios from "axios";
 
@@ -9,8 +11,11 @@ import "dayjs/locale/ko"; // 한국어 가져오기
 import CouponModal from "./CouponModal";
 
 function CouponList(props) {
+  const dispatch = useDispatch();
+  const navi = useNavigate();
   const [chkStat, setChkStat] = useState(false);
   const [stat, setStat] = useState("");
+  const [statDetail, setStatDetail] = useState("");
   const [statColor, setStatColor] = useState(
     "border border-sky-500 hover:border-sky-700 text-sky-500 hover:text-sky-700 hover:bg-sky-100"
   );
@@ -45,6 +50,10 @@ function CouponList(props) {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
+        if (res.data.code === "E999") {
+          logout();
+          return false;
+        }
         if (res.data.pinStatusCd === "01") {
           setStatColor(
             "border border-sky-500 hover:border-sky-700 text-sky-500 hover:text-sky-700 hover:bg-sky-100"
@@ -62,6 +71,7 @@ function CouponList(props) {
           );
           setStat("사용불가");
         }
+        setStatDetail(res.data.pinStatusNm);
         setStatCode(res.data.pinStatusCd);
         setChkStat(true);
       })
@@ -78,8 +88,23 @@ function CouponList(props) {
         "'사용가능 확인' 버튼을 눌러서 쿠폰이 사용가능한지 확인해주세요"
       );
     } else {
-      return alert(`사용이 불가능한 쿠폰입니다\n사용불가사유 : ${stat}`);
+      return alert(`사용이 불가능한 쿠폰입니다\n사용불가사유 : ${statDetail}`);
     }
+  };
+
+  const logout = async () => {
+    await axios
+      .post("/api/v1/user/logout", null, {
+        headers: { Authorization: user.accessToken },
+      })
+      .then(res => {
+        alert("세션이 만료되었습니다. 다시 로그인 해주세요");
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    dispatch(clearUser());
+    navi("/login");
   };
   return (
     <>

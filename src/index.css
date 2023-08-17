@@ -190,3 +190,12 @@ input[type="number"] {
   background-color: #3b82f6!important;
   color:#fff!important
 }
+
+.mainCategory {
+  width:96px!important;
+  height:auto!important;
+}
+
+.jumbotron {
+  min-height:400px;
+}

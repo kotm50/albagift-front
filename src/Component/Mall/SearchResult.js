@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams, useLocation } from "react-router-dom";
+import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { clearUser } from "../../Reducer/userSlice";
 import { getNewToken } from "../../Reducer/userSlice";
 import queryString from "query-string";
 import axios from "axios";
@@ -9,6 +10,7 @@ import Search from "./Search";
 import Pagenate from "../Layout/Pagenate";
 
 function SearchResult() {
+  let navi = useNavigate();
   const dispatch = useDispatch();
   const { keyword } = useParams();
   const [goods, setGoods] = useState([]);
@@ -41,6 +43,10 @@ function SearchResult() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
+        if (res.data.code === "E999") {
+          logout();
+          return false;
+        }
         setTotalPage(res.data.totalPages);
         if (res.headers.authorization) {
           if (res.headers.authorization !== user.accessToken) {
@@ -115,6 +121,21 @@ function SearchResult() {
     //1이상이면 받침 있음 -> 을
     return `으로`;
   }
+
+  const logout = async () => {
+    await axios
+      .post("/api/v1/user/logout", null, {
+        headers: { Authorization: user.accessToken },
+      })
+      .then(res => {
+        alert("세션이 만료되었습니다. 다시 로그인 해주세요");
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    dispatch(clearUser());
+    navi("/login");
+  };
 
   return (
     <div>

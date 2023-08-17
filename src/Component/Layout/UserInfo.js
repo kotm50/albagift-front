@@ -63,7 +63,7 @@ function UserInfo() {
     navi("/");
   };
   return (
-    <div className="text-right text-sm p-2 text-gray-500">
+    <div className="hidden xl:block text-right text-sm p-2 text-gray-500">
       {!isLogin ? (
         <>
           <Link to="/login" className="hover:text-indigo-500">

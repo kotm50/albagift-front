@@ -22,6 +22,9 @@ import Coupon from "./Component/User/Coupon/Coupon";
 import SearchResult from "./Component/Mall/SearchResult";
 import GiftReset from "./Component/Admin/GiftReset";
 import Main from "./Component/Main";
+import NewPwd from "./Component/User/Mypage/NewPwd";
+import Info from "./Component/Mall/Info";
+
 function App() {
   const [bg, setBg] = useState("bg-transparent");
   const thisLocation = useLocation();
@@ -31,7 +34,7 @@ function App() {
       behavior: "smooth",
     });
     if (!path.some(chkBg)) {
-      setBg("bg-gray-100 shadow-xl");
+      setBg("bg-white");
     } else {
       setBg("bg-transparent");
     }
@@ -48,10 +51,11 @@ function App() {
       <Header />
       <div
         id="content"
-        className={`${bg} w-full xl:container mx-auto xl:p-2 font-pretendard dark:text-white`}
+        className={`${bg} w-full font-pretendard dark:text-white pb-3`}
       >
         <Routes>
           <Route path="/" element={<Main />} />
+          <Route path="/giftinfo" element={<Info />} />
           <Route path="/list/:category?/:brand?" element={<List />} />
           <Route path="/detail/:goodscode?" element={<Detail />} />
           <Route path="/result" element={<Result />} />
@@ -60,6 +64,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/join/:promo?" element={<Join />} />
           <Route path="/mypage" element={<Mypage />} />
+          <Route path="/newpwd" element={<NewPwd />} />
           <Route path="/admin" element={<Admin />}>
             <Route path="" element={<AdminMain />} />
             <Route path="user" element={<UserList />} />

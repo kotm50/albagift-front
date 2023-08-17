@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { clearUser } from "../../Reducer/userSlice";
+//import axios from "axios";
+import { Link, useLocation } from "react-router-dom";
+// import { useSelector } from "react-redux";
 import { category } from "../Data/Category";
 
+import { giftList } from "./data";
+
 function Recommend(props) {
-  let navi = useNavigate();
-  const dispatch = useDispatch();
   const location = useLocation();
-  const user = useSelector(state => state.user);
+  // const user = useSelector(state => state.user);
   const [goods, setGoods] = useState([]);
   const [loadMsg, setLoadMsg] = useState("상품을 불러오고 있습니다");
   const [imgLoaded, setImgLoaded] = useState(false);
@@ -27,10 +26,26 @@ function Recommend(props) {
     setCategoryName(categoryItem.category1Name);
   };
   const getGoods = async c => {
-    let listUrl = `/api/v1/shop/goods/list/${c}`;
+    //샘플 DB 불러오기
+    let goods = [];
+    let random = [];
+    while (random.length < 4) {
+      let randomNumber = Math.floor(Math.random() * 20);
+
+      if (!random.includes(randomNumber)) {
+        random.push(randomNumber);
+        goods.push(giftList[randomNumber]);
+      }
+    }
+    setGoods(goods);
+    setLoadMsg("완료");
+    setLoaded(true);
+    //axios로 불러오기
+    /*
+    let listUrl = "/api/v1/shop/goods/list";
     const data = {
       page: 1,
-      size: 4,
+      size: 6,
     };
     setGoods([]);
     await axios
@@ -39,10 +54,6 @@ function Recommend(props) {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        if (res.data.code === "E999") {
-          logout();
-          return false;
-        }
         setLoadMsg(res.data.message);
         setGoods(res.data.goodsList);
         if (res.data.goodsList.length > 0) {
@@ -52,27 +63,14 @@ function Recommend(props) {
       .catch(e => {
         console.log(e, "에러");
       });
-  };
-  const logout = async () => {
-    await axios
-      .post("/api/v1/user/logout", null, {
-        headers: { Authorization: user.accessToken },
-      })
-      .then(res => {
-        alert("세션이 만료되었습니다. 다시 로그인 해주세요");
-      })
-      .catch(e => {
-        console.log(e);
-      });
-    dispatch(clearUser());
-    navi("/login");
+      */
   };
 
   return (
     <div className="p-2 bg-gray-100">
       <div className="xl:w-5/6 mx-auto">
         <div className="overflow-x-auto w-full mx-auto my-2">
-          <h3 className="xl:text-base font-lineseed py-2 border-b">
+          <h3 className="xl:text-xl font-lineseed py-2 border-b">
             {categoryName}의 추천상품
           </h3>
           {loaded ? (

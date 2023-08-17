@@ -63,18 +63,24 @@ function Search(props) {
                 value={searchKeyword}
                 onChange={e => setSearchKeyword(e.currentTarget.value)}
                 onBlur={e => setSearchKeyword(e.currentTarget.value)}
+                onKeyDown={e => {
+                  if (e.key === "Enter" || e.keyCode === 13) {
+                    searchIt();
+                  }
+                }}
                 placeholder="검색어를 입력하세요"
               />
             </div>
             <div className="py-2 xl:py-0 xl:col-span-2">
               <button
                 className="bg-blue-500 hover:bg-blue-700 p-2 text-white w-full rounded-lg"
-                type="submit"
+                onClick={e => searchIt()}
               >
                 검색
               </button>
             </div>
           </div>
+
           {searchOpen && (
             <div className="transition-all duration-300 ease-in-out xl:hidden grid grid-cols-1 xl:grid-cols-10 xl:gap-3 bg-teal-100 p-2">
               <div className="xl:col-span-8">
@@ -85,7 +91,7 @@ function Search(props) {
                   onChange={e => setSearchKeyword(e.currentTarget.value)}
                   onBlur={e => setSearchKeyword(e.currentTarget.value)}
                   onKeyDown={e => {
-                    if (e.key === "Enter") {
+                    if (e.key === "Enter" || e.keyCode === 13) {
                       searchIt();
                     }
                   }}
@@ -95,7 +101,7 @@ function Search(props) {
               <div className="py-2 xl:py-0 xl:col-span-2">
                 <button
                   className="bg-blue-500 hover:bg-blue-700 p-2 text-white w-full rounded-lg"
-                  type="submit"
+                  onClick={e => searchIt()}
                 >
                   검색
                 </button>

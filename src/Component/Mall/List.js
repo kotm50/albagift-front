@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { clearUser } from "../../Reducer/userSlice";
 
 import queryString from "query-string";
 
@@ -9,10 +10,12 @@ import { getNewToken } from "../../Reducer/userSlice";
 
 import Search from "./Search";
 import Pagenate from "../Layout/Pagenate";
+import UserSection from "../User/UserSection";
 
 function List() {
   const dispatch = useDispatch();
   const [goods, setGoods] = useState([]);
+  let navi = useNavigate();
   const location = useLocation();
   const pathName = location.pathname;
   const { category, brand } = useParams();
@@ -31,7 +34,6 @@ function List() {
   }, [location]);
 
   const getGoods = async (c, b, p) => {
-    console.log(c);
     let listUrl = "/api/v1/shop/goods/list";
     if (c !== undefined && b === undefined) {
       listUrl = "/api/v1/shop/goods/list";
@@ -52,10 +54,12 @@ function List() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        console.log(res);
+        if (res.data.code === "E999") {
+          logout();
+          return false;
+        }
         const totalP = res.data.totalPages;
         setTotalPage(res.data.totalPages);
-
         if (res.headers.authorization) {
           if (res.headers.authorization !== user.accessToken) {
             dispatch(
@@ -115,64 +119,82 @@ function List() {
     ];
   }
 
+  const logout = async () => {
+    await axios
+      .post("/api/v1/user/logout", null, {
+        headers: { Authorization: user.accessToken },
+      })
+      .then(res => {
+        alert("세션이 만료되었습니다. 다시 로그인 해주세요");
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    dispatch(clearUser());
+    navi("/login");
+  };
+
   return (
     <>
-      <Search user={user} />
-      {loaded ? (
-        <div className="my-2 grid grid-cols-2 xl:grid-cols-5 gap-2 gap-y-10">
-          {goods.map((good, idx) => (
-            <Link
-              key={idx}
-              to={`/detail/${good.goodsCode}`}
-              className="pb-0 min-h-0 h-fit"
-            >
-              <div className="group p-2 bg-white hover:border-2 hover:border-indigo-500 hover:bg-indigo-50 rounded drop-shadow hover:drop-shadow-xl">
-                <div className="w-32 h-32 xl:w-60 xl:h-60 mx-auto rounded overflow-hidden max-w-full">
-                  {imgLoaded ? (
-                    <img
-                      src={good.goodsImgS}
-                      alt={good.goodsName}
-                      className="w-full mx-auto my-auto duration-300 transition-all ease-in-out group-hover:scale-125"
-                    />
-                  ) : (
-                    <>
+      <div className="xl:container mx-auto">
+        <UserSection />
+        <Search user={user} />
+        {loaded ? (
+          <div className="my-2 grid grid-cols-2 xl:grid-cols-5 gap-2 gap-y-10">
+            {goods.map((good, idx) => (
+              <Link
+                key={idx}
+                to={`/detail/${good.goodsCode}`}
+                className="pb-0 min-h-0 h-fit"
+              >
+                <div className="group p-2 bg-white hover:border-2 hover:border-indigo-500 hover:bg-indigo-50 rounded drop-shadow hover:drop-shadow-xl">
+                  <div className="w-32 h-32 xl:w-60 xl:h-60 mx-auto rounded overflow-hidden max-w-full">
+                    {imgLoaded ? (
                       <img
                         src={good.goodsImgS}
                         alt={good.goodsName}
-                        className="fixed top-0 left-0 w-0 h-0 opacity-0"
-                        onLoad={e => setImgLoaded(true)}
+                        className="w-full mx-auto my-auto duration-300 transition-all ease-in-out group-hover:scale-125"
                       />
-                      <div className="bg-slate-200 animate-pulse w-32 h-32 xl:w-60 xl:h-60"></div>
-                    </>
-                  )}
+                    ) : (
+                      <>
+                        <img
+                          src={good.goodsImgS}
+                          alt={good.goodsName}
+                          className="fixed top-0 left-0 w-0 h-0 opacity-0"
+                          onLoad={e => setImgLoaded(true)}
+                        />
+                        <div className="bg-slate-200 animate-pulse w-32 h-32 xl:w-60 xl:h-60"></div>
+                      </>
+                    )}
+                  </div>
+                  <div className="w-32 xl:w-60 mx-auto grid grid-cols-1 mt-2 pt-1 border-t border-gray-100 max-w-full">
+                    <p className="text-base group-hover:font-neobold keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left font-neobold text-blue-500">
+                      {good.brandName}
+                    </p>
+                    <p className="text-lg group-hover:font-neobold keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left">
+                      {good.goodsName}
+                    </p>
+                    <p className="text-lg text-left">
+                      <span className="text-xl text-rose-500">
+                        {Number(good.realPrice)}
+                      </span>{" "}
+                      P
+                    </p>
+                  </div>
                 </div>
-                <div className="w-32 xl:w-60 mx-auto grid grid-cols-1 mt-2 pt-1 border-t border-gray-100 max-w-full">
-                  <p className="text-base group-hover:font-neobold keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left font-neobold text-blue-500">
-                    {good.brandName}
-                  </p>
-                  <p className="text-lg group-hover:font-neobold keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left">
-                    {good.goodsName}
-                  </p>
-                  <p className="text-lg text-left">
-                    <span className="text-xl text-rose-500">
-                      {Number(good.realPrice)}
-                    </span>{" "}
-                    P
-                  </p>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      ) : (
-        <div>{loadMsg}</div>
-      )}
-      <Pagenate
-        pagenate={pagenate}
-        page={Number(page)}
-        totalPage={Number(totalPage)}
-        pathName={pathName}
-      />
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div>{loadMsg}</div>
+        )}
+        <Pagenate
+          pagenate={pagenate}
+          page={Number(page)}
+          totalPage={Number(totalPage)}
+          pathName={pathName}
+        />
+      </div>
     </>
   );
 }

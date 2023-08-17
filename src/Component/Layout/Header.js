@@ -42,20 +42,30 @@ function Header() {
     <>
       {!headless && (
         <>
-          <div className="text-center pb-5 w-full xl:container mx-auto bg-white xl:mt-0 dark:text-white">
-            <UserInfo />
-            <div className="text-center">
-              <a href="/" className="inline-block px-2">
-                <img src={logo} className="h-16 mx-auto" alt="알바선물 로고" />
-              </a>
+          <div className="text-center pb-5 w-full bg-white dark:text-white">
+            <div className="xl:container mx-auto">
+              <UserInfo />
+              <div className="text-center pt-5 xl:pt-0">
+                <a href="/" className="inline-block px-2">
+                  <img
+                    src={logo}
+                    className="h-16 mx-auto"
+                    alt="알바선물 로고"
+                  />
+                </a>
+              </div>
             </div>
           </div>
-          <div className="w-full xl:container mx-auto border-b border-teal-500 bg-white">
-            <GiftCategory cateno={cateNum} path={thisLocation.pathname} />
+          <div className="w-full border-b border-teal-500 bg-white">
+            <div className="xl:container mx-auto">
+              <GiftCategory cateno={cateNum} path={thisLocation.pathname} />
+            </div>
           </div>
           {loadBrand && (
-            <div className="bg-indigo-100 container mx-auto">
-              <GiftBrand cateNum={cateNum} />
+            <div className="bg-indigo-100 w-full">
+              <div className="container mx-auto">
+                <GiftBrand cateNum={cateNum} />
+              </div>
             </div>
           )}{" "}
         </>

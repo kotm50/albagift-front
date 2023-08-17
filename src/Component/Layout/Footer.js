@@ -100,7 +100,8 @@ function Footer() {
                   </div>
                   <div className="text-left font-neo">대표자명 : 김태훈</div>
                   <div className="text-left font-neo">
-                    서울 중구 다산로38길 66-45 코리아밸리
+                    경기도 남양주시 별내중앙로 26,10층
+                    1002-에이74호(별내동,진영엔타워)
                   </div>
                   <div className="text-left font-neo">
                     사업자등록번호: 227-87-02579

@@ -98,7 +98,7 @@ function Info() {
                   <div className="text-center mt-2 p-2">
                     <Link
                       to="/getpoint"
-                      className="p-2 bg-blue-500 hover:bg-blue-700 text-white hover:font-medium"
+                      className="hidden p-2 bg-blue-500 hover:bg-blue-700 text-white hover:font-medium"
                     >
                       지급신청 페이지 바로가기
                     </Link>

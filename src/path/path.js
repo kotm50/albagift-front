@@ -1,1 +1,1 @@
-export const path = ["/login", "/join", "/mypage", "/admin"];
+export const path = ["/login", "/join", "/mypage", "/admin", "/promo"];

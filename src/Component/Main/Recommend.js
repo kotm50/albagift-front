@@ -72,7 +72,7 @@ function Recommend(props) {
     <div className="p-2 bg-gray-100">
       <div className="xl:container mx-auto">
         <div className="overflow-x-auto w-full mx-auto my-2">
-          <h3 className="xl:text-base font-lineseed py-2 border-b">
+          <h3 className="xl:text-3xl font-lineseed py-2 border-b">
             {categoryName}의 추천상품
           </h3>
           {loaded ? (

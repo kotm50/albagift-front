@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from "react";
 
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { clearUser } from "../../../Reducer/userSlice";
+
 import axios from "axios";
 
 import PopupDom from "../../Kakao/PopupDom";
 import PopupPostCode from "../../Kakao/PopupPostCode";
+import NewPwd from "./NewPwd";
 
 function EditUser(props) {
+  const dispatch = useDispatch();
+  const navi = useNavigate();
   const [userInfo, setUserInfo] = useState({});
   useEffect(() => {
     getUserInfo();
@@ -40,11 +47,9 @@ function EditUser(props) {
         },
       })
       .then(res => {
-        const data = res.data;
-        if (data.code === "C000") {
-          alert("연동이 완료되었습니다 앞으로 간편로그인이 가능합니다");
-        }
-        getUserInfo();
+        let mypageURL = `${props.domain}/mypage/checked`;
+        alert("연동이 완료되었습니다.");
+        window.location.href = mypageURL;
       })
       .catch(e => {
         console.log(e, "에러");
@@ -64,21 +69,18 @@ function EditUser(props) {
   };
 
   const [id, setId] = useState("");
-  const [pwd, setPwd] = useState("");
-  const [pwdChk, setPwdChk] = useState("");
-  const [correctPwdChk, setCorrectPwdChk] = useState(true);
-  const [correctPwd, setCorrectPwd] = useState(true);
   const [name, setName] = useState("");
   const [inputPhone, setInputPhone] = useState("");
   const [displayPhone, setDisplayPhone] = useState("");
   const [inputBirth, setInputBirth] = useState("");
   const [displayBirth, setDisplayBirth] = useState("");
   const [mainAddr, setMainAddr] = useState("주소찾기를 눌러주세요");
-  const [gender, setGender] = useState("");
   const [email, setEmail] = useState("");
   const [socialType, setSocialType] = useState("");
 
   const [beforeValue, setBeforeValue] = useState({});
+
+  const [pwdOpen, setPwdOpen] = useState(false);
 
   // 팝업창 상태 관리
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -89,61 +91,25 @@ function EditUser(props) {
     setPhone(userInfo.phone);
     setBirth(userInfo.birth);
     setMainAddr(userInfo.mainAddr);
-    setGender(userInfo.gender);
     setEmail(userInfo.email);
     setBeforeValue({
       phone: userInfo.phone,
       birth: userInfo.birth,
       mainAddr: userInfo.mainAddr,
-      gender: userInfo.gender,
       email: userInfo.email,
     });
     setSocialType(userInfo.socialType);
   }, [userInfo]);
-
-  //비밀번호 양식 확인
-  const testPwd = () => {
-    if (pwd.length > 0) {
-      const regex = /^(?=.*[a-zA-Z])(?=.*[0-9!@#$%^&*]).{2,}$/;
-      let correct = regex.test(pwd);
-      if (correct) {
-        if (pwd.length > 5) {
-          setCorrectPwd(true);
-        } else {
-          setCorrectPwd(false);
-        }
-      } else {
-        setCorrectPwd(false);
-      }
-    } else {
-      setCorrectPwd(true);
-    }
-  };
-
-  //비밀번호 일치 확인
-  const chkPwd = () => {
-    if (pwd.length > 0) {
-      if (pwd !== pwdChk) {
-        setCorrectPwdChk(false);
-      } else {
-        setCorrectPwdChk(true);
-      }
-    } else {
-      setCorrectPwdChk(true);
-    }
-  };
 
   //전체정보수정
   const editAll = async e => {
     e.preventDefault();
     const data = {
       userId: id,
-      userPwd: pwd,
       userName: name,
       phone: inputPhone,
       birth: inputBirth,
       mainAddr: mainAddr,
-      gender: gender,
       email: email,
     };
     console.log(data);
@@ -154,22 +120,6 @@ function EditUser(props) {
     let bValue = beforeValue;
     if (value === "") {
       return alert("내용이 입력되지 않았습니다\n확인 후 다시 시도해 주세요");
-    }
-    if (type === "password") {
-      if (!correctPwd) {
-        return alert(
-          "비밀번호 양식이 잘못되었습니다\n확인 후 다시 시도해 주세요"
-        );
-      }
-      if (!correctPwdChk) {
-        return alert(
-          "비밀번호 확인에 실패했습니다\n확인 후 다시 시도해 주세요"
-        );
-      }
-      data = {
-        userPwd: pwd,
-      };
-      bValue.userPwd = pwd;
     }
     if (type === "birth") {
       if (value === beforeValue.birth) {
@@ -204,13 +154,32 @@ function EditUser(props) {
       })
       .then(res => {
         if (res.data.code === "C000") {
-          alert("수정이 완료되었습니다");
+          if (type === "password") {
+            logout();
+          } else {
+            alert("수정이 완료되었습니다");
+            setBeforeValue(bValue);
+          }
         }
-        setBeforeValue(bValue);
       })
       .catch(e => {
         console.log(e);
       });
+  };
+
+  const logout = async () => {
+    await axios
+      .post("/api/v1/user/logout", null, {
+        headers: { Authorization: props.user.accessToken },
+      })
+      .then(res => {
+        dispatch(clearUser());
+        alert("비밀번호가 수정되었습니다.\n다시 로그인 해주세요");
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    navi("/login");
   };
 
   // 팝업창 열기
@@ -322,7 +291,7 @@ function EditUser(props) {
   };
 
   return (
-    <form onSubmit={e => editAll(e)}>
+    <form onSubmit={e => editAll()}>
       <div
         id="editArea"
         className="my-2 mx-auto p-2 border shadow-lg rounded-lg grid grid-cols-1 gap-3 bg-white xl:fixed xl:top-1/2 xl:left-1/2 xl:-translate-x-1/2 xl:-translate-y-1/2 w-full"
@@ -358,95 +327,33 @@ function EditUser(props) {
         </div>
         <div
           id="pwd"
-          className={`grid grid-cols-1 xl:grid-cols-7 xl:divide-x xl:border ${
-            !correctPwd ? "xl:border-red-500" : null
-          }`}
+          className="grid grid-cols-1 xl:grid-cols-7 xl:divide-x xl:border"
         >
-          <label
+          <div
             htmlFor="inputPwd"
-            className={`text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 ${
-              correctPwd ? "xl:bg-gray-100" : "xl:bg-red-100"
-            } `}
+            className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100 xl:p-2"
           >
-            새 비밀번호
-          </label>
+            비밀번호
+          </div>
           <div className="xl:col-span-6">
-            <input
-              type="password"
-              id="inputPwd"
-              className={`border ${
-                !correctPwd ? "border-red-500" : undefined
-              } xl:border-0 p-2 w-full text-sm`}
-              value={pwd || ""}
-              onChange={e => {
-                setPwd(e.currentTarget.value);
-                if (!correctPwd) testPwd();
-              }}
-              onBlur={e => {
-                setPwd(e.currentTarget.value);
-                if (pwd !== "") testPwd();
-              }}
-              placeholder="비밀번호를 수정하실 때만 입력해 주세요"
-              autoComplete="off"
-            />
+            {pwdOpen ? (
+              <NewPwd
+                setPwdOpen={setPwdOpen}
+                logout={logout}
+                user={props.user}
+              />
+            ) : (
+              <div className="p-2">
+                <button
+                  className="w-full p-2 bg-blue-500 hover:bg-blue-700 text-white rounded-full hover:animate-wiggle"
+                  onClick={e => setPwdOpen(true)}
+                >
+                  비밀번호 변경하기
+                </button>
+              </div>
+            )}
           </div>
         </div>
-        {!correctPwd && (
-          <div className="text-sm text-rose-500">
-            비밀번호 양식이 틀렸습니다 <br className="block xl:hidden" />
-            영어/숫자/특수문자 중 <strong>2가지 이상</strong> 입력해 주세요
-          </div>
-        )}
-
-        <div
-          id="pwdChk"
-          className={`grid grid-cols-1 xl:grid-cols-7 xl:divide-x xl:border ${
-            !correctPwdChk ? "xl:border-red-500" : undefined
-          }`}
-        >
-          <label
-            htmlFor="inputPwdChk"
-            className={`text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 ${
-              correctPwdChk ? "xl:bg-gray-100" : "xl:bg-red-100"
-            } `}
-          >
-            비번확인
-          </label>
-          <div className="xl:col-span-5">
-            <input
-              type="password"
-              id="inputPwdChk"
-              className={`border ${
-                !correctPwdChk ? "border-red-500" : undefined
-              } xl:border-0 p-2 w-full text-sm`}
-              value={pwdChk || ""}
-              onChange={e => {
-                setPwdChk(e.currentTarget.value);
-                if (!correctPwdChk) chkPwd();
-              }}
-              onBlur={e => {
-                setPwdChk(e.currentTarget.value);
-                if (pwdChk !== "") chkPwd();
-              }}
-              placeholder="비밀번호를 한번 더 입력해 주세요"
-              autoComplete="off"
-            />
-          </div>
-          <button
-            className="bg-teal-500 hover:bg-teal-700 text-white p-2"
-            onClick={e =>
-              editIt("/api/v1/user/myinfo/editpwd", "password", pwd)
-            }
-          >
-            수정하기
-          </button>
-        </div>
-        {!correctPwdChk && (
-          <div className="text-sm text-rose-500">
-            비밀번호가 일치하지 않습니다 <br className="block xl:hidden" />
-            확인 후 다시 입력해 주세요
-          </div>
-        )}
 
         <div
           id="name"
@@ -646,12 +553,12 @@ function EditUser(props) {
           메인페이지로 돌아가세요
         </div>
         <div className="w-full">
-          <a
-            href="/"
+          <Link
+            to="/"
             className="block transition duration-100 w-full border text-center hover:bg-red-50 border-red-500 hover:border-red-700 p-2 text-red-500 hover:text-red-700 rounded"
           >
             메인으로 이동
-          </a>
+          </Link>
         </div>
       </div>
       <div id="popupDom" className={isPopupOpen ? "popupModal" : undefined}>

@@ -37,7 +37,6 @@ function Info() {
   ];
 
   useEffect(() => {
-    console.log(user);
     setProcess([]);
     if (user.accessToken !== "") {
       setProcess(process2);

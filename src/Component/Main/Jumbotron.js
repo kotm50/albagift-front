@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 import bg from "../../Asset/bg_gift.png";
+import { Link } from "react-router-dom";
 
 function Jumbotron() {
   const user = useSelector(state => state.user);
@@ -22,12 +23,12 @@ function Jumbotron() {
 
           <div className="flex flex-row justify-center xl:justify-start gap-5 my-2">
             {user.accessToken !== "" ? (
-              <a
-                href="/promo"
+              <Link
+                to="/promo"
                 className="block bg-teal-500 hover:bg-teal-700 text-white p-2 rounded-lg text-sm xl:text-base"
               >
                 가입하여 무료 500p 받기 →
-              </a>
+              </Link>
             ) : (
               <button
                 className="block bg-teal-500 hover:bg-teal-700 text-white p-2 rounded-lg text-sm xl:text-base"
@@ -39,12 +40,12 @@ function Jumbotron() {
               </button>
             )}
 
-            <a
-              href="/information"
+            <Link
+              to="/giftinfo"
               className="block border border-gray-500 hover:border-gray-700 text-gray-500 hover:text-gray-700 p-2 rounded-lg text-sm xl:text-base hover:bg-gray-300"
             >
               이용안내
-            </a>
+            </Link>
           </div>
         </div>
         <div></div>

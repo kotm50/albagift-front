@@ -3,12 +3,15 @@ import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 
 import axios from "axios";
 
+import { useSelector } from "react-redux";
+
 import PopupDom from "../Kakao/PopupDom";
 import PopupPostCode from "../Kakao/PopupPostCode";
 
 import Modal from "../doc/Modal";
 
 function Join() {
+  const user = useSelector(state => state.user);
   const location = useLocation();
   let navi = useNavigate();
   const { promo } = useParams();
@@ -28,6 +31,7 @@ function Join() {
   const [mainAddr, setMainAddr] = useState("주소찾기를 눌러주세요");
   const [gender, setGender] = useState("");
   const [email, setEmail] = useState("");
+  const [dupMail, setDupMail] = useState(true);
   const [socialType, setSocialType] = useState("");
 
   const [termsAgree, setTermsAgree] = useState(false);
@@ -49,6 +53,11 @@ function Join() {
       setIsSocialLogin(true);
     } else {
       setIsSocialLogin(false);
+    }
+
+    if (user.accessToken !== "") {
+      alert("이미 로그인 하셨습니다.\n메인으로 이동합니다");
+      navi("/");
     }
     //eslint-disable-next-line
   }, []);
@@ -100,6 +109,9 @@ function Join() {
     }
     if (!correctId) {
       return "아이디 양식이 잘못되었습니다";
+    }
+    if (!dupId) {
+      return "이미 사용중인 아이디 입니다";
     }
     if (pwd === "") {
       return "비밀번호가 입력되지 않았습니다";

@@ -3,23 +3,32 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 import axios from "axios";
 
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { loginUser } from "../../Reducer/userSlice";
 
 function Login() {
   const inputRef = useRef();
   let navi = useNavigate();
+  const user = useSelector(state => state.user);
   const dispatch = useDispatch();
   const [id, setId] = useState("");
   const [pwd, setPwd] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const [domain, setDomain] = useState("");
 
+  const [isErr, setIsErr] = useState(false);
+  const [errMessage, setErrMessage] = useState("");
+  const [countOver, setCountOver] = useState(false);
+
   useEffect(() => {
     setSortParams();
     let domain = extractDomain();
     setDomain(domain);
     inputRef.current.focus();
+    if (user.accessToken !== "") {
+      alert("이미 로그인 하셨습니다.\n메인으로 이동합니다");
+      navi("/");
+    }
     //eslint-disable-next-line
   }, []);
 
@@ -46,6 +55,9 @@ function Login() {
   };
 
   const login = async e => {
+    if (countOver) {
+      return alert("비밀번호 입력 횟수를 초과했습니다.");
+    }
     e.preventDefault();
     const data = {
       userId: id,
@@ -54,6 +66,12 @@ function Login() {
     await axios
       .post("/api/v1/user/login", data)
       .then(res => {
+        if (res.data.code === "E005") {
+          setCountOver(true);
+          return alert(
+            "비밀번호 입력 횟수를 초과하였습니다.\n잠시 후 다시 시도해 주세요"
+          );
+        }
         const token = res.headers.authorization;
         if (res.data.code === "E002") {
           let restore = window.confirm(
@@ -68,6 +86,9 @@ function Login() {
         }
         if (res.data.code === "C000") {
           chkAdmin(token, res.data.user);
+        } else {
+          setErrMessage(res.data.message);
+          setIsErr(true);
         }
       })
       .catch(e => {
@@ -226,6 +247,11 @@ function Login() {
             />
           </div>
         </div>
+        {isErr && (
+          <div className="text-center text-sm pb-2 text-rose-500">
+            {errMessage}
+          </div>
+        )}
         <div className="text-center text-sm text-gray-500 border-b pb-2">
           <Link to="/join">
             처음이신가요? 여기를 눌러 <br className="block xl:hidden" />

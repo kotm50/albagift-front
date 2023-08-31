@@ -24,6 +24,11 @@ import GiftReset from "./Component/Admin/GiftReset";
 import Main from "./Component/Main";
 import NewPwd from "./Component/User/Mypage/NewPwd";
 import Info from "./Component/Mall/Info";
+import BoardWrite from "./Component/Board/Write";
+import Board from "./Component/Board/Board";
+import BoardDetail from "./Component/Board/Detail";
+import BoardList from "./Component/Board/List";
+import Promo from "./Component/User/Promo";
 
 function App() {
   const [bg, setBg] = useState("bg-transparent");
@@ -51,10 +56,11 @@ function App() {
       <Header />
       <div
         id="content"
-        className={`${bg} w-full font-pretendard dark:text-white pb-3`}
+        className={`${bg} w-full font-pretendard dark:text-white`}
       >
         <Routes>
           <Route path="/" element={<Main />} />
+          <Route path="/promo" element={<Promo />} />
           <Route path="/giftinfo" element={<Info />} />
           <Route path="/list/:category?/:brand?" element={<List />} />
           <Route path="/detail/:goodscode?" element={<Detail />} />
@@ -63,7 +69,7 @@ function App() {
           <Route path="/coupon" element={<Coupon />} />
           <Route path="/login" element={<Login />} />
           <Route path="/join/:promo?" element={<Join />} />
-          <Route path="/mypage" element={<Mypage />} />
+          <Route path="/mypage/:checked?" element={<Mypage />} />
           <Route path="/newpwd" element={<NewPwd />} />
           <Route path="/admin" element={<Admin />}>
             <Route path="" element={<AdminMain />} />
@@ -71,6 +77,11 @@ function App() {
             <Route path="reset" element={<GiftReset />} />
           </Route>
           <Route path="/test" element={<KakaoTest />} />
+          <Route path="/board" element={<Board />}>
+            <Route path="list/:id?" element={<BoardList />} />
+            <Route path="write/:bid?" element={<BoardWrite />} />
+            <Route path="detail/:bid?" element={<BoardDetail />} />
+          </Route>
         </Routes>
       </div>
       <Footer />

@@ -1,0 +1,223 @@
+.text-green {
+    color:#0f0
+  }
+
+  .text-yellow {
+    color:#ff0
+  }
+
+
+  .whiteCircle {
+      width:480px;
+      height:480px;
+
+      left:50%;
+      transform:translateX(-50%)
+  }
+
+  .promoStarbucks {
+      position: absolute;
+      bottom: -90px;
+      opacity: 0;
+      animation: starbucksAnime .5s forwards;
+      animation-delay: .5s;
+    }
+    @keyframes starbucksAnime {
+      0% {
+        opacity: 0;
+        bottom: -90px;
+      }
+      75% {
+        opacity: 0.75;
+        bottom: 15px;
+      }
+      100% {
+        opacity: 1;
+        bottom: 10px;
+      }
+    }
+
+    .promoChicken {
+      position: absolute;
+      top: 10%;
+      left:10px;
+      opacity: 0;
+      animation: chickenAnime .5s forwards;
+      animation-delay: 1s;
+    }
+
+    .img {
+      filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.5));
+    }
+
+
+
+    .promoHappycon {
+      position: absolute;
+      top: 50%;
+      left:10%;
+      opacity: 0;
+      animation: happyconAnime .5s forwards;
+      animation-delay: 2s;
+    }
+
+
+
+    @keyframes chickenAnime {
+      0% {
+        opacity: 0;
+        transform:scale(0.8)
+      }
+      75% {
+        opacity: 0.75;
+        transform:scale(1.1)
+      }
+      100% {
+        opacity: 1;
+        transform:scale(1)
+      }
+    }
+
+
+    @keyframes happyconAnime {
+      0% {
+        opacity: 0;
+        transform:scale(0.6)
+      }
+      75% {
+        opacity: 0.75;
+        transform:scale(0.9)
+      }
+      100% {
+        opacity: 1;
+        transform:scale(0.8)
+      }
+    }
+
+
+
+
+    .promoLotte {
+      position: absolute;
+      top: 50%;
+      right:6%;
+      opacity: 0;
+      animation: lotteAnime .5s forwards;
+      animation-delay: 1.5s;
+    }
+
+
+
+    @keyframes lotteAnime {
+      0% {
+        opacity: 0;
+        transform:scale(0.8);
+      }
+      75% {
+        opacity: 0.75;
+        transform:scale(1.1);
+      }
+      100% {
+        opacity: 1;
+        transform:scale(1);
+      }
+    }
+
+
+
+  .promoBr {
+    position: absolute;
+    top: 10%;
+    right:5%;
+    opacity: 0;
+    animation: brAnime .5s forwards;
+    animation-delay: 2.5s;
+  }
+
+
+
+  @keyframes brAnime {
+    0% {
+      opacity: 0;
+      transform:scale(0.5);
+    }
+    75% {
+      opacity: 0.75;
+      transform:scale(0.8);
+    }
+    100% {
+      opacity: 1;
+      transform:scale(0.7);
+    }
+  }
+
+  /* 미디어쿼리(모바일 화면) */
+    @media (max-width:1280px) {
+      .promoHappycon {
+        display:none;
+      }
+
+
+  .promoBr {
+    position: absolute;
+    top: 18%;
+    right:-30%;
+    opacity: 0;
+    z-index:0;
+    animation: brAnime .5s forwards;
+    animation-delay: 2s;
+  }
+
+  @keyframes brAnime {
+    0% {
+      opacity: 0;
+      transform:scale(0.2);
+    }
+    75% {
+      opacity: 0.75;
+      transform:scale(0.6);
+    }
+    100% {
+      opacity: 1;
+      transform:scale(0.5);
+    }
+  }
+
+
+      .promoLotte {
+        position: absolute;
+        top: 48%;
+        right:-50%;
+        opacity: 0;
+        animation: lotteAnime .5s forwards;
+        animation-delay: 1.5s;
+      }
+
+
+      .promoChicken {
+        position: absolute;
+        top: 35%;
+        left:-60%;
+        transform:scale(0.8);
+        opacity: 0;
+        animation: chickenAnime .5s forwards;
+        animation-delay: 1s;
+      }
+
+
+      @keyframes lotteAnime {
+        0% {
+          opacity: 0;
+          transform:scale(0.6);
+        }
+        75% {
+          opacity: 0.75;
+          transform:scale(1);
+        }
+        100% {
+          opacity: 1;
+          transform:scale(0.9);
+        }
+      }
+
+      }

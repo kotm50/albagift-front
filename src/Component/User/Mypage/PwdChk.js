@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function PwdChk(props) {
   const [id, setId] = useState("");
@@ -20,9 +21,9 @@ function PwdChk(props) {
         headers: { Authorization: props.user.accessToken },
       })
       .then(res => {
-        console.log(res);
         if (res.data.code === "C000") {
-          props.setCheckPwd(true);
+          let mypageURL = `${props.domain}/mypage/checked`;
+          window.location.href = mypageURL;
         }
       })
       .catch(e => {
@@ -94,12 +95,12 @@ function PwdChk(props) {
             정보 수정하기
           </button>
 
-          <a
-            href="/"
+          <Link
+            to="/"
             className="transition duration-100 w-full border text-center hover:bg-red-50 border-red-500 hover:border-red-700 p-2 text-red-500 hover:text-red-700 rounded"
           >
             취소
-          </a>
+          </Link>
         </div>
       </div>
     </form>

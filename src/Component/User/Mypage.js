@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useParams } from "react-router-dom";
 
 import EditUser from "./Mypage/EditUser";
 import PwdChk from "./Mypage/PwdChk";
 
 function Mypage() {
+  const { checked } = useParams();
   const user = useSelector(state => state.user);
   const [checkPwd, setCheckPwd] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -13,6 +14,9 @@ function Mypage() {
   const [kakao, setKakao] = useState(false);
   const [code, setCode] = useState("");
   useEffect(() => {
+    if (checked) {
+      setCheckPwd(true);
+    }
     setSortParams();
     let domain = extractDomain();
     setDomain(domain);
@@ -39,7 +43,6 @@ function Mypage() {
       return `${protocol}//${hostname}:${port}`;
     }
     let fullDomain = `${protocol}//${hostname}`;
-    console.log(fullDomain);
     // 일반 도메인인 경우 프로토콜과 함께 반환
     return fullDomain;
   };
@@ -55,9 +58,10 @@ function Mypage() {
   return (
     <>
       {!checkPwd ? (
-        <PwdChk user={user} setCheckPwd={setCheckPwd} />
+        <PwdChk domain={domain} user={user} setCheckPwd={setCheckPwd} />
       ) : (
         <EditUser
+          domain={domain}
           user={user}
           kakaoLogin={kakaoLogin}
           code={code}

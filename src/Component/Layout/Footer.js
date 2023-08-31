@@ -96,7 +96,7 @@ function Footer() {
                 </div>
                 <div className="flex flex-col justify-start gap-1 text-gray-500 pl-2 xl:pl-0 text-sm">
                   <div className="text-left font-neoextra">
-                    유한회사 코리아밸리
+                    코리아밸리 유한회사
                   </div>
                   <div className="text-left font-neo">대표자명 : 김태훈</div>
                   <div className="text-left font-neo">

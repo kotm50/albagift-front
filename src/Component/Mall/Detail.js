@@ -78,14 +78,17 @@ function Detail() {
   };
 
   const buyIt = async () => {
+    if (user.accessToken === "") {
+      alert("로그인을 해주세요");
+      navi("/login");
+      return false;
+    }
     let data = {
       goodsCode: goodscode,
     };
     let buy = Number(user.point) - Number(goods.realPrice);
     if (buy < 0) {
-      return alert(
-        "포인트가 부족합니다.\n포인트를 지급받았는데 이 메세지가 보이면 페이지를 새로고침 하고 다시 확인해 주세요"
-      );
+      return alert("포인트가 부족합니다.");
     }
     await axios
       .post("/api/v1/shop/goods/send", data, {

@@ -159,7 +159,7 @@ function UserList() {
   return (
     <>
       {users.length > 0 ? (
-        <div className="grid grid-cols-1 xl:grid-cols-5 gap-2 mt-2 bg-white p-2">
+        <div className="grid grid-cols-1 xl:grid-cols-5 gap-2 mt-2 bg-white p-2 container mx-auto">
           {users.map((user, idx) => (
             <div key={idx}>
               <input
@@ -171,7 +171,7 @@ function UserList() {
               />
               <label
                 htmlFor={user.userId}
-                className="block p-2 bg-indigo-50 hover:bg-indigo-200 text-black rounded-lg border-2 border-indigo-50 hover:border-indigo-200 peer-checked:border-indigo-500 peer-checked:hover:border-indigo-500"
+                className="block p-2 bg-teal-50 hover:bg-teal-200 text-black rounded-lg border-2 border-teal-50 hover:border-teal-200 peer-checked:border-teal-500 peer-checked:hover:border-teal-500"
               >
                 <div className="grid grid-cols-3 gap-2 mb-2">
                   <div className="font-medium flex flex-col justify-center text-right">

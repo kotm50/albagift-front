@@ -43,7 +43,12 @@ function UserInfo() {
         }
       })
       .catch(e => {
-        console.log(e);
+        if (user.admin) {
+          return true;
+        } else {
+          alert("포인트를 불러올 수 없습니다. 다시 로그인 해주세요");
+          logout();
+        }
       });
   };
 

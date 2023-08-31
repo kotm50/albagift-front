@@ -40,7 +40,7 @@ function Header() {
   };
   return (
     <>
-      {!headless && (
+      {!headless ? (
         <>
           <div className="text-center pb-5 w-full bg-white dark:text-white">
             <div className="xl:container mx-auto">
@@ -69,6 +69,16 @@ function Header() {
             </div>
           )}{" "}
         </>
+      ) : (
+        <div className="text-center pb-5 w-full bg-white dark:text-white mb-3 pt-5">
+          <div className="xl:container mx-auto">
+            <div className="text-center pt-5 xl:pt-0">
+              <a href="/" className="inline-block px-2">
+                <img src={logo} className="h-16 mx-auto" alt="알바선물 로고" />
+              </a>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

@@ -28,6 +28,8 @@ function List() {
   const [totalPage, setTotalPage] = useState(1);
   const [pagenate, setPagenate] = useState([]);
   useEffect(() => {
+    // location이 바뀔 때마다 스크롤을 맨 위로 이동
+    window.scrollTo(0, 0);
     setLoadMsg("상품을 불러오고 있습니다");
     getGoods(category, brand, page);
     //eslint-disable-next-line

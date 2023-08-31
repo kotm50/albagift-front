@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   FaAngleLeft,
@@ -8,13 +8,24 @@ import {
 } from "react-icons/fa";
 
 function Pagenate(props) {
+  const [isSearching, setIsSearching] = useState(false);
+  useEffect(() => {
+    if (props.keyword && props.keyword !== "") {
+      setIsSearching(true);
+    } else {
+      setIsSearching(false);
+    }
+    //eslint-disable-next-line
+  }, [props.page]);
   return (
     <>
       {props.pagenate.length > 0 && (
         <div className="flex flex-row justify-center gap-3 my-5">
           {props.page > 1 && (
             <Link
-              to={`${props.pathName}?page=1`}
+              to={`${props.pathName}?page=1${
+                isSearching ? `&keyword=${props.keyword}` : ""
+              }`}
               className="transition duration-300 ease-in-out pageButton hover:scale-110 hidden xl:block"
             >
               <FaAngleDoubleLeft size={20} />
@@ -23,7 +34,9 @@ function Pagenate(props) {
 
           {props.page > 1 && (
             <Link
-              to={`${props.pathName}?page=${props.page - 1}`}
+              to={`${props.pathName}?page=${props.page - 1}${
+                isSearching ? `&keyword=${props.keyword}` : ""
+              }`}
               className="transition duration-300 ease-in-out pageButton hover:scale-110"
             >
               <FaAngleLeft size={20} />
@@ -32,7 +45,9 @@ function Pagenate(props) {
           <div className="grid grid-cols-5 gap-3">
             {props.pagenate.map((pageNum, idx) => (
               <Link
-                to={`${props.pathName}?page=${pageNum}`}
+                to={`${props.pathName}?page=${pageNum}${
+                  isSearching ? `&keyword=${props.keyword}` : ""
+                }`}
                 key={idx}
                 className={`transition duration-300 ease-in-out pageButton hover:scale-110 ${
                   props.page === pageNum ? "selectedPage" : null
@@ -44,7 +59,9 @@ function Pagenate(props) {
           </div>
           {props.page < props.totalPage && (
             <Link
-              to={`${props.pathName}?page=${props.page + 1}`}
+              to={`${props.pathName}?page=${props.page + 1}${
+                isSearching ? `&keyword=${props.keyword}` : ""
+              }`}
               className="transition duration-300 ease-in-out pageButton hover:scale-110"
             >
               <FaAngleRight size={20} />
@@ -52,7 +69,9 @@ function Pagenate(props) {
           )}
           {props.page < props.totalPage && (
             <Link
-              to={`${props.pathName}?page=${props.totalPage}`}
+              to={`${props.pathName}?page=${props.totalPage}${
+                isSearching ? `&keyword=${props.keyword}` : ""
+              }`}
               className="transition duration-300 ease-in-out pageButton hover:scale-110 hidden xl:block"
             >
               <FaAngleDoubleRight size={20} />

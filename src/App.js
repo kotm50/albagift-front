@@ -29,6 +29,7 @@ import Board from "./Component/Board/Board";
 import BoardDetail from "./Component/Board/Detail";
 import BoardList from "./Component/Board/List";
 import Promo from "./Component/User/Promo";
+import LoginLog from "./Component/Admin/LoginLog";
 
 function App() {
   const [bg, setBg] = useState("bg-transparent");
@@ -56,7 +57,7 @@ function App() {
       <Header />
       <div
         id="content"
-        className={`${bg} w-full font-pretendard dark:text-white`}
+        className={`${bg} w-full font-pretendard dark:text-white pb-3`}
       >
         <Routes>
           <Route path="/" element={<Main />} />
@@ -75,6 +76,7 @@ function App() {
             <Route path="" element={<AdminMain />} />
             <Route path="user" element={<UserList />} />
             <Route path="reset" element={<GiftReset />} />
+            <Route path="loginlog" element={<LoginLog />} />
           </Route>
           <Route path="/test" element={<KakaoTest />} />
           <Route path="/board" element={<Board />}>

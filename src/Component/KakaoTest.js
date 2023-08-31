@@ -1,74 +1,24 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useSearchParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { loginUser } from "../Reducer/userSlice";
 
 function KakaoTest() {
-  const navi = useNavigate();
-  const dispatch = useDispatch();
-  const [searchParams, setSearchParams] = useSearchParams();
-
   const [memo, setMemo] = useState("");
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const user = useSelector(state => state.user);
   useEffect(() => {
     //test2();
-
-    setSortParams();
     //eslint-disable-next-line
   }, []);
 
-  const setSortParams = () => {
-    setSearchParams(searchParams);
-    const code = searchParams.get("code");
-    if (code) {
-      kakaoLoginCheck(code);
-    }
-  };
-
-  const kakaoLoginCheck = async code => {
-    const loginUrl = `/api/v1/user/login/kakao?code=${code}`;
-    await axios
-      .get(loginUrl)
-      .then(res => {
-        const data = res.data.socialUser;
-        if (res.data.code === "K000") {
-          navi("/join", {
-            state: {
-              id: data.id,
-              email: data.email,
-              socialType: data.socialType,
-            },
-          });
-        } else {
-          dispatch(
-            loginUser({
-              userId: data.userId,
-              userName: data.userName,
-              accessToken: res.headers.authorization,
-              lastLogin: new Date(),
-              point: data.point,
-              admin: false,
-            })
-          );
-          navi("/");
-        }
-        console.log(res);
-      })
-      .catch(e => {
-        console.log(e, "에러");
-      });
-  };
   const test = async () => {
     await axios
-      .patch("/api/v1/user/myinfo/delete", null, {
+      .get("/api/v1/user/admin/get/log", {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        console.log(res.data);
+        console.log(res);
       })
       .catch(e => {
         console.log(e);
@@ -93,12 +43,6 @@ function KakaoTest() {
   };
   */
 
-  const kakaoLogin = () => {
-    const apiKey = "e8b025aca3eb87648da9d341528bca5a";
-    const redirectUrl = "http://localhost:3000/test";
-    const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${apiKey}&redirect_uri=${redirectUrl}&response_type=code`;
-    window.location.href = kakaoURL;
-  };
   const saveMemo = async () => {
     console.log(user);
     const data = {
@@ -179,9 +123,9 @@ function KakaoTest() {
 
       <button
         className="bg-yellow-300 hover:bg-yellow-500 text-black font-medium p-2 w-48 mb-2"
-        onClick={kakaoLogin}
+        onClick={test}
       >
-        카카오 로그인
+        테스트
       </button>
       <a href="/test">파라미터삭제</a>
       <div className="mt-3">

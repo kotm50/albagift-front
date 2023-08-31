@@ -48,7 +48,7 @@ function Admin() {
                 알바선물 메인으로
               </button>
             </div>
-            <div className="grid grid-cols-4 bg-indigo-50 mb-2">
+            <div className="grid grid-cols-5 bg-indigo-50 mb-2">
               <Link
                 to="/admin/"
                 className="hover:bg-indigo-100 p-2 text-center"
@@ -66,6 +66,12 @@ function Admin() {
                 className="hover:bg-indigo-100 p-2 text-center"
               >
                 상품/브랜드 재설정
+              </Link>
+              <Link
+                to="/admin/loginlog"
+                className="hover:bg-indigo-100 p-2 text-center"
+              >
+                로그인 기록
               </Link>
               <Link
                 to="/admin/"

@@ -280,7 +280,7 @@ function EditUser(props) {
     <div>
       <div
         id="editArea"
-        className="my-2 mx-auto p-2 border shadow-lg rounded-lg grid grid-cols-1 gap-3 bg-white xl:fixed xl:top-1/2 xl:left-1/2 xl:-translate-x-1/2 xl:-translate-y-1/2 w-full"
+        className="my-2 mx-auto p-2 border shadow-lg rounded-lg grid grid-cols-1 gap-3 bg-white w-full"
       >
         <div className="text-lg font-medium text-center">개인정보 수정하기</div>
         <div

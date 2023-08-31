@@ -48,7 +48,6 @@ function Mypage() {
   };
 
   const kakaoLogin = e => {
-    e.preventDefault();
     const apiKey = "e8b025aca3eb87648da9d341528bca5a";
     const redirectUrl = `${domain}/mypage`;
     const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${apiKey}&redirect_uri=${redirectUrl}&response_type=code`;

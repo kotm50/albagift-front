@@ -101,20 +101,6 @@ function EditUser(props) {
     setSocialType(userInfo.socialType);
   }, [userInfo]);
 
-  //전체정보수정
-  const editAll = async e => {
-    e.preventDefault();
-    const data = {
-      userId: id,
-      userName: name,
-      phone: inputPhone,
-      birth: inputBirth,
-      mainAddr: mainAddr,
-      email: email,
-    };
-    console.log(data);
-  };
-
   const editIt = async (url, type, value) => {
     let data;
     let bValue = beforeValue;
@@ -291,7 +277,7 @@ function EditUser(props) {
   };
 
   return (
-    <form onSubmit={e => editAll()}>
+    <div>
       <div
         id="editArea"
         className="my-2 mx-auto p-2 border shadow-lg rounded-lg grid grid-cols-1 gap-3 bg-white xl:fixed xl:top-1/2 xl:left-1/2 xl:-translate-x-1/2 xl:-translate-y-1/2 w-full"
@@ -402,6 +388,7 @@ function EditUser(props) {
           <button
             className="bg-teal-500 hover:bg-teal-700 text-white p-2"
             onClick={e => {
+              console.log(inputPhone);
               alert(
                 "정책상 연락처는 즉시 수정이 어렵습니다\n고객센터(1644-4223)에 문의해 주세요."
               );
@@ -469,7 +456,6 @@ function EditUser(props) {
             <button
               className="w-full h-full p-2 text-white bg-blue-500 hover:bg-blue-700 text-sm"
               onClick={e => {
-                e.preventDefault();
                 openPostCode();
               }}
             >
@@ -568,7 +554,7 @@ function EditUser(props) {
           </PopupDom>
         )}
       </div>
-    </form>
+    </div>
   );
 }
 

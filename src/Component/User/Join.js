@@ -31,7 +31,6 @@ function Join() {
   const [mainAddr, setMainAddr] = useState("주소찾기를 눌러주세요");
   const [gender, setGender] = useState("");
   const [email, setEmail] = useState("");
-  const [dupMail, setDupMail] = useState(true);
   const [socialType, setSocialType] = useState("");
 
   const [termsAgree, setTermsAgree] = useState(false);

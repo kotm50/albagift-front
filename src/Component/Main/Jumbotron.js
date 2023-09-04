@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 function Jumbotron() {
   const user = useSelector(state => state.user);
+  console.log(user.accessToken);
   return (
     <div className="w-full bg-gradient-to-b from-teal-100 to-blue-100 pt-5 xl:pt-0 xl:px-20 jumbotron">
       <div className="xl:container mx-auto grid grid-cols-1 xl:grid-cols-4">
@@ -22,7 +23,7 @@ function Jumbotron() {
           </div>
 
           <div className="flex flex-row justify-center xl:justify-start gap-5 my-2">
-            {user.accessToken !== "" ? (
+            {user.accessToken === "" ? (
               <Link
                 to="/promo"
                 className="block bg-teal-500 hover:bg-teal-700 text-white p-2 rounded-lg text-sm xl:text-base"

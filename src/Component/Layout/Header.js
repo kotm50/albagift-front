@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import GiftCategory from "./Menu/GiftCategory";
 import GiftBrand from "./Menu/GiftBrand";
@@ -13,10 +13,12 @@ function Header() {
   const [headless, setHeadless] = useState(false);
   const [cateNum, setCateNum] = useState("");
   const [loadBrand, setLoadBrand] = useState(false);
+  const [isPromo, setIsPromo] = useState(true);
   const thisLocation = useLocation();
   useEffect(() => {
     setHeadless(path.some(chkBg));
     const parts = thisLocation.pathname.split("/");
+    parts[1] === "promo" ? setIsPromo(true) : setIsPromo(false);
     setCateNum(parts[2]);
     getUrl(parts[1], parts[2]);
     // eslint-disable-next-line
@@ -46,13 +48,13 @@ function Header() {
             <div className="xl:container mx-auto">
               <UserInfo />
               <div className="text-center pt-5 xl:pt-0">
-                <a href="/" className="inline-block px-2">
+                <Link to="/" className="inline-block px-2">
                   <img
                     src={logo}
                     className="h-16 mx-auto"
                     alt="알바선물 로고"
                   />
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -70,15 +72,23 @@ function Header() {
           )}{" "}
         </>
       ) : (
-        <div className="text-center pb-5 w-full bg-white dark:text-white mb-3 pt-5">
-          <div className="xl:container mx-auto">
-            <div className="text-center pt-5 xl:pt-0">
-              <a href="/" className="inline-block px-2">
-                <img src={logo} className="h-16 mx-auto" alt="알바선물 로고" />
-              </a>
+        <>
+          {!isPromo && (
+            <div className="text-center pb-5 w-full bg-white dark:text-white mb-3 pt-5">
+              <div className="xl:container mx-auto">
+                <div className="text-center pt-5 xl:pt-0">
+                  <Link to="/" className="inline-block px-2">
+                    <img
+                      src={logo}
+                      className="h-16 mx-auto"
+                      alt="알바선물 로고"
+                    />
+                  </Link>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          )}
+        </>
       )}
     </>
   );

@@ -7,7 +7,7 @@ function Loading() {
         <div role="status">
           <svg
             aria-hidden="true"
-            class="w-16 h-16 text-gray-200 animate-spin dark:text-gray-600 fill-rose-500 mx-auto mb-3"
+            className="w-16 h-16 text-gray-200 animate-spin dark:text-gray-600 fill-rose-500 mx-auto mb-3"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

@@ -18,7 +18,7 @@ function UserInfo() {
     // const now = new Date();
     if (user.userId !== "") {
       // const diffTime = Math.floor((now - user.lastLogin) / 1000 / 60);
-      // refreshPoints();
+      refreshPoints();
       setIsLogin(true);
       if (user.admin) {
         setIsAdmin(true);

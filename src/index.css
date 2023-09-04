@@ -138,7 +138,9 @@ input[type="number"] {
 #chkArea, #loginArea {
   max-width:400px;
 }
-#joinArea {
+
+
+#cancelArea, #joinArea {
   max-width:540px;
 }
 
@@ -202,4 +204,21 @@ input[type="number"] {
 
 div.footer-top {
   min-height:180px;
+}
+
+
+.loading-bg {
+  width:100vw;
+  min-height:100vh;
+  background-color: white;
+  opacity:0.7;
+  position:fixed;
+  top:0;
+  left:0;
+  z-index: 99999;
+  overflow: hidden;
+}
+
+.loading-spin {
+  z-index:100000;
 }

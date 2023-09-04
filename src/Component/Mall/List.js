@@ -11,6 +11,8 @@ import { getNewToken } from "../../Reducer/userSlice";
 import Search from "./Search";
 import Pagenate from "../Layout/Pagenate";
 import UserSection from "../User/UserSection";
+import Loading from "../Layout/Loading";
+import ImgLoad from "./ImgLoad";
 
 function List() {
   const dispatch = useDispatch();
@@ -24,12 +26,13 @@ function List() {
   const user = useSelector(state => state.user);
   const [loadMsg, setLoadMsg] = useState("상품을 불러오고 있습니다");
   const [loaded, setLoaded] = useState(false);
-  const [imgLoaded, setImgLoaded] = useState(false);
   const [totalPage, setTotalPage] = useState(1);
   const [pagenate, setPagenate] = useState([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     // location이 바뀔 때마다 스크롤을 맨 위로 이동
     window.scrollTo(0, 0);
+    setLoading(true);
     setLoadMsg("상품을 불러오고 있습니다");
     getGoods(category, brand, page);
     //eslint-disable-next-line
@@ -75,6 +78,7 @@ function List() {
         setPagenate(pagenate);
         setLoadMsg(res.data.message);
         setGoods(res.data.goodsList);
+        setLoading(false);
         if (res.data.goodsList.length > 0) {
           setLoaded(true);
         }
@@ -139,6 +143,7 @@ function List() {
   return (
     <>
       <div className="xl:container mx-auto">
+        {loading ? <Loading /> : null}
         <UserSection />
         <Search user={user} />
         {loaded ? (
@@ -151,23 +156,7 @@ function List() {
               >
                 <div className="group p-2 bg-white hover:border-2 hover:border-indigo-500 hover:bg-indigo-50 rounded drop-shadow hover:drop-shadow-xl">
                   <div className="w-32 h-32 xl:w-60 xl:h-60 mx-auto rounded overflow-hidden max-w-full">
-                    {imgLoaded ? (
-                      <img
-                        src={good.goodsImgS}
-                        alt={good.goodsName}
-                        className="w-full mx-auto my-auto duration-300 transition-all ease-in-out group-hover:scale-125"
-                      />
-                    ) : (
-                      <>
-                        <img
-                          src={good.goodsImgS}
-                          alt={good.goodsName}
-                          className="fixed top-0 left-0 w-0 h-0 opacity-0"
-                          onLoad={e => setImgLoaded(true)}
-                        />
-                        <div className="bg-slate-200 animate-pulse w-32 h-32 xl:w-60 xl:h-60"></div>
-                      </>
-                    )}
+                    <ImgLoad good={good} />
                   </div>
                   <div className="w-32 xl:w-60 mx-auto grid grid-cols-1 mt-2 pt-1 border-t border-gray-100 max-w-full">
                     <p className="text-base group-hover:font-neobold keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left font-neobold text-blue-500">

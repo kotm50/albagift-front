@@ -5,16 +5,27 @@ import Recommend from "./Main/Recommend";
 import MainCategory from "./Main/MainCategory";
 import Jumbotron from "./Main/Jumbotron";
 import SubContent from "./Main/SubContent";
+import UserSection from "./User/UserSection";
+import Loading from "./Layout/Loading";
 
 function Main() {
   const location = useLocation();
   const [cateNums, setCateNums] = useState("");
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     getCateNums();
     //eslint-disable-next-line
   }, [location]);
 
+  useEffect(() => {
+    loading
+      ? (document.body.style.overflow = "hidden")
+      : (document.body.style.overflow = "");
+    //eslint-disable-next-line
+  }, [loading]);
+
   const getCateNums = () => {
+    setLoading(true);
     const numberOfRandomNumbers = 2;
     const excludedNumber = 8;
 
@@ -33,9 +44,11 @@ function Main() {
       goods[i] = random[i];
     }
     setCateNums(random);
+    setLoading(false);
   };
   return (
     <>
+      {loading ? <Loading /> : null}
       <Jumbotron />
       <SubContent />
       <MainCategory />
@@ -45,6 +58,9 @@ function Main() {
           <Recommend category={cateNums[1]} />
         </>
       )}
+      <div className="container mx-auto pt-3">
+        <UserSection />
+      </div>
     </>
   );
 }

@@ -4,7 +4,7 @@ import UserInformation from "./UserInfomation";
 
 function UserSection() {
   return (
-    <div className="hidden xl:grid grid-cols-5 gap-3 py-3">
+    <div className="hidden xl:hidden grid-cols-5 gap-3 py-3">
       <div className="col-span-3 h-24 bg-blue-500 text-white p-2">
         가입프로모션
       </div>

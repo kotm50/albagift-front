@@ -9,6 +9,7 @@ import axios from "axios";
 import dompurify from "dompurify";
 
 import UserSection from "../User/UserSection";
+import Loading from "../Layout/Loading";
 
 function Detail() {
   const dispatch = useDispatch();
@@ -133,6 +134,7 @@ function Detail() {
   return (
     <>
       <div className="xl:container mx-auto">
+        {!imgLoaded ? <Loading /> : null}
         <UserSection />
         {goods !== undefined && (
           <img

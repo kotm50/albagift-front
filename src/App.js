@@ -30,6 +30,7 @@ import BoardDetail from "./Component/Board/Detail";
 import BoardList from "./Component/Board/List";
 import Promo from "./Component/User/Promo";
 import LoginLog from "./Component/Admin/LoginLog";
+import Cancel from "./Component/User/Mypage/Cancel";
 
 function App() {
   const [bg, setBg] = useState("bg-transparent");
@@ -71,6 +72,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/join/:promo?" element={<Join />} />
           <Route path="/mypage/:checked?" element={<Mypage />} />
+          <Route path="/cancel" element={<Cancel />} />
           <Route path="/newpwd" element={<NewPwd />} />
           <Route path="/admin" element={<Admin />}>
             <Route path="" element={<AdminMain />} />
@@ -81,8 +83,8 @@ function App() {
           <Route path="/test" element={<KakaoTest />} />
           <Route path="/board" element={<Board />}>
             <Route path="list/:id?" element={<BoardList />} />
-            <Route path="write/:bid?" element={<BoardWrite />} />
-            <Route path="detail/:bid?" element={<BoardDetail />} />
+            <Route path="write/:pid?" element={<BoardWrite />} />
+            <Route path="detail/:pid?" element={<BoardDetail />} />
           </Route>
         </Routes>
       </div>

@@ -104,8 +104,8 @@ function Login() {
     await axios
       .post("/api/v1/user/recusr", data)
       .then(res => {
+        console.log(res);
         if (res.data.code === "C000") {
-          setId("");
           setPwd("");
           return alert("탈퇴를 취소했습니다. 다시 로그인을 진행해 주세요.");
         } else {
@@ -160,7 +160,8 @@ function Login() {
       .get(loginUrl)
       .then(res => {
         const data = res.data.socialUser;
-        if (res.data.code === "K000") {
+        if (res.data.code === "C001") {
+          alert(res.data.message);
           navi("/join", {
             state: {
               id: data.id,

@@ -546,7 +546,16 @@ function EditUser(props) {
             메인으로 이동
           </Link>
         </div>
+        <div className="w-full text-center">
+          <Link
+            to="/cancel"
+            className="transition text-center p-2 text-xs hover:text-stone-500"
+          >
+            회원탈퇴
+          </Link>
+        </div>
       </div>
+
       <div id="popupDom" className={isPopupOpen ? "popupModal" : undefined}>
         {isPopupOpen && (
           <PopupDom>

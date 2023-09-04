@@ -98,7 +98,9 @@ function Footer() {
                   <div className="text-left font-neoextra">
                     코리아밸리 유한회사
                   </div>
-                  <div className="text-left font-neo">대표자명 : 김태훈</div>
+                  <div className="text-left font-neo">
+                    개인정보보호책임자 : Ryu Jae-Hwan
+                  </div>
                   <div className="text-left font-neo">
                     경기도 남양주시 별내중앙로 26,10층
                     1002-에이74호(별내동,진영엔타워)

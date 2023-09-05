@@ -89,7 +89,7 @@ function Detail() {
     };
     let buy = Number(user.point) - Number(goods.realPrice);
     if (buy < 0) {
-      return alert("포인트가 부족합니다.");
+      return alert("포인트가 부족합니다");
     }
     await axios
       .post("/api/v1/shop/goods/send", data, {

@@ -28,6 +28,11 @@ class moK_react_index extends Component {
     let parts = domain.split(".");
     let domainName = parts[parts.length - 2]; // 'albagift'
     let domainExtension = parts[parts.length - 1]; // 'com'
+
+    console.log(domain);
+    console.log(domainName);
+    console.log(domainExtension);
+
     window.MOBILEOK.process(
       `https://${domainName}.${domainExtension}/mok/mok_std_request`,
       "WB",

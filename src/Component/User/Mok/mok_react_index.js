@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 
-/* index.html에 설정을 안 할 시 react-helmet 다운 및 주석해제 */
-import { Helmet } from "react-helmet";
 class moK_react_index extends Component {
   componentDidMount() {
     // 인증결과 콜백함수 정의
@@ -49,13 +47,6 @@ class moK_react_index extends Component {
   render() {
     return (
       <main>
-        {/* index.html에 설정을 안 할 시 주석해제 */}
-        <Helmet>
-          {/* 운영 */}
-          {/* <script src="https://cert.mobile-ok.com/resources/js/index.js"></script> */}
-          {/* 개발 */}
-          <script src="https://scert.mobile-ok.com/resources/js/index.js"></script>
-        </Helmet>
         <div>
           <div>
             <div>

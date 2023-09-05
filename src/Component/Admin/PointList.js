@@ -5,7 +5,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import Loading from "../Layout/Loading";
 
-function List() {
+function PointList() {
   const navi = useNavigate();
   const [loaded, setLoaded] = useState(false);
   const [list, setList] = useState([]);
@@ -42,7 +42,7 @@ function List() {
   return (
     <>
       {loaded ? (
-        <div className="mt-2 container mx-auto">
+        <>
           <h2 className="p-4 text-center font-neoheavy text-3xl">
             {boardId === "B01" ? "지급 신청 목록" : "게시판"}
           </h2>
@@ -85,7 +85,7 @@ function List() {
           ) : (
             <div>목록을 불러오지 못했습니다.</div>
           )}
-        </div>
+        </>
       ) : (
         <Loading />
       )}
@@ -93,4 +93,4 @@ function List() {
   );
 }
 
-export default List;
+export default PointList;

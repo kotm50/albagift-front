@@ -1,14 +1,16 @@
 import React from "react";
 
-function Terms() {
+function Terms(props) {
   return (
     <>
       <div className="font-medium mb-2">제1조 (목적)</div>
 
       <div className="mb-4">
-        본 약관은 주식회사 코리아티엠 (이하 "회사")가 운영하는 "서비스"를
-        이용함에 있어 "회사"와 회원간의 이용 조건 및 제반 절차, 권리, 의무 및
-        책임사항, 기타 필요한 사항을 규정함을 목적으로 한다.
+        본 약관은 주식회사{" "}
+        {props.domainName === "xn--352blzj6r" ? "알바몰" : "알바선물"} (이하
+        "회사")가 운영하는 "서비스"를 이용함에 있어 "회사"와 회원간의 이용 조건
+        및 제반 절차, 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을
+        목적으로 한다.
       </div>
       <div className="font-medium mb-2">제2조 (용어의 정의)</div>
 
@@ -22,8 +24,15 @@ function Terms() {
             통합된 하나의 회원 계정(아이디 및 비밀번호)을 이용하여 서비스를
             제공받을 수 있는 아래의 사이트를 말한다.
             <ul>
-              <li>- ikoreatm.com</li>
-              <li>- 코리아티엠.kr</li>
+              <li>
+                -{" "}
+                {props.domainName === "xn--352blzj6r"
+                  ? "알바몰"
+                  : props.domainName === "xn--392blpe5j93e"
+                  ? "알바선물"
+                  : props.domainName}
+                .{props.domainExtension}
+              </li>
             </ul>
           </li>
           <li>

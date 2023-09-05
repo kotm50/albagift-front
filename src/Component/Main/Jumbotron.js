@@ -28,7 +28,7 @@ function Jumbotron() {
                 to="/promo"
                 className="block bg-teal-500 hover:bg-teal-700 text-white p-2 rounded-lg text-sm xl:text-base"
               >
-                가입하여 무료 500p 받기 →
+                가입하여 1000p 받기 →
               </Link>
             ) : (
               <button
@@ -37,7 +37,7 @@ function Jumbotron() {
                   return alert("이미 회원가입을 하셨습니다");
                 }}
               >
-                가입하여 무료 500p 받기 →
+                가입하여 1000p 받기 →
               </button>
             )}
 

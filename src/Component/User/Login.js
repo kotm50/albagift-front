@@ -145,7 +145,6 @@ function Login() {
               admin: false,
             })
           );
-          alert("로그인 완료");
           navi("/");
         }
       })

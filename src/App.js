@@ -32,6 +32,10 @@ import Promo from "./Component/User/Promo";
 import LoginLog from "./Component/Admin/LoginLog";
 import Cancel from "./Component/User/Mypage/Cancel";
 import PointList from "./Component/Admin/PointList";
+import Mok from "./Component/User/Mok/Mok";
+
+import MokStdRequest from "./Component/User/Mok/mok_react_index";
+import MokStdRedirect from "./Component/User/Mok/mok_react_redirect";
 
 function App() {
   const [bg, setBg] = useState("bg-transparent");
@@ -87,6 +91,10 @@ function App() {
             <Route path="list/:id?" element={<BoardList />} />
             <Route path="write/:pid?" element={<BoardWrite />} />
             <Route path="detail/:pid?" element={<BoardDetail />} />
+          </Route>
+          <Route path="/mok" element={<Mok />}>
+            <Route exact path="" element={<MokStdRequest />} />
+            <Route exact path="redirect" element={<MokStdRedirect />} />
           </Route>
         </Routes>
       </div>

@@ -20,6 +20,7 @@ function Detail() {
       alert("잘못된 접근입니다");
       navi("/");
     }
+    console.log(detail);
     getDetail(boardId);
     //eslint-disable-next-line
   }, []);

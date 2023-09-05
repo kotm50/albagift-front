@@ -30,12 +30,9 @@ class moK_react_index extends Component {
     console.log(domain);
     console.log(domainName);
     console.log(domainExtension);
-
-    window.MOBILEOK.process(
-      `https://${domainName}.${domainExtension}/mok/mok_std_request`,
-      "WB",
-      "result"
-    );
+    let fullDomain = `https://${domainName}.${domainExtension}/mok/mok_std_request`;
+    console.log(fullDomain);
+    window.MOBILEOK.process(fullDomain, "WB", "result");
   }
   /* 모바일 스크립트 사용시 mok_react_server(5.2 주석해제) */
   // mok_move 사용시 mok_react_server(5.2-1 pathname 수정 후 사용)

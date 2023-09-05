@@ -5,6 +5,10 @@ import Terms from "./Terms";
 import RefusalEmail from "./RefusalEmail";
 
 function Modal(props) {
+  let domain = window.location.hostname;
+  let parts = domain.split(".");
+  let domainName = parts[parts.length - 2]; // 'albagift'
+  let domainExtension = parts[parts.length - 1]; // 'com'
   return (
     <>
       <div
@@ -27,11 +31,20 @@ function Modal(props) {
             </h3>
             <div className="relative p-2 lg:p-6 flex-auto overflow-y-auto">
               {props.modalCount === 1 ? (
-                <Privacy />
+                <Privacy
+                  domainName={domainName}
+                  domainExtension={domainExtension}
+                />
               ) : props.modalCount === 2 ? (
-                <Terms />
+                <Terms
+                  domainName={domainName}
+                  domainExtension={domainExtension}
+                />
               ) : props.modalCount === 3 ? (
-                <RefusalEmail />
+                <RefusalEmail
+                  domainName={domainName}
+                  domainExtension={domainExtension}
+                />
               ) : null}
             </div>
           </div>

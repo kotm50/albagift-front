@@ -50,17 +50,17 @@ function CouponList(props) {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        if (res.data.code === "E999") {
+        if (res.data.couponDetail.code === "E999") {
           logout();
           return false;
         }
-        if (res.data.pinStatusCd === "01") {
+        if (res.data.couponDetail.pinStatusCd === "01") {
           setStatColor(
             "border border-sky-500 hover:border-sky-700 text-sky-500 hover:text-sky-700 hover:bg-sky-100"
           );
 
           setStat("사용가능");
-        } else if (res.data.pinStatusCd === "02") {
+        } else if (res.data.couponDetail.pinStatusCd === "02") {
           setStatColor(
             "border border-indigo-500 hover:border-indigo-700 text-indigo-500 hover:text-indigo-700 hover:bg-indigo-100"
           );
@@ -71,8 +71,8 @@ function CouponList(props) {
           );
           setStat("사용불가");
         }
-        setStatDetail(res.data.pinStatusNm);
-        setStatCode(res.data.pinStatusCd);
+        setStatDetail(res.data.couponDetail.pinStatusNm);
+        setStatCode(res.data.couponDetail.pinStatusCd);
         setChkStat(true);
       })
       .catch(e => {

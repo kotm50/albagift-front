@@ -31,6 +31,7 @@ import BoardList from "./Component/Board/List";
 import Promo from "./Component/User/Promo";
 import LoginLog from "./Component/Admin/LoginLog";
 import Cancel from "./Component/User/Mypage/Cancel";
+import PointList from "./Component/Admin/PointList";
 
 function App() {
   const [bg, setBg] = useState("bg-transparent");
@@ -79,6 +80,7 @@ function App() {
             <Route path="user" element={<UserList />} />
             <Route path="reset" element={<GiftReset />} />
             <Route path="loginlog" element={<LoginLog />} />
+            <Route path="pointlist" element={<PointList />} />
           </Route>
           <Route path="/test" element={<KakaoTest />} />
           <Route path="/board" element={<Board />}>

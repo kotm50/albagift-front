@@ -96,6 +96,7 @@ function Detail() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
+        console.log(res);
         if (res.data.code === "E999") {
           logout();
           return false;

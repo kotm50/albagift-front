@@ -92,7 +92,7 @@ function App() {
             <Route path="write/:pid?" element={<BoardWrite />} />
             <Route path="detail/:pid?" element={<BoardDetail />} />
           </Route>
-          <Route path="/mok" element={<Mok />}>
+          <Route path="/mokcert" element={<Mok />}>
             <Route exact path="" element={<MokStdRequest />} />
             <Route exact path="redirect" element={<MokStdRedirect />} />
           </Route>

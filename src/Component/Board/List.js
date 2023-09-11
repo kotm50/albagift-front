@@ -65,7 +65,7 @@ function List() {
                       key={idx}
                       className="hover:cursor-pointer hover:text-rose-500"
                       onClick={e =>
-                        navi(`/board/detail/${doc.postId}`, {
+                        navi(`/board/detail/${doc.postId}?boardId=${boardId}`, {
                           state: {
                             boardId: boardId,
                             token: user.accessToken,

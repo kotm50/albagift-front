@@ -222,3 +222,11 @@ div.footer-top {
 .loading-spin {
   z-index:100000;
 }
+
+.kakaobtn {
+  background-color:#fee500;
+}
+
+.kakaobtn:hover {
+  background-color:#e5cf00;
+}

@@ -27,9 +27,6 @@ class moK_react_index extends Component {
     let domainName = parts[parts.length - 2]; // 'albagift'
     let domainExtension = parts[parts.length - 1]; // 'com'
 
-    console.log(domain);
-    console.log(domainName);
-    console.log(domainExtension);
     let fullDomain = `https://${domainName}.${domainExtension}/mok/mok_std_request`;
     console.log(fullDomain);
     window.MOBILEOK.process(fullDomain, "WB", "result");

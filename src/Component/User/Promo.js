@@ -110,7 +110,7 @@ function Promo() {
               />
               <div className="w-full text-center text-xl font-neoextra">
                 지금 가입하면{" "}
-                <span className="text-rose-500 font-bold">500p</span> 무료지급!
+                <span className="text-rose-500 font-bold">1000p</span> 무료지급!
               </div>
               <div className="w-full mt-2">
                 <button
@@ -149,7 +149,7 @@ function Promo() {
             <div className="bg-white p-2 mt-2 rounded">
               <div className="w-full text-center text-xl font-neoextra bg-white p-2">
                 지금 가입하면{" "}
-                <span className="text-rose-500 font-bold">500p</span> 무료지급!
+                <span className="text-rose-500 font-bold">1000p</span> 무료지급!
               </div>
               <div className="w-full my-2">
                 <button

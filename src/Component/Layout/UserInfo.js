@@ -24,7 +24,6 @@ function UserInfo() {
         setIsAdmin(true);
       }
     }
-
     //eslint-disable-next-line
   }, [location]);
 

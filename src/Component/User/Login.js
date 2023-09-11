@@ -6,6 +6,8 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { loginUser } from "../../Reducer/userSlice";
 
+import { RiKakaoTalkFill } from "react-icons/ri";
+
 function Login() {
   const inputRef = useRef();
   let navi = useNavigate();
@@ -92,8 +94,8 @@ function Login() {
         }
       })
       .catch(e => {
-        console.log(e);
-        alert("로그인에 실패했습니다\n아이디 또는 비밀번호를 확인해 주세요");
+        setErrMessage("로그인에 실패했습니다");
+        setIsErr(true);
       });
   };
 
@@ -269,10 +271,11 @@ function Login() {
         </div>
         <div className="w-full">
           <button
-            className="transition duration-100 w-full bg-yellow-300 hover:bg-yellow-500 p-2 text-black rounded hover:animate-wiggle"
+            className="transition duration-100 w-full kakaobtn p-2 text-black rounded hover:animate-wiggle"
             onClick={kakaoLogin}
           >
-            카카오 간편로그인
+            <RiKakaoTalkFill size={28} className="inline-block" /> 카카오
+            간편로그인
           </button>
         </div>
       </div>

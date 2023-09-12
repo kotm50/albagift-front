@@ -52,7 +52,6 @@ function Detail() {
   return (
     <>
       {loading ? <Loading /> : null}
-      {}
       <h2 className="text-center text-3xl py-2 font-neoheavy">면접상세내용</h2>
       <div className="container mx-auto grid grid-cols-1 gap-1">
         {boardId === "B01" ? (
@@ -101,7 +100,10 @@ function Detail() {
         )}
       </div>
       <div className="container mx-auto text-center mt-2">
-        <button className="p-2 w-60 mx-auto bg-green-500 text-white rounded">
+        <button
+          className="p-2 w-60 mx-auto bg-green-500 hover:bg-green-700 text-white rounded"
+          onClick={e => navi(`/board/write/${pid}`)}
+        >
           수정하기
         </button>
       </div>

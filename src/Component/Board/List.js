@@ -30,8 +30,9 @@ function List() {
         },
       })
       .then(res => {
-        console.log(res);
-        res.data.code === "C000" ? setLoaded(true) : setLoaded(false);
+        res.data.code === "E403" && alert(res.data.message);
+        res.data.code === "C000" ? setLoaded(true) : navi("/");
+
         setList(res.data.postList ?? [{ postId: "없음" }]);
       })
       .catch(e => {

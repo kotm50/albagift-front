@@ -3,6 +3,7 @@ import { useNavigate, useLocation, useParams } from "react-router-dom";
 import queryString from "query-string";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import Loading from "../Layout/Loading";
 
 function Write() {
   const [loaded, setLoaded] = useState(false);
@@ -15,9 +16,13 @@ function Write() {
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [hour, setHour] = useState("0");
   const [minute, setMinute] = useState("00");
+
   useEffect(() => {
+    setLoaded(false);
     let postId = pid || "";
-    console.log(postId);
+    if (postId !== "") {
+      getPost();
+    }
     if (user.accessToken !== "") {
       setLoaded(true);
     } else {
@@ -31,6 +36,32 @@ function Write() {
     //eslint-disable-next-line
   }, [location]);
 
+  const getPost = async () => {
+    const data = {
+      boardId: boardId,
+      postId: pid,
+    };
+    await axios
+      .post("/api/v1/board/get/pnt/posts", data, {
+        headers: {
+          Authorization: user.accessToken,
+        },
+      })
+      .then(res => {
+        const detail = res.data.post;
+        if (res.data.code === "C000") {
+          setDate(detail.intvDate);
+          setHour(detail.intvTime);
+          setMinute(detail.intvMin);
+        }
+        setLoaded(true);
+      })
+      .catch(e => {
+        alert("알 수 없는 오류가 발생했습니다");
+        navi(-1);
+      });
+  };
+
   const handleDateChange = event => {
     setDate(event.target.value);
   };
@@ -42,18 +73,32 @@ function Write() {
       intvTime: hour,
       intvMin: minute,
     };
-
-    await axios
-      .post("/api/v1/board/pnt/posts", data, {
-        headers: { Authorization: user.accessToken },
-      })
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
+    if (pid !== "") {
+      data.pid = pid;
+      await axios
+        .patch("/api/v1/board/upt/pnt/posts", data, {
+          headers: { Authorization: user.accessToken },
+        })
+        .then(res => {
+          console.log(res);
+          console.log(res.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    } else {
+      await axios
+        .post("/api/v1/board/pnt/posts", data, {
+          headers: { Authorization: user.accessToken },
+        })
+        .then(res => {
+          console.log(res);
+          console.log(res.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }
   };
   return (
     <div className="container p-2 mx-auto bg-white my-2">
@@ -62,7 +107,7 @@ function Write() {
           {boardId === "B01" ? (
             <>
               <h2 className="text-lg xl:text-2xl font-neobold mb-3">
-                포인트 지급 신청하기
+                포인트 지급 {pid !== "" ? "수정" : "신청"}하기
               </h2>
               <div className="grid grid-cols-6 xl:grid-cols-10 gap-1 bg-gray-50 p-2 xl:mb-3">
                 <div className="col-span-2 font-neobold text-right bg-indigo-50 p-2">
@@ -146,7 +191,7 @@ function Write() {
           )}
         </>
       ) : (
-        <div className="text-center">"잠시만 기다려 주세요"</div>
+        <Loading />
       )}
     </div>
   );

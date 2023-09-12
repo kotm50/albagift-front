@@ -24,7 +24,8 @@ function PointList() {
       boardId: boardId,
     };
     await axios
-      .post("/api/v1/board/get/pnt/posts/list", data, {
+      .get("/api/v1/board/admin/posts", {
+        params: data,
         headers: {
           Authorization: user.accessToken,
         },
@@ -36,7 +37,6 @@ function PointList() {
       })
       .catch(e => {
         alert("알 수 없는 오류가 발생했습니다");
-        navi(-1);
       });
   };
   return (
@@ -48,9 +48,15 @@ function PointList() {
           </h2>
           {list.length > 0 ? (
             <>
-              <table className="mx-auto">
+              <table className="mx-auto bg-white">
                 <thead>
                   <tr>
+                    <td className="border bg-orange-600 text-white text-center p-2">
+                      이름
+                    </td>
+                    <td className="border bg-orange-600 text-white text-center p-2">
+                      연락처
+                    </td>
                     <td className="border bg-orange-600 text-white text-center p-2">
                       날짜
                     </td>
@@ -73,6 +79,8 @@ function PointList() {
                         })
                       }
                     >
+                      <td className="border p-2">{doc.userName}</td>
+                      <td className="border p-2">{doc.phone}</td>
                       <td className="border p-2">{doc.intvDate}</td>
                       <td className="border p-2">
                         {doc.intvTime}시 {doc.intvMin}분

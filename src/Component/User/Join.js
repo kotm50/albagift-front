@@ -591,7 +591,7 @@ function Join() {
                   setModalOn(true);
                 }}
               >
-                약관보기
+                상세보기
               </button>
             </div>
             <div className="flex flex-col justify-center">
@@ -608,18 +608,18 @@ function Join() {
               htmlFor="agreePrivate"
               className="text-sm text-left flex flex-col justify-center pl-2 py-2 col-span-5"
             >
-              개인정보보호방침에 동의합니다
+              개인정보 수집 및 이용에 동의합니다
             </label>
             <div>
               <button
                 className="text-blue-500 hover:text-violet-700 p-2 text-xs w-full"
                 onClick={e => {
                   e.preventDefault();
-                  setModalCount(1);
+                  setModalCount(4);
                   setModalOn(true);
                 }}
               >
-                약관보기
+                상세보기
               </button>
             </div>
             <div className="flex flex-col justify-center">

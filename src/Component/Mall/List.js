@@ -167,7 +167,7 @@ function List() {
                     </p>
                     <p className="text-lg text-left">
                       <span className="text-xl text-rose-500">
-                        {Number(good.realPrice)}
+                        {Number(good.realPrice).toLocaleString()}
                       </span>{" "}
                       P
                     </p>

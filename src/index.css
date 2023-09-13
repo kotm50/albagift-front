@@ -18,7 +18,7 @@ body {
   font-family: 'NanumSquareNeoBold', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(-45deg, rgb(230, 250, 240), rgb(230, 240, 250));
+  background: #fafbfc;
 	background-size: 400% 400%;
 	animation: gradient 30s ease-in-out infinite;
 	height: 100vh;
@@ -136,12 +136,12 @@ input[type="number"] {
 
 
 #chkArea, #loginArea {
-  max-width:400px;
+  max-width:550px;
 }
 
 
 #cancelArea, #joinArea {
-  max-width:540px;
+  max-width:550px;
 }
 
  #editArea {

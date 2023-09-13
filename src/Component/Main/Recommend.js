@@ -116,7 +116,7 @@ function Recommend(props) {
                       </p>
                       <p className="text-sm text-left">
                         <span className="text-base text-rose-500">
-                          {Number(good.realPrice)}
+                          {Number(good.realPrice).toLocaleString()}
                         </span>{" "}
                         P
                       </p>

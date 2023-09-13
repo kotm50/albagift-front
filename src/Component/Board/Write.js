@@ -73,18 +73,31 @@ function Write() {
       intvTime: hour,
       intvMin: minute,
     };
-    if (pid !== "") {
-      data.pid = pid;
+    if (boardId === "B01") {
+      let isBefore = await isBeforeNow();
+      if (!isBefore) {
+        return alert("면접일시는 현재시간보다 이전이어야 합니다.");
+      }
+    }
+    let postId = pid || "";
+    if (postId !== "") {
+      data.postId = postId;
       await axios
         .patch("/api/v1/board/upt/pnt/posts", data, {
           headers: { Authorization: user.accessToken },
         })
         .then(res => {
-          console.log(res);
-          console.log(res.data);
+          if (res.data.code === "C000") {
+            alert("등록되었습니다");
+            navi(`/board/list?boardId=${boardId}`);
+          } else {
+            alert(
+              `오류가 발생했습니다.관리자에게 문의해 주세요.\n(오류코드 : ${res.data.code})`
+            );
+          }
         })
         .catch(e => {
-          console.log(e);
+          alert("오류가 발생했습니다.\n관리자에게 문의해 주세요");
         });
     } else {
       await axios
@@ -92,13 +105,36 @@ function Write() {
           headers: { Authorization: user.accessToken },
         })
         .then(res => {
-          console.log(res);
-          console.log(res.data);
+          if (res.data.code === "C000") {
+            alert("등록되었습니다");
+            navi(`/board/list?boardId=${boardId}`);
+          } else {
+            alert(
+              `오류가 발생했습니다.관리자에게 문의해 주세요.\n(오류코드 : ${res.data.code})`
+            );
+          }
         })
         .catch(e => {
           console.log(e);
         });
     }
+  };
+
+  const isBeforeNow = async () => {
+    const hhh = await addZero(hour);
+    const intv = `${date}T${hhh}:${minute}:00`;
+    const interview = new Date(intv);
+    const currentDate = new Date();
+    return interview < currentDate;
+  };
+
+  const addZero = str => {
+    // 문자열의 길이가 1인 경우에만 앞에 0을 붙입니다.
+    if (str.length === 1) {
+      return "0" + str;
+    }
+    // 그 외의 경우에는 원래 문자열을 그대로 반환합니다.
+    return str;
   };
   return (
     <div className="container p-2 mx-auto bg-white my-2">
@@ -135,7 +171,7 @@ function Write() {
                   <div className="grid grid-cols-4 gap-1 py-1">
                     {/* 시간 선택 */}
                     <select
-                      className="col-span-3 p-1 border rounded"
+                      className="col-span-3 p-1 border border-gray-500 rounded"
                       value={hour}
                       onChange={e => setHour(e.target.value)}
                     >
@@ -150,7 +186,7 @@ function Write() {
                   <div className="grid grid-cols-4 gap-1 py-1">
                     {/* 분 선택 */}
                     <select
-                      className="col-span-3 p-1 border rounded"
+                      className="col-span-3 p-1 border border-gray-500 rounded"
                       value={minute}
                       onChange={e => setMinute(e.target.value)}
                     >

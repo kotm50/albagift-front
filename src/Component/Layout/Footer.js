@@ -168,11 +168,11 @@ function Footer() {
         </>
       ) : (
         <>
-          <div className="bg-gray-200 py-2 border-y border-gray-300 w-full">
+          <div className="bg-gray-200 border-y border-gray-300 w-full">
             <div className="lg:container mx-auto">
               <div className="flex justify-around text-sm">
                 <div
-                  className="text-center hover:cursor-pointer hover:text-rose-500"
+                  className="text-center hover:cursor-pointer hover:text-rose-500 py-4"
                   onClick={e => {
                     setModalCount(1);
                     setModalOn(true);
@@ -181,7 +181,7 @@ function Footer() {
                   개인정보처리방침
                 </div>
                 <div
-                  className="text-center hover:cursor-pointer hover:text-rose-500"
+                  className="text-center hover:cursor-pointer hover:text-rose-500 py-4"
                   onClick={e => {
                     setModalCount(2);
                     setModalOn(true);
@@ -190,7 +190,7 @@ function Footer() {
                   이용약관
                 </div>
                 <div
-                  className="text-center hover:cursor-pointer hover:text-rose-500"
+                  className="text-center hover:cursor-pointer hover:text-rose-500 py-4"
                   onClick={e => {
                     setModalCount(3);
                     setModalOn(true);
@@ -210,7 +210,7 @@ function Footer() {
           ) : null}
           <footer id="footer" className="bg-gray-200 w-full mb-3 xl:mb-0">
             <div className="lg:container mx-auto footer-top">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 py-2">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 py-4">
                 <div className="flex flex-col justify-center my-auto">
                   <h1 className="w-1/2 mx-auto mb-5 lg:mb-0">
                     <Link to="/">

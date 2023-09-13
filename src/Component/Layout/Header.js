@@ -7,26 +7,19 @@ import GiftBrand from "./Menu/GiftBrand";
 import logo from "../../Asset/albaseonmul.svg";
 
 import UserInfo from "./UserInfo";
-import { path } from "../../path/path";
 
 function Header() {
-  const [headless, setHeadless] = useState(false);
   const [cateNum, setCateNum] = useState("");
   const [loadBrand, setLoadBrand] = useState(false);
   const [isPromo, setIsPromo] = useState(true);
   const thisLocation = useLocation();
   useEffect(() => {
-    setHeadless(path.some(chkBg));
     const parts = thisLocation.pathname.split("/");
     parts[1] === "promo" ? setIsPromo(true) : setIsPromo(false);
     setCateNum(parts[2]);
     getUrl(parts[1], parts[2]);
     // eslint-disable-next-line
   }, [thisLocation]);
-
-  const chkBg = (element, index, array) => {
-    return thisLocation.pathname.startsWith(element);
-  };
 
   const getUrl = (p, n) => {
     if (p === "list") {
@@ -42,7 +35,7 @@ function Header() {
   };
   return (
     <>
-      {!headless ? (
+      {!isPromo ? (
         <>
           <div className="text-center pb-5 w-full bg-white dark:text-white">
             <div className="xl:container mx-auto">
@@ -71,25 +64,7 @@ function Header() {
             </div>
           )}{" "}
         </>
-      ) : (
-        <>
-          {!isPromo && (
-            <div className="text-center pb-5 w-full bg-white dark:text-white mb-3 pt-5">
-              <div className="xl:container mx-auto">
-                <div className="text-center pt-5 xl:pt-0">
-                  <Link to="/" className="inline-block px-2">
-                    <img
-                      src={logo}
-                      className="h-16 mx-auto"
-                      alt="알바선물 로고"
-                    />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          )}
-        </>
-      )}
+      ) : null}
     </>
   );
 }

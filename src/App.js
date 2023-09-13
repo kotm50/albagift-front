@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-
-import { path } from "./path/path";
 
 import Login from "./Component/User/Login";
 
@@ -38,23 +36,14 @@ import MokStdRequest from "./Component/User/Mok/mok_react_index";
 import MokStdRedirect from "./Component/User/Mok/mok_react_redirect";
 
 function App() {
-  const [bg, setBg] = useState("bg-transparent");
   const thisLocation = useLocation();
   useEffect(() => {
     window.scroll({
       top: 0,
       behavior: "smooth",
     });
-    if (!path.some(chkBg)) {
-      setBg("bg-white");
-    } else {
-      setBg("bg-transparent");
-    }
     // eslint-disable-next-line
   }, [thisLocation]);
-  const chkBg = (element, index, array) => {
-    return thisLocation.pathname.startsWith(element);
-  };
   return (
     <>
       <Helmet>
@@ -63,7 +52,7 @@ function App() {
       <Header />
       <div
         id="content"
-        className={`${bg} w-full font-pretendard dark:text-white pb-3`}
+        className={`w-full font-pretendard dark:text-white pb-3`}
       >
         <Routes>
           <Route path="/" element={<Main />} />

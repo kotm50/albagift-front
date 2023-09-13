@@ -124,7 +124,9 @@ function CouponList(props) {
             ? dayjs(props.coupon.limitDate).format("YY년 MM월 DD일")
             : "불명"}
           {calculateDaysLeft(props.coupon.limitDate) && (
-            <span className="text-red-500 font-medium ml-2">만료임박</span>
+            <span className="text-red-500 font-medium ml-2 hidden">
+              만료임박
+            </span>
           )}
         </div>
       </div>

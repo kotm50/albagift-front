@@ -9,7 +9,8 @@ import { loginUser } from "../../Reducer/userSlice";
 import { RiKakaoTalkFill } from "react-icons/ri";
 
 function Login() {
-  const inputRef = useRef();
+  const inputIdRef = useRef();
+  const inputPwdRef = useRef();
   let navi = useNavigate();
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
@@ -26,7 +27,7 @@ function Login() {
     setSortParams();
     let domain = extractDomain();
     setDomain(domain);
-    inputRef.current.focus();
+    inputIdRef.current.focus();
     if (user.accessToken !== "") {
       alert("이미 로그인 하셨습니다.\n메인으로 이동합니다");
       navi("/");
@@ -90,6 +91,10 @@ function Login() {
           chkAdmin(token, res.data.user);
         } else {
           setErrMessage(res.data.message);
+          setPwd("");
+          if (res.data.code === "E003") {
+            inputPwdRef.current.focus();
+          }
           setIsErr(true);
         }
       })
@@ -198,88 +203,81 @@ function Login() {
   };
 
   return (
-    <form onSubmit={e => login(e)}>
-      <div
-        id="loginArea"
-        className="my-2 mx-auto p-2 border shadow-lg rounded-lg grid grid-cols-1 gap-3 bg-white w-full"
-      >
-        <div className="text-lg font-medium text-center">로그인</div>
+    <div className="container mx-auto h-full pt-10">
+      <form onSubmit={e => login(e)}>
         <div
-          id="id"
-          className="grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border"
+          id="loginArea"
+          className="mx-auto p-2 grid grid-cols-1 gap-3 w-full"
         >
-          <label
-            htmlFor="inputId"
-            className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100"
-          >
-            아이디
-          </label>
-          <div className="xl:col-span-4">
+          <h2 className="text-xl text-center">로그인</h2>
+          <div id="id" className="grid grid-cols-1">
+            <label
+              htmlFor="inputId"
+              className="text-sm text-left flex flex-col justify-center mb-2"
+            >
+              아이디
+            </label>
             <input
               type="text"
               id="inputId"
-              className="border xl:border-0 p-2 w-full text-sm"
+              className="border px-2 py-3 w-full rounded shadow-sm"
               value={id}
               onChange={e => setId(e.currentTarget.value)}
               onBlur={e => setId(e.currentTarget.value)}
               autoComplete="on"
-              ref={inputRef}
+              ref={inputIdRef}
             />
           </div>
-        </div>
-        <div
-          id="pwd"
-          className="grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border"
-        >
-          <label
-            htmlFor="inputPwd"
-            className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100"
-          >
-            비밀번호
-          </label>
-          <div className="xl:col-span-4">
+          <div id="pwd" className="grid grid-cols-1">
+            <label
+              htmlFor="inputPwd"
+              className="text-sm text-left flex flex-col justify-center mb-2"
+            >
+              비밀번호
+            </label>
             <input
               type="password"
               id="inputPwd"
-              className="border xl:border-0 p-2 w-full text-sm"
+              className="border px-2 py-3 w-full rounded shadow-sm"
               value={pwd}
               onChange={e => setPwd(e.currentTarget.value)}
               onBlur={e => setPwd(e.currentTarget.value)}
               autoComplete="on"
+              ref={inputPwdRef}
             />
           </div>
-        </div>
-        {isErr && (
-          <div className="text-center text-sm pb-2 text-rose-500">
-            {errMessage}
+          {isErr && (
+            <div className="text-center text-sm pb-2 text-rose-500">
+              {errMessage}
+            </div>
+          )}
+          <div className="text-center text-sm text-gray-500 border-b pb-2">
+            <Link to="/join">
+              처음이신가요? 여기를 눌러 <br className="block xl:hidden" />
+              <span className="text-blue-500 border-b">회원가입</span>을 진행해
+              주세요
+            </Link>
           </div>
-        )}
-        <div className="text-center text-sm text-gray-500 border-b pb-2">
-          <Link to="/join">
-            처음이신가요? 여기를 눌러 <br className="block xl:hidden" />
-            <span className="text-blue-500 border-b">회원가입</span>을 진행해
-            주세요
-          </Link>
+          <div className="w-full">
+            <button
+              className="transition duration-100 w-full bg-emerald-500 hover:bg-emerald-700 p-2 text-white rounded hover:animate-wiggle"
+              type="submit"
+            >
+              로그인
+            </button>
+          </div>
+          <div className="w-full">
+            <button
+              className="transition duration-100 w-full kakaobtn p-2 text-black rounded hover:animate-wiggle"
+              onClick={kakaoLogin}
+            >
+              <RiKakaoTalkFill size={28} className="inline-block" /> 카카오
+              간편로그인
+            </button>
+          </div>
         </div>
-        <div className="w-full">
-          <button
-            className="transition duration-100 w-full bg-emerald-500 hover:bg-emerald-700 p-2 text-white rounded hover:animate-wiggle"
-            type="submit"
-          >
-            로그인
-          </button>
-        </div>
-        <div className="w-full">
-          <button
-            className="transition duration-100 w-full kakaobtn p-2 text-black rounded hover:animate-wiggle"
-            onClick={kakaoLogin}
-          >
-            <RiKakaoTalkFill size={28} className="inline-block" /> 카카오
-            간편로그인
-          </button>
-        </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 }
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Helmet } from "react-helmet";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { buyGift } from "../../Reducer/userSlice";
@@ -134,6 +135,11 @@ function Detail() {
   };
   return (
     <>
+      <Helmet>
+        <title>{goods.goodsName} | 알바선물</title>
+        <meta name="description" content={`${goods.goodsName} | 알바선물`} />
+        <meta property="og:image" content={goods.goodsImgB} />
+      </Helmet>
       <div className="xl:container mx-auto">
         {!imgLoaded ? <Loading /> : null}
         <UserSection />
@@ -163,7 +169,7 @@ function Detail() {
                 </h2>
                 <div className="mt-5">
                   <span className="text-2xl xl:text-4xl font-bold text-indigo-500">
-                    {goods.realPrice}
+                    {Number(goods.realPrice).toLocaleString()}
                   </span>
                   <span className="text-xl xl:text-2xl ml-1">Point</span>
                 </div>

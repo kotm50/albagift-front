@@ -67,54 +67,52 @@ function UserInfo() {
     navi("/");
   };
   return (
-    <div className="text-right text-sm p-2 text-gray-500 flex flex-col justify-center">
-      <div>
-        {!isLogin ? (
-          <>
-            <Link to="/login" className="hover:text-indigo-500">
-              로그인
-            </Link>{" "}
-            |{" "}
-            <Link to="/join" className="hover:text-indigo-500">
-              회원가입
-            </Link>
-          </>
-        ) : (
-          <>
-            {isAdmin ? (
-              <>
-                {" "}
-                <span className="font-medium text-black">{user.userName} </span>
-                관리자님 안녕하세요 |
-                <Link to="/admin" className="hover:text-indigo-500">
-                  관리자페이지
-                </Link>{" "}
-                |{" "}
-              </>
-            ) : (
-              <>
-                <span className="font-medium text-black">{user.userName} </span>
-                님 안녕하세요 | {user.point.toLocaleString()}p 보유중 |{" "}
-                <Link to="/coupon" className="hover:text-indigo-500">
-                  보유쿠폰
-                </Link>{" "}
-                |{" "}
-                <Link to="/mypage" className="hover:text-indigo-500">
-                  정보수정
-                </Link>{" "}
-                |{" "}
-              </>
-            )}
-            <button
-              to="/mypage"
-              className="hover:text-indigo-500"
-              onClick={e => logout()}
-            >
-              로그아웃
-            </button>
-          </>
-        )}
-      </div>
+    <div className="block text-right text-sm p-2 text-gray-500">
+      {!isLogin ? (
+        <>
+          <Link to="/login" className="hover:text-indigo-500">
+            로그인
+          </Link>{" "}
+          |{" "}
+          <Link to="/join" className="hover:text-indigo-500">
+            회원가입
+          </Link>
+        </>
+      ) : (
+        <>
+          {isAdmin ? (
+            <>
+              {" "}
+              <span className="font-medium text-black">{user.userName} </span>
+              관리자님 안녕하세요 |
+              <Link to="/admin" className="hover:text-indigo-500">
+                관리자페이지
+              </Link>{" "}
+              |{" "}
+            </>
+          ) : (
+            <>
+              <span className="font-medium text-black">{user.userName} </span>님
+              안녕하세요 | {user.point.toLocaleString()}p 보유중 |{" "}
+              <Link to="/coupon" className="hover:text-indigo-500">
+                보유쿠폰
+              </Link>{" "}
+              |{" "}
+              <Link to="/mypage" className="hover:text-indigo-500">
+                정보수정
+              </Link>{" "}
+              |{" "}
+            </>
+          )}
+          <button
+            to="/mypage"
+            className="hover:text-indigo-500"
+            onClick={e => logout()}
+          >
+            로그아웃
+          </button>
+        </>
+      )}
     </div>
   );
 }

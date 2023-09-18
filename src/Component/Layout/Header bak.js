@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import GiftCategory from "./Menu/GiftCategory";
 import GiftBrand from "./Menu/GiftBrand";
 
-import HeaderTop from "./HeaderTop";
+import logo from "../../Asset/albaseonmul.svg";
+
+import UserInfo from "./UserInfo";
 
 function Header() {
   const [cateNum, setCateNum] = useState("");
@@ -35,7 +37,20 @@ function Header() {
     <>
       {!isPromo ? (
         <>
-          <HeaderTop />
+          <div className="text-center pb-5 w-full bg-white dark:text-white">
+            <div className="xl:container mx-auto">
+              <UserInfo />
+              <div className="text-center pt-5 xl:pt-0">
+                <Link to="/" className="inline-block px-2">
+                  <img
+                    src={logo}
+                    className="h-16 mx-auto"
+                    alt="알바선물 로고"
+                  />
+                </Link>
+              </div>
+            </div>
+          </div>
           <div className="w-full border-b border-teal-500 bg-white">
             <div className="xl:container mx-auto">
               <GiftCategory cateno={cateNum} path={thisLocation.pathname} />

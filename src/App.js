@@ -30,10 +30,7 @@ import Promo from "./Component/User/Promo";
 import LoginLog from "./Component/Admin/LoginLog";
 import Cancel from "./Component/User/Mypage/Cancel";
 import PointList from "./Component/Admin/PointList";
-import Mok from "./Component/User/Mok/Mok";
-
-import MokStdRequest from "./Component/User/Mok/mok_react_index";
-import MokStdRedirect from "./Component/User/Mok/mok_react_redirect";
+import Certification from "./Component/User/Certification";
 
 function App() {
   const thisLocation = useLocation();
@@ -81,10 +78,7 @@ function App() {
             <Route path="write/:pid?" element={<BoardWrite />} />
             <Route path="detail/:pid?" element={<BoardDetail />} />
           </Route>
-          <Route path="/mokcert" element={<Mok />}>
-            <Route exact path="" element={<MokStdRequest />} />
-            <Route exact path="redirect" element={<MokStdRedirect />} />
-          </Route>
+          <Route path="/certification" element={<Certification />} />
         </Routes>
       </div>
       <Footer />

@@ -12,7 +12,20 @@ import dompurify from "dompurify";
 import UserSection from "../User/UserSection";
 import Loading from "../Layout/Loading";
 
+import { RiKakaoTalkFill } from "react-icons/ri";
+
+// kakao 기능 동작을 위해 넣어준다.
+const { Kakao } = window;
+
 function Detail() {
+  // 재랜더링시에 실행되게 해준다.
+  useEffect(() => {
+    // init 해주기 전에 clean up 을 해준다.
+    Kakao.cleanup();
+    // 자신의 js 키를 넣어준다.
+    Kakao.init("9c2b5fe0dd73c70670ee80bef1b17937");
+  }, []);
+
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
   const sanitizer = dompurify.sanitize;
@@ -21,6 +34,7 @@ function Detail() {
   const [goods, setGoods] = useState("");
   const [content, setContent] = useState("");
   const [imgLoaded, setImgLoaded] = useState(false);
+  const [isShare, setIsShare] = useState(false);
   useEffect(() => {
     getGoods();
     //eslint-disable-next-line
@@ -133,13 +147,44 @@ function Detail() {
     dispatch(clearUser());
     navi("/login");
   };
+
+  const shareKakao = () => {
+    Kakao.Share.sendDefault({
+      objectType: "feed",
+      content: {
+        title: goods.goodsName,
+        description: goods.srchKeyword,
+        imageUrl: goods.goodsImgS,
+        link: {
+          mobileWebUrl: `https://albagift.shop/detail/${goods.goodsCode}`,
+          webUrl: `https://albagift.shop/detail/${goods.goodsCode}`,
+        },
+      },
+      buttons: [
+        {
+          title: "상품보러가기",
+          link: {
+            mobileWebUrl: `https://albagift.shop/detail/${goods.goodsCode}`,
+            webUrl: `https://albagift.shop/detail/${goods.goodsCode}`,
+          },
+        },
+      ],
+    });
+  };
   return (
     <>
-      <Helmet>
-        <title>{goods.goodsName} | 알바선물</title>
-        <meta name="description" content={`${goods.goodsName} | 알바선물`} />
-        <meta property="og:image" content={goods.goodsImgB} />
-      </Helmet>
+      {goods !== "" && (
+        <Helmet>
+          <title>
+            {goods.goodsName} - {goods.brandName} | 알바선물
+          </title>
+          <meta
+            name="description"
+            content={`${goods.goodsName} - ${goods.brandName}  | 알바선물`}
+          />
+          <meta property="og:image" content={goods.goodsImgB} />
+        </Helmet>
+      )}
       <div className="xl:container mx-auto">
         {!imgLoaded ? <Loading /> : null}
         <UserSection />
@@ -197,13 +242,41 @@ function Detail() {
                     모바일 쿠폰 발송
                   </span>
                 </div>
-                <div className="mt-5 flex flex-col lg:flex-row justify-start gap-3">
-                  <button
-                    className="block text-center w-full lg:w-1/2 transition-all duration-150 ease-in-out bg-indigo-500 text-white py-2 px-5 rounded hover:bg-indigo-700 font-medium"
-                    onClick={buyIt}
-                  >
-                    포인트로 구입하기
-                  </button>
+                <div className="mt-5 flex flex-col lg:flex-row justify-start gap-3 relative">
+                  <div className="grid grid-cols-3 gap-2 xl:w-2/3">
+                    <button
+                      className="col-span-2 block text-center w-full transition-all duration-150 ease-in-out bg-indigo-500 text-white py-2 px-5 rounded hover:bg-indigo-700"
+                      onClick={buyIt}
+                    >
+                      포인트로 구입하기
+                    </button>
+                    <button
+                      className="block text-center w-full transition-all duration-150 ease-in-out bg-yellow-300  py-2 px-5 rounded hover:bg-yellow-500"
+                      onClick={e => {
+                        setIsShare(!isShare);
+                      }}
+                    >
+                      공유하기
+                    </button>
+                  </div>
+                  {isShare && (
+                    <div className="absolute top-12 right-0 xl:right-1/3 min-w-1/2 py-3 px-2 border shadow-md bg-white z-10">
+                      <h3 className="text-center mb-3 text-sm p-2 bg-gray-200 rounded">
+                        공유하기
+                      </h3>
+                      <div className="flex flex-row justify-center gap-2">
+                        <div className="text-center grid grid-cols-1 gap-y-2">
+                          <button
+                            className="block w-14 h-14 rounded-full kakaobtn p-2"
+                            onClick={e => shareKakao()}
+                          >
+                            <RiKakaoTalkFill size={32} className="mx-auto" />
+                          </button>
+                          <span className="text-center text-xs">카카오톡</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

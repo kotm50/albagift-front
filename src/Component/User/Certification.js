@@ -29,9 +29,19 @@ function Certification() {
   return (
     <div className="container mx-auto h-full pt-10">
       <form action="https://nice.checkplus.co.kr/CheckPlusSafeModel/service.cb">
-        <input type="hidden" value={tokenId} />
-        <input type="hidden" value={encData} />
-        <input type="hidden" value={integrityValue} />
+        <input
+          type="hidden"
+          id="token_version_id"
+          name="token_version_id"
+          value={tokenId}
+        />
+        <input type="hidden" id="enc_data" name="enc_data" value={encData} />
+        <input
+          type="hidden"
+          id="integrity_value"
+          name="integrity_value"
+          value={integrityValue}
+        />
         <div
           id="loginArea"
           className="mx-auto p-2 grid grid-cols-1 gap-3 w-full"

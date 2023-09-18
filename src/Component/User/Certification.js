@@ -3,14 +3,27 @@ import { useLocation } from "react-router-dom";
 
 import axios from "axios";
 
+import queryString from "query-string";
+
 function Certification() {
   const location = useLocation();
   const [tokenId, setTokenId] = useState("");
   const [encData, setEncData] = useState("");
   const [integrityValue, setIntegrityValue] = useState("");
+  const parsed = queryString.parse(location.search);
+  const token_version_id = parsed.token_version_id || "";
+  const enc_data = parsed.enc_data || "";
+  const integrity_value = parsed.integrity_value || "";
 
   useEffect(() => {
-    getData();
+    if (integrity_value === "" && enc_data === "" && token_version_id === "") {
+      getData();
+    } else {
+      doCertification();
+      console.log(token_version_id);
+      console.log(enc_data);
+      console.log(integrity_value);
+    }
     //eslint-disable-next-line
   }, [location]);
 
@@ -21,6 +34,22 @@ function Certification() {
         setTokenId(res.data.tokenVersionId);
         setEncData(res.data.encData);
         setIntegrityValue(res.data.integrityValue);
+      })
+      .catch(e => {
+        alert("오류가 발생했습니다 관리자에게 문의해 주세요", e);
+      });
+  };
+
+  const doCertification = async () => {
+    const data = {
+      tokenVersionId: token_version_id,
+      encData: enc_data,
+      integrityValue: integrity_value,
+    };
+    axios
+      .post("/api/v1/common/nice/dec/result", data)
+      .then(res => {
+        console.log(res);
       })
       .catch(e => {
         alert("오류가 발생했습니다 관리자에게 문의해 주세요", e);

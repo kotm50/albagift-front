@@ -20,11 +20,36 @@ function SearchArea(props) {
   };
   return (
     <>
-      <div className="hidden xl:grid grid-cols-1 xl:grid-cols-10 xl:gap-3  bg-teal-100 p-2">
-        <div className="xl:col-span-8">
+      <div className="xl:w-96 w-full pr-2 flex flex-col justify-center">
+        <label
+          for="default-search"
+          className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+        >
+          검색
+        </label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <svg
+              className="w-4 h-4 text-gray-500 dark:text-gray-400"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 20"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+              />
+            </svg>
+          </div>
           <input
-            type="text"
-            className="border rounded-lg p-2 w-full"
+            type="search"
+            id="default-search"
+            className="block w-full p-3 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500"
+            placeholder="검색어를 입력하세요"
             value={searchKeyword}
             onChange={e => setSearchKeyword(e.currentTarget.value)}
             onBlur={e => setSearchKeyword(e.currentTarget.value)}
@@ -33,13 +58,12 @@ function SearchArea(props) {
                 searchIt();
               }
             }}
-            placeholder="검색어를 입력하세요"
+            plac
           />
-        </div>
-        <div className="py-2 xl:py-0 xl:col-span-2">
           <button
-            className="bg-blue-500 hover:bg-blue-700 p-2 text-white w-full rounded-lg"
-            onClick={e => searchIt()}
+            type="submit"
+            className="text-white absolute right-1.5 bottom-2 bg-sky-500 hover:bg-sky-700 focus:ring-4 focus:outline-none focus:ring-sky-300 font-medium rounded-lg text-sm px-2 py-1 dark:bg-sky-600 dark:hover:bg-sky-700 dark:focus:ring-sky-800"
+            onClick={searchIt}
           >
             검색
           </button>

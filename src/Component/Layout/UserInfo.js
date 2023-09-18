@@ -5,11 +5,14 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { clearUser, refreshPoint } from "../../Reducer/userSlice";
 
+import { BiUser } from "react-icons/bi";
+
 import axios from "axios";
 
 function UserInfo() {
   const [isLogin, setIsLogin] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   let navi = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -67,8 +70,8 @@ function UserInfo() {
     navi("/");
   };
   return (
-    <div className="text-right text-sm p-2 text-gray-500 flex flex-col justify-center">
-      <div>
+    <div className="text-right text-sm py-2 text-gray-500 flex flex-col justify-center">
+      <div className="hidden xl:block">
         {!isLogin ? (
           <>
             <Link to="/login" className="hover:text-indigo-500">
@@ -115,6 +118,70 @@ function UserInfo() {
           </>
         )}
       </div>
+      <div className="w-10 h-10 flex flex-col justify-center relative">
+        <button
+          className={`${isOpen ? "text-rose-800" : null}`}
+          onClick={e => {
+            setIsOpen(!isOpen);
+          }}
+        >
+          <BiUser size={30} />
+        </button>
+      </div>
+      {isOpen ? (
+        <div className="fixed top-20 left-2 right-2  bg-white border xl:hidden p-2 drop-shadow-lg text-center">
+          {!isLogin ? (
+            <div className="grid grid-cols-2 divide-x">
+              <Link to="/login" className="hover:text-indigo-500">
+                로그인
+              </Link>
+              <Link to="/join" className="hover:text-indigo-500">
+                회원가입
+              </Link>
+            </div>
+          ) : (
+            <>
+              {isAdmin ? (
+                <div className="grid grid-cols-3 divide-x">
+                  <div className="col-span-2">
+                    <span className="font-medium text-black">
+                      {user.userName}{" "}
+                    </span>
+                    관리자님 안녕하세요
+                  </div>
+                  <Link to="/admin" className="hover:text-indigo-500">
+                    관리자페이지
+                  </Link>
+                </div>
+              ) : (
+                <div className="grid grid-cols-3 divide-x">
+                  <div className="col-span-3">
+                    <span className="font-medium text-black">
+                      {user.userName}{" "}
+                    </span>
+                    님 안녕하세요
+                  </div>
+                  <div>{user.point.toLocaleString()}p 보유중</div>
+
+                  <Link to="/coupon" className="hover:text-indigo-500">
+                    보유쿠폰
+                  </Link>
+                  <Link to="/mypage" className="hover:text-indigo-500">
+                    정보수정
+                  </Link>
+                </div>
+              )}
+              <button
+                to="/mypage"
+                className="hover:text-indigo-500"
+                onClick={e => logout()}
+              >
+                로그아웃
+              </button>
+            </>
+          )}
+        </div>
+      ) : null}
     </div>
   );
 }

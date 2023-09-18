@@ -23,12 +23,13 @@ function Certification() {
         setIntegrityValue(res.data.integrityValue);
       })
       .catch(e => {
-        console.log(e);
+        alert("오류가 발생했습니다 관리자에게 문의해 주세요", e);
       });
   };
   return (
     <div className="container mx-auto h-full pt-10">
       <form action="https://nice.checkplus.co.kr/CheckPlusSafeModel/service.cb">
+        <input type="hidden" id="m" name="m" value="service" />
         <input
           type="hidden"
           id="token_version_id"

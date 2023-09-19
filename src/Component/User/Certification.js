@@ -57,7 +57,10 @@ function Certification() {
   };
   return (
     <div className="container mx-auto h-full pt-10">
-      <form action="https://nice.checkplus.co.kr/CheckPlusSafeModel/service.cb">
+      <form
+        action="https://nice.checkplus.co.kr/CheckPlusSafeModel/service.cb"
+        target="_blank"
+      >
         <input type="hidden" id="m" name="m" value="service" />
         <input
           type="hidden"

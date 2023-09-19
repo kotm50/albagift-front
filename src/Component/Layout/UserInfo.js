@@ -118,7 +118,7 @@ function UserInfo() {
           </>
         )}
       </div>
-      <div className="w-10 h-10 flex flex-col justify-center relative">
+      <div className="w-10 h-10 flex flex-col justify-center relative xl:hidden">
         <button
           className={`${isOpen ? "text-rose-800" : null}`}
           onClick={e => {

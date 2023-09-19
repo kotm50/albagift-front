@@ -5,9 +5,11 @@ import { combineReducers } from "redux";
 import { persistReducer } from "redux-persist";
 import thunk from "redux-thunk";
 import userSlice from "./userSlice";
+import kakaoSlice from "./kakaoSlice";
 
 const reducers = combineReducers({
   user: userSlice,
+  kakao: kakaoSlice,
 });
 
 const persistConfig = {

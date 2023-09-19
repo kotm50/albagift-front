@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useSearchParams, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import EditUser from "./Mypage/EditUser";
 import PwdChk from "./Mypage/PwdChk";
@@ -9,29 +9,15 @@ function Mypage() {
   const { checked } = useParams();
   const user = useSelector(state => state.user);
   const [checkPwd, setCheckPwd] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
   const [domain, setDomain] = useState("");
-  const [kakao, setKakao] = useState(false);
-  const [code, setCode] = useState("");
   useEffect(() => {
     if (checked) {
       setCheckPwd(true);
     }
-    setSortParams();
     let domain = extractDomain();
     setDomain(domain);
     //eslint-disable-next-line
   }, []);
-
-  const setSortParams = () => {
-    setSearchParams(searchParams);
-    const code = searchParams.get("code");
-    if (code) {
-      setCode(code);
-      setKakao(true);
-      setCheckPwd(true);
-    }
-  };
 
   const extractDomain = () => {
     let protocol = window.location.protocol; // 프로토콜을 가져옵니다. (예: http: 또는 https:)
@@ -47,25 +33,12 @@ function Mypage() {
     return fullDomain;
   };
 
-  const kakaoLogin = e => {
-    const apiKey = "e8b025aca3eb87648da9d341528bca5a";
-    const redirectUrl = `${domain}/mypage`;
-    const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${apiKey}&redirect_uri=${redirectUrl}&response_type=code`;
-    window.location.href = kakaoURL;
-  };
-
   return (
     <>
       {!checkPwd ? (
         <PwdChk domain={domain} user={user} setCheckPwd={setCheckPwd} />
       ) : (
-        <EditUser
-          domain={domain}
-          user={user}
-          kakaoLogin={kakaoLogin}
-          code={code}
-          kakao={kakao}
-        />
+        <EditUser domain={domain} user={user} />
       )}
     </>
   );

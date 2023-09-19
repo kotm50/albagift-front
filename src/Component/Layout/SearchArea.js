@@ -22,7 +22,7 @@ function SearchArea(props) {
     <>
       <div className="xl:w-96 w-full pr-2 flex flex-col justify-center">
         <label
-          for="default-search"
+          htmlFor="default-search"
           className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
         >
           검색
@@ -38,9 +38,9 @@ function SearchArea(props) {
             >
               <path
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
               />
             </svg>
@@ -58,7 +58,6 @@ function SearchArea(props) {
                 searchIt();
               }
             }}
-            plac
           />
           <button
             type="submit"

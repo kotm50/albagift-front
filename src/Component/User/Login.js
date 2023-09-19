@@ -168,7 +168,7 @@ function Login() {
         const data = res.data.socialUser;
         if (res.data.code === "C001") {
           alert(res.data.message);
-          navi("/join", {
+          navi("/certification", {
             state: {
               id: data.id,
               email: data.email,
@@ -252,7 +252,7 @@ function Login() {
             </div>
           )}
           <div className="text-center text-sm text-gray-500 border-b pb-2">
-            <Link to="/join">
+            <Link to="/certification">
               처음이신가요? 여기를 눌러 <br className="block xl:hidden" />
               <span className="text-blue-500 border-b">회원가입</span>을 진행해
               주세요

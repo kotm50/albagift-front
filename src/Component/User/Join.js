@@ -33,8 +33,10 @@ function Join() {
   const [email, setEmail] = useState("");
   const [socialType, setSocialType] = useState("");
 
+  const [agreeAll, setAgreeAll] = useState(false);
   const [termsAgree, setTermsAgree] = useState(false);
   const [priAgree, setPriAgree] = useState(false);
+  const [marketingAgree, setMarketingAgree] = useState(false);
 
   const [modalOn, setModalOn] = useState(false);
   const [modalCount, setModalCount] = useState(0);
@@ -80,9 +82,13 @@ function Join() {
       email: email,
       socialType: socialType,
       promo: false,
+      agreeYn: "N",
     };
     if (promo !== undefined) {
       data.promo = true;
+    }
+    if (marketingAgree) {
+      data.agreeYn = "Y";
     }
     console.log(data);
     let url = "/api/v1/user/join";
@@ -267,13 +273,30 @@ function Join() {
     }
   };
 
+  const handleAgreeAll = () => {
+    if (agreeAll) {
+      setAgreeAll(false);
+      setTermsAgree(false);
+      setPriAgree(false);
+      setMarketingAgree(false);
+    } else {
+      setAgreeAll(true);
+      setTermsAgree(true);
+      setPriAgree(true);
+      setMarketingAgree(true);
+    }
+  };
+
   return (
     <form onSubmit={e => join(e)}>
       <div
         id="joinArea"
         className="my-2 mx-auto p-2 border shadow-lg rounded-lg grid grid-cols-1 gap-3 bg-white w-full"
       >
-        <div className="text-lg font-medium text-center">환영합니다</div>
+        <div className="text-lg font-medium text-center">회원가입</div>
+        <div className="text-xs font-medium text-right">
+          <span className="text-red-500">*</span>는 필수 입력 항목입니다
+        </div>
         <div
           id="id"
           className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
@@ -286,7 +309,9 @@ function Join() {
               correctId || !dupId ? "xl:bg-gray-100" : "xl:bg-red-100"
             } `}
           >
-            아이디
+            <div>
+              <span className="text-red-500">*</span>아이디
+            </div>
           </label>
           <div className="xl:col-span-4">
             <input
@@ -332,7 +357,9 @@ function Join() {
               correctPwd ? "xl:bg-gray-100" : "xl:bg-red-100"
             } `}
           >
-            비밀번호
+            <div>
+              <span className="text-red-500">*</span>비밀번호
+            </div>
           </label>
           <div className="xl:col-span-4">
             <input
@@ -574,13 +601,31 @@ function Join() {
             />
           </div>
         </div>
-        <div id="agree" className="p-2 bg-gray-100 grid grid-cols-1 rounded">
+        <div className="border grid grid-cols-1 rounded px-2">
+          <div id="allAgree" className="grid grid-cols-7 gap-1">
+            <label
+              htmlFor="agreeAll"
+              className="text-sm font-neoextra text-left flex flex-col justify-center pl-2 py-2 col-span-6"
+            >
+              약관 전체동의 (선택포함)
+            </label>
+            <div className="flex flex-col justify-center">
+              <input
+                type="checkbox"
+                id="agreeAll"
+                onChange={handleAgreeAll}
+                checked={agreeAll}
+              />
+            </div>
+          </div>
+        </div>
+        <div id="agree" className="p-2 bg-gray-50 grid grid-cols-1 rounded">
           <div id="terms" className="grid grid-cols-7 gap-1">
             <label
               htmlFor="agreeTerms"
-              className="text-sm text-left flex flex-col justify-center pl-2 py-2 col-span-5"
+              className="text-sm text-left flex flex-col justify-center pl-2 py-2 col-span-5 text-stone-700"
             >
-              이용약관에 동의합니다
+              이용약관에 동의합니다 (필수)
             </label>
             <div>
               <button
@@ -606,9 +651,9 @@ function Join() {
           <div id="private" className="grid grid-cols-7 gap-1">
             <label
               htmlFor="agreePrivate"
-              className="text-sm text-left flex flex-col justify-center pl-2 py-2 col-span-5"
+              className="text-sm text-left flex flex-col justify-center pl-2 py-2 col-span-5 text-stone-700"
             >
-              개인정보 수집 및 이용에 동의합니다
+              개인정보 수집 및 이용에 동의합니다 (필수)
             </label>
             <div>
               <button
@@ -628,6 +673,22 @@ function Join() {
                 id="agreePrivate"
                 onChange={e => setPriAgree(!priAgree)}
                 checked={priAgree}
+              />
+            </div>
+          </div>
+          <div id="marketing" className="grid grid-cols-7 gap-1">
+            <label
+              htmlFor="agreeMarketing"
+              className="text-sm text-left flex flex-col justify-center pl-2 py-2 col-span-6 text-stone-700"
+            >
+              광고성 정보수신에 동의합니다 (선택)
+            </label>
+            <div className="flex flex-col justify-center">
+              <input
+                type="checkbox"
+                id="agreeMarketing"
+                onChange={e => setMarketingAgree(!marketingAgree)}
+                checked={marketingAgree}
               />
             </div>
           </div>

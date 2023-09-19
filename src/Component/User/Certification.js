@@ -10,6 +10,10 @@ function Certification() {
   const [tokenId, setTokenId] = useState("");
   const [encData, setEncData] = useState("");
   const [integrityValue, setIntegrityValue] = useState("");
+  const [kakao, setKakao] = useState(false);
+  const [kakaoId, setKakaoId] = useState("");
+  const [kakaoEmail, setKakaoEmail] = useState("");
+  const [socialType, setSocialType] = useState("");
   const parsed = queryString.parse(location.search);
   const token_version_id = parsed.token_version_id || "";
   const enc_data = parsed.enc_data || "";
@@ -20,10 +24,19 @@ function Certification() {
       getData();
     } else {
       doCertification();
-      console.log(token_version_id);
-      console.log(enc_data);
-      console.log(integrity_value);
     }
+    if (location.state) {
+      setKakao(true);
+      setKakaoId(location.state.id);
+      setKakaoEmail(location.state.email);
+      setSocialType(location.state.socialType);
+    } else {
+      setKakao(false);
+      setKakaoId("");
+      setKakaoEmail("");
+      setSocialType("");
+    }
+    console.log(kakao, kakaoId, kakaoEmail, socialType);
     //eslint-disable-next-line
   }, [location]);
 
@@ -38,6 +51,11 @@ function Certification() {
       .catch(e => {
         alert("오류가 발생했습니다 관리자에게 문의해 주세요", e);
       });
+  };
+
+  const certPopUp = e => {
+    e.preventDefault();
+    alert("팝업");
   };
 
   const doCertification = async () => {
@@ -59,7 +77,7 @@ function Certification() {
     <div className="container mx-auto h-full pt-10">
       <form
         action="https://nice.checkplus.co.kr/CheckPlusSafeModel/service.cb"
-        target="_blank"
+        onSubmit={certPopUp}
       >
         <input type="hidden" id="m" name="m" value="service" />
         <input
@@ -81,6 +99,7 @@ function Certification() {
         >
           <div className="w-full">
             <button
+              type="submit"
               className="transition duration-100 w-full p-2 bg-stone-700 hover:bg-stone-950 text-white rounded hover:animate-wiggle"
               disabled={integrityValue === ""}
             >

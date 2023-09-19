@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { clearUser } from "../../../Reducer/userSlice";
+
+import queryString from "query-string";
 
 import axios from "axios";
 
@@ -11,17 +13,28 @@ import PopupPostCode from "../../Kakao/PopupPostCode";
 import NewPwd from "./NewPwd";
 
 function EditUser(props) {
+  const location = useLocation();
+  const parsed = queryString.parse(location.search);
+  const code = parsed.code || "";
   const dispatch = useDispatch();
   const navi = useNavigate();
   const [userInfo, setUserInfo] = useState({});
   useEffect(() => {
     getUserInfo();
-    if (props.code) {
-      kakaoLoginCheck(props.code);
+    console.log(code);
+    if (code !== "") {
+      kakaoLoginCheck(code);
     }
     //setUserInfo(dummyUser);
     //eslint-disable-next-line
-  }, []);
+  }, [location]);
+
+  const kakaoLogin = e => {
+    const apiKey = "e8b025aca3eb87648da9d341528bca5a";
+    const redirectUrl = `${props.domain}/mypage/checked`;
+    const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${apiKey}&redirect_uri=${redirectUrl}&response_type=code`;
+    window.location.href = kakaoURL;
+  };
 
   //카카오연동해제
   const deleteKakao = async () => {
@@ -47,9 +60,16 @@ function EditUser(props) {
         },
       })
       .then(res => {
-        let mypageURL = `${props.domain}/mypage/checked`;
-        alert("연동이 완료되었습니다.");
-        window.location.href = mypageURL;
+        console.log(res);
+        if (res.data.code === "C000") {
+          let mypageURL = `${props.domain}/mypage/checked`;
+          alert("연동이 완료되었습니다.");
+          window.location.href = mypageURL;
+        } else {
+          let mypageURL = `${props.domain}/mypage/checked`;
+          alert(res.data.message);
+          window.location.href = mypageURL;
+        }
       })
       .catch(e => {
         console.log(e, "에러");
@@ -516,7 +536,7 @@ function EditUser(props) {
             ) : (
               <button
                 className="transition duration-100 w-full bg-yellow-300 hover:bg-yellow-500 p-2 text-black rounded hover:animate-wiggle"
-                onClick={props.kakaoLogin}
+                onClick={kakaoLogin}
               >
                 카카오 간편로그인
               </button>

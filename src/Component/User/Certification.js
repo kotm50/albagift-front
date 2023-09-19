@@ -57,8 +57,7 @@ function Certification() {
   };
 
   const certPopUp = e => {
-    e.preventDefault();
-    alert("팝업");
+    console.log("팝업");
   };
 
   const doCertification = async () => {

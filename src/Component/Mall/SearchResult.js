@@ -5,7 +5,6 @@ import { clearUser } from "../../Reducer/userSlice";
 import { getNewToken } from "../../Reducer/userSlice";
 import queryString from "query-string";
 import axios from "axios";
-import Search from "./Search";
 
 import Pagenate from "../Layout/Pagenate";
 
@@ -138,8 +137,7 @@ function SearchResult() {
   };
 
   return (
-    <div>
-      <Search user={user} keyword={keyword} />
+    <div className="container mx-auto">
       {load ? (
         <>
           <h3 className="text-lg xl:text-2xl p-2 bg-orange-50 rounded-lg mt-2 text-center xl:text-left">

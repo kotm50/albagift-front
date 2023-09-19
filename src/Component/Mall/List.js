@@ -8,7 +8,6 @@ import queryString from "query-string";
 
 import { getNewToken } from "../../Reducer/userSlice";
 
-import Search from "./Search";
 import Pagenate from "../Layout/Pagenate";
 import UserSection from "../User/UserSection";
 import Loading from "../Layout/Loading";
@@ -145,7 +144,6 @@ function List() {
       <div className="xl:container mx-auto">
         {loading ? <Loading /> : null}
         <UserSection />
-        <Search user={user} />
         {loaded ? (
           <div className="my-2 grid grid-cols-2 xl:grid-cols-5 gap-2 gap-y-10">
             {goods.map((good, idx) => (

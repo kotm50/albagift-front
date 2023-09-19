@@ -12,10 +12,6 @@ function Certification() {
   const [tokenId, setTokenId] = useState("");
   const [encData, setEncData] = useState("");
   const [integrityValue, setIntegrityValue] = useState("");
-  const [kakaoUser, setKakaoUser] = useState(false);
-  const [kakaoId, setKakaoId] = useState("");
-  const [kakaoEmail, setKakaoEmail] = useState("");
-  const [socialType, setSocialType] = useState("");
   const parsed = queryString.parse(location.search);
   const token_version_id = parsed.token_version_id || "";
   const enc_data = parsed.enc_data || "";
@@ -28,18 +24,6 @@ function Certification() {
     } else {
       doCertification();
     }
-    if (location.state) {
-      setKakaoUser(true);
-      setKakaoId(location.state.id);
-      setKakaoEmail(location.state.email);
-      setSocialType(location.state.socialType);
-    } else {
-      setKakaoUser(false);
-      setKakaoId("");
-      setKakaoEmail("");
-      setSocialType("");
-    }
-    console.log(kakaoUser, kakaoId, kakaoEmail, socialType);
     //eslint-disable-next-line
   }, [location]);
 
@@ -57,6 +41,7 @@ function Certification() {
   };
 
   const certPopUp = e => {
+    e.preventDefault();
     console.log("팝업");
   };
 

@@ -16,7 +16,7 @@ function Certification() {
   const token_version_id = parsed.token_version_id || "";
   const enc_data = parsed.enc_data || "";
   const integrity_value = parsed.integrity_value || "";
-
+  /*
   // useState를 사용하여 폼 데이터 상태 관리
   const [formAction, setFormAction] = useState("");
 
@@ -29,6 +29,7 @@ function Certification() {
         `m=service&integrity_value=${integrityValue}&token_version_id=${tokenId}&enc_data=${encData}`
     );
   }, [integrityValue, tokenId, encData]);
+  */
 
   useEffect(() => {
     console.log(kakao);

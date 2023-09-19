@@ -56,21 +56,18 @@ function Certification() {
   const certPopUp = e => {
     e.preventDefault();
     console.log("팝업");
-    let myForm = document.popForm;
-    let url = "https://nice.checkplus.co.kr/CheckPlusSafeModel/service.cb";
+
+    // 폼 데이터를 URL 파라미터로 포함시켜 URL 생성
+    const popupURL =
+      `https://nice.checkplus.co.kr/CheckPlusSafeModel/service.cb?` +
+      `m=service&integrity_value=${integrityValue}&token_version_id=${tokenId}&enc_data=${encData}`;
+
+    // 새 창 열기
     window.open(
-      "",
+      popupURL,
       "popForm",
-      "toolbar=no, width=480, height=900, directories=no, status=no,    scrollorbars=no, resizable=no"
+      "toolbar=no, width=480, height=900, directories=no, status=no, scrollorbars=no, resizable=no"
     );
-    myForm.action = url;
-    myForm.method = "post";
-    myForm.target = "popForm";
-    myForm.m = "service";
-    myForm.integrity_value = integrityValue;
-    myForm.token_version_id = tokenId;
-    myForm.enc_data = encData;
-    myForm.submit();
   };
 
   const doCertification = async () => {

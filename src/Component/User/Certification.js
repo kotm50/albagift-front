@@ -80,9 +80,19 @@ function Certification() {
       .post("/api/v1/common/nice/dec/result", data)
       .then(res => {
         console.log(res);
+        // 팝업 창을 닫는다
+        window.close();
+
+        // 지정한 페이지로 이동한다
+        window.location.href = "https://albagift.shop/join"; // 성공한 페이지 URL로 변경
       })
       .catch(e => {
         alert("오류가 발생했습니다 관리자에게 문의해 주세요", e);
+        // 팝업 창을 닫는다
+        window.close();
+
+        // 지정한 페이지로 이동한다
+        window.location.href = "https://albagift.shop/"; // 성공한 페이지 URL로 변경
       });
   };
   return (

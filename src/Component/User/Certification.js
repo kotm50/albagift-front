@@ -4,13 +4,15 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 
 import queryString from "query-string";
+import { useSelector } from "react-redux";
 
 function Certification() {
   const location = useLocation();
+  const kakao = useSelector(state => state.kakao);
   const [tokenId, setTokenId] = useState("");
   const [encData, setEncData] = useState("");
   const [integrityValue, setIntegrityValue] = useState("");
-  const [kakao, setKakao] = useState(false);
+  const [kakaoUser, setKakaoUser] = useState(false);
   const [kakaoId, setKakaoId] = useState("");
   const [kakaoEmail, setKakaoEmail] = useState("");
   const [socialType, setSocialType] = useState("");
@@ -20,23 +22,24 @@ function Certification() {
   const integrity_value = parsed.integrity_value || "";
 
   useEffect(() => {
+    console.log(kakao);
     if (integrity_value === "" && enc_data === "" && token_version_id === "") {
       getData();
     } else {
       doCertification();
     }
     if (location.state) {
-      setKakao(true);
+      setKakaoUser(true);
       setKakaoId(location.state.id);
       setKakaoEmail(location.state.email);
       setSocialType(location.state.socialType);
     } else {
-      setKakao(false);
+      setKakaoUser(false);
       setKakaoId("");
       setKakaoEmail("");
       setSocialType("");
     }
-    console.log(kakao, kakaoId, kakaoEmail, socialType);
+    console.log(kakaoUser, kakaoId, kakaoEmail, socialType);
     //eslint-disable-next-line
   }, [location]);
 

@@ -97,36 +97,18 @@ function Certification() {
   };
   return (
     <div className="container mx-auto h-full pt-10">
-      <form name="popForm" action={formAction} onSubmit={certPopUp}>
-        <input type="hidden" id="m" name="m" value="service" />
-        <input
-          type="hidden"
-          id="token_version_id"
-          name="token_version_id"
-          value={tokenId}
-        />
-        <input type="hidden" id="enc_data" name="enc_data" value={encData} />
-        <input
-          type="hidden"
-          id="integrity_value"
-          name="integrity_value"
-          value={integrityValue}
-        />
-        <div
-          id="loginArea"
-          className="mx-auto p-2 grid grid-cols-1 gap-3 w-full"
-        >
-          <div className="w-full">
-            <button
-              type="submit"
-              className="transition duration-100 w-full p-2 bg-stone-700 hover:bg-stone-950 text-white rounded hover:animate-wiggle"
-              disabled={integrityValue === ""}
-            >
-              본인인증
-            </button>
-          </div>
+      <div id="loginArea" className="mx-auto p-2 grid grid-cols-1 gap-3 w-full">
+        <div className="w-full">
+          <button
+            type="submit"
+            className="transition duration-100 w-full p-2 bg-stone-700 hover:bg-stone-950 text-white rounded hover:animate-wiggle"
+            disabled={integrityValue === ""}
+            onClick={certPopUp}
+          >
+            본인인증
+          </button>
         </div>
-      </form>
+      </div>
     </div>
   );
 }

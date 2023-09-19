@@ -60,7 +60,7 @@ function Certification() {
     // 폼 데이터를 URL 파라미터로 포함시켜 URL 생성
     const popupURL =
       `https://nice.checkplus.co.kr/CheckPlusSafeModel/service.cb?` +
-      `m=service&integrity_value=${integrityValue}&token_version_id=${tokenId}&enc_data=${encData}`;
+      `m=service&token_version_id=${tokenId}&enc_data=${encData}&integrity_value=${integrityValue}`;
     console.log(popupURL);
     // 새 창 열기
     window.open(

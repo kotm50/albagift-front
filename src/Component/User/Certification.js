@@ -43,6 +43,21 @@ function Certification() {
   const certPopUp = e => {
     e.preventDefault();
     console.log("팝업");
+    let myForm = document.popForm;
+    let url = "https://nice.checkplus.co.kr/CheckPlusSafeModel/service.cb";
+    window.open(
+      "",
+      "popForm",
+      "toolbar=no, width=480, height=900, directories=no, status=no,    scrollorbars=no, resizable=no"
+    );
+    myForm.action = url;
+    myForm.method = "post";
+    myForm.target = "popForm";
+    myForm.m = "service";
+    myForm.integrity_value = integrityValue;
+    myForm.token_version_id = tokenId;
+    myForm.enc_data = encData;
+    myForm.submit();
   };
 
   const doCertification = async () => {
@@ -63,6 +78,7 @@ function Certification() {
   return (
     <div className="container mx-auto h-full pt-10">
       <form
+        name="popForm"
         action="https://nice.checkplus.co.kr/CheckPlusSafeModel/service.cb"
         onSubmit={certPopUp}
       >

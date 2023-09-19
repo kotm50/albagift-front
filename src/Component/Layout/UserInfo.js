@@ -78,7 +78,7 @@ function UserInfo() {
               로그인
             </Link>{" "}
             |{" "}
-            <Link to="/join" className="hover:text-indigo-500">
+            <Link to="/certification" className="hover:text-indigo-500">
               회원가입
             </Link>
           </>
@@ -135,7 +135,7 @@ function UserInfo() {
               <Link to="/login" className="hover:text-indigo-500">
                 로그인
               </Link>
-              <Link to="/join" className="hover:text-indigo-500">
+              <Link to="/certification" className="hover:text-indigo-500">
                 회원가입
               </Link>
             </div>

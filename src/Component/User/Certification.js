@@ -17,6 +17,19 @@ function Certification() {
   const enc_data = parsed.enc_data || "";
   const integrity_value = parsed.integrity_value || "";
 
+  // useState를 사용하여 폼 데이터 상태 관리
+  const [formAction, setFormAction] = useState("");
+
+  // ...
+
+  useEffect(() => {
+    // integrityValue, tokenId, encData 값이 변경될 때마다 폼 액션 업데이트
+    setFormAction(
+      `https://nice.checkplus.co.kr/CheckPlusSafeModel/service.cb?` +
+        `m=service&integrity_value=${integrityValue}&token_version_id=${tokenId}&enc_data=${encData}`
+    );
+  }, [integrityValue, tokenId, encData]);
+
   useEffect(() => {
     console.log(kakao);
     if (integrity_value === "" && enc_data === "" && token_version_id === "") {
@@ -77,11 +90,7 @@ function Certification() {
   };
   return (
     <div className="container mx-auto h-full pt-10">
-      <form
-        name="popForm"
-        action="https://nice.checkplus.co.kr/CheckPlusSafeModel/service.cb"
-        onSubmit={certPopUp}
-      >
+      <form name="popForm" action={formAction} onSubmit={certPopUp}>
         <input type="hidden" id="m" name="m" value="service" />
         <input
           type="hidden"

@@ -61,7 +61,7 @@ function Certification() {
     const popupURL =
       `https://nice.checkplus.co.kr/CheckPlusSafeModel/service.cb?` +
       `m=service&integrity_value=${integrityValue}&token_version_id=${tokenId}&enc_data=${encData}`;
-
+    console.log(popupURL);
     // 새 창 열기
     window.open(
       popupURL,

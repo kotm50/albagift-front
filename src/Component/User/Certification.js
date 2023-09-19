@@ -53,7 +53,7 @@ function Certification() {
         alert("오류가 발생했습니다 관리자에게 문의해 주세요", e);
       });
   };
-
+  /*
   const certPopUp = e => {
     e.preventDefault();
     console.log("팝업");
@@ -70,6 +70,7 @@ function Certification() {
       "toolbar=no, width=480, height=900, directories=no, status=no, scrollorbars=no, resizable=no"
     );
   };
+  */
 
   const doCertification = async () => {
     const data = {
@@ -98,18 +99,38 @@ function Certification() {
   };
   return (
     <div className="container mx-auto h-full pt-10">
-      <div id="loginArea" className="mx-auto p-2 grid grid-cols-1 gap-3 w-full">
-        <div className="w-full">
-          <button
-            type="submit"
-            className="transition duration-100 w-full p-2 bg-stone-700 hover:bg-stone-950 text-white rounded hover:animate-wiggle"
-            disabled={integrityValue === ""}
-            onClick={certPopUp}
-          >
-            본인인증
-          </button>
+      <form
+        action="https://nice.checkplus.co.kr/CheckPlusSafeModel/service.cb"
+        target="_blank"
+      >
+        <input type="hidden" id="m" name="m" value="service" />
+        <input
+          type="hidden"
+          id="token_version_id"
+          name="token_version_id"
+          value={tokenId}
+        />
+        <input type="hidden" id="enc_data" name="enc_data" value={encData} />
+        <input
+          type="hidden"
+          id="integrity_value"
+          name="integrity_value"
+          value={integrityValue}
+        />
+        <div
+          id="loginArea"
+          className="mx-auto p-2 grid grid-cols-1 gap-3 w-full"
+        >
+          <div className="w-full">
+            <button
+              className="transition duration-100 w-full p-2 bg-stone-700 hover:bg-stone-950 text-white rounded hover:animate-wiggle"
+              disabled={integrityValue === ""}
+            >
+              본인인증
+            </button>
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

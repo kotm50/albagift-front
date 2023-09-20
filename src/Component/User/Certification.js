@@ -68,7 +68,6 @@ function Certification() {
       <form
         id="cert"
         action="https://nice.checkplus.co.kr/CheckPlusSafeModel/service.cb"
-        target="_blank"
       >
         <input type="hidden" id="m" name="m" value="service" />
         <input

@@ -31,6 +31,7 @@ import LoginLog from "./Component/Admin/LoginLog";
 import Cancel from "./Component/User/Mypage/Cancel";
 import PointList from "./Component/Admin/PointList";
 import Certification from "./Component/User/Certification";
+import PopupTest from "./Component/PopupTest";
 
 function App() {
   const thisLocation = useLocation();
@@ -73,6 +74,7 @@ function App() {
             <Route path="pointlist" element={<PointList />} />
           </Route>
           <Route path="/test" element={<KakaoTest />} />
+          <Route path="/popup" element={<PopupTest />} />
           <Route path="/board" element={<Board />}>
             <Route path="list/:id?" element={<BoardList />} />
             <Route path="write/:pid?" element={<BoardWrite />} />

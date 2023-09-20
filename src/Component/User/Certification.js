@@ -1,38 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import axios from "axios";
 
 import queryString from "query-string";
-import { useSelector } from "react-redux";
+import Loading from "../Layout/Loading";
 
 function Certification() {
   const location = useLocation();
-  const kakao = useSelector(state => state.kakao);
-  const [tokenId, setTokenId] = useState("");
-  const [encData, setEncData] = useState("");
-  const [integrityValue, setIntegrityValue] = useState("");
+
   const parsed = queryString.parse(location.search);
   const token_version_id = parsed.token_version_id || "";
   const enc_data = parsed.enc_data || "";
   const integrity_value = parsed.integrity_value || "";
-  /*
-  // useState를 사용하여 폼 데이터 상태 관리
-  const [formAction, setFormAction] = useState("");
 
-  // ...
-
-  useEffect(() => {
-    // integrityValue, tokenId, encData 값이 변경될 때마다 폼 액션 업데이트
-    setFormAction(
-      `https://nice.checkplus.co.kr/CheckPlusSafeModel/service.cb?` +
-        `m=service&integrity_value=${integrityValue}&token_version_id=${tokenId}&enc_data=${encData}`
-    );
-  }, [integrityValue, tokenId, encData]);
-  */
+  let tokenId = "";
+  let encData = "";
+  let integrityValue = "";
 
   useEffect(() => {
-    console.log(kakao);
     if (integrity_value === "" && enc_data === "" && token_version_id === "") {
       getData();
     } else {
@@ -41,65 +27,46 @@ function Certification() {
     //eslint-disable-next-line
   }, [location]);
 
+  useEffect(() => {
+    console.log(tokenId, encData, integrityValue);
+    if (tokenId !== "" && encData !== "" && integrityValue) {
+      const formElement = document.getElementById("yourFormId"); // 여기서 'yourFormId'를 폼의 id로 변경해야 합니다.
+      console.log(formElement);
+      if (formElement) {
+        formElement.submit(); // 폼 자동 제출
+      }
+    }
+    //eslint-disable-next-line
+  }, [tokenId, encData, integrityValue]);
+
   const getData = async () => {
-    axios
+    await axios
       .post("/api/v1/common/nice/sec/req")
       .then(res => {
-        setTokenId(res.data.tokenVersionId);
-        setEncData(res.data.encData);
-        setIntegrityValue(res.data.integrityValue);
+        tokenId = res.data.tokenVersionId;
+        encData = res.data.encData;
+        integrityValue = res.data.integrityValue;
       })
       .catch(e => {
         alert("오류가 발생했습니다 관리자에게 문의해 주세요", e);
+        window.opener.parentCallback({});
+        window.close();
       });
   };
-  /*
-  const certPopUp = e => {
-    e.preventDefault();
-    console.log("팝업");
-
-    // 폼 데이터를 URL 파라미터로 포함시켜 URL 생성
-    const popupURL =
-      `https://nice.checkplus.co.kr/CheckPlusSafeModel/service.cb?` +
-      `m=service&token_version_id=${tokenId}&enc_data=${encData}&integrity_value=${integrityValue}`;
-    console.log(popupURL);
-    // 새 창 열기
-    window.open(
-      popupURL,
-      "popForm",
-      "toolbar=no, width=480, height=900, directories=no, status=no, scrollorbars=no, resizable=no"
-    );
-  };
-  */
-
   const doCertification = async () => {
     const data = {
       tokenVersionId: token_version_id,
       encData: enc_data,
       integrityValue: integrity_value,
     };
-    axios
-      .post("/api/v1/common/nice/dec/result", data)
-      .then(res => {
-        console.log(res);
-        // 팝업 창을 닫는다
-        window.close();
 
-        // 지정한 페이지로 이동한다
-        window.location.href = "https://albagift.shop/join"; // 성공한 페이지 URL로 변경
-      })
-      .catch(e => {
-        alert("오류가 발생했습니다 관리자에게 문의해 주세요", e);
-        // 팝업 창을 닫는다
-        window.close();
-
-        // 지정한 페이지로 이동한다
-        window.location.href = "https://albagift.shop/"; // 성공한 페이지 URL로 변경
-      });
+    window.opener.parentCallback(data);
+    window.close();
   };
   return (
     <div className="container mx-auto h-full pt-10">
       <form
+        id="cert"
         action="https://nice.checkplus.co.kr/CheckPlusSafeModel/service.cb"
         target="_blank"
       >
@@ -117,20 +84,12 @@ function Certification() {
           name="integrity_value"
           value={integrityValue}
         />
-        <div
-          id="loginArea"
-          className="mx-auto p-2 grid grid-cols-1 gap-3 w-full"
-        >
-          <div className="w-full">
-            <button
-              className="transition duration-100 w-full p-2 bg-stone-700 hover:bg-stone-950 text-white rounded hover:animate-wiggle"
-              disabled={integrityValue === ""}
-            >
-              본인인증
-            </button>
-          </div>
-        </div>
       </form>
+      <div className="fixed z-50 bg-white top-0 bottom-0 left-0 right-0 w-screen h-screen">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <Loading />
+        </div>
+      </div>
     </div>
   );
 }

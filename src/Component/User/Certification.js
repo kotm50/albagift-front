@@ -14,10 +14,6 @@ function Certification() {
   const enc_data = parsed.enc_data || "";
   const integrity_value = parsed.integrity_value || "";
 
-  let tokenId = "";
-  let encData = "";
-  let integrityValue = "";
-
   useEffect(() => {
     if (integrity_value === "" && enc_data === "" && token_version_id === "") {
       getData();
@@ -27,25 +23,29 @@ function Certification() {
     //eslint-disable-next-line
   }, [location]);
 
-  useEffect(() => {
-    console.log(tokenId, encData, integrityValue);
-    if (tokenId !== "" && encData !== "" && integrityValue) {
-      const formElement = document.getElementById("yourFormId"); // 여기서 'yourFormId'를 폼의 id로 변경해야 합니다.
-      console.log(formElement);
-      if (formElement) {
-        formElement.submit(); // 폼 자동 제출
-      }
+  const autoSubmit = (t, e, i) => {
+    const formElement = document.getElementById("cert");
+    if (formElement) {
+      // 폼 엘리먼트를 찾았을 때만 폼 제출
+      formElement.token_version_id.value = t;
+      formElement.enc_data.value = e;
+      formElement.integrity_value.value = i;
+      formElement.submit();
+    } else {
+      console.error("폼 엘리먼트를 찾을 수 없습니다.");
+      // 폼 엘리먼트를 찾을 수 없는 경우에 대한 처리 추가 가능
     }
-    //eslint-disable-next-line
-  }, [tokenId, encData, integrityValue]);
+  };
 
   const getData = async () => {
     await axios
       .post("/api/v1/common/nice/sec/req")
       .then(res => {
-        tokenId = res.data.tokenVersionId;
-        encData = res.data.encData;
-        integrityValue = res.data.integrityValue;
+        autoSubmit(
+          res.data.tokenVersionId,
+          res.data.encData,
+          res.data.integrityValue
+        );
       })
       .catch(e => {
         alert("오류가 발생했습니다 관리자에게 문의해 주세요", e);
@@ -75,14 +75,14 @@ function Certification() {
           type="hidden"
           id="token_version_id"
           name="token_version_id"
-          value={tokenId}
+          value=""
         />
-        <input type="hidden" id="enc_data" name="enc_data" value={encData} />
+        <input type="hidden" id="enc_data" name="enc_data" value="" />
         <input
           type="hidden"
           id="integrity_value"
           name="integrity_value"
-          value={integrityValue}
+          value=""
         />
       </form>
       <div className="fixed z-50 bg-white top-0 bottom-0 left-0 right-0 w-screen h-screen">

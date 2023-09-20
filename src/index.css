@@ -230,3 +230,12 @@ div.footer-top {
 .kakaobtn:hover {
   background-color:#e5cf00;
 }
+
+.popupArea {
+  position:fixed;
+  background-color:white;
+  top:0;
+  left:0;
+  width:480px;
+  height:900px;
+}

@@ -64,7 +64,7 @@ function Certification() {
     window.close();
   };
   return (
-    <div className="container mx-auto h-full pt-10">
+    <div>
       <form
         id="cert"
         action="https://nice.checkplus.co.kr/CheckPlusSafeModel/service.cb"
@@ -84,10 +84,8 @@ function Certification() {
           value=""
         />
       </form>
-      <div className="fixed z-50 bg-white top-0 bottom-0 left-0 right-0 w-screen h-screen">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-          <Loading />
-        </div>
+      <div className="popupArea">
+        <Loading />
       </div>
     </div>
   );

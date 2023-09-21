@@ -1,13 +1,18 @@
 import { useState, useEffect } from "react";
 import giftbox from "../../Asset/giftbox.png";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+
+import queryString from "query-string";
 
 import axios from "axios";
 
 function Cert() {
+  const navi = useNavigate();
   const location = useLocation();
-  const [certData, setCertData] = useState({});
-  const [socialData, setSocialData] = useState({});
+  const parsed = queryString.parse(location.search);
+  const gubun = parsed.gubun || "join";
+  const [certData, setCertData] = useState("");
+  const [socialData, setSocialData] = useState("");
 
   useEffect(() => {
     if (location.state) {
@@ -30,10 +35,15 @@ function Cert() {
   };
 
   const certToBack = async d => {
-    console.log(d);
+    let data = d;
+    data.gubun = gubun;
+
     await axios
-      .post("/api/v1/common/nice/dec/result", d)
-      .then(res => console.log(res))
+      .post("/api/v1/user/nice/dec/result", data)
+      .then(res => {
+        console.log(res);
+        //navi("/join", { state: { uid: res.data.uid, socialUser: socialData } });
+      })
       .catch(e => console.log(e));
   };
   return (
@@ -43,8 +53,13 @@ function Cert() {
         환영합니다!
       </h1>
       <div className="text-sm xl:text-base font-neo mb-3">
-        원활한 이용을 위해 본인인증을 진행합니다
+        원활한 이용을 위해 본인인증 후 회원가입을 진행합니다
       </div>
+      {socialData !== "" ? (
+        <div className="text-sm xl:text-base font-neo mb-3">
+          최초 1회 진행 후 카카오톡 계정으로 간편하게 로그인 가능합니다
+        </div>
+      ) : null}
       <div className="absolute z-10 bottom-20 right-10 w-64 max-w-full">
         <img src={giftbox} alt="선물상자" className="w-full drop-shadow-lg" />
       </div>

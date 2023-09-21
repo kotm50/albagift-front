@@ -169,7 +169,7 @@ function Login() {
         if (res.data.code === "C001") {
           console.log(data);
           alert(res.data.message);
-          //navi("/cert");
+          navi("/cert", { state: { socialUser: data } });
         } else {
           dispatch(
             loginUser({

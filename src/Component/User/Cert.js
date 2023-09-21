@@ -1,23 +1,21 @@
-import { useState /*useEffect*/ } from "react";
+import { useState, useEffect } from "react";
 import giftbox from "../../Asset/giftbox.png";
-//import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import axios from "axios";
 
 function Cert() {
-  //const location = useLocation();
+  const location = useLocation();
   const [certData, setCertData] = useState({});
-  //const [socialData, setSocialData] = useState("");
-  /*
+  const [socialData, setSocialData] = useState({});
+
   useEffect(() => {
     if (location.state) {
-      setSocialData({
-
-      })
+      setSocialData(location.state.socialUser);
     }
     //eslint-disable-next-line
   }, []);
-  */
+
   const doCert = () => {
     window.open(
       "/certification",
@@ -59,6 +57,7 @@ function Cert() {
         </button>
       </div>
       <div className="hidden">
+        {socialData.id ? socialData.id : null}
         {certData.tokenVersionId ? "Get Token" : null}
         {certData.encData ? "Get EncData" : null}
         {certData.integrityValue ? "Get IntegrityValue" : null}

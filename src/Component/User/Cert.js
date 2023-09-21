@@ -32,6 +32,7 @@ function Cert() {
   };
 
   const certToBack = async d => {
+    console.log(d);
     await axios
       .post("/api/v1/common/nice/dec/result", d)
       .then(res => console.log(res))

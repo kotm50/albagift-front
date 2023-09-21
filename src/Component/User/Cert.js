@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import giftbox from "../../Asset/giftbox.png";
-import { useNavigate, useLocation } from "react-router-dom";
+import { /*useNavigate*/ useLocation } from "react-router-dom";
 
 import queryString from "query-string";
 
 import axios from "axios";
 
 function Cert() {
-  const navi = useNavigate();
+  //const navi = useNavigate();
   const location = useLocation();
   const parsed = queryString.parse(location.search);
   const gubun = parsed.gubun || "join";

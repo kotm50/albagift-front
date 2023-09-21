@@ -2,7 +2,7 @@ import { useState /*useEffect*/ } from "react";
 import giftbox from "../../Asset/giftbox.png";
 //import { useLocation } from "react-router-dom";
 
-//import axios from "axios";
+import axios from "axios";
 
 function Cert() {
   //const location = useLocation();
@@ -26,11 +26,17 @@ function Cert() {
     );
 
     window.parentCallback = d => {
-      console.log(d);
       setCertData(d);
+      certToBack(d);
     };
   };
 
+  const certToBack = async d => {
+    await axios
+      .post("/api/v1/common/nice/dec/result", d)
+      .then(res => console.log(res))
+      .catch(e => console.log(e));
+  };
   return (
     <div className="mx-auto bg-white certArea py-5">
       <h1 className="text-xl xl:text-2xl font-neoextra mb-3">

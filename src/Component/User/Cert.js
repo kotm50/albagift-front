@@ -2,6 +2,8 @@ import { useState /*useEffect*/ } from "react";
 import giftbox from "../../Asset/giftbox.png";
 //import { useLocation } from "react-router-dom";
 
+import axios from "axios";
+
 function Cert() {
   //const location = useLocation();
   const [certData, setCertData] = useState({});
@@ -24,8 +26,12 @@ function Cert() {
     );
 
     window.parentCallback = d => {
-      setCertData(d);
+      certToBack(d);
     };
+  };
+
+  const certToBack = async d => {
+    console.log(d);
   };
   return (
     <div className="mx-auto bg-white certArea py-5">

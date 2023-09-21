@@ -161,12 +161,10 @@ function Login() {
   };
 
   const kakaoLoginCheck = async code => {
-    console.log("카카오");
     const loginUrl = `/api/v1/user/login/kakao?code=${code}`;
     await axios
       .get(loginUrl)
       .then(res => {
-        console.log(res);
         const data = res.data.socialUser;
         if (res.data.code === "C001") {
           console.log(data);
@@ -183,7 +181,7 @@ function Login() {
               admin: false,
             })
           );
-          navi("/");
+          //navi("/");
         }
       })
       .catch(e => {

@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
+import dayjs from "dayjs";
+
 import Login from "./Component/User/Login";
 
 import Header from "./Component/Layout/Header";
@@ -32,6 +34,7 @@ import Cancel from "./Component/User/Mypage/Cancel";
 import PointList from "./Component/Admin/PointList";
 import Certification from "./Component/User/Certification";
 import PopupTest from "./Component/PopupTest";
+import Cert from "./Component/User/Cert";
 
 function App() {
   const thisLocation = useLocation();
@@ -42,10 +45,11 @@ function App() {
     });
     // eslint-disable-next-line
   }, [thisLocation]);
+  const now = dayjs().format("YYYY년MM월DD일");
   return (
     <>
       <Helmet>
-        <title>알바선물 | 면접보고 선물받자! v230726</title>
+        <title>알바선물 | 면접보고 선물받자! {now}</title>
       </Helmet>
       <Header />
       <div
@@ -81,6 +85,7 @@ function App() {
             <Route path="detail/:pid?" element={<BoardDetail />} />
           </Route>
           <Route path="/certification" element={<Certification />} />
+          <Route path="/cert" element={<Cert />} />
         </Routes>
       </div>
       <Footer />

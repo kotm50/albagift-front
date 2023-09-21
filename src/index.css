@@ -239,3 +239,11 @@ div.footer-top {
   width:480px;
   height:900px;
 }
+
+.certArea {
+  position:relative;
+  width:480px;
+  padding:2rem;
+  max-width: 100%;
+  min-height:600px;
+}

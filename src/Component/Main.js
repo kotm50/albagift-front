@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-import { useDispatch, useSelector } from "react-redux";
-import { clearKakao } from "../Reducer/kakaoSlice";
-
 import Recommend from "./Main/Recommend";
 import MainCategory from "./Main/MainCategory";
 import Jumbotron from "./Main/Jumbotron";
@@ -12,15 +9,10 @@ import UserSection from "./User/UserSection";
 import Loading from "./Layout/Loading";
 
 function Main() {
-  const dispatch = useDispatch();
-  const kakao = useSelector(state => state.kakao);
   const location = useLocation();
   const [cateNums, setCateNums] = useState("");
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    if (kakao.id !== "") {
-      dispatch(clearKakao());
-    }
     getCateNums();
     //eslint-disable-next-line
   }, [location]);

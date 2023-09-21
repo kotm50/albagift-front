@@ -5,7 +5,6 @@ import axios from "axios";
 
 import { useSelector, useDispatch } from "react-redux";
 import { loginUser } from "../../Reducer/userSlice";
-import { inputKakao } from "../../Reducer/kakaoSlice";
 
 import { RiKakaoTalkFill } from "react-icons/ri";
 
@@ -172,14 +171,7 @@ function Login() {
         if (res.data.code === "C001") {
           console.log(data);
           alert(res.data.message);
-          dispatch(
-            inputKakao({
-              id: data.id,
-              email: data.email,
-              socialType: data.socialType,
-            })
-          );
-          /*navi("/certification");*/
+          //navi("/cert");
         } else {
           dispatch(
             loginUser({

@@ -78,7 +78,7 @@ function Join() {
       phone: inputPhone,
       birth: inputBirth,
       mainAddr: mainAddr,
-      gender: gender,
+      gender: Number(gender),
       email: email,
       socialType: socialType,
       promo: false,
@@ -544,7 +544,7 @@ function Join() {
               <input
                 id="bordered-radio-1"
                 type="radio"
-                value="F"
+                value="0"
                 name="bordered-radio"
                 className="text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 "
                 checked={gender === "F"}
@@ -561,7 +561,7 @@ function Join() {
               <input
                 id="bordered-radio-2"
                 type="radio"
-                value="M"
+                value="1"
                 name="bordered-radio"
                 className="text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
                 checked={gender === "M"}

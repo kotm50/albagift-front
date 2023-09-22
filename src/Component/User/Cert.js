@@ -12,11 +12,11 @@ function Cert() {
   const parsed = queryString.parse(location.search);
   const gubun = parsed.gubun || "join";
   const [certData, setCertData] = useState("");
-  const [socialData, setSocialData] = useState("");
+  const [socialUser, setSocialUser] = useState("");
 
   useEffect(() => {
     if (location.state) {
-      setSocialData(location.state.socialUser);
+      setSocialUser(location.state.socialUser);
     }
     //eslint-disable-next-line
   }, []);
@@ -37,12 +37,12 @@ function Cert() {
   const certToBack = async d => {
     let data = d;
     data.gubun = gubun;
-
+    console.log(data);
     await axios
       .post("/api/v1/user/nice/dec/result", data)
       .then(res => {
         console.log(res);
-        //navi("/join", { state: { uid: res.data.uid, socialUser: socialData } });
+        //navi("/join", { state: { tempId: res.data.tempId, socialUser: socialUser } });
       })
       .catch(e => console.log(e));
   };
@@ -55,7 +55,7 @@ function Cert() {
       <div className="text-sm xl:text-base font-neo mb-3">
         원활한 이용을 위해 본인인증 후 회원가입을 진행합니다
       </div>
-      {socialData !== "" ? (
+      {socialUser !== "" ? (
         <div className="text-sm xl:text-base font-neo mb-3">
           최초 1회 진행 후 카카오톡 계정으로 간편하게 로그인 가능합니다
         </div>
@@ -72,7 +72,7 @@ function Cert() {
         </button>
       </div>
       <div className="hidden">
-        {socialData.id ? socialData.id : null}
+        {socialUser.id ? socialUser.id : null}
         {certData.tokenVersionId ? "Get Token" : null}
         {certData.encData ? "Get EncData" : null}
         {certData.integrityValue ? "Get IntegrityValue" : null}

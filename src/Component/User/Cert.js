@@ -101,7 +101,7 @@ function Cert() {
             아래 계정으로 로그인 해 주세요.
           </div>
           <div className="absolute z-20 w-60 bottom-30 left-1/2 -translate-x-1/2">
-            <div className="py-3 bg-blue-100 w-full rounded-full text-center">
+            <div className="py-3 bg-blue-100 w-full rounded-full text-center bottom-40">
               <span className="text-sm">가입한 아이디</span>
               <br />
               <span className="text-lg font-neoextra">{tid}</span>

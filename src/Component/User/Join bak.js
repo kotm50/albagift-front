@@ -23,7 +23,13 @@ function Join() {
   const [dupId, setDupId] = useState(true);
   const [correctPwdChk, setCorrectPwdChk] = useState(true);
   const [correctPwd, setCorrectPwd] = useState(true);
+  const [name, setName] = useState("");
+  const [inputPhone, setInputPhone] = useState("");
+  const [displayPhone, setDisplayPhone] = useState("");
+  const [inputBirth, setInputBirth] = useState("");
+  const [displayBirth, setDisplayBirth] = useState("");
   const [mainAddr, setMainAddr] = useState("주소찾기를 눌러주세요");
+  const [gender, setGender] = useState("");
   const [email, setEmail] = useState("");
   const [socialType, setSocialType] = useState("");
 
@@ -68,7 +74,11 @@ function Join() {
       userId: id,
       socialId: socialId,
       userPwd: pwd,
+      userName: name,
+      phone: inputPhone,
+      birth: inputBirth,
       mainAddr: mainAddr,
+      gender: gender,
       email: email,
       socialType: socialType,
       promo: false,
@@ -116,6 +126,12 @@ function Join() {
     }
     if (!correctPwdChk) {
       return "비밀번호 확인에 실패했습니다";
+    }
+    if (name === "") {
+      return "이름이 입력되지 않았습니다";
+    }
+    if (inputPhone === "") {
+      return "연락처가 입력되지 않았습니다";
     }
     if (!termsAgree) {
       return "이용약관에 동의하지 않으면 가입이 불가능 합니다";
@@ -203,7 +219,6 @@ function Join() {
     setIsPopupOpen(false);
   };
   //성별 바꾸기 라디오버튼
-  /*
   const handleRadioChange = event => {
     setGender(event.target.value);
   };
@@ -235,7 +250,6 @@ function Join() {
   };
 
   //생일 중간에 '년월일' 표시하기.
-
   const handleBirth = e => {
     if (e !== undefined) {
       const rawValue = e.target.value.replace(/-/g, ""); // remove all dashes
@@ -258,7 +272,7 @@ function Join() {
       }
     }
   };
-*/
+
   const handleAgreeAll = () => {
     if (agreeAll) {
       setAgreeAll(false);
@@ -414,6 +428,72 @@ function Join() {
           </div>
         )}
         <div
+          id="name"
+          className="grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border"
+        >
+          <label
+            htmlFor="inputName"
+            className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100"
+          >
+            이름
+          </label>
+          <div className="xl:col-span-4">
+            <input
+              type="text"
+              id="inputName"
+              className="border xl:border-0 p-2 w-full text-sm"
+              value={name}
+              onChange={e => setName(e.currentTarget.value)}
+              onBlur={e => setName(e.currentTarget.value)}
+              placeholder="이름을 입력해 주세요"
+            />
+          </div>
+        </div>
+        <div
+          id="phone"
+          className="grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border"
+        >
+          <label
+            htmlFor="inputPhone"
+            className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100"
+          >
+            휴대폰번호
+          </label>
+          <div className="xl:col-span-4">
+            <input
+              type="text"
+              id="inputPhone"
+              className="border xl:border-0 p-2 w-full text-sm"
+              value={displayPhone}
+              onChange={handlePhone}
+              onBlur={handlePhone}
+              placeholder="숫자만 입력해 주세요 - 01012345678"
+            />
+          </div>
+        </div>
+        <div
+          id="birth"
+          className="grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border"
+        >
+          <label
+            htmlFor="inputBirth"
+            className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100"
+          >
+            생년월일
+          </label>
+          <div className="xl:col-span-4">
+            <input
+              type="text"
+              id="inputBirth"
+              className="border xl:border-0 p-2 w-full text-sm"
+              value={displayBirth || ""}
+              onChange={handleBirth}
+              onBlur={handleBirth}
+              placeholder="6자리 숫자로 입력하세요 - 990101"
+            />
+          </div>
+        </div>
+        <div
           id="mainAddr"
           className="grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border"
         >
@@ -449,6 +529,50 @@ function Join() {
               >
                 주소찾기
               </button>
+            </div>
+          </div>
+        </div>
+        <div
+          id="gender"
+          className="grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border"
+        >
+          <div className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100">
+            성별
+          </div>
+          <div className="xl:col-span-4 grid grid-cols-2 divide-x border xl:border-0">
+            <div className="flex items-center pl-4 border-gray-200 rounded dark:border-gray-700">
+              <input
+                id="bordered-radio-1"
+                type="radio"
+                value="F"
+                name="bordered-radio"
+                className="text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 "
+                checked={gender === "F"}
+                onChange={handleRadioChange}
+              />
+              <label
+                htmlFor="bordered-radio-1"
+                className="w-full py-2 ml-2 flex flex-col justify-center text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                여자
+              </label>
+            </div>
+            <div className="flex items-center pl-4 border-gray-200 rounded dark:border-gray-700">
+              <input
+                id="bordered-radio-2"
+                type="radio"
+                value="M"
+                name="bordered-radio"
+                className="text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+                checked={gender === "M"}
+                onChange={handleRadioChange}
+              />
+              <label
+                htmlFor="bordered-radio-2"
+                className="w-full py-2 ml-2 flex flex-col justify-center text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                남자
+              </label>
             </div>
           </div>
         </div>

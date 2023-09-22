@@ -64,7 +64,8 @@ function Cert() {
         환영합니다!
       </h1>
       <div className="text-sm xl:text-base font-neo mb-3">
-        원활한 이용을 위해 본인인증 후 회원가입을 진행합니다
+        원활한 이용을 위해 본인인증 후 <br className="xl:hidden" />
+        회원가입을 진행합니다
       </div>
       {socialUser !== "" ? (
         <div className="text-sm xl:text-base font-neo mb-3">

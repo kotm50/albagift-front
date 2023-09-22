@@ -396,7 +396,9 @@ function Join() {
                 correctPwdChk ? "xl:bg-gray-100" : "xl:bg-red-100"
               } `}
             >
-              <span className="text-red-500">*</span>비밀번호확인
+              <div>
+                <span className="text-red-500">*</span>비밀번호확인
+              </div>
             </label>
             <div className="xl:col-span-4">
               <input
@@ -432,7 +434,9 @@ function Join() {
               htmlFor="inputMainAddr"
               className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100"
             >
-              <span className="text-red-500">*</span>주소
+              <div>
+                <span className="text-red-500">*</span>주소
+              </div>
             </label>
             <div className="xl:col-span-4 grid grid-cols-3 gap-1">
               <div className="col-span-2" title={mainAddr}>

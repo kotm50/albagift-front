@@ -247,7 +247,7 @@ function Login() {
             </div>
           )}
           <div className="text-center text-sm text-gray-500 border-b pb-2">
-            <Link to="/certification">
+            <Link to="/cert">
               처음이신가요? 여기를 눌러 <br className="block xl:hidden" />
               <span className="text-blue-500 border-b">회원가입</span>을 진행해
               주세요
@@ -261,7 +261,7 @@ function Login() {
               로그인
             </button>
           </div>
-          <div className="w-full">
+          <div className="w-full mb-3">
             <button
               className="transition duration-100 w-full kakaobtn p-2 text-black rounded hover:animate-wiggle"
               onClick={kakaoLogin}
@@ -269,6 +269,27 @@ function Login() {
               <RiKakaoTalkFill size={28} className="inline-block" /> 카카오
               간편로그인
             </button>
+          </div>
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-y-2 pb-2">
+            <div className="text-sm text-center xl:text-left xl:pl-3">
+              로그인 정보가 기억나지 않으세요?
+            </div>
+            <div className="grid grid-cols-2 divide-x pb-2">
+              <div className="text-center text-sm text-gray-500 hover:text-rose-500">
+                <Link to="/cert?gubun=find">아이디 찾기</Link>
+              </div>
+              <div className="text-center text-sm text-gray-500 hover:text-rose-500">
+                <Link
+                  to="/cert?gubun=reco"
+                  onClick={e => {
+                    e.preventDefault();
+                    alert("개발 중");
+                  }}
+                >
+                  비밀번호 찾기
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </form>

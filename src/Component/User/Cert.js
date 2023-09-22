@@ -97,24 +97,12 @@ function Cert() {
             환영합니다!
           </h1>
           <div className="text-sm xl:text-base font-neo mb-3">
-            원활한 이용을 위해 본인인증 후 <br className="xl:hidden" />
-            회원가입을 진행합니다
+            고객님께서는 이미 회원가입을 하셨습니다 <br />
+            아래 계정으로 로그인 해 주세요.
           </div>
-          {socialUser !== "" ? (
-            <div className="text-sm xl:text-base font-neo mb-3">
-              최초 1회 진행 후 카카오톡 계정으로 간편하게 로그인 가능합니다
-            </div>
-          ) : null}
-          <div className="absolute z-10 bottom-20 right-10 w-64 max-w-full">
-            <img
-              src={giftbox}
-              alt="선물상자"
-              className="w-full drop-shadow-lg"
-            />
-          </div>
-          <div className="absolute z-20 w-64 xl:w-96 bottom-1/2 left-1/2 -translate-x-1/2">
-            <div className="py-3 bg-blue-500 w-full rounded-full text-center">
-              <span className="text-xl">가입한 아이디</span>
+          <div className="absolute z-20 w-60 bottom-30 left-1/2 -translate-x-1/2">
+            <div className="py-3 bg-blue-100 w-full rounded-full text-center">
+              <span className="text-sm">가입한 아이디</span>
               <br />
               <span className="text-lg font-neoextra">{tid}</span>
             </div>

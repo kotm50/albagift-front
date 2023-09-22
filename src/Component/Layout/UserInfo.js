@@ -78,7 +78,7 @@ function UserInfo() {
               로그인
             </Link>{" "}
             |{" "}
-            <Link to="/certification" className="hover:text-indigo-500">
+            <Link to="/cert" className="hover:text-indigo-500">
               회원가입
             </Link>
           </>
@@ -102,17 +102,13 @@ function UserInfo() {
                   보유쿠폰
                 </Link>{" "}
                 |{" "}
-                <Link to="/mypage" className="hover:text-indigo-500">
+                <Link to="/cert?gubun=edit" className="hover:text-indigo-500">
                   정보수정
                 </Link>{" "}
                 |{" "}
               </>
             )}
-            <button
-              to="/mypage"
-              className="hover:text-indigo-500"
-              onClick={e => logout()}
-            >
+            <button className="hover:text-indigo-500" onClick={e => logout()}>
               로그아웃
             </button>
           </>
@@ -135,7 +131,7 @@ function UserInfo() {
               <Link to="/login" className="hover:text-indigo-500">
                 로그인
               </Link>
-              <Link to="/certification" className="hover:text-indigo-500">
+              <Link to="/cert" className="hover:text-indigo-500">
                 회원가입
               </Link>
             </div>
@@ -166,16 +162,12 @@ function UserInfo() {
                   <Link to="/coupon" className="hover:text-indigo-500">
                     보유쿠폰
                   </Link>
-                  <Link to="/mypage" className="hover:text-indigo-500">
+                  <Link to="/cert?gubun=edit" className="hover:text-indigo-500">
                     정보수정
                   </Link>
                 </div>
               )}
-              <button
-                to="/mypage"
-                className="hover:text-indigo-500"
-                onClick={e => logout()}
-              >
+              <button className="hover:text-indigo-500" onClick={e => logout()}>
                 로그아웃
               </button>
             </>

@@ -36,18 +36,22 @@ function Join() {
   const [modalCount, setModalCount] = useState(0);
 
   const [isSocialLogin, setIsSocialLogin] = useState(false);
+  const [tempId, setTempId] = useState("");
 
   // 팝업창 상태 관리
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
     if (location.state) {
-      setSocialId(location.state.id);
-      setEmail(location.state.email);
-      setSocialType(location.state.socialType);
-      setIsSocialLogin(true);
-    } else {
-      setIsSocialLogin(false);
+      setTempId(location.state.tempId);
+      if (location.state.socialUser !== "noSocial") {
+        setSocialId(location.state.socialUser.id);
+        setEmail(location.state.socialUser.email);
+        setSocialType(location.state.socialUser.socialType);
+        setIsSocialLogin(true);
+      } else {
+        setIsSocialLogin(false);
+      }
     }
 
     if (user.accessToken !== "") {
@@ -72,6 +76,7 @@ function Join() {
       email: email,
       socialType: socialType,
       promo: false,
+      tempId: tempId,
       agreeYn: "N",
     };
     if (promo !== undefined) {

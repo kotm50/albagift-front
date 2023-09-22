@@ -42,9 +42,15 @@ function Cert() {
       .post("/api/v1/user/nice/dec/result", data)
       .then(res => {
         if (res.data.code === "C000") {
-          navi("/join", {
-            state: { tempId: res.data.tempId, socialUser: socialUser },
-          });
+          if (socialUser !== "") {
+            navi("/join", {
+              state: { tempId: res.data.tempId, socialUser: socialUser },
+            });
+          } else {
+            navi("/join", {
+              state: { tempId: res.data.tempId, socialUser: "noSocial" },
+            });
+          }
         } else {
           console.log(res);
         }

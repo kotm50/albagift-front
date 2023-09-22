@@ -122,6 +122,9 @@ function Join() {
     if (!correctPwdChk) {
       return "비밀번호 확인에 실패했습니다";
     }
+    if (mainAddr === "주소찾기를 눌러주세요") {
+      return "주소를 입력해 주세요";
+    }
     if (!termsAgree) {
       return "이용약관에 동의하지 않으면 가입이 불가능 합니다";
     }

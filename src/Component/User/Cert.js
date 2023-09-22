@@ -12,7 +12,7 @@ function Cert() {
   const parsed = queryString.parse(location.search);
   const gubun = parsed.gubun || "join";
   const [socialUser, setSocialUser] = useState("");
-  const [errMsg, setErrMsg] = useState(false);
+  const [getTid, setGetTid] = useState(false);
   const [tid, setTid] = useState("");
 
   useEffect(() => {
@@ -41,17 +41,22 @@ function Cert() {
       .post("/api/v1/user/nice/dec/result", data)
       .then(res => {
         if (res.data.code === "C000") {
-          if (socialUser !== "") {
-            navi("/join", {
-              state: { tempId: res.data.tempId, socialUser: socialUser },
-            });
-          } else {
-            navi("/join", {
-              state: { tempId: res.data.tempId, socialUser: "noSocial" },
-            });
+          if (gubun === "join") {
+            if (socialUser !== "") {
+              navi("/join", {
+                state: { tempId: res.data.tempId, socialUser: socialUser },
+              });
+            } else {
+              navi("/join", {
+                state: { tempId: res.data.tempId, socialUser: "noSocial" },
+              });
+            }
+          } else if (gubun === "find") {
+            setGetTid(true);
+            setTid(res.data.tempId);
           }
         } else {
-          setErrMsg(true);
+          setGetTid(true);
           setTid(res.data.tempId);
         }
       })
@@ -59,16 +64,38 @@ function Cert() {
   };
   return (
     <>
-      {!errMsg ? (
+      {!getTid ? (
         <div className="mx-auto bg-white certArea py-5">
-          <h1 className="text-xl xl:text-2xl font-neoextra mb-3">
-            알바선물에 오신 것을 <br className="xl:hidden" />
-            환영합니다!
-          </h1>
-          <div className="text-sm xl:text-base font-neo mb-3">
-            원활한 이용을 위해 본인인증 후 <br className="xl:hidden" />
-            회원가입을 진행합니다
-          </div>
+          {gubun === "join" ? (
+            <>
+              <h1 className="text-xl xl:text-2xl font-neoextra mb-3">
+                알바선물에 오신 것을 <br className="xl:hidden" />
+                환영합니다!
+              </h1>
+              <div className="text-sm xl:text-base font-neo mb-3">
+                원활한 이용을 위해 본인인증 후 <br className="xl:hidden" />
+                회원가입을 진행합니다
+              </div>
+            </>
+          ) : gubun === "find" ? (
+            <>
+              <h1 className="text-xl xl:text-2xl font-neoextra mb-3">
+                알바선물 아이디 찾기
+              </h1>
+              <div className="text-sm xl:text-base font-neo mb-3">
+                원활한 이용을 위해 본인인증을 해주세요
+              </div>
+            </>
+          ) : gubun === "reco" ? (
+            <>
+              <h1 className="text-xl xl:text-2xl font-neoextra mb-3">
+                알바선물 비밀번호 재설정
+              </h1>
+              <div className="text-sm xl:text-base font-neo mb-3">
+                본인인증 후 비밀번호 재설정을 진행합니다
+              </div>
+            </>
+          ) : null}
           {socialUser !== "" ? (
             <div className="text-sm xl:text-base font-neo mb-3">
               최초 1회 진행 후 카카오톡 계정으로 간편하게 로그인 가능합니다
@@ -92,15 +119,29 @@ function Cert() {
         </div>
       ) : (
         <div className="mx-auto bg-white certArea py-5">
-          <h1 className="text-xl xl:text-2xl font-neoextra mb-3">
-            알바선물에 오신 것을 <br className="xl:hidden" />
-            환영합니다!
-          </h1>
-          <div className="text-sm xl:text-base font-neo mb-3">
-            고객님께서는 이미 회원가입을 하셨습니다 <br />
-            아래 계정으로 로그인 해 주세요.
-          </div>
-          <div className="absolute z-20 w-60 bottom-30 left-1/2 -translate-x-1/2">
+          {gubun === "join" ? (
+            <>
+              <h1 className="text-xl xl:text-2xl font-neoextra mb-3">
+                알바선물에 오신 것을 <br className="xl:hidden" />
+                환영합니다!
+              </h1>
+              <div className="text-sm xl:text-base font-neo mb-3">
+                고객님께서는 이미 가입하셨습니다. <br />
+                아래의 계정으로 로그인을 진행해 주세요
+              </div>
+            </>
+          ) : gubun === "find" ? (
+            <>
+              <h1 className="text-xl xl:text-2xl font-neoextra mb-3">
+                알바선물 아이디 찾기
+              </h1>
+              <div className="text-sm xl:text-base font-neo mb-3">
+                고객님의 아이디 입니다. 로그인 또는 <br />
+                비밀번호 찾기를 진행해 주세요
+              </div>
+            </>
+          ) : null}
+          <div className="absolute z-20 w-60 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <div className="py-3 bg-blue-100 w-full rounded-full text-center bottom-40">
               <span className="text-sm">가입한 아이디</span>
               <br />
@@ -114,6 +155,15 @@ function Cert() {
             >
               로그인 하러 가기
             </button>
+
+            {gubun === "find" && (
+              <button
+                className="py-3 border border-blue-500 hover:border-blue-700 text-blue-500 hover:text-blue-700 w-full rounded-full"
+                onClick={e => alert("개발 중")}
+              >
+                비밀번호 찾기
+              </button>
+            )}
           </div>
         </div>
       )}

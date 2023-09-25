@@ -91,8 +91,7 @@ function EditUser(props) {
   const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [inputBirth, setInputBirth] = useState("");
-  const [displayBirth, setDisplayBirth] = useState("");
+  const [birth, setBirth] = useState("");
   const [mainAddr, setMainAddr] = useState("주소찾기를 눌러주세요");
   const [email, setEmail] = useState("");
   const [socialType, setSocialType] = useState("");
@@ -112,7 +111,6 @@ function EditUser(props) {
     setMainAddr(userInfo.mainAddr);
     setEmail(userInfo.email);
     setBeforeValue({
-      birth: userInfo.birth,
       mainAddr: userInfo.mainAddr,
       email: userInfo.email,
     });
@@ -124,15 +122,6 @@ function EditUser(props) {
     let bValue = beforeValue;
     if (value === "") {
       return alert("내용이 입력되지 않았습니다\n확인 후 다시 시도해 주세요");
-    }
-    if (type === "birth") {
-      if (value === beforeValue.birth) {
-        return alert("이전 값과 동일합니다\n확인 후 다시 시도해 주세요");
-      }
-      data = {
-        birth: inputBirth,
-      };
-      bValue.birth = inputBirth;
     }
 
     if (type === "mainAddr") {
@@ -195,49 +184,6 @@ function EditUser(props) {
   const closePostCode = () => {
     setIsPopupOpen(false);
   };
-  //생일 중간에 '년월일' 표시하기.
-  const handleBirth = e => {
-    if (e !== undefined) {
-      const rawValue = e.target.value.replace(/-/g, ""); // remove all dashes
-      setInputBirth(rawValue);
-      let display = rawValue;
-
-      if (rawValue.length > 6) {
-        alert("생년월일은 최대 6자리까지 입력 가능합니다");
-        return;
-      }
-
-      // check if the raw value is a valid number
-      if (!isNaN(Number(rawValue))) {
-        if (rawValue.length <= 4) {
-          display = rawValue.replace(/(\d{2})(\d{2})/, "$1-$2");
-        } else if (rawValue.length <= 6) {
-          display = rawValue.replace(/(\d{2})(\d{2})(\d{2})/, "$1-$2-$3");
-        }
-        setDisplayBirth(display);
-      }
-    }
-  };
-
-  //최초 로딩시 생일 '년월일'표시
-  const setBirth = e => {
-    if (e !== undefined) {
-      const rawValue = e.replace(/-/g, ""); // remove all dashes
-      setInputBirth(rawValue);
-      let display = rawValue;
-      // check if the raw value is a valid number
-      if (!isNaN(Number(rawValue))) {
-        if (rawValue.length <= 2) {
-          display = `${rawValue}년`;
-        } else if (rawValue.length <= 4) {
-          display = rawValue.replace(/(\d{2})(\d{2})/, "$1-$2");
-        } else if (rawValue.length <= 6) {
-          display = rawValue.replace(/(\d{2})(\d{2})(\d{2})/, "$1-$2-$3");
-        }
-        setDisplayBirth(display);
-      }
-    }
-  };
   //휴대폰 변경 전 본인인증
   const doCert = () => {
     window.open(
@@ -257,7 +203,11 @@ function EditUser(props) {
     await axios
       .post("/api/v1/user/nice/dec/result", data)
       .then(res => {
-        console.log(res);
+        if (res.data.code === "C000") {
+          alert(res.data.message);
+        } else {
+          alert(`오류가 발생했습니다. (오류코드 : ${res.data.code})`);
+        }
       })
       .catch(e => console.log(e));
   };
@@ -351,6 +301,27 @@ function EditUser(props) {
           </div>
         </div>
         <div
+          id="birth"
+          className="grid grid-cols-1 xl:grid-cols-7 xl:divide-x xl:border"
+        >
+          <label
+            htmlFor="inputBirth"
+            className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100"
+          >
+            생년월일
+          </label>
+          <div className="xl:col-span-6">
+            <input
+              type="text"
+              id="inputBirth"
+              className="border xl:border-0 p-2 w-full text-sm"
+              value={birth || ""}
+              placeholder="6자리 숫자로 입력하세요 - 990101"
+              disabled
+            />
+          </div>
+        </div>
+        <div
           id="phone"
           className="grid grid-cols-1 xl:grid-cols-7 xl:divide-x xl:border"
         >
@@ -367,7 +338,7 @@ function EditUser(props) {
               className="border xl:border-0 p-2 w-full text-sm"
               value={phone || ""}
               placeholder="숫자만 입력해 주세요 - 01012345678"
-              disable
+              disabled
             />
           </div>
           <button
@@ -379,35 +350,9 @@ function EditUser(props) {
             수정하기
           </button>
         </div>
-        <div
-          id="birth"
-          className="grid grid-cols-1 xl:grid-cols-7 xl:divide-x xl:border"
-        >
-          <label
-            htmlFor="inputBirth"
-            className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100"
-          >
-            생년월일
-          </label>
-          <div className="xl:col-span-5">
-            <input
-              type="text"
-              id="inputBirth"
-              className="border xl:border-0 p-2 w-full text-sm"
-              value={displayBirth || ""}
-              onChange={handleBirth}
-              onBlur={handleBirth}
-              placeholder="6자리 숫자로 입력하세요 - 990101"
-            />
-          </div>
-          <button
-            className="bg-teal-500 hover:bg-teal-700 text-white p-2"
-            onClick={e =>
-              editIt("/api/v1/user/myinfo/editbirth", "birth", inputBirth)
-            }
-          >
-            수정하기
-          </button>
+        <div className="text-xs">
+          이름/연락처를 수정하려면{" "}
+          <span className="font-neoextra">본인인증</span>이 필요합니다
         </div>
         <div
           id="mainAddr"

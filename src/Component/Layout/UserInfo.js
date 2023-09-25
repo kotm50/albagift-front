@@ -102,7 +102,7 @@ function UserInfo() {
                   보유쿠폰
                 </Link>{" "}
                 |{" "}
-                <Link to="/cert?gubun=edit" className="hover:text-indigo-500">
+                <Link to="/mypage" className="hover:text-indigo-500">
                   정보수정
                 </Link>{" "}
                 |{" "}
@@ -162,7 +162,7 @@ function UserInfo() {
                   <Link to="/coupon" className="hover:text-indigo-500">
                     보유쿠폰
                   </Link>
-                  <Link to="/cert?gubun=edit" className="hover:text-indigo-500">
+                  <Link to="/mypage" className="hover:text-indigo-500">
                     정보수정
                   </Link>
                 </div>

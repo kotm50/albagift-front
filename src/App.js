@@ -35,6 +35,7 @@ import PointList from "./Component/Admin/PointList";
 import Certification from "./Component/User/Certification";
 import PopupTest from "./Component/PopupTest";
 import Cert from "./Component/User/Cert";
+import FindPwd from "./Component/User/FindPwd";
 
 function App() {
   const thisLocation = useLocation();
@@ -66,6 +67,7 @@ function App() {
           <Route path="/search/:keyword?" element={<SearchResult />} />
           <Route path="/coupon" element={<Coupon />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/findpwd" element={<FindPwd />} />
           <Route path="/join/:promo?" element={<Join />} />
           <Route path="/mypage/:checked?" element={<Mypage />} />
           <Route path="/cancel" element={<Cancel />} />

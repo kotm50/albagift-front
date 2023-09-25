@@ -4,6 +4,7 @@ import queryString from "query-string";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import Loading from "../Layout/Loading";
+import PointManage from "./PointManage";
 
 function List() {
   const navi = useNavigate();
@@ -47,44 +48,53 @@ function List() {
           <h2 className="p-4 text-center font-neoheavy text-3xl">
             {boardId === "B01" ? "지급 신청 목록" : "게시판"}
           </h2>
-          {list.length > 0 ? (
-            <>
-              <table className="mx-auto">
-                <thead>
-                  <tr>
-                    <td className="border bg-orange-600 text-white text-center p-2">
-                      날짜
-                    </td>
-                    <td className="border bg-orange-600 text-white text-center p-2">
-                      시간
-                    </td>
-                  </tr>
-                </thead>
-                <tbody>
-                  {list.map((doc, idx) => (
-                    <tr
-                      key={idx}
-                      className="hover:cursor-pointer hover:text-rose-500"
-                      onClick={e =>
-                        navi(`/board/detail/${doc.postId}?boardId=${boardId}`, {
-                          state: {
-                            boardId: boardId,
-                            token: user.accessToken,
-                          },
-                        })
-                      }
-                    >
-                      <td className="border p-2">{doc.intvDate}</td>
-                      <td className="border p-2">
-                        {doc.intvTime}시 {doc.intvMin}분
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </>
+          {boardId === "B01" ? (
+            <PointManage list={list} />
           ) : (
-            <div>목록을 불러오지 못했습니다.</div>
+            <>
+              {list.length > 0 ? (
+                <>
+                  <table className="mx-auto">
+                    <thead>
+                      <tr>
+                        <td className="border bg-orange-600 text-white text-center p-2">
+                          날짜
+                        </td>
+                        <td className="border bg-orange-600 text-white text-center p-2">
+                          시간
+                        </td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {list.map((doc, idx) => (
+                        <tr
+                          key={idx}
+                          className="hover:cursor-pointer hover:text-rose-500"
+                          onClick={e =>
+                            navi(
+                              `/board/detail/${doc.postId}?boardId=${boardId}`,
+                              {
+                                state: {
+                                  boardId: boardId,
+                                  token: user.accessToken,
+                                },
+                              }
+                            )
+                          }
+                        >
+                          <td className="border p-2">{doc.intvDate}</td>
+                          <td className="border p-2">
+                            {doc.intvTime}시 {doc.intvMin}분
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </>
+              ) : (
+                <div>목록을 불러오지 못했습니다.</div>
+              )}
+            </>
           )}
         </div>
       ) : (

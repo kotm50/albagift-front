@@ -90,8 +90,7 @@ function EditUser(props) {
 
   const [id, setId] = useState("");
   const [name, setName] = useState("");
-  const [inputPhone, setInputPhone] = useState("");
-  const [displayPhone, setDisplayPhone] = useState("");
+  const [phone, setPhone] = useState("");
   const [inputBirth, setInputBirth] = useState("");
   const [displayBirth, setDisplayBirth] = useState("");
   const [mainAddr, setMainAddr] = useState("주소찾기를 눌러주세요");
@@ -113,7 +112,6 @@ function EditUser(props) {
     setMainAddr(userInfo.mainAddr);
     setEmail(userInfo.email);
     setBeforeValue({
-      phone: userInfo.phone,
       birth: userInfo.birth,
       mainAddr: userInfo.mainAddr,
       email: userInfo.email,
@@ -197,61 +195,6 @@ function EditUser(props) {
   const closePostCode = () => {
     setIsPopupOpen(false);
   };
-
-  //전화번호 중간에 '-' 표시하기.
-  const handlePhone = e => {
-    const rawValue = e.target.value.replace(/-/g, ""); // remove all dashes
-
-    if (rawValue.length > 11) {
-      alert("휴대폰 번호는 최대 11자리까지 입력 가능합니다");
-      return;
-    }
-
-    // check if the raw value is a valid number
-    if (!isNaN(Number(rawValue))) {
-      setInputPhone(rawValue);
-      let display = rawValue;
-      if (rawValue.length === 7) {
-        display = rawValue.replace(/(\d{3})(\d{4})/, "$1-$2");
-      } else if (rawValue.length >= 8 && rawValue.length < 10) {
-        display = rawValue.replace(/(\d{4})(\d{4})/, "$1-$2");
-      } else if (rawValue.length === 10) {
-        display = rawValue.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
-      } else if (rawValue.length === 11) {
-        display = rawValue.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
-      }
-      setDisplayPhone(display);
-    }
-  };
-
-  //최초 로딩시 전화번호 '-'표시
-  const setPhone = e => {
-    if (e !== undefined) {
-      const rawValue = e.replace(/-/g, ""); // remove all dashes
-
-      if (rawValue.length > 11) {
-        alert("휴대폰 번호는 최대 11자리까지 입력 가능합니다");
-        return;
-      }
-
-      // check if the raw value is a valid number
-      if (!isNaN(Number(rawValue))) {
-        setInputPhone(rawValue);
-        let display = rawValue;
-        if (rawValue.length === 7) {
-          display = rawValue.replace(/(\d{3})(\d{4})/, "$1-$2");
-        } else if (rawValue.length >= 8 && rawValue.length < 10) {
-          display = rawValue.replace(/(\d{4})(\d{4})/, "$1-$2");
-        } else if (rawValue.length === 10) {
-          display = rawValue.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
-        } else if (rawValue.length === 11) {
-          display = rawValue.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
-        }
-        setDisplayPhone(display);
-      }
-    }
-  };
-
   //생일 중간에 '년월일' 표시하기.
   const handleBirth = e => {
     if (e !== undefined) {
@@ -294,6 +237,29 @@ function EditUser(props) {
         setDisplayBirth(display);
       }
     }
+  };
+  //휴대폰 변경 전 본인인증
+  const doCert = () => {
+    window.open(
+      "/certification",
+      "본인인증팝업",
+      "toolbar=no, width=480, height=900, directories=no, status=no, scrollorbars=no, resizable=no"
+    );
+
+    window.parentCallback = d => {
+      changePhone(d);
+    };
+  };
+
+  const changePhone = async d => {
+    let data = d;
+    data.gubun = "edit";
+    await axios
+      .post("/api/v1/user/nice/dec/result", data)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(e => console.log(e));
   };
 
   return (
@@ -399,19 +365,15 @@ function EditUser(props) {
               type="text"
               id="inputPhone"
               className="border xl:border-0 p-2 w-full text-sm"
-              value={displayPhone || ""}
-              onChange={handlePhone}
-              onBlur={handlePhone}
+              value={phone || ""}
               placeholder="숫자만 입력해 주세요 - 01012345678"
+              disable
             />
           </div>
           <button
             className="bg-teal-500 hover:bg-teal-700 text-white p-2"
             onClick={e => {
-              console.log(inputPhone);
-              alert(
-                "정책상 연락처는 즉시 수정이 어렵습니다\n고객센터(1644-4223)에 문의해 주세요."
-              );
+              doCert();
             }}
           >
             수정하기

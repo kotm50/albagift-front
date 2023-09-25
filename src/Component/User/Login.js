@@ -181,7 +181,7 @@ function Login() {
               admin: false,
             })
           );
-          //navi("/");
+          navi("/");
         }
       })
       .catch(e => {
@@ -279,15 +279,7 @@ function Login() {
                 <Link to="/cert?gubun=find">아이디 찾기</Link>
               </div>
               <div className="text-center text-sm text-gray-500 hover:text-rose-500">
-                <Link
-                  to="/cert?gubun=reco"
-                  onClick={e => {
-                    e.preventDefault();
-                    alert("개발 중");
-                  }}
-                >
-                  비밀번호 찾기
-                </Link>
+                <Link to="/findpwd">비밀번호 찾기</Link>
               </div>
             </div>
           </div>

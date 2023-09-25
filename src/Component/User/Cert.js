@@ -17,6 +17,7 @@ function Cert() {
 
   useEffect(() => {
     if (location.state) {
+      console.log(location.state.socialUser);
       setSocialUser(location.state.socialUser);
     }
     //eslint-disable-next-line
@@ -138,6 +139,13 @@ function Cert() {
                 고객님께서는 이미 아래 계정으로 가입하셨습니다. <br />
                 비밀번호가 기억나지 않으시면 '비밀번호 찾기'를 진행해 주세요.
               </div>
+              {socialUser !== "" ? (
+                <div className="text-sm xl:text-base font-neo mb-3">
+                  간편로그인을 추가하시려면 로그인 후 정보수정에서
+                  <br />
+                  소셜계정을 등록해 주세요.
+                </div>
+              ) : null}
             </>
           ) : gubun === "find" ? (
             <>

@@ -98,7 +98,7 @@ function UserInfo() {
             ) : (
               <>
                 <span className="font-medium text-black">{user.userName} </span>
-                님 안녕하세요 | {user.point.toLocaleString()}p 보유중 |{" "}
+                님 안녕하세요 | {Number(user.point).toLocaleString()}p 보유중 |{" "}
                 <Link to="/coupon" className="hover:text-indigo-500">
                   보유쿠폰
                 </Link>{" "}

@@ -46,7 +46,7 @@ function EditUser(props) {
         },
       })
       .then(res => {
-        alert(`연동이 해제되었습니다 (${res.data.code})`);
+        alert(`연동이 해제되었습니다`);
         getUserInfo();
       })
       .catch(error => console.log(error));

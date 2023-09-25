@@ -43,15 +43,18 @@ function Cert() {
       data.kakaoEmail = socialUser.kakaoEmail;
       data.socialType = socialUser.socialType;
     }
+    console.log(data);
     //data = {token, enc, int, gubun, id, email}
     await axios
       .post("/api/v1/user/nice/dec/result", data)
       .then(res => {
         if (res.data.code === "C000") {
           if (gubun === "join") {
+            /*
             navi("/join", {
               state: { tempId: res.data.tempId },
             });
+            */
           } else if (gubun === "find") {
             setGetTid(true);
             setTid(res.data.tempId);

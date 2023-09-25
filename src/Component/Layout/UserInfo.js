@@ -18,7 +18,6 @@ function UserInfo() {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
   useEffect(() => {
-    console.log(user);
     // const now = new Date();
     if (user.userId !== "") {
       // const diffTime = Math.floor((now - user.lastLogin) / 1000 / 60);

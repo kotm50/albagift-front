@@ -166,8 +166,8 @@ function Login() {
       .get(loginUrl)
       .then(res => {
         let data = {};
-        data.kakaoId = res.data.socialUser.id;
-        data.kakaoEmail = res.data.socialUser.email;
+        data.socialId = res.data.socialUser.id;
+        data.email = res.data.socialUser.email;
         data.socialType = res.data.socialUser.socialType;
         if (res.data.code === "C001") {
           alert(res.data.message);

@@ -39,8 +39,7 @@ function Cert() {
     let data = d;
     data.gubun = gubun;
     if (socialUser !== "") {
-      data.kakaoId = socialUser.kakaoId;
-      data.kakaoEmail = socialUser.kakaoEmail;
+      data.socialId = socialUser.socialId;
       data.socialType = socialUser.socialType;
     }
     console.log(data);
@@ -50,11 +49,9 @@ function Cert() {
       .then(res => {
         if (res.data.code === "C000") {
           if (gubun === "join") {
-            /*
             navi("/join", {
-              state: { tempId: res.data.tempId },
+              state: { tempId: res.data.tempId, email: socialUser.kakaoEmail },
             });
-            */
           } else if (gubun === "find") {
             setGetTid(true);
             setTid(res.data.tempId);

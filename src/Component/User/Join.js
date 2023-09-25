@@ -16,7 +16,6 @@ function Join() {
   const location = useLocation();
   let navi = useNavigate();
   const { promo } = useParams();
-  const [socialId, setSocialId] = useState("");
   const [id, setId] = useState("");
   const [pwd, setPwd] = useState("");
   const [pwdChk, setPwdChk] = useState("");
@@ -26,7 +25,6 @@ function Join() {
   const [correctPwd, setCorrectPwd] = useState(true);
   const [mainAddr, setMainAddr] = useState("주소찾기를 눌러주세요");
   const [email, setEmail] = useState("");
-  const [socialType, setSocialType] = useState("");
 
   const [agreeAll, setAgreeAll] = useState(false);
   const [termsAgree, setTermsAgree] = useState(false);
@@ -45,13 +43,9 @@ function Join() {
   useEffect(() => {
     if (location.state) {
       setTempId(location.state.tempId);
-      if (location.state.socialUser !== "noSocial") {
-        setSocialId(location.state.socialUser.id);
-        setEmail(location.state.socialUser.email);
-        setSocialType(location.state.socialUser.socialType);
+      if (location.state.email) {
+        setEmail(location.state.email);
         setIsSocialLogin(true);
-      } else {
-        setIsSocialLogin(false);
       }
     }
 
@@ -71,11 +65,9 @@ function Join() {
     }
     const data = {
       userId: id,
-      socialId: socialId,
       userPwd: pwd,
       mainAddr: mainAddr,
       email: email,
-      socialType: socialType,
       promo: false,
       tempId: tempId,
       agreeYn: "N",
@@ -88,9 +80,6 @@ function Join() {
     }
     console.log(data);
     let url = "/api/v1/user/join";
-    if (isSocialLogin) {
-      url = `${url}/${socialType}`;
-    }
     await axios
       .post(url, data)
       .then(res => {

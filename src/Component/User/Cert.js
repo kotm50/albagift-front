@@ -21,7 +21,7 @@ function Cert() {
       setSocialUser(location.state.socialUser);
     }
     //eslint-disable-next-line
-  }, []);
+  }, [location]);
 
   const doCert = () => {
     window.open(

@@ -21,7 +21,6 @@ function EditUser(props) {
   const [userInfo, setUserInfo] = useState({});
   useEffect(() => {
     getUserInfo();
-    console.log(code);
     if (code !== "") {
       kakaoLoginCheck(code);
     }
@@ -350,7 +349,7 @@ function EditUser(props) {
             수정하기
           </button>
         </div>
-        <div className="text-xs">
+        <div className="text-xs text-center xl:text-right p-1 bg-gray-100">
           이름/연락처를 수정하려면{" "}
           <span className="font-neoextra">본인인증</span>이 필요합니다
         </div>

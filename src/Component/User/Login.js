@@ -165,7 +165,10 @@ function Login() {
     await axios
       .get(loginUrl)
       .then(res => {
-        let data = res.data.socialUser;
+        let data = {};
+        data.kakaoId = res.data.socialUser.id;
+        data.kakaoEmail = res.data.socialUser.email;
+        data.socialType = res.data.socialUser.socialType;
         if (res.data.code === "C001") {
           alert(res.data.message);
           navi("/cert", { state: { socialUser: data } });

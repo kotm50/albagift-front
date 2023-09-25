@@ -165,21 +165,21 @@ function Login() {
     await axios
       .get(loginUrl)
       .then(res => {
-        let data = {};
-        data.socialId = res.data.socialUser.id;
-        data.email = res.data.socialUser.email;
-        data.socialType = res.data.socialUser.socialType;
         if (res.data.code === "C001") {
+          let data = {};
+          data.socialId = res.data.socialUser.id;
+          data.email = res.data.socialUser.email;
+          data.socialType = res.data.socialUser.socialType;
           alert(res.data.message);
           navi("/cert", { state: { socialUser: data } });
         } else {
           dispatch(
             loginUser({
-              userId: data.userId,
-              userName: data.userName,
+              userId: res.data.socialUser.userId,
+              userName: res.data.socialUser.userName,
               accessToken: res.headers.authorization,
               lastLogin: new Date(),
-              point: data.point,
+              point: res.data.socialUser.point,
               admin: false,
             })
           );

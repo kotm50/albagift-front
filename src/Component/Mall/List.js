@@ -152,18 +152,18 @@ function List() {
                 to={`/detail/${good.goodsCode}`}
                 className="pb-0 min-h-0 h-fit"
               >
-                <div className="group p-2 bg-white hover:border-2 hover:border-indigo-500 hover:bg-indigo-50 rounded drop-shadow hover:drop-shadow-xl">
-                  <div className="w-32 h-32 xl:w-60 xl:h-60 mx-auto rounded overflow-hidden max-w-full">
+                <div className="group p-2 rounded">
+                  <div className="w-32 h-32 xl:w-60 xl:h-60 mx-auto rounded overflow-hidden max-w-full bg-white drop-shadow hover:drop-shadow-xl">
                     <ImgLoad good={good} />
                   </div>
-                  <div className="w-32 xl:w-60 mx-auto grid grid-cols-1 mt-2 pt-1 border-t border-gray-100 max-w-full">
-                    <p className="text-base group-hover:font-neobold keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left font-neobold text-blue-500">
+                  <div className="w-32 xl:w-60 mx-auto grid grid-cols-1 mt-2 pt-1 border-t border-gray-100 max-w-full mt-3">
+                    <p className="xl:text-base group-hover:font-neobold keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left font-neobold text-blue-500">
                       {good.brandName}
                     </p>
-                    <p className="text-lg group-hover:font-neobold keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left">
+                    <p className="xl:text-lg group-hover:font-neobold keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left">
                       {good.goodsName}
                     </p>
-                    <p className="text-lg text-left">
+                    <p className="xl:text-lg text-left mt-3">
                       <span className="text-xl text-rose-500">
                         {Number(good.realPrice).toLocaleString()}
                       </span>{" "}

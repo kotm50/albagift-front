@@ -8,7 +8,7 @@ function ImgLoad(props) {
         <img
           src={props.good.goodsImgS}
           alt={props.good.goodsName}
-          className="w-full mx-auto my-auto duration-300 transition-all ease-in-out group-hover:scale-125"
+          className="w-full mx-auto my-auto duration-300 transition-all ease-in-out hover:scale-125"
         />
       ) : (
         <>

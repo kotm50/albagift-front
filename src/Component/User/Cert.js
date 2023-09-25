@@ -99,7 +99,8 @@ function Cert() {
           ) : null}
           {socialUser !== "" ? (
             <div className="text-sm xl:text-base font-neo mb-3">
-              최초 1회 진행 후 카카오톡 계정으로 간편하게 로그인 가능합니다
+              최초 1회 진행 후 카카오톡 계정으로
+              <br className="xl-hidden" /> 간편하게 로그인 가능합니다
             </div>
           ) : null}
           <div className="absolute z-10 bottom-20 right-10 w-64 max-w-full">

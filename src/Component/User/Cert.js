@@ -40,7 +40,7 @@ function Cert() {
     if (socialUser !== "") {
       data.kakaoId = socialUser.kakaoId;
       data.kakaoEmail = socialUser.kakaoEmail;
-      data.socialType = "kakao";
+      data.socialType = socialUser.socialType;
     }
     //data = {token, enc, int, gubun, id, email}
     await axios

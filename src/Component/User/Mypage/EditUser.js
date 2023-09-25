@@ -11,6 +11,7 @@ import axios from "axios";
 import PopupDom from "../../Kakao/PopupDom";
 import PopupPostCode from "../../Kakao/PopupPostCode";
 import NewPwd from "./NewPwd";
+import AgreeModal from "./AgreeModal";
 
 function EditUser(props) {
   const location = useLocation();
@@ -19,6 +20,7 @@ function EditUser(props) {
   const dispatch = useDispatch();
   const navi = useNavigate();
   const [userInfo, setUserInfo] = useState({});
+  const [modal, setModal] = useState(false);
   useEffect(() => {
     getUserInfo();
     if (code !== "") {
@@ -343,7 +345,7 @@ function EditUser(props) {
           <button
             className="bg-teal-500 hover:bg-teal-700 text-white p-2"
             onClick={e => {
-              doCert();
+              setModal(true);
             }}
           >
             수정하기
@@ -353,6 +355,7 @@ function EditUser(props) {
           이름/연락처를 수정하려면{" "}
           <span className="font-neoextra">본인인증</span>이 필요합니다
         </div>
+        {modal ? <AgreeModal doCert={doCert} setModal={setModal} /> : null}
         <div
           id="mainAddr"
           className="grid grid-cols-1 xl:grid-cols-7 xl:divide-x xl:border"

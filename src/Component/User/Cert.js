@@ -37,24 +37,20 @@ function Cert() {
   const certToBack = async d => {
     let data = d;
     data.gubun = gubun;
-    data.id = socialUser.id;
-    data.email = socialUser.email;
-
+    if (socialUser !== "") {
+      data.kakaoId = socialUser.kakaoId;
+      data.kakaoEmail = socialUser.kakaoEmail;
+      data.socialType = "kakao";
+    }
     //data = {token, enc, int, gubun, id, email}
     await axios
       .post("/api/v1/user/nice/dec/result", data)
       .then(res => {
         if (res.data.code === "C000") {
           if (gubun === "join") {
-            if (socialUser !== "") {
-              navi("/join", {
-                state: { tempId: res.data.tempId },
-              });
-            } else {
-              navi("/join", {
-                state: { tempId: res.data.tempId },
-              });
-            }
+            navi("/join", {
+              state: { tempId: res.data.tempId },
+            });
           } else if (gubun === "find") {
             setGetTid(true);
             setTid(res.data.tempId);

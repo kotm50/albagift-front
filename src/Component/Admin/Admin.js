@@ -48,12 +48,18 @@ function Admin() {
                 알바선물 메인으로
               </button>
             </div>
-            <div className="grid grid-cols-5 bg-indigo-50 mb-2">
+            <div className="grid grid-cols-3 bg-indigo-50 mb-2">
               <Link
                 to="/admin/"
                 className="hover:bg-indigo-100 p-2 text-center"
               >
                 메인으로
+              </Link>
+              <Link
+                to="/admin/pointlist"
+                className="hover:bg-indigo-100 p-2 text-center"
+              >
+                지급 신청 목록
               </Link>
               <Link
                 to="/admin/user"

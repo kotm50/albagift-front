@@ -41,7 +41,6 @@ function Join() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
-    console.log(location.state);
     if (location.state) {
       setTempId(location.state.tempId);
       if (location.state.email) {

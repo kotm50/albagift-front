@@ -14,11 +14,14 @@ function FindPwd() {
   const [correctPwd, setCorrectPwd] = useState(true);
 
   useEffect(() => {
-    if (location.state.id) {
-      setId(location.state.id);
-    }
-    if (location.state.chk === "chked") {
-      setChked(true);
+    console.log(location.state);
+    if (location.state) {
+      if (location.state.id !== null) {
+        setId(location.state.id);
+      }
+      if (location.state.chk === "chked") {
+        setChked(true);
+      }
     }
     //eslint-disable-next-line
   }, []);
@@ -78,6 +81,22 @@ function FindPwd() {
       });
   };
 
+  //아이디 중복검사
+  const chkId = async () => {
+    await axios
+      .get("/api/v1/user/dupchkid", { params: { userId: id } })
+      .then(res => {
+        if (res.data.code === "C000") {
+          alert(
+            "아이디를 찾을 수 없습니다. 아이디가 기억나지 않으시면\n'아이디 찾기'를 진행해 주세요"
+          );
+        } else {
+          navi(`/cert?gubun=reco&userId=${id}`);
+        }
+      })
+      .catch(e => console.log(e));
+  };
+
   return (
     <div className="mx-auto bg-white certArea pb-5 pt-20">
       <h2 className="text-xl xl:text-2xl font-neoextra mb-3">
@@ -89,8 +108,8 @@ function FindPwd() {
             가입하신 아이디를 입력해 주세요 <br />
             아이디가 기억나지 않으시면 '아이디 찾기'를 진행해 주세요
           </div>
-          <div className="grid grid-cols-1 pt-3 border-t">
-            <label htmlFor="inputId" className="text-xs">
+          <div className="grid grid-cols-1 pt-3">
+            <label htmlFor="inputId" className="text-sm">
               비밀번호를 찾을 아이디
             </label>
             <input
@@ -105,7 +124,7 @@ function FindPwd() {
           <div className="absolute z-20 w-64 xl:w-96 bottom-20 left-1/2 -translate-x-1/2 grid grid-cols-1 gap-y-2">
             <button
               className="py-3 bg-blue-500 hover:bg-blue-700 text-white w-full rounded-full"
-              onClick={e => navi("/cert?gubun=reco")}
+              onClick={e => chkId()}
             >
               이 아이디로 비밀번호 찾기
             </button>
@@ -121,8 +140,7 @@ function FindPwd() {
       ) : (
         <>
           <div className="text-sm xl:text-base font-neo mb-3">
-            가입하신 아이디를 입력해 주세요 <br />
-            아이디가 기억나지 않으시면 '아이디 찾기'를 진행해 주세요
+            새로운 비밀번호를 입력해 주세요.
           </div>
           <div className="grid grid-cols-1 pt-3 border-t">
             <label htmlFor="inputId" className="text-xs">

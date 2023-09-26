@@ -11,6 +11,7 @@ function Cert() {
   const location = useLocation();
   const parsed = queryString.parse(location.search);
   const gubun = parsed.gubun || "join";
+  const userId = parsed.userId || "";
   const [socialUser, setSocialUser] = useState("");
   const [getTid, setGetTid] = useState(false);
   const [tid, setTid] = useState("");
@@ -42,24 +43,33 @@ function Cert() {
       data.socialId = socialUser.socialId;
       data.socialType = socialUser.socialType;
     }
+    if (userId !== "") {
+      data.userId = userId;
+    }
     console.log(data);
     //data = {token, enc, int, gubun, id, email}
     await axios
       .post("/api/v1/user/nice/dec/result", data)
       .then(res => {
-        if (res.data.code === "C000") {
-          if (gubun === "join") {
+        if (gubun === "join") {
+          if (res.data.code === "C000") {
             navi("/join", {
               state: { tempId: res.data.tempId, email: socialUser.kakaoEmail },
             });
-          } else if (gubun === "find") {
+          } else {
             setGetTid(true);
             setTid(res.data.tempId);
-          } else if (gubun === "reco") {
           }
-        } else {
-          setGetTid(true);
-          setTid(res.data.tempId);
+        } else if (gubun === "find") {
+          if (res.data.code === "C000") {
+            console.log(res);
+            setGetTid(true);
+            setTid(res.data.tempId);
+          }
+        } else if (gubun === "reco") {
+          if (res.data.code === "C000") {
+            navi("/findpwd", { state: { id: userId, chk: "chked" } });
+          }
         }
       })
       .catch(e => console.log(e));

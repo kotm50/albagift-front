@@ -13,6 +13,7 @@ import UserSection from "../User/UserSection";
 import Loading from "../Layout/Loading";
 
 import { RiKakaoTalkFill } from "react-icons/ri";
+import RecomMall from "./RecomMall";
 
 // kakao 기능 동작을 위해 넣어준다.
 const { Kakao } = window;
@@ -125,6 +126,7 @@ function Detail() {
           );
           navi(`/result`);
         } else {
+          console.log(res);
           alert(res.data.message);
         }
       })
@@ -294,6 +296,7 @@ function Detail() {
                 }}
               />
             </div>
+            <RecomMall category={goods.category1Seq} />
           </>
         ) : (
           <>

@@ -16,7 +16,7 @@ function FindPwd() {
   useEffect(() => {
     console.log(location.state);
     if (location.state) {
-      if (location.state.id !== null) {
+      if (location.state.id) {
         setId(location.state.id);
       }
       if (location.state.chk === "chked") {

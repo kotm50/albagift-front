@@ -28,7 +28,6 @@ function RecomMall(props) {
     await axios
       .post(listUrl, data)
       .then(res => {
-        console.log(res);
         if (res.data.code === "E999") {
           logout();
           return false;

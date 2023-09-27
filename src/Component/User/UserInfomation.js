@@ -80,13 +80,13 @@ function UserInformation() {
                 회원가입
               </Link>
               <Link
-                to="/cert"
+                to="/cert?gubun=find"
                 className="text-sm text-center text-gray-500 hover:text-blue-500 flex flex-col justify-center"
               >
                 아이디 찾기
               </Link>
               <Link
-                to="/cert"
+                to="/findpwd"
                 className="text-sm text-center text-gray-500 hover:text-blue-500 flex flex-col justify-center"
               >
                 비밀번호 찾기

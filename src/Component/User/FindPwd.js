@@ -72,9 +72,11 @@ function FindPwd() {
     axios
       .patch("/api/v1/user/upt/new/pwd", { userPwd: pwd })
       .then(res => {
+        console.log(res);
         if (res.data.code === "C000") {
           alert("비밀번호를 수정했습니다. 다시 로그인 해주세요");
         }
+        navi("/login");
       })
       .catch(e => {
         console.log(e);

@@ -64,7 +64,6 @@ function NewPwd(props) {
       )
       .then(res => {
         if (res.data.code === "C000") {
-          alert("비밀번호를 수정했습니다. 다시 로그인 해주세요");
           props.logout();
         }
       })

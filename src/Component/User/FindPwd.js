@@ -69,7 +69,10 @@ function FindPwd() {
       return alert("비밀번호가 일치하지 않습니다");
     }
     axios
-      .patch("/api/v1/user/upt/new/pwd", { userPwd: pwd })
+      .patch("/api/v1/user/upt/new/pwd", {
+        userId: location.state.id,
+        userPwd: pwd,
+      })
       .then(res => {
         console.log(res);
         if (res.data.code === "C000") {

@@ -76,7 +76,7 @@ function FindPwd() {
       .then(res => {
         console.log(res);
         if (res.data.code === "C000") {
-          alert("비밀번호를 수정했습니다. 다시 로그인 해주세요");
+          alert("비밀번호를 수정했습니다. 로그인 후 이용해 주세요");
           navi("/login");
         }
       })

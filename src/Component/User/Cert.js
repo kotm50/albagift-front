@@ -63,10 +63,14 @@ function Cert() {
           if (res.data.code === "C000") {
             setGetTid(true);
             setTid(res.data.tempId);
+          } else if (res.data.code === "E001") {
+            alert(res.data.message);
           }
         } else if (gubun === "reco") {
           if (res.data.code === "C000") {
             navi("/findpwd", { state: { id: userId, chk: "chked" } });
+          } else if (res.data.code === "E001") {
+            alert(res.data.message);
           }
         }
       })

@@ -32,6 +32,35 @@ function Admin() {
         console.log(e);
       });
   };
+
+  const resetGoods = async () => {
+    await axios
+      .post("/api/v1/shop/admin/bizapi", null, {
+        headers: { Authorization: user.accessToken },
+      })
+      .then(res => {
+        console.log(res);
+        if (res.data.code === "C200") {
+          alert("상품리셋 완료");
+        }
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
+  const resetBrands = async () => {
+    await axios
+      .post("/api/v1/shop/admin/brand", null, {
+        headers: { Authorization: user.accessToken },
+      })
+      .then(res => {
+        alert("브랜드리셋 완료");
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
   return (
     <>
       {loaded && (
@@ -40,6 +69,20 @@ function Admin() {
             <div className="flex justify-between mb-3 p-2">
               <div className="mb-2 text-xl xl:text-3xl">
                 안녕하세요 면접샵 관리자 페이지 입니다
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  className="bg-indigo-500 hover:bg-indigo-700 text-white p-2"
+                  onClick={resetGoods}
+                >
+                  상품 리셋
+                </button>
+                <button
+                  className="bg-indigo-500 hover:bg-indigo-700 text-white p-2"
+                  onClick={resetBrands}
+                >
+                  브랜드 리셋
+                </button>
               </div>
               <button
                 className="p-2 bg-green-500 text-white hover:bg-green-700"

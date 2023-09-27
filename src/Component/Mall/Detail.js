@@ -100,6 +100,12 @@ function Detail() {
       navi("/login");
       return false;
     }
+    const confirm = window.confirm(
+      `상품을 구매하시겠습니까?\n${goods.realPrice}포인트가 차감됩니다`
+    );
+    if (!confirm) {
+      return false;
+    }
     let data = {
       goodsCode: goodscode,
     };
@@ -282,6 +288,7 @@ function Detail() {
                 </div>
               </div>
             </div>
+
             <div className="xl:container w-11/12 mx-auto bg-white mt-3 p-2">
               <h3 className="xl:pl-32 p-3 xl:text-2xl font-bold mb-3 pb-3 border-y">
                 상품 상세정보 및 유의사항

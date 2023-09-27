@@ -47,6 +47,9 @@ function List() {
       listUrl = "/api/v1/shop/brand/goods/list";
       listUrl = listUrl + "/" + b;
     }
+    if (c === "etc") {
+      listUrl = "/api/v1/shop/goods/etc/list";
+    }
     const data = {
       page: p,
       size: 20,
@@ -58,6 +61,7 @@ function List() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
+        console.log(res);
         if (res.data.code === "E999") {
           logout();
           return false;

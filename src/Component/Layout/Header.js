@@ -22,7 +22,7 @@ function Header() {
   const getUrl = (p, n) => {
     if (p === "list") {
       setLoadBrand(false);
-      if (n !== "" && n !== undefined) {
+      if (n !== "" && n !== undefined && n !== "etc") {
         setLoadBrand(true);
       } else {
         setLoadBrand(false);

@@ -18,6 +18,7 @@ function UserInfo() {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
   useEffect(() => {
+    console.log(location.pathname);
     // const now = new Date();
     if (user.userId !== "") {
       // const diffTime = Math.floor((now - user.lastLogin) / 1000 / 60);
@@ -29,6 +30,19 @@ function UserInfo() {
     }
     //eslint-disable-next-line
   }, [location]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsOpen(false);
+      // 여기에 스크롤 시 실행하고 싶은 코드를 추가할 수 있습니다.
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const refreshPoints = async () => {
     await axios
@@ -78,9 +92,15 @@ function UserInfo() {
               로그인
             </Link>{" "}
             |{" "}
-            <Link to="/cert" className="hover:text-indigo-500">
-              회원가입
-            </Link>
+            {location.pathname === "/cert" ? (
+              <a href="/cert" className="hover:text-indigo-500">
+                회원가입
+              </a>
+            ) : (
+              <Link to="/cert" className="hover:text-indigo-500">
+                회원가입
+              </Link>
+            )}
           </>
         ) : (
           <>
@@ -88,7 +108,7 @@ function UserInfo() {
               <>
                 {" "}
                 <span className="font-medium text-black">{user.userName} </span>
-                관리자님 안녕하세요 |
+                님 안녕하세요 |
                 <Link to="/admin" className="hover:text-indigo-500">
                   관리자페이지
                 </Link>{" "}
@@ -131,9 +151,15 @@ function UserInfo() {
               <Link to="/login" className="hover:text-indigo-500">
                 로그인
               </Link>
-              <Link to="/cert" className="hover:text-indigo-500">
-                회원가입
-              </Link>
+              {location.pathname === "/cert" ? (
+                <a href="/cert" className="hover:text-indigo-500">
+                  회원가입
+                </a>
+              ) : (
+                <Link to="/cert" className="hover:text-indigo-500">
+                  회원가입
+                </Link>
+              )}
             </div>
           ) : (
             <>

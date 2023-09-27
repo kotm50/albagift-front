@@ -49,7 +49,7 @@ function SearchArea(props) {
             type="search"
             id="default-search"
             className="block w-full p-3 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500"
-            placeholder="검색어를 입력하세요"
+            placeholder="찾고 싶은 상품을 검색하세요"
             value={searchKeyword}
             onChange={e => setSearchKeyword(e.currentTarget.value)}
             onBlur={e => setSearchKeyword(e.currentTarget.value)}

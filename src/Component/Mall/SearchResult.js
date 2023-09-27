@@ -142,8 +142,7 @@ function SearchResult() {
         <>
           <h3 className="text-lg xl:text-2xl p-2 bg-orange-50 rounded-lg mt-2 text-center xl:text-left">
             <span className="font-neobold text-sky-500">{keyword}</span>
-            {checkName(keyword)} 검색하여
-            <br className="block xl:hidden" />총{" "}
+            {checkName(keyword)} 검색하여 <br className="block xl:hidden" />총{" "}
             <span className="font-neobold text-red-500">{resultNum}</span>개의
             상품을 발견했습니다
           </h3>

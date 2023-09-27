@@ -61,7 +61,7 @@ function UserInformation() {
     <>
       {user.userId === "" ? (
         <>
-          <div className="grid grid-cols-1 gap-y-2 h-40">
+          <div className="grid grid-cols-1 gap-y-2 xl:h-40">
             <div className="text-center mt-2 xl:mb-2">
               로그인하여 알바선물의
               <br className="xl:hidden" /> 다양한 혜택을 누려보세요
@@ -72,22 +72,22 @@ function UserInformation() {
             >
               알바선물 로그인 하기
             </Link>
-            <div className="w-11/12 xl:w-3/4 mx-auto grid grid-cols-3 divide-x my-2">
+            <div className="w-11/12 xl:w-3/4 mx-auto grid grid-cols-3 divide-x-2 my-2">
               <Link
                 to="/cert"
-                className="text-sm text-center text-gray-500 hover:text-blue-500"
+                className="text-sm text-center text-gray-500 hover:text-blue-500 flex flex-col justify-center"
               >
                 회원가입
               </Link>
               <Link
                 to="/cert"
-                className="text-sm text-center text-gray-500 hover:text-blue-500"
+                className="text-sm text-center text-gray-500 hover:text-blue-500 flex flex-col justify-center"
               >
                 아이디 찾기
               </Link>
               <Link
                 to="/cert"
-                className="text-sm text-center text-gray-500 hover:text-blue-500"
+                className="text-sm text-center text-gray-500 hover:text-blue-500 flex flex-col justify-center"
               >
                 비밀번호 찾기
               </Link>
@@ -95,7 +95,7 @@ function UserInformation() {
           </div>
         </>
       ) : (
-        <div className="grid grid-cols-1 gap-y-2 h-40">
+        <div className="grid grid-cols-1 gap-y-2 xl:h-40">
           <div className="text-center mt-2 xl:mb-2 grid grid-cols-2 xl:grid-cols-5 text-sm xl:text-base">
             <div className="font-neobold p-2 xl:col-span-2">
               안녕하세요 <span className="font-neoextra">{user.userName}</span>
@@ -135,7 +135,7 @@ function UserInformation() {
                 보유 쿠폰 확인하기
               </button>
               <button
-                className="block text-center p-2 border border-blue-500 hover:text-blue-700 hover:border-blue-700 hover:animate-wiggle rounded"
+                className="block text-center p-2 border border-blue-500 hover:text-blue-700 hover:border-blue-700 hover:animate-wiggle rounded mb-3 xl:mb-0"
                 onClick={e => navi("/mypage")}
               >
                 개인정보 수정하기

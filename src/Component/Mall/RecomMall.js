@@ -20,25 +20,22 @@ function RecomMall(props) {
   }, [location]);
 
   const getGoods = async c => {
-    let listUrl = `/api/v1/shop/goods/list/${c}`;
+    let listUrl = `/api/v1/shop/detail/rand/goods`;
     const data = {
-      page: 1,
-      size: 5,
+      category1Seq: Number(c),
     };
     setGoods([]);
     await axios
-      .get(listUrl, {
-        params: data,
-        headers: { Authorization: user.accessToken },
-      })
+      .post(listUrl, data)
       .then(res => {
+        console.log(res);
         if (res.data.code === "E999") {
           logout();
           return false;
         }
         setLoadMsg(res.data.message);
-        setGoods(res.data.goodsList);
-        if (res.data.goodsList.length > 0) {
+        setGoods(res.data.randList);
+        if (res.data.randList.length > 0) {
           setLoaded(true);
         }
       })
@@ -62,9 +59,9 @@ function RecomMall(props) {
   };
 
   return (
-    <div className="p-2 bg-gray-50">
+    <div className="p-2 bg-white">
       <div className="xl:container mx-auto">
-        <div className="overflow-x-auto w-full mx-auto my-2">
+        <div className="overflow-x-auto w-full mx-auto my-2 px-4">
           <h3 className="xl:text-3xl font-lineseed py-2 border-b">
             이런 상품은 어떠세요?
           </h3>

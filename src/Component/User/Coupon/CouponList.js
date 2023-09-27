@@ -50,6 +50,7 @@ function CouponList(props) {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
+        console.log(res);
         if (res.data.couponDetail.code === "E999") {
           logout();
           return false;
@@ -130,7 +131,7 @@ function CouponList(props) {
           )}
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-1">
+      <div className="grid grid-cols-2 gap-1" data={props.coupon.trId}>
         <div>
           <button
             className="transition duration-300 w-full border border-teal-500 hover:border-teal-700 bg-teal-500 hover:bg-teal-700 text-white text-lg p-2"

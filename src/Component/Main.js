@@ -49,9 +49,10 @@ function Main() {
   return (
     <>
       {loading ? <Loading /> : null}
-      <Jumbotron />
+
       <div className="mx-auto container">
         <UserSection />
+        <Jumbotron />
       </div>
       <SubContent />
       <MainCategory />

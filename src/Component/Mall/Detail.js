@@ -103,42 +103,43 @@ function Detail() {
     const confirm = window.confirm(
       `상품을 구매하시겠습니까?\n${goods.realPrice}포인트가 차감됩니다`
     );
-    if (!confirm) {
+    if (confirm) {
+      let data = {
+        goodsCode: goodscode,
+      };
+      let buy = Number(user.point) - Number(goods.realPrice);
+      if (buy < 0) {
+        return alert("포인트가 부족합니다");
+      }
+      await axios
+        .post("/api/v1/shop/goods/send", data, {
+          headers: { Authorization: user.accessToken },
+        })
+        .then(res => {
+          console.log(res);
+          if (res.data.code === "E999") {
+            logout();
+            return false;
+          }
+          if (res.data.code === "C000") {
+            alert("구매 완료!");
+            dispatch(
+              buyGift({
+                point: res.data.point,
+              })
+            );
+            navi(`/result`);
+          } else {
+            console.log(res);
+            alert(res.data.message);
+          }
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    } else {
       return false;
     }
-    let data = {
-      goodsCode: goodscode,
-    };
-    let buy = Number(user.point) - Number(goods.realPrice);
-    if (buy < 0) {
-      return alert("포인트가 부족합니다");
-    }
-    await axios
-      .post("/api/v1/shop/goods/send", data, {
-        headers: { Authorization: user.accessToken },
-      })
-      .then(res => {
-        console.log(res);
-        if (res.data.code === "E999") {
-          logout();
-          return false;
-        }
-        if (res.data.code === "C000") {
-          alert("구매 완료!");
-          dispatch(
-            buyGift({
-              point: res.data.point,
-            })
-          );
-          navi(`/result`);
-        } else {
-          console.log(res);
-          alert(res.data.message);
-        }
-      })
-      .catch(e => {
-        console.log(e);
-      });
   };
 
   const logout = async () => {

@@ -23,19 +23,16 @@ function Recommend(props) {
   }, [location]);
 
   const getCategory = c => {
+    console.log(c);
     const categoryItem = category.find(cat => cat.category1Seq === parseInt(c));
     setCategoryName(categoryItem.category1Name);
   };
   const getGoods = async c => {
-    let listUrl = `/api/v1/shop/goods/list/${c}`;
-    const data = {
-      page: 1,
-      size: 5,
-    };
+    let listUrl = "/api/v1/shop/get/rand/goods";
+
     setGoods([]);
     await axios
       .get(listUrl, {
-        params: data,
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
@@ -44,9 +41,16 @@ function Recommend(props) {
           return false;
         }
         setLoadMsg(res.data.message);
-        setGoods(res.data.goodsList);
-        if (res.data.goodsList.length > 0) {
-          setLoaded(true);
+        if (c === 1) {
+          setGoods(res.data.cafeList);
+          if (res.data.cafeList.length > 0) {
+            setLoaded(true);
+          }
+        } else {
+          setGoods(res.data.randList);
+          if (res.data.randList.length > 0) {
+            setLoaded(true);
+          }
         }
       })
       .catch(e => {
@@ -73,7 +77,9 @@ function Recommend(props) {
       <div className="xl:container mx-auto">
         <div className="overflow-x-auto w-full mx-auto my-2">
           <h3 className="xl:text-3xl font-lineseed py-2 border-b">
-            {categoryName}의 추천상품
+            {categoryName === "커피/음료"
+              ? "카페에서 여유롭게"
+              : "오늘의 추천상품"}
           </h3>
           {loaded ? (
             <div

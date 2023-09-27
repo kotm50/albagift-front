@@ -5,8 +5,8 @@ import Recommend from "./Main/Recommend";
 import MainCategory from "./Main/MainCategory";
 import Jumbotron from "./Main/Jumbotron";
 import SubContent from "./Main/SubContent";
-import UserSection from "./User/UserSection";
 import Loading from "./Layout/Loading";
+import UserSection from "./User/UserSection";
 
 function Main() {
   const location = useLocation();
@@ -50,6 +50,9 @@ function Main() {
     <>
       {loading ? <Loading /> : null}
       <Jumbotron />
+      <div className="mx-auto container">
+        <UserSection />
+      </div>
       <SubContent />
       <MainCategory />
       {cateNums.length > 0 && (
@@ -58,9 +61,6 @@ function Main() {
           <Recommend category={cateNums[1]} />
         </>
       )}
-      <div className="container mx-auto pt-3">
-        <UserSection />
-      </div>
     </>
   );
 }

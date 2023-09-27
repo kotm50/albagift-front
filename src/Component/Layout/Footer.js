@@ -95,11 +95,13 @@ function Footer() {
                     </Link>
                   </h1>
                 </div>
-                <div className="flex flex-col justify-start gap-1 text-gray-700 pl-2 xl:pl-0 text-sm">
+                <div className="flex flex-col justify-start gap-1 text-gray-700 pl-2 xl:pl-0 text-sm my-10">
                   <div className="text-left font-neoextra">
                     코리아밸리 유한회사
                   </div>
-                  <div className="text-left font-neo">대표자명 : 김태훈</div>
+                  <div className="text-left font-neo">
+                    개인정보보호책임자 : Ryu Jae-Hwan
+                  </div>
                   <div className="text-left font-neo">
                     경기도 남양주시 별내중앙로 26,10층
                     1002-에이74호(별내동,진영엔타워)
@@ -111,7 +113,7 @@ function Footer() {
                     Copyright ⓒ Albagift. All rights reserved
                   </div>
                 </div>
-                <div className="flex flex-col justify-start gap-1 text-gray-700 pl-2 xl:pl-0 text-sm">
+                <div className="flex flex-col justify-start gap-1 text-gray-700 pl-2 xl:pl-0 text-sm my-10">
                   <div className="text-left font-neoextra">
                     취업상담 / 채용문의{" "}
                   </div>
@@ -223,11 +225,13 @@ function Footer() {
                     </Link>
                   </h1>
                 </div>
-                <div className="flex flex-col justify-start gap-1 text-gray-700 pl-2 xl:pl-0 text-sm">
+                <div className="flex flex-col justify-start gap-1 text-gray-700 pl-2 xl:pl-0 text-sm my-10">
                   <div className="text-left font-neoextra">
                     코리아밸리 유한회사
                   </div>
-                  <div className="text-left font-neo">대표자명 : 김태훈</div>
+                  <div className="text-left font-neo">
+                    개인정보보호책임자 : Ryu Jae-Hwan
+                  </div>
                   <div className="text-left font-neo">
                     경기도 남양주시 별내중앙로 26,10층
                     1002-에이74호(별내동,진영엔타워)
@@ -239,7 +243,7 @@ function Footer() {
                     Copyright ⓒ Albagift. All rights reserved
                   </div>
                 </div>
-                <div className="flex flex-col justify-start gap-1 text-gray-700 pl-2 xl:pl-0 text-sm">
+                <div className="flex flex-col justify-start gap-1 text-gray-700 pl-2 xl:pl-0 text-sm my-10">
                   <div className="text-left font-neoextra">
                     취업상담 / 채용문의{" "}
                   </div>

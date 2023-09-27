@@ -28,7 +28,9 @@ function MainCategory() {
             <Link
               to={`/list/${cat.category1Seq}`}
               key={idx}
-              className="text-center text-xs giftcategory p-2"
+              className={`text-center text-xs giftcategory p-2 ${
+                cat.category1Seq === "etc" && "hidden"
+              }`}
             >
               <div className="mainCategory group">
                 <div className="bg-sky-50 rounded-full text-center w-20 h-20 mx-auto mb-2 flex flex-col justify-center">

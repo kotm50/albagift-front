@@ -18,7 +18,6 @@ function Cert() {
 
   useEffect(() => {
     if (location.state) {
-      console.log(location.state.socialUser);
       setSocialUser(location.state.socialUser);
     }
     //eslint-disable-next-line
@@ -46,7 +45,6 @@ function Cert() {
     if (userId !== "") {
       data.userId = userId;
     }
-    console.log(data);
     //data = {token, enc, int, gubun, id, email}
     await axios
       .post("/api/v1/user/nice/dec/result", data)
@@ -62,7 +60,6 @@ function Cert() {
           }
         } else if (gubun === "find") {
           if (res.data.code === "C000") {
-            console.log(res);
             setGetTid(true);
             setTid(res.data.tempId);
           }

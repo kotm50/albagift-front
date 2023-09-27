@@ -35,4 +35,8 @@ export const category = [
     category1Seq: 10,
     category1Name: "출산/생활/통신",
   },
+  {
+    category1Seq: "etc",
+    category1Name: "기타상품",
+  },
 ];

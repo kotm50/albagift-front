@@ -31,6 +31,8 @@ function Write() {
       );
       if (goLogin) {
         navi("/login");
+      } else {
+        navi(-1);
       }
     }
     //eslint-disable-next-line

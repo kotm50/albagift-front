@@ -8,7 +8,7 @@ import {
   FaCut,
 } from "react-icons/fa";
 import { MdLocalConvenienceStore, MdRestaurant, MdMovie } from "react-icons/md";
-
+import { LuShoppingBag } from "react-icons/lu";
 function CategoryIcons(props) {
   return (
     <span className="categoryIcons">
@@ -30,7 +30,9 @@ function CategoryIcons(props) {
         <FaCut size={24} />
       ) : props.num === 10 ? (
         <FaBabyCarriage size={24} />
-      ) : null}
+      ) : (
+        <LuShoppingBag size={24} />
+      )}
     </span>
   );
 }

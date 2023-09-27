@@ -49,6 +49,7 @@ function Cert() {
     await axios
       .post("/api/v1/user/nice/dec/result", data)
       .then(res => {
+        console.log(res);
         if (gubun === "join") {
           if (res.data.code === "C000") {
             navi("/join", {

@@ -23,7 +23,6 @@ function Recommend(props) {
   }, [location]);
 
   const getCategory = c => {
-    console.log(c);
     const categoryItem = category.find(cat => cat.category1Seq === parseInt(c));
     setCategoryName(categoryItem.category1Name);
   };

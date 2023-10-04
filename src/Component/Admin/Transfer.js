@@ -5,7 +5,7 @@ import { db } from "../../firebase"; // Firebase 초기화 후에 db 객체 가�
 
 import { useSelector } from "react-redux";
 
-import axios from "axios";
+import Apply from "./Apply";
 
 function Transfer() {
   const user = useSelector(state => state.user);
@@ -70,45 +70,9 @@ function Transfer() {
     }
   };
 
-  const updateData = async () => {
-    if (applies.length > 0) {
-      let data = {
-        protoList: applies,
-      };
-      console.log(data);
-      await axios
-        .post("/api/v1/user/proto", data, {
-          headers: { Authorization: user.accessToken },
-        })
-        .then(res => {
-          console.log(res);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    } else {
-      alert("구 회원 리스트 불러오는 중 입니다");
-    }
-  };
-
   return (
     <div className="container mx-auto text-center mt-2">
-      {applies.length > 0
-        ? "구 회원 목록 불러오기 완료"
-        : "구 회원 목록 불러오는 중..."}
-      <br />
-      <br />
-      <button
-        className={`p-2 text-white ${
-          applies.length > 0 ? "bg-blue-500" : "bg-stone-900"
-        }`}
-        disabled={applies.legnth === 0}
-        onClick={e => {
-          updateData();
-        }}
-      >
-        {applies.length > 0 ? "구 회원 목록 입력하기" : "잠시만 기다려 주세요"}
-      </button>
+      <Apply applies={applies} user={user} />
     </div>
   );
 }

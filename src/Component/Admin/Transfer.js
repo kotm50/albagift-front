@@ -63,6 +63,7 @@ function Transfer() {
         }
       });
       console.log(documents.length);
+      console.log(documents);
       setApplies(documents);
     } catch (error) {
       console.error("문서 수를 가져오는 동안 오류 발생:", error);
@@ -74,8 +75,9 @@ function Transfer() {
       let data = {
         protoList: applies,
       };
+      console.log(data);
       await axios
-        .post("http://inssain.co.kr/api/v1/user/proto", data, {
+        .post("/api/v1/user/proto", data, {
           headers: { Authorization: user.accessToken },
         })
         .then(res => {

@@ -6,7 +6,9 @@ function Apply(props) {
     if (a.length > 0) {
       console.log(props.user.accessToken);
       let data = {
-        protoList: a,
+        protoList: props.applies,
+        protoList2: props.applies2,
+        protoList3: props.applies3,
       };
       console.log(data);
       await axios

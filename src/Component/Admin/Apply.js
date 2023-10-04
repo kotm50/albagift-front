@@ -2,13 +2,17 @@ import React from "react";
 import axios from "axios";
 
 function Apply(props) {
+  const updateAll = async () => {
+    await updateData(props.applies);
+    await updateData(props.applies2);
+    await updateData(props.applies3);
+  };
   const updateData = async a => {
     if (a.length > 0) {
       console.log(props.user.accessToken);
       let data = {
         protoList: a,
       };
-      console.log(data);
       await axios
         .post("/api/v1/user/proto", data, {
           headers: { Authorization: props.user.accessToken },
@@ -57,41 +61,11 @@ function Apply(props) {
         }`}
         disabled={props.applies.legnth === 0}
         onClick={e => {
-          updateData(props.applies);
+          updateAll();
         }}
       >
         {props.applies.length > 0
           ? "구 회원 목록 입력하기"
-          : "잠시만 기다려 주세요"}
-      </button>
-      <br />
-      <br />
-      <button
-        className={`p-2 text-white ${
-          props.applies2.length > 0 ? "bg-blue-500" : "bg-stone-900"
-        }`}
-        disabled={props.applies2.legnth === 0}
-        onClick={e => {
-          updateData(props.applies2);
-        }}
-      >
-        {props.applies2.length > 0
-          ? "구 회원 목록 입력하기2"
-          : "잠시만 기다려 주세요"}
-      </button>
-      <br />
-      <br />
-      <button
-        className={`p-2 text-white ${
-          props.applies3.length > 0 ? "bg-blue-500" : "bg-stone-900"
-        }`}
-        disabled={props.applies3.legnth === 0}
-        onClick={e => {
-          updateData(props.applies3);
-        }}
-      >
-        {props.applies3.length > 0
-          ? "구 회원 목록 입력하기3"
           : "잠시만 기다려 주세요"}
       </button>
       <br />

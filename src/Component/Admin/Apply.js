@@ -4,7 +4,7 @@ import axios from "axios";
 function Apply(props) {
   const updateData = async () => {
     if (props.applies.length > 0) {
-      console.log(props.user);
+      console.log(props.user.accessToken);
       let data = {
         protoList: props.applies,
       };

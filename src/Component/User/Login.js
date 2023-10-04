@@ -151,8 +151,24 @@ function Login() {
               admin: false,
             })
           );
-          navi("/");
+          chkProto(token, user);
         }
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
+  const chkProto = async (token, user) => {
+    await axios
+      .post("/api/v1/user/search/proto", null, {
+        headers: { Authorization: token },
+      })
+      .then(res => {
+        if (res.data.code === "C001") {
+          alert(res.data.message);
+        }
+        navi("/");
       })
       .catch(e => {
         console.log(e);

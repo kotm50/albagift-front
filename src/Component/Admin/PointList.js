@@ -14,6 +14,7 @@ function PointList() {
   const [selectedDocsId, setSelectedDocsId] = useState([]);
   const location = useLocation();
   const [point, setPoint] = useState("");
+  const [reason, setReason] = useState("");
 
   useEffect(() => {
     loadList();
@@ -141,6 +142,10 @@ function PointList() {
     return phoneNumber;
   };
 
+  const handleChangeSelect = e => {
+    setReason(e.currentTarget.value);
+  };
+
   return (
     <>
       {loaded ? (
@@ -215,46 +220,9 @@ function PointList() {
                     </div>
                   ))}
                 </div>
-                <div className="mt-2 bg-rose-50 p-2 grid grid-cols-1 xl:grid-cols-2 gap-2">
-                  <div className="grid grid-cols-3 gap-2">
-                    <button
-                      className="transition duration-150 ease-out p-2 bg-green-700 hover:bg-green-900 text-white"
-                      onClick={e => setPoint(Number(point) + 1000)}
-                    >
-                      +1000
-                    </button>
-                    <button
-                      className="transition duration-150 ease-out p-2 bg-green-700 hover:bg-green-900 text-white"
-                      onClick={e => setPoint(Number(point) + 5000)}
-                    >
-                      + 5000
-                    </button>
-                    <button
-                      className="transition duration-150 ease-out p-2 bg-green-700 hover:bg-green-900 text-white"
-                      onClick={e => setPoint(Number(point) + 10000)}
-                    >
-                      + 10000
-                    </button>
-                    <button
-                      className="transition duration-150 ease-out p-2 bg-rose-700 hover:bg-rose-900 text-white"
-                      onClick={e => setPoint(Number(point) - 1000)}
-                    >
-                      - 1000
-                    </button>
-                    <button
-                      className="transition duration-150 ease-out p-2 bg-rose-700 hover:bg-rose-900 text-white"
-                      onClick={e => setPoint(Number(point) - 5000)}
-                    >
-                      - 5000
-                    </button>
-                    <button
-                      className="transition duration-150 ease-out p-2 bg-rose-700 hover:bg-rose-900 text-white"
-                      onClick={e => setPoint(0)}
-                    >
-                      0 으로
-                    </button>
-                  </div>
-                  <div className="grid grid-cols-1 gap-2">
+                <div className="mt-2 grid grid-cols-1 xl:grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 gap-2 bg-blue-50 p-2">
+                    <div className="text-lg font-neoextra">포인트 지급처리</div>
                     <input
                       type="number"
                       className="p-2 bg-white border font-medium"
@@ -262,20 +230,40 @@ function PointList() {
                       onChange={e => setPoint(e.currentTarget.value)}
                       onBlur={e => setPoint(e.currentTarget.value)}
                     />
-                    <div className="grid grid-cols-2 gap-2">
-                      <button
-                        className="transition duration-150 ease-out p-2 bg-sky-500 hover:bg-sky-700 text-white rounded-lg font-medium hover:animate-wiggle"
-                        onClick={incPoint}
-                      >
-                        포인트 지급
-                      </button>
-                      <button
-                        className="transition duration-150 ease-out p-2 bg-white  border border-red-500 text-red-500 font-medium rounded-lg hover:bg-red-50 hover:border-red-700 hover:text-red-700  hover:animate-wiggle"
-                        onClick={decPoint}
-                      >
-                        포인트 차감
-                      </button>
+                    <button
+                      className="transition duration-150 ease-out p-2 bg-sky-500 hover:bg-sky-700 text-white rounded-lg font-medium hover:animate-wiggle"
+                      onClick={incPoint}
+                    >
+                      지급처리
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-1 gap-2 bg-rose-50 p-2">
+                    <div className="text-lg font-neoextra">
+                      포인트 지급불가처리
                     </div>
+                    <select
+                      className="p-2 bg-white border font-medium"
+                      onChange={handleChangeSelect}
+                      value={reason}
+                    >
+                      <option
+                        disabled
+                        hidden
+                        selected
+                        value=""
+                        className="p-2 bg-white border font-medium"
+                      >
+                        불가사유를 선택해 주세요
+                      </option>
+                      <option value="중복신청">중복신청</option>
+                      <option value="면접기록없음">면접기록없음</option>
+                    </select>
+                    <button
+                      className="transition duration-150 ease-out p-2  border bg-red-500 text-white font-medium rounded-lg  hover:bg-red-700  hover:animate-wiggle"
+                      onClick={decPoint}
+                    >
+                      지급불가처리
+                    </button>
                   </div>
                 </div>
               </div>

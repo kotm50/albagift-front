@@ -41,10 +41,28 @@ function Transfer() {
             docData.protoPhone = doc.data().phone;
             docData.protoPoint = doc.data().point;
             docData.uid = doc.data().uid;
-            documents.push(docData); // 문서 데이터를 배열에 추가
+            // 중복 체크를 위한 플래그
+            let isDuplicate = false;
+
+            // 배열에서 중복 체크
+            documents.forEach(existingDoc => {
+              if (
+                existingDoc.protoName === docData.protoName &&
+                existingDoc.protoPhone === docData.protoPhone
+              ) {
+                isDuplicate = true;
+                return; // 중복된 경우 추가하지 않고 반복문을 빠져나갑니다.
+              }
+            });
+
+            // 중복되지 않았을 때만 배열에 추가
+            if (!isDuplicate) {
+              documents.push(docData); // 문서 데이터를 배열에 추가
+            }
           }
         }
       });
+      console.log(documents.length);
       setApplies(documents);
     } catch (error) {
       console.error("문서 수를 가져오는 동안 오류 발생:", error);

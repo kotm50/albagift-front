@@ -12,6 +12,8 @@ function Apply(props) {
       await axios
         .post("/api/v1/user/proto", data, {
           headers: { Authorization: props.user.accessToken },
+          maxContentLength: Infinity,
+          maxBodyLength: Infinity,
         })
         .then(res => {
           console.log(res);

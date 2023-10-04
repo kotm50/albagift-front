@@ -31,42 +31,48 @@ function Transfer() {
       snapshot.forEach(doc => {
         doc.data().docId = doc.id;
         if (
-          doc.data().name !== null &&
-          doc.data().name !== undefined &&
-          doc.data().name !== ""
+          doc.data().uid !== null &&
+          doc.data().uid !== undefined &&
+          doc.data().uid !== ""
         ) {
           if (
-            doc.data().phone !== null &&
-            doc.data().phone !== undefined &&
-            doc.data().phone !== ""
+            doc.data().name !== null &&
+            doc.data().name !== undefined &&
+            doc.data().name !== ""
           ) {
-            let docData = {};
-            docData.protoName = doc.data().name;
-            docData.protoPhone = doc.data().phone;
-            docData.protoPoint = doc.data().point;
-            docData.uid = doc.data().uid;
-            // 중복 체크를 위한 플래그
-            let isDuplicate = false;
+            if (
+              doc.data().phone !== null &&
+              doc.data().phone !== undefined &&
+              doc.data().phone !== ""
+            ) {
+              let docData = {};
+              docData.protoName = doc.data().name;
+              docData.protoPhone = doc.data().phone;
+              docData.protoPoint = doc.data().point;
+              docData.uid = doc.data().uid;
+              // 중복 체크를 위한 플래그
+              let isDuplicate = false;
 
-            // 배열에서 중복 체크
-            documents.forEach(existingDoc => {
-              if (
-                existingDoc.protoName === docData.protoName &&
-                existingDoc.protoPhone === docData.protoPhone
-              ) {
-                isDuplicate = true;
-                return; // 중복된 경우 추가하지 않고 반복문을 빠져나갑니다.
-              }
-            });
+              // 배열에서 중복 체크
+              documents.forEach(existingDoc => {
+                if (
+                  existingDoc.protoName === docData.protoName &&
+                  existingDoc.protoPhone === docData.protoPhone
+                ) {
+                  isDuplicate = true;
+                  return; // 중복된 경우 추가하지 않고 반복문을 빠져나갑니다.
+                }
+              });
 
-            // 중복되지 않았을 때만 배열에 추가
-            if (!isDuplicate) {
-              if (documents.length < 50) {
-                documents.push(docData);
-              } else if (documents2.length < 50) {
-                documents2.push(docData);
-              } else {
-                documents3.push(docData); // 문서 데이터를 배열에 추가
+              // 중복되지 않았을 때만 배열에 추가
+              if (!isDuplicate) {
+                if (documents.length < 50) {
+                  documents.push(docData);
+                } else if (documents2.length < 50) {
+                  documents2.push(docData);
+                } else {
+                  documents3.push(docData); // 문서 데이터를 배열에 추가
+                }
               }
             }
           }

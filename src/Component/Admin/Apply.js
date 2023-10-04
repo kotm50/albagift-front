@@ -68,6 +68,36 @@ function Apply(props) {
       <br />
       <button
         className={`p-2 text-white ${
+          props.applies2.length > 0 ? "bg-blue-500" : "bg-stone-900"
+        }`}
+        disabled={props.applies2.legnth === 0}
+        onClick={e => {
+          updateData();
+        }}
+      >
+        {props.applies2.length > 0
+          ? "구 회원 목록 입력하기2"
+          : "잠시만 기다려 주세요"}
+      </button>
+      <br />
+      <br />
+      <button
+        className={`p-2 text-white ${
+          props.applies3.length > 0 ? "bg-blue-500" : "bg-stone-900"
+        }`}
+        disabled={props.applies3.legnth === 0}
+        onClick={e => {
+          updateData();
+        }}
+      >
+        {props.applies3.length > 0
+          ? "구 회원 목록 입력하기3"
+          : "잠시만 기다려 주세요"}
+      </button>
+      <br />
+      <br />
+      <button
+        className={`p-2 text-white ${
           props.applies.length > 0 ? "bg-blue-500" : "bg-stone-900"
         }`}
         disabled={props.applies.legnth === 0}

@@ -75,7 +75,7 @@ function Transfer() {
         protoList: applies,
       };
       await axios
-        .post("/api/v1/user/proto", data, {
+        .post("http://inssain.co.kr/api/v1/user/proto", data, {
           headers: { Authorization: user.accessToken },
         })
         .then(res => {

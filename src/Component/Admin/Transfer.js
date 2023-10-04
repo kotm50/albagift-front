@@ -23,7 +23,6 @@ function Transfer() {
     try {
       const snapshot = await getDocs(applyCollectionRef); // 컬렉션의 모든 문서 스냅샷 가져오기
       const documents = []; // 문서를 저장할 배열
-      let uidNum = 0;
 
       snapshot.forEach(doc => {
         doc.data().docId = doc.id;
@@ -41,7 +40,7 @@ function Transfer() {
             docData.protoName = doc.data().name;
             docData.protoPhone = doc.data().phone;
             docData.protoPoint = doc.data().point;
-            docData.uid = uidNum;
+            docData.uid = doc.data().uid;
             // 중복 체크를 위한 플래그
             let isDuplicate = false;
 
@@ -59,7 +58,6 @@ function Transfer() {
             // 중복되지 않았을 때만 배열에 추가
             if (!isDuplicate) {
               documents.push(docData); // 문서 데이터를 배열에 추가
-              uidNum++;
             }
           }
         }

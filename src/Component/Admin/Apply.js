@@ -25,21 +25,21 @@ function Apply(props) {
   };
   return (
     <>
-      {props.props.applies.length > 0
+      {props.applies.length > 0
         ? "구 회원 목록 불러오기 완료"
         : "구 회원 목록 불러오는 중..."}
       <br />
       <br />
       <button
         className={`p-2 text-white ${
-          props.props.applies.length > 0 ? "bg-blue-500" : "bg-stone-900"
+          props.applies.length > 0 ? "bg-blue-500" : "bg-stone-900"
         }`}
-        disabled={props.props.applies.legnth === 0}
+        disabled={props.applies.legnth === 0}
         onClick={e => {
           updateData();
         }}
       >
-        {props.props.applies.length > 0
+        {props.applies.length > 0
           ? "구 회원 목록 입력하기"
           : "잠시만 기다려 주세요"}
       </button>

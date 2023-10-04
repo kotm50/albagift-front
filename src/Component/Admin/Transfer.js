@@ -72,7 +72,7 @@ function Transfer() {
 
   return (
     <div className="container mx-auto text-center mt-2">
-      <Apply applies={applies} user={user} />
+      {applies.length > 0 && <Apply applies={applies} user={user} />}
     </div>
   );
 }

@@ -2,11 +2,11 @@ import React from "react";
 import axios from "axios";
 
 function Apply(props) {
-  const updateData = async () => {
-    if (props.applies.length > 0) {
+  const updateData = async a => {
+    if (a.length > 0) {
       console.log(props.user.accessToken);
       let data = {
-        protoList: props.applies,
+        protoList: a,
       };
       console.log(data);
       await axios
@@ -57,7 +57,7 @@ function Apply(props) {
         }`}
         disabled={props.applies.legnth === 0}
         onClick={e => {
-          updateData();
+          updateData(props.applies);
         }}
       >
         {props.applies.length > 0
@@ -72,7 +72,7 @@ function Apply(props) {
         }`}
         disabled={props.applies2.legnth === 0}
         onClick={e => {
-          updateData();
+          updateData(props.applies2);
         }}
       >
         {props.applies2.length > 0
@@ -87,7 +87,7 @@ function Apply(props) {
         }`}
         disabled={props.applies3.legnth === 0}
         onClick={e => {
-          updateData();
+          updateData(props.applies3);
         }}
       >
         {props.applies3.length > 0

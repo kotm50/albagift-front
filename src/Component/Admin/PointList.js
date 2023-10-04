@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { getNewToken } from "../../Reducer/userSlice";
 import Loading from "../Layout/Loading";
 
 function PointList() {
+  const navi = useNavigate();
   const dispatch = useDispatch();
   const [loaded, setLoaded] = useState(false);
   const [list, setList] = useState([]);
@@ -123,7 +124,12 @@ function PointList() {
       })
       .then(res => {
         console.log(res);
-        res.data.code === "C000" ? setLoaded(true) : setLoaded(false);
+        if (res.data.code === "C000") {
+          setLoaded(true);
+        } else {
+          alert(res.data.message);
+          navi(-1);
+        }
         setList(res.data.postList ?? [{ postId: "없음" }]);
       })
       .catch(e => {

@@ -116,6 +116,12 @@ function Admin() {
               >
                 로그인 기록
               </Link>
+              <Link
+                to="/admin/transfer"
+                className="hover:bg-indigo-100 p-2 text-center"
+              >
+                구버전 회원
+              </Link>
             </div>
           </div>
           <Outlet />

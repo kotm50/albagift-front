@@ -36,7 +36,7 @@ import Certification from "./Component/User/Certification";
 import PopupTest from "./Component/PopupTest";
 import Cert from "./Component/User/Cert";
 import FindPwd from "./Component/User/FindPwd";
-import Transfer from "./Component/User/Transfer";
+import Transfer from "./Component/Admin/Transfer";
 
 function App() {
   const thisLocation = useLocation();
@@ -79,6 +79,7 @@ function App() {
             <Route path="reset" element={<GiftReset />} />
             <Route path="loginlog" element={<LoginLog />} />
             <Route path="pointlist" element={<PointList />} />
+            <Route path="transfer" element={<Transfer />} />
           </Route>
           <Route path="/test" element={<KakaoTest />} />
           <Route path="/popup" element={<PopupTest />} />
@@ -89,7 +90,6 @@ function App() {
           </Route>
           <Route path="/certification" element={<Certification />} />
           <Route path="/cert" element={<Cert />} />
-          <Route path="/transfer" element={<Transfer />} />
         </Routes>
       </div>
       <Footer />

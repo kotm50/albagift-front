@@ -61,18 +61,20 @@ function Transfer() {
 
             // 중복되지 않았을 때만 배열에 추가
             if (!isDuplicate) {
-              if (documents.legnth > 50 && documents2.length > 50) {
-                documents3.push(docData);
-              } else if (documents.length > 50) {
+              if (documents.length < 50) {
+                documents.push(docData);
+              } else if (documents2.length < 50) {
                 documents2.push(docData);
               } else {
-                documents.push(docData); // 문서 데이터를 배열에 추가
+                documents3.push(docData); // 문서 데이터를 배열에 추가
               }
             }
           }
         }
       });
       console.log(documents.length);
+      console.log(documents2.length);
+      console.log(documents3.length);
       console.log(documents);
       setApplies(documents);
       setApplies2(documents2);

@@ -135,7 +135,7 @@ function FindPwd() {
 
             <button
               className="py-3 border border-blue-500 hover:border-blue-700 text-blue-500 hover:text-blue-700 w-full rounded-full"
-              onClick={e => navi("/findpwd")}
+              onClick={e => navi("/cert?gubun=find")}
             >
               아이디 찾기
             </button>

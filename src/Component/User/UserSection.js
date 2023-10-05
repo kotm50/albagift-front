@@ -12,7 +12,7 @@ function UserSection() {
         <UserInformation />
       </div>
       <div className="bg-green-700 text-white px-2 pt-4  xl:rounded-lg relative  flex-col justify-center overflow-hidden flex group">
-        <Link to="/board/write?boardId=B01" className="z-40">
+        <Link to="/board/write?boardId=B02" className="z-40">
           <div className="text-left xl:text-xl mb-1">면접보고 오셨어요?</div>
           <div className="text-left text-3xl xl:text-4xl mb-5 text-yellow-300 font-neoextra">
             포인트 신청하세요!
@@ -27,7 +27,7 @@ function UserSection() {
       </div>
       <div className="bg-violet-500 text-white px-2 pt-4 relative  flex-col justify-center overflow-hidden flex group xl:rounded-lg">
         <Link
-          to="/board/list?boardId=B01"
+          to="/board/list?boardId=B02"
           onClick={e => {
             e.preventDefault();
             alert("죄송합니다. 해당 기능은 현재 준비중입니다 🙏");

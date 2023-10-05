@@ -11,7 +11,7 @@ function Detail() {
   const navi = useNavigate();
   const location = useLocation();
   const parsed = queryString.parse(location.search);
-  const boardId = parsed.boardId || "B01";
+  const boardId = parsed.boardId || "B02";
   const { pid } = useParams();
   const [detail, setDetail] = useState({});
   const [loading, setLoading] = useState(true);
@@ -54,7 +54,7 @@ function Detail() {
       {loading ? <Loading /> : null}
       <h2 className="text-center text-3xl py-2 font-neoheavy">면접상세내용</h2>
       <div className="container mx-auto grid grid-cols-1 gap-1">
-        {boardId === "B01" ? (
+        {boardId === "B02" ? (
           <>
             <div className="w-1/2 mx-auto grid grid-cols-4 border">
               <div className="bg-sky-500 p-2 text-white text-center">
@@ -99,13 +99,21 @@ function Detail() {
           "현재 다른 게시판은 준비중 입니다."
         )}
       </div>
-      <div className="container mx-auto text-center mt-2">
+      <div className="container mx-auto text-center mt-2 flex justify-center gap-2">
         <button
-          className="p-2 w-60 mx-auto bg-green-500 hover:bg-green-700 text-white rounded"
-          onClick={e => navi(`/board/write/${pid}`)}
+          className="p-2 w-60 bg-sky-500 hover:bg-sky-700 text-white rounded"
+          onClick={e => navi(`/board/list?boardId=${boardId}`)}
         >
-          수정하기
+          목록으로
         </button>
+        {detail.status === "S" && (
+          <button
+            className="p-2 w-60 bg-green-500 hover:bg-green-700 text-white rounded"
+            onClick={e => navi(`/board/write/${pid}`)}
+          >
+            수정하기
+          </button>
+        )}
       </div>
     </>
   );

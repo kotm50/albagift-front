@@ -11,7 +11,7 @@ function Write() {
   const user = useSelector(state => state.user);
   const location = useLocation();
   const parsed = queryString.parse(location.search);
-  const boardId = parsed.boardId || "B01";
+  const boardId = parsed.boardId || "B02";
   const navi = useNavigate();
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [hour, setHour] = useState("0");
@@ -75,7 +75,7 @@ function Write() {
       intvTime: hour,
       intvMin: minute,
     };
-    if (boardId === "B01") {
+    if (boardId === "B02") {
       let isBefore = await isBeforeNow();
       if (!isBefore) {
         return alert("면접일시는 현재시간보다 이전이어야 합니다.");
@@ -142,7 +142,7 @@ function Write() {
     <div className="w-1/2 p-2 mx-auto bg-white my-2">
       {loaded ? (
         <>
-          {boardId === "B01" ? (
+          {boardId === "B02" ? (
             <>
               <h2 className="text-lg xl:text-2xl font-neobold mb-3">
                 면접포인트 신청하기

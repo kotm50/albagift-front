@@ -30,7 +30,10 @@ function PointList() {
         ...selectedDocs,
         { postId: doc.postId, phone: doc.phone, name: doc.userName },
       ]);
-      setSelectedDocsId([...selectedDocsId, { postId: doc.postId }]);
+      setSelectedDocsId([
+        ...selectedDocsId,
+        { postId: doc.postId, boardId: "B02" },
+      ]);
     } else {
       // 체크박스가 선택 해제된 경우, 아이템을 배열에서 제거
       setSelectedDocs(selectedDocs.filter(item => item.postId !== doc.postId));
@@ -41,15 +44,15 @@ function PointList() {
     }
   };
 
-  const incPoint = async () => {
+  const pointSubmit = async b => {
+    const postList = await payments(selectedDocsId, b);
+    console.log(postList);
     const request = {
-      idList: selectedDocsId,
-      point: point,
+      postList: postList,
     };
-    console.log(request.idList);
-    console.log(request.point);
+    console.log(request.postList);
     await axios
-      .post("/api/v1/user/admin/manage/point/P", request, {
+      .patch("/api/v1/board/admin/paymt/sts", request, {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
@@ -63,42 +66,6 @@ function PointList() {
           }
         }
         console.log(res.data);
-        console.log(res.headers);
-        if (res.data.code === "C000") {
-          loadList();
-          setPoint(0);
-          setSelectedDocs([]);
-          setSelectedDocsId([]);
-        }
-      })
-      .catch(e => {
-        console.log(e);
-      });
-  };
-
-  const decPoint = async () => {
-    const request = {
-      idList: selectedDocsId,
-      point: point,
-    };
-    console.log(request.docList);
-    console.log(request.point);
-    await axios
-      .post("/api/v1/user/admin/manage/point/D", request, {
-        headers: { Authorization: user.accessToken },
-      })
-      .then(res => {
-        if (res.headers.authorization) {
-          if (res.headers.authorization !== user.accessToken) {
-            dispatch(
-              getNewToken({
-                accessToken: res.headers.authroiztion,
-              })
-            );
-          }
-        }
-        console.log(res.data);
-        console.log(res.headers);
         if (res.data.code === "C000") {
           loadList();
           setPoint(0);
@@ -152,6 +119,22 @@ function PointList() {
     setReason(e.currentTarget.value);
   };
 
+  const payments = (p, b) => {
+    let payArr = [];
+
+    p.forEach(p => {
+      if (b) {
+        p.status = "Y";
+        p.result = point;
+      } else {
+        p.status = "N";
+        p.result = reason;
+      }
+      payArr.push(p);
+    });
+    return payArr;
+  };
+
   return (
     <>
       {loaded ? (
@@ -169,10 +152,15 @@ function PointList() {
                     className="hidden peer"
                     id={doc.postId}
                     onChange={e => checkDocs(doc, e.target.checked)}
+                    disabled={doc.status !== "S"}
                   />
                   <label
                     htmlFor={doc.postId}
-                    className="block p-2 bg-teal-50 hover:bg-teal-200 text-black rounded-lg border-2 border-teal-50 hover:border-teal-200 peer-checked:border-teal-500 peer-checked:hover:border-teal-500"
+                    className={`block p-2 ${
+                      doc.status === "S"
+                        ? "bg-teal-50 hover:bg-teal-200 text-black rounded-lg border-2 border-teal-50 hover:border-teal-200 peer-checked:border-teal-500 peer-checked:hover:border-teal-500"
+                        : "bg-gray-50 hover:bg-gray-200 text-black rounded-lg border-2 border-gray-50 hover:border-gray-200 peer-checked:border-gray-500 peer-checked:hover:border-gray-500"
+                    }`}
                   >
                     <div className="grid grid-cols-3 gap-2 mb-2">
                       <div className="font-medium flex flex-col justify-center text-right">
@@ -199,6 +187,25 @@ function PointList() {
                         title={doc.intvDate}
                       >
                         {doc.intvDate} {doc.intvTime}시 {doc.intvMin}분
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-3 gap-2 mb-2">
+                      <div className="font-medium flex flex-col justify-center text-right">
+                        지급여부
+                      </div>
+                      <div
+                        className="font-normal col-span-2 flex flex-col justify-center"
+                        title="지급여부"
+                      >
+                        {doc.status === "S" ? (
+                          <span className="text-blue-500">지급대기</span>
+                        ) : doc.status === "N" ? (
+                          <span className="text-red-500">지급불가</span>
+                        ) : doc.status === "Y" ? (
+                          <span className="text-green-500">지급완료</span>
+                        ) : (
+                          "오류"
+                        )}
                       </div>
                     </div>
                   </label>
@@ -238,7 +245,7 @@ function PointList() {
                     />
                     <button
                       className="transition duration-150 ease-out p-2 bg-sky-500 hover:bg-sky-700 text-white rounded-lg font-medium hover:animate-wiggle"
-                      onClick={incPoint}
+                      onClick={e => pointSubmit(true)}
                     >
                       지급처리
                     </button>
@@ -252,21 +259,13 @@ function PointList() {
                       onChange={handleChangeSelect}
                       value={reason}
                     >
-                      <option
-                        disabled
-                        hidden
-                        selected
-                        value=""
-                        className="p-2 bg-white border font-medium"
-                      >
-                        불가사유를 선택해 주세요
-                      </option>
+                      <option value="">불가사유를 선택해 주세요</option>
                       <option value="중복신청">중복신청</option>
                       <option value="면접기록없음">면접기록없음</option>
                     </select>
                     <button
                       className="transition duration-150 ease-out p-2  border bg-red-500 text-white font-medium rounded-lg  hover:bg-red-700  hover:animate-wiggle"
-                      onClick={decPoint}
+                      onClick={e => pointSubmit(false)}
                     >
                       지급불가처리
                     </button>

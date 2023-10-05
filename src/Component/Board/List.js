@@ -12,7 +12,7 @@ function List() {
   const user = useSelector(state => state.user);
   const location = useLocation();
   const parsed = queryString.parse(location.search);
-  const boardId = parsed.boardId || "B01";
+  const boardId = parsed.boardId || "B02";
 
   useEffect(() => {
     loadList();
@@ -45,7 +45,7 @@ function List() {
       {loaded ? (
         <div className="mt-2 container mx-auto">
           <h2 className="p-4 text-center font-neoheavy text-3xl">
-            {boardId === "B01" ? "지급 신청 내역" : "게시판"}
+            {boardId === "B02" ? "지급 신청 내역" : "게시판"}
           </h2>
           <>
             {list.length > 0 ? (

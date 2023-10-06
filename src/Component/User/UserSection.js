@@ -27,7 +27,7 @@ function UserSection() {
       </div>
       <div className="bg-violet-500 text-white px-2 pt-4 relative  flex-col justify-center overflow-hidden flex group xl:rounded-lg">
         <Link
-          to="/board/list?boardId=B02"
+          to="/attendance"
           onClick={e => {
             e.preventDefault();
             alert("죄송합니다. 해당 기능은 현재 준비중입니다 🙏");

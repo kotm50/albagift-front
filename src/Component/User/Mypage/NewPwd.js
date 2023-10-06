@@ -3,10 +3,13 @@ import React, { useState } from "react";
 import axios from "axios";
 
 function NewPwd(props) {
+  const [beforePwd, setBeforePwd] = useState("");
   const [pwd, setPwd] = useState("");
   const [pwdChk, setPwdChk] = useState("");
   const [correctPwdChk, setCorrectPwdChk] = useState(true);
   const [correctPwd, setCorrectPwd] = useState(true);
+  const [errMsg, setErrMsg] = useState("");
+  const [isErr, setIsErr] = useState(false);
 
   //비밀번호 양식 확인
   const testPwd = () => {
@@ -42,7 +45,6 @@ function NewPwd(props) {
 
   const editPwd = async e => {
     e.preventDefault();
-
     if (pwdChk === "") {
       return alert("비밀번호를 확인해 주세요");
     }
@@ -55,7 +57,7 @@ function NewPwd(props) {
     axios
       .patch(
         "/api/v1/user/myinfo/editpwd",
-        { userPwd: pwd },
+        { afterPwd: pwd, beforePwd: beforePwd },
         {
           headers: {
             Authorization: props.user.accessToken,
@@ -65,18 +67,29 @@ function NewPwd(props) {
       .then(res => {
         if (res.data.code === "C000") {
           props.logout();
+        } else if (res.data.code === "E001") {
+          setErrMsg(res.data.message);
+          setIsErr(true);
         }
       })
       .catch(e => {
         console.log(e);
       });
   };
+  const cancelChange = () => {
+    props.setPwdOpen(false);
+    setBeforePwd("");
+    setPwd("");
+    setPwdChk("");
+    setCorrectPwdChk(true);
+    setCorrectPwd(true);
+  };
   return (
-    <>
+    <form onSubmit={e => e.preventDefault()}>
       <div className="p-2">
         <button
           className="w-full p-2 text-blue-500 hover:text-blue-700 bg-gray-100 hover:bg-gray-200 rounded-full hover:animate-wiggle"
-          onClick={e => props.setPwdOpen(false)}
+          onClick={e => cancelChange()}
         >
           비밀번호 변경취소
         </button>
@@ -86,6 +99,41 @@ function NewPwd(props) {
           id="editArea"
           className="my-2 mx-auto p-2 border rounded-lg grid grid-cols-1 gap-3 bg-gray-50 w-full"
         >
+          <div
+            id="beforePwd"
+            className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
+              isErr ? "xl:border-red-500" : undefined
+            }`}
+          >
+            <label
+              htmlFor="inputPwd"
+              className={`text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 ${
+                !isErr ? "xl:bg-gray-100" : "xl:bg-red-100"
+              } `}
+            >
+              기존 비밀번호
+            </label>
+            <div className="xl:col-span-4">
+              <input
+                type="password"
+                id="inputBeforePwd"
+                className={`border ${
+                  isErr ? "border-red-500" : undefined
+                } xl:border-0 p-2 w-full text-sm`}
+                value={beforePwd}
+                onChange={e => {
+                  setBeforePwd(e.currentTarget.value);
+                  setIsErr(false);
+                }}
+                onBlur={e => {
+                  setBeforePwd(e.currentTarget.value);
+                }}
+                placeholder="현재 사용중인 비밀번호"
+                autoComplete="off"
+              />
+            </div>
+          </div>
+          {isErr && <div className="text-sm text-rose-500">{errMsg}</div>}
           <div
             id="pwd"
             className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
@@ -176,7 +224,7 @@ function NewPwd(props) {
           </div>
         </div>
       </div>
-    </>
+    </form>
   );
 }
 

@@ -10,7 +10,7 @@ import PopupPostCode from "../Kakao/PopupPostCode";
 
 import Modal from "../doc/Modal";
 
-function Join() {
+function JoinBack() {
   const user = useSelector(state => state.user);
   const location = useLocation();
   let navi = useNavigate();
@@ -732,4 +732,4 @@ function Join() {
   );
 }
 
-export default Join;
+export default JoinBack;

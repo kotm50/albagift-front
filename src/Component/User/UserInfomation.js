@@ -49,8 +49,9 @@ function UserInformation() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        console.log(res);
-        alert("이용해 주셔서 감사합니다 ^^");
+        if (res.data.code === "C001") {
+          navi("/");
+        }
       })
       .catch(e => {
         console.log(e);

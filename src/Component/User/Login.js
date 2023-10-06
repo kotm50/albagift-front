@@ -66,9 +66,11 @@ function Login() {
       userId: id,
       userPwd: pwd,
     };
+    console.log(data);
     await axios
       .post("/api/v1/user/login", data)
       .then(res => {
+        console.log(res);
         if (res.data.code === "E005") {
           setCountOver(true);
           return alert(
@@ -99,6 +101,7 @@ function Login() {
         }
       })
       .catch(e => {
+        console.log(e);
         setErrMessage("로그인에 실패했습니다");
         setIsErr(true);
       });

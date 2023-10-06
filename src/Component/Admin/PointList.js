@@ -143,7 +143,7 @@ function PointList() {
             지급 신청 목록
           </h2>
           {list.length > 0 ? (
-            <div className="grid grid-cols-1 xl:grid-cols-5 gap-2 mt-2 bg-white p-2 container mx-auto">
+            <div className="grid grid-cols-1 xl:grid-cols-4 gap-2 mt-2 bg-white p-2 container mx-auto">
               {list.map((doc, idx) => (
                 <div key={idx}>
                   <input

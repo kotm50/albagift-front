@@ -37,6 +37,8 @@ import PopupTest from "./Component/PopupTest";
 import Cert from "./Component/User/Cert";
 import FindPwd from "./Component/User/FindPwd";
 import Transfer from "./Component/Admin/Transfer";
+import Attendance from "./Component/Mall/Attendance";
+import JoinBack from "./Component/User/JoinBack";
 
 function App() {
   const thisLocation = useLocation();
@@ -60,6 +62,7 @@ function App() {
       >
         <Routes>
           <Route path="/" element={<Main />} />
+          <Route path="/attendance" element={<Attendance />} />
           <Route path="/promo" element={<Promo />} />
           <Route path="/giftinfo" element={<Info />} />
           <Route path="/list/:category?/:brand?" element={<List />} />
@@ -70,6 +73,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/findpwd" element={<FindPwd />} />
           <Route path="/join/:promo?" element={<Join />} />
+          <Route path="/joinback/:promo?" element={<JoinBack />} />
           <Route path="/mypage/:checked?" element={<Mypage />} />
           <Route path="/cancel" element={<Cancel />} />
           <Route path="/newpwd" element={<NewPwd />} />

@@ -16,6 +16,7 @@ function UserList() {
   const location = useLocation();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState("잠시만 기다려 주세요");
+  const [isAgree, setIsAgree] = useState(false);
 
   const [point, setPoint] = useState("");
 
@@ -26,7 +27,7 @@ function UserList() {
     }
   }, [point]);
 
-  const getUserList = async () => {
+  const getUserList = async b => {
     setUsers([]);
     await axios
       .post("/api/v1/user/admin/userlst", null, {
@@ -35,7 +36,13 @@ function UserList() {
         },
       })
       .then(res => {
-        setUsers(res.data.userList);
+        const userList = res.data.userList;
+        if (!b) {
+          setUsers(userList);
+        } else {
+          const list = userList.filter(item => item.agreeYn === "Y");
+          setUsers(list);
+        }
         if (res.data.length === 0) {
           setLoading("회원이 없습니다");
         } else {
@@ -53,7 +60,12 @@ function UserList() {
       // 체크박스가 선택된 경우, 아이템을 배열에 추가
       setSelectedUsers([
         ...selectedUsers,
-        { userId: user.userId, phone: user.phone, name: user.userName },
+        {
+          userId: user.userId,
+          phone: user.phone,
+          name: user.userName,
+          agreeYn: user.agreeYn,
+        },
       ]);
       setSelectedUsersId([...selectedUsersId, { userId: user.userId }]);
     } else {
@@ -84,8 +96,6 @@ function UserList() {
       idList: selectedUsersId,
       point: point,
     };
-    console.log(request.userList);
-    console.log(request.point);
     await axios
       .post("/api/v1/user/admin/manage/point/P", request, {
         headers: { Authorization: user.accessToken },
@@ -100,10 +110,8 @@ function UserList() {
             );
           }
         }
-        console.log(res.data);
-        console.log(res.headers);
         if (res.data.code === "C000") {
-          getUserList();
+          getUserList(isAgree);
           setPoint(0);
           setSelectedUsers([]);
           setSelectedUsersId([]);
@@ -119,8 +127,6 @@ function UserList() {
       idList: selectedUsersId,
       point: point,
     };
-    console.log(request.userList);
-    console.log(request.point);
     await axios
       .post("/api/v1/user/admin/manage/point/D", request, {
         headers: { Authorization: user.accessToken },
@@ -135,10 +141,8 @@ function UserList() {
             );
           }
         }
-        console.log(res.data);
-        console.log(res.headers);
         if (res.data.code === "C000") {
-          getUserList();
+          getUserList(isAgree);
           setPoint(0);
           setSelectedUsers([]);
           setSelectedUsersId([]);
@@ -150,7 +154,7 @@ function UserList() {
   };
 
   useEffect(() => {
-    getUserList(); // 실제 회원
+    getUserList(false); // 실제 회원
     //setUsers(dummyUser); // 더미 회원
     //setLoading("로딩 완료"); // 더미 회원 로딩
     //eslint-disable-next-line
@@ -159,51 +163,79 @@ function UserList() {
   return (
     <>
       {users.length > 0 ? (
-        <div className="grid grid-cols-1 xl:grid-cols-5 gap-2 mt-2 bg-white p-2 container mx-auto">
-          {users.map((user, idx) => (
-            <div key={idx}>
-              <input
-                type="checkbox"
-                value={user.userId}
-                className="hidden peer"
-                id={user.userId}
-                onChange={e => checkUsers(user, e.target.checked)}
-              />
-              <label
-                htmlFor={user.userId}
-                className="block p-2 bg-teal-50 hover:bg-teal-200 text-black rounded-lg border-2 border-teal-50 hover:border-teal-200 peer-checked:border-teal-500 peer-checked:hover:border-teal-500"
-              >
-                <div className="grid grid-cols-3 gap-2 mb-2">
-                  <div className="font-medium flex flex-col justify-center text-right">
-                    이름
-                  </div>
-                  <div className="font-normal col-span-2 flex flex-col justify-center">
-                    {user.userName}
-                  </div>
-                </div>
-                <div className="grid grid-cols-3 gap-2 mb-2">
-                  <div className="font-medium flex flex-col justify-center text-right">
-                    연락처
-                  </div>
-                  <div className="font-normal col-span-2 flex flex-col justify-center">
-                    {formatPhoneNumber(user.phone)}
-                  </div>
-                </div>
-                <div className="grid grid-cols-3 gap-2 mb-2">
-                  <div className="font-medium flex flex-col justify-center text-right">
-                    포인트
-                  </div>
-                  <div
-                    className="font-normal col-span-2 flex flex-col justify-center"
-                    title={user.point}
-                  >
-                    {user.point} point
-                  </div>
-                </div>
-              </label>
+        <>
+          <div className="flex justify-end gap-2 text-sm font-neoextra">
+            <div className="flex justify-end gap-2 text-sm font-neoextra">
+              <div className="flex items-center">
+                <input
+                  id="agreeUser"
+                  type="checkbox"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  checked={isAgree}
+                  onChange={e => setIsAgree(!isAgree)}
+                />
+                <label
+                  htmlFor="agreeUser"
+                  className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                >
+                  동의회원만 보기
+                </label>
+              </div>
             </div>
-          ))}
-        </div>
+          </div>
+          <div className="grid grid-cols-1 xl:grid-cols-5 gap-2 mt-2 bg-white p-2 container mx-auto">
+            {users.map((user, idx) => (
+              <div key={idx}>
+                <input
+                  type="checkbox"
+                  value={user.userId}
+                  className="hidden peer"
+                  id={user.userId}
+                  onChange={e => checkUsers(user, e.target.checked)}
+                />
+                <label
+                  htmlFor={user.userId}
+                  className="block p-2 bg-teal-50 hover:bg-teal-200 text-black rounded-lg border-2 border-teal-50 hover:border-teal-200 peer-checked:border-teal-500 peer-checked:hover:border-teal-500"
+                >
+                  <div className="grid grid-cols-3 gap-2 mb-2">
+                    <div className="font-medium flex flex-col justify-center text-right">
+                      이름
+                    </div>
+                    <div className="font-normal col-span-2 flex flex-col justify-center">
+                      {user.userName}
+                      {user.useYn === "S" && (
+                        <span className="text-rose-500 text-sm ml-2">
+                          (탈퇴예정)
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 mb-2">
+                    <div className="font-medium flex flex-col justify-center text-right">
+                      연락처
+                    </div>
+                    <div className="font-normal col-span-2 flex flex-col justify-center">
+                      {user.agreeYn === "Y"
+                        ? formatPhoneNumber(user.phone)
+                        : "비공개"}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 mb-2">
+                    <div className="font-medium flex flex-col justify-center text-right">
+                      포인트
+                    </div>
+                    <div
+                      className="font-normal col-span-2 flex flex-col justify-center"
+                      title={user.point}
+                    >
+                      {user.point} point
+                    </div>
+                  </div>
+                </label>
+              </div>
+            ))}
+          </div>
+        </>
       ) : (
         <>{loading}</>
       )}
@@ -220,7 +252,7 @@ function UserList() {
                   className="p-2 bg-yellow-50 rounded-xl flex flex-col gap-2 justify-center"
                 >
                   <p>이름 : {user.name}</p>
-                  <p>연락처 : {user.phone}</p>
+                  <p>연락처 : {user.agreeYn === "Y" ? user.phone : "비공개"}</p>
                 </div>
               ))}
             </div>

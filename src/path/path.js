@@ -1,8 +1,1 @@
-export const path = [
-  "/login",
-  "/join",
-  "/mypage",
-  "/admin",
-  "/promo",
-  "/cancel",
-];
+export const path = ["/login", "/join", "/admin", "/promo", "/cancel"];

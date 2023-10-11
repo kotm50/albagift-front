@@ -21,7 +21,7 @@ function CouponModal(props) {
             </div>
             <div className="p-2 grid grid-cols-2 gap-3">
               <CopyToClipboard text={props.coupon.pinNo} onCopy={handleCopy}>
-                <button className="bg-teal-500 p-2 text-white">
+                <button className="bg-teal-500 hover:bg-teal-700 p-2 text-white">
                   쿠폰번호 복사하기
                 </button>
               </CopyToClipboard>

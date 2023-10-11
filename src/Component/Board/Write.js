@@ -91,7 +91,11 @@ function Write() {
         .then(res => {
           if (res.data.code === "C000") {
             alert("등록되었습니다");
-            navi(`/board/list?boardId=${boardId}`);
+            if (boardId === "B02") {
+              navi("/mypage/payhistory");
+            } else {
+              navi(`/board/list?boardId=${boardId}`);
+            }
           } else {
             alert(
               `오류가 발생했습니다.관리자에게 문의해 주세요.\n(오류코드 : ${res.data.code})`
@@ -109,7 +113,11 @@ function Write() {
         .then(res => {
           if (res.data.code === "C000") {
             alert("등록되었습니다");
-            navi(`/board/list?boardId=${boardId}`);
+            if (boardId === "B02") {
+              navi("/mypage/payhistory");
+            } else {
+              navi(`/board/list?boardId=${boardId}`);
+            }
           } else {
             alert(
               `오류가 발생했습니다.관리자에게 문의해 주세요.\n(오류코드 : ${res.data.code})`

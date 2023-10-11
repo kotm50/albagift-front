@@ -140,8 +140,14 @@ input[type="number"] {
 }
 
 
-#cancelArea, #joinArea {
+#joinArea {
   max-width:550px;
+}
+
+
+
+#cancelArea {
+  max-width:640px;
 }
 
  #editArea {

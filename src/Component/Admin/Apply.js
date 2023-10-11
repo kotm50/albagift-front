@@ -9,7 +9,6 @@ function Apply(props) {
   };
   const updateData = async a => {
     if (a.length > 0) {
-      console.log(props.user.accessToken);
       let data = {
         protoList: a,
       };

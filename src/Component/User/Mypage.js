@@ -1,45 +1,71 @@
-import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import React, { useState } from "react";
+import { Outlet, Link } from "react-router-dom";
 
-import EditUser from "./Mypage/EditUser";
-import PwdChk from "./Mypage/PwdChk";
+import { FaUser, FaTicketAlt, FaCoins, FaList } from "react-icons/fa";
+import { Helmet } from "react-helmet";
 
 function Mypage() {
-  const { checked } = useParams();
-  const user = useSelector(state => state.user);
-  const [checkPwd, setCheckPwd] = useState(false);
-  const [domain, setDomain] = useState("");
-  useEffect(() => {
-    if (checked) {
-      setCheckPwd(true);
-    }
-    let domain = extractDomain();
-    setDomain(domain);
-    //eslint-disable-next-line
-  }, []);
-
-  const extractDomain = () => {
-    let protocol = window.location.protocol; // 프로토콜을 가져옵니다. (예: http: 또는 https:)
-    let hostname = window.location.hostname; // 도메인 이름을 가져옵니다.
-    let port = window.location.port; // 포트 번호를 가져옵니다.
-
-    // 로컬호스트인 경우 프로토콜과 포트를 포함하여 반환
-    if (hostname === "localhost") {
-      return `${protocol}//${hostname}:${port}`;
-    }
-    let fullDomain = `${protocol}//${hostname}`;
-    // 일반 도메인인 경우 프로토콜과 함께 반환
-    return fullDomain;
-  };
-
+  const [title, setTitle] = useState("");
   return (
     <>
-      {!checkPwd ? (
-        <PwdChk domain={domain} user={user} setCheckPwd={setCheckPwd} />
-      ) : (
-        <EditUser domain={domain} user={user} />
-      )}
+      <Helmet>
+        <title>마이페이지 | 알바선물</title>
+      </Helmet>
+      <div className="container mx-auto grid grid-cols-1 h-full ">
+        <div
+          id="touch-target"
+          className="container mx-auto flex flex-row flex-nowrap overflow-x-auto giftCategoryMenu gap-3 xl:justify-center"
+        >
+          <Link
+            to="/mypage/pwdchk"
+            className="p-4 text-center bg-blue-50 rounded-lg flex flex-col justify-center gap-2 group hover:text-indigo-500"
+            onClick={e => setTitle("개인정보수정")}
+          >
+            <div className="w-20 h-20 mx-auto rounded-full bg-white flex flex-col justify-center text-gray-500 group-hover:bg-indigo-500 group-hover:text-white">
+              <FaUser className="mx-auto" size={36} />
+            </div>
+            <span className="text-sm">개인정보수정</span>
+          </Link>
+          <Link
+            to="/mypage/coupon"
+            className="p-4 text-center bg-blue-50 rounded-lg flex flex-col justify-center gap-2 group hover:text-indigo-500"
+            onClick={e => setTitle("보유쿠폰확인")}
+          >
+            <div className="w-20 h-20 mx-auto rounded-full bg-white flex flex-col justify-center text-gray-500 group-hover:bg-indigo-500 group-hover:text-white">
+              <FaTicketAlt className="mx-auto" size={36} />
+            </div>
+            <span className="text-sm">보유쿠폰확인</span>
+          </Link>
+          <Link
+            to="/mypage/pwdchk"
+            className="p-4 text-center bg-blue-50 rounded-lg flex flex-col justify-center gap-2 group hover:text-indigo-500"
+            onClick={e => {
+              e.preventDefault();
+              alert("죄송합니다. 해당 기능은 현재 준비중입니다 🙏");
+            }}
+          >
+            <div className="w-20 h-20 mx-auto rounded-full bg-white flex flex-col justify-center text-gray-500 group-hover:bg-indigo-500 group-hover:text-white">
+              <FaCoins className="mx-auto" size={36} />
+            </div>
+            <span className="text-sm">포인트내역</span>
+          </Link>
+          <Link
+            to="/mypage/payhistory"
+            className="p-4 text-center bg-blue-50 rounded-lg flex flex-col justify-center gap-2 group hover:text-indigo-500"
+            onClick={e => setTitle("지급신청내역")}
+          >
+            <div className="w-20 h-20 mx-auto rounded-full bg-white flex flex-col justify-center text-gray-500 group-hover:bg-indigo-500 group-hover:text-white">
+              <FaList className="mx-auto" size={36} />
+            </div>
+            <span className="text-sm">지급신청내역</span>
+          </Link>
+        </div>
+        {title !== "" ? (
+          <h2 className="text-3xl font-neoextra py-2">{title}</h2>
+        ) : null}
+
+        <Outlet />
+      </div>
     </>
   );
 }

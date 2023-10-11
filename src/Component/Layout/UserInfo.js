@@ -73,7 +73,7 @@ function UserInfo() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        alert("이용해 주셔서 감사합니다 ^^");
+        console.log(res);
       })
       .catch(e => {
         console.log(e);

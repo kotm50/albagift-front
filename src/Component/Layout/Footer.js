@@ -84,12 +84,12 @@ function Footer() {
           <footer id="footer" className="bg-gray-200 w-full mb-3 xl:mb-0">
             <div className="lg:container mx-auto footer-top">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 py-2">
-                <div className="flex flex-col justify-center my-auto">
+                <div className="flex flex-col justify-center xl:my-auto mt-10">
                   <h1 className="w-1/2 mx-auto mb-5 lg:mb-0">
                     <Link to="/">
                       <img
                         src={logo}
-                        className="logoImg mx-auto h-10"
+                        className="logoImg mx-auto h-16"
                         alt="logo"
                       />
                     </Link>

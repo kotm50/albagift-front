@@ -12,6 +12,7 @@ import Pagenate from "../Layout/Pagenate";
 import UserSection from "../User/UserSection";
 import Loading from "../Layout/Loading";
 import ImgLoad from "./ImgLoad";
+import { Helmet } from "react-helmet";
 
 function List() {
   const dispatch = useDispatch();
@@ -28,12 +29,37 @@ function List() {
   const [totalPage, setTotalPage] = useState(1);
   const [pagenate, setPagenate] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [catName, setCatName] = useState("");
+
   useEffect(() => {
     // location이 바뀔 때마다 스크롤을 맨 위로 이동
     window.scrollTo(0, 0);
     setLoading(true);
     setLoadMsg("상품을 불러오고 있습니다");
     getGoods(category, brand, page);
+    setCatName(
+      Number(category) === 1
+        ? "커피/음료"
+        : Number(category) === 2
+        ? "베이커리/도넛"
+        : Number(category) === 3
+        ? "아이스크림"
+        : Number(category) === 4
+        ? "편의점"
+        : Number(category) === 5
+        ? "피자/버거/치킨"
+        : Number(category) === 6
+        ? "외식/분식/배달"
+        : Number(category) === 7
+        ? "영화/음악/도서"
+        : Number(category) === 9
+        ? "뷰티/헤어/바디"
+        : Number(category) === 10
+        ? "출산/생활/통신"
+        : category === "etc"
+        ? "기타상품"
+        : "전체 상품"
+    );
     //eslint-disable-next-line
   }, [location]);
 
@@ -61,7 +87,6 @@ function List() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        console.log(res);
         if (res.data.code === "E999") {
           logout();
           return false;
@@ -145,9 +170,17 @@ function List() {
 
   return (
     <>
+      <Helmet>
+        <title>{catName} | 알바선물 | 면접보고 선물받자!</title>
+      </Helmet>
       <div className="xl:container mx-auto">
         {loading ? <Loading /> : null}
         <UserSection />
+        <h2 className="text-xl xl:text-2xl font-neoextra">
+          <span className="inline-block py-2 px-6 bg-blue-500 text-white rounded-full">
+            {catName}
+          </span>
+        </h2>
         {loaded ? (
           <div className="my-2 grid grid-cols-2 xl:grid-cols-5 gap-2 gap-y-10">
             {goods.map((good, idx) => (

@@ -11,6 +11,7 @@ import "dayjs/locale/ko"; // 한국어 가져오기
 import CouponModal from "./CouponModal";
 
 function CouponList(props) {
+  console.log(props.coupon);
   const dispatch = useDispatch();
   const navi = useNavigate();
   const [chkStat, setChkStat] = useState(false);
@@ -110,7 +111,7 @@ function CouponList(props) {
   return (
     <>
       <div className="max-w-full h-28 xl:w-64 xl:h-64 overflow-hidden mx-auto">
-        <img src={props.coupon.couponImgUrl} alt="쿠폰이미지" />
+        <img src={props.coupon.goodsImgB} alt="쿠폰이미지" />
       </div>
       <div className="p-2 grid grid-cols-1 xl:grid-cols-5">
         <div className="font-medium">상품명</div>

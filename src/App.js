@@ -39,6 +39,9 @@ import FindPwd from "./Component/User/FindPwd";
 import Transfer from "./Component/Admin/Transfer";
 import Attendance from "./Component/Mall/Attendance";
 import JoinBack from "./Component/User/JoinBack";
+import PwdChk from "./Component/User/Mypage/PwdChk";
+import EditUser from "./Component/User/Mypage/EditUser";
+import Payhistory from "./Component/User/Payhistory";
 
 function App() {
   const thisLocation = useLocation();
@@ -50,6 +53,10 @@ function App() {
     // eslint-disable-next-line
   }, [thisLocation]);
   const now = dayjs().format("YYYY년MM월DD일");
+  useEffect(() => {
+    console.log("안녕하세요 알바선물입니다!");
+  }, []);
+
   return (
     <>
       <Helmet>
@@ -69,13 +76,18 @@ function App() {
           <Route path="/detail/:goodscode?" element={<Detail />} />
           <Route path="/result" element={<Result />} />
           <Route path="/search/:keyword?" element={<SearchResult />} />
-          <Route path="/coupon" element={<Coupon />} />
           <Route path="/login" element={<Login />} />
           <Route path="/findpwd" element={<FindPwd />} />
           <Route path="/join/:promo?" element={<Join />} />
           <Route path="/joinback/:promo?" element={<JoinBack />} />
-          <Route path="/mypage/:checked?" element={<Mypage />} />
-          <Route path="/cancel" element={<Cancel />} />
+          <Route path="/mypage" element={<Mypage />}>
+            <Route path="" element={<PwdChk />} />
+            <Route path="pwdchk" element={<PwdChk />} />
+            <Route path="edit" element={<EditUser />} />
+            <Route path="coupon" element={<Coupon />} />
+            <Route path="payhistory" element={<Payhistory />} />
+            <Route path="cancel" element={<Cancel />} />
+          </Route>
           <Route path="/newpwd" element={<NewPwd />} />
           <Route path="/admin" element={<Admin />}>
             <Route path="" element={<AdminMain />} />

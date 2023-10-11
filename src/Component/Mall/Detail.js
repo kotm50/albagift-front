@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { buyGift } from "../../Reducer/userSlice";
 
@@ -19,6 +19,7 @@ import RecomMall from "./RecomMall";
 const { Kakao } = window;
 
 function Detail() {
+  const location = useLocation();
   // 재랜더링시에 실행되게 해준다.
   useEffect(() => {
     // init 해주기 전에 clean up 을 해준다.
@@ -39,9 +40,10 @@ function Detail() {
   useEffect(() => {
     getGoods();
     //eslint-disable-next-line
-  }, []);
+  }, [location]);
 
   const getGoods = async () => {
+    setImgLoaded(false);
     await axios
       .get(`/api/v1/shop/goods/detail/${goodscode}`, {
         headers: { Authorization: user.accessToken },
@@ -130,7 +132,6 @@ function Detail() {
             );
             navi(`/result`);
           } else {
-            console.log(res);
             alert(res.data.message);
           }
         })

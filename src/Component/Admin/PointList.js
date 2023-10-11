@@ -105,14 +105,7 @@ function PointList() {
   };
 
   const formatPhoneNumber = phoneNumber => {
-    if (phoneNumber && phoneNumber.length === 11) {
-      const formattedNumber = phoneNumber.replace(
-        /(\d{3})(\d{4})(\d{4})/,
-        "$1-$2-$3"
-      );
-      return formattedNumber;
-    }
-    return phoneNumber;
+    return phoneNumber.slice(-4);
   };
 
   const handleChangeSelect = e => {

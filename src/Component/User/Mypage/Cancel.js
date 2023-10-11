@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { clearUser } from "../../../Reducer/userSlice";
 
+import { FaTicketAlt } from "react-icons/fa";
+
 function Cancel() {
   const navi = useNavigate();
   const dispatch = useDispatch();
@@ -12,11 +14,13 @@ function Cancel() {
   const user = useSelector(state => state.user);
   const [id, setId] = useState("");
   const [pwd, setPwd] = useState("");
+  const [point, setPoint] = useState(0);
   const [isErr, setIsErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
 
   useEffect(() => {
     setId(user.userId);
+    setPoint(Number(user.point));
     //eslint-disable-next-line
   }, [location]);
 
@@ -84,45 +88,74 @@ function Cancel() {
     <form onSubmit={e => cancelIt(e)}>
       <div
         id="cancelArea"
-        className="my-2 mx-auto p-2 border shadow-lg rounded-lg grid grid-cols-1 gap-3 bg-white w-full"
+        className="my-2 mx-auto p-2 xl:p-10 border shadow-lg rounded-lg grid grid-cols-1 gap-3 bg-white w-full"
       >
-        <div className="text-lg font-medium text-center">회원탈퇴</div>
-        <div className="text-sm font-normal text-left font-neo">
-          회원 탈퇴를 진행하면 <span className="font-neoextra">'탈퇴회원'</span>
-          으로 전환되어 <br className="xl:hidden" />
-          이용이 불가능한 상태가 되며
-          <br />
-          전환 후 <span className="font-neoextra text-red-500">3개월</span> 경과
-          시 모든 정보가 삭제됩니다. <br />
-          정보가 삭제되기 전에 휴면계정으로 로그인을 시도하면 탈퇴를 취소할 수
-          있습니다.
-          <br />
-          <br />
-          탈퇴를 진행하려면 비밀번호 입력 후 <br className="xl:hidden" />
-          <span className="font-neoextra text-red-500">'탈퇴하기'</span>버튼을
-          눌러주세요
-        </div>
-        <div
-          id="id"
-          className="grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border"
-        >
-          <label
-            htmlFor="inputId"
-            className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100"
-          >
-            아이디
-          </label>
-          <div className="xl:col-span-4">
-            <input
-              type="text"
-              id="inputId"
-              className="border xl:border-0 p-2 w-full text-sm"
-              value={id}
-              onChange={e => setId(e.currentTarget.value)}
-              onBlur={e => setId(e.currentTarget.value)}
-              autoComplete="on"
-              disabled={id !== ""}
-            />
+        <div className="text-base font-neobold text-left">
+          <div className="font-neoextra text-xl">
+            {id || "무명회원"}님!
+            <br /> 탈퇴 하기 전에 확인해 주세요
+          </div>
+          <div className="bg-gray-100 mt-2 p-3 text-base">
+            회원탈퇴를 진행하시면 <br className="xl:hidden" />
+            <span className="text-blue-500">30일의 유예기간</span>이 부여되며{" "}
+            <br />
+            유예기간 경과시 <br className="xl:hidden" />
+            아래 항목이 삭제됩니다.
+            <div className="p-4 bg-white rounded-lg mt-2 text-sm">
+              <ol className="flex flex-col gap-y-3 list-decimal pl-4">
+                <li>
+                  잔여포인트는{" "}
+                  <span className="text-red-500 font-neoextra">
+                    즉시 소멸됩니다.
+                  </span>
+                  <div className="xl:w-1/2 mx-auto my-2 p-2 border border-sky-500 text-center">
+                    잔여 포인트
+                    <br />
+                    <span
+                      className={`${
+                        point > 10000
+                          ? "text-2xl"
+                          : point > 4000
+                          ? "text-xl"
+                          : "text-lg"
+                      } font-neoheavy text-sky-500`}
+                    >
+                      {point.toLocaleString()}
+                    </span>
+                    p
+                  </div>
+                </li>
+                <li>
+                  보유쿠폰은 쿠폰 이미지를 별도 저장하지 않으면{" "}
+                  <span className="text-red-500 font-neoextra">
+                    열람이 불가합니다.
+                  </span>
+                  <br />
+                  아래 버튼을 눌러 보유쿠폰을 확인하고 저장하세요.
+                  <Link
+                    to="/mypage/coupon"
+                    className="block xl:w-1/2 mx-auto my-2 p-2 border border-sky-500 hover:border-sky-700 hover:bg-sky-100 text-center"
+                  >
+                    <FaTicketAlt className="inline" size={20} /> 보유쿠폰확인
+                  </Link>
+                </li>
+                <li>
+                  탈퇴 후 1년간 재가입을 진행해도 프로모션 포인트는{" "}
+                  <span className="text-red-500 font-neoextra">
+                    지급되지 않습니다
+                  </span>
+                </li>
+                <li>
+                  소비자보호에 관한 법령에 의거 아래 개인정보는 1년간 보관 후
+                  파기됩니다.
+                  <ul className="ml-2 list-disc">
+                    <li>포인트 지급 및 사용 내역</li>
+                    <li>불만 또는 분쟁처리에 관한 기록</li>
+                    <li>부정이용(포인트 부정수급 등) 기록</li>
+                  </ul>
+                </li>
+              </ol>
+            </div>
           </div>
         </div>
         <div
@@ -152,20 +185,19 @@ function Cancel() {
             {errMessage}
           </div>
         )}
-        <div className="w-full grid grid-cols-4 gap-1">
-          <button
-            className="transition duration-100 w-full bg-rose-500 hover:bg-rose-700 p-2 text-white rounded col-span-3 hover:animate-wiggle"
-            type="submit"
-          >
-            탈퇴하기
-          </button>
-
+        <div className="w-full flex flex-row justify-center gap-1">
           <Link
             to="/"
-            className="transition duration-100 w-full border text-center hover:bg-gray-50 border-gray-500 hover:border-gray-700 p-2 text-gray-500 hover:text-gray-700 rounded"
+            className="transition duration-100 w-full text-center bg-blue-500 hover:bg-blue-700 border border-blue-500 hover:border-blue-700 p-2 text-white rounded"
           >
-            취소
+            서비스 계속 이용
           </Link>
+          <button
+            className="transition duration-100 w-full border border-gray-500 hover:border-gray-700 p-2 text-gray-500 hover:text-gray-700 rounded"
+            type="submit"
+          >
+            회원 탈퇴하기
+          </button>
         </div>
       </div>
     </form>

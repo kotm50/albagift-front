@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { clearUser } from "../../../Reducer/userSlice";
 
@@ -14,6 +15,7 @@ import NewPwd from "./NewPwd";
 import AgreeModal from "./AgreeModal";
 
 function EditUser(props) {
+  const user = useSelector(state => state.user);
   const location = useLocation();
   const parsed = queryString.parse(location.search);
   const code = parsed.code || "";
@@ -21,18 +23,36 @@ function EditUser(props) {
   const navi = useNavigate();
   const [userInfo, setUserInfo] = useState({});
   const [modal, setModal] = useState(false);
+  const [domain, setDomain] = useState("");
   useEffect(() => {
+    let domain = extractDomain();
+    setDomain(domain);
     getUserInfo();
     if (code !== "") {
+      console.log(code);
       kakaoLoginCheck(code);
     }
     //setUserInfo(dummyUser);
     //eslint-disable-next-line
   }, [location]);
 
+  const extractDomain = () => {
+    let protocol = window.location.protocol; // 프로토콜을 가져옵니다. (예: http: 또는 https:)
+    let hostname = window.location.hostname; // 도메인 이름을 가져옵니다.
+    let port = window.location.port; // 포트 번호를 가져옵니다.
+
+    // 로컬호스트인 경우 프로토콜과 포트를 포함하여 반환
+    if (hostname === "localhost") {
+      return `${protocol}//${hostname}:${port}`;
+    }
+    let fullDomain = `${protocol}//${hostname}`;
+    // 일반 도메인인 경우 프로토콜과 함께 반환
+    return fullDomain;
+  };
+
   const kakaoLogin = e => {
     const apiKey = "e8b025aca3eb87648da9d341528bca5a";
-    const redirectUrl = `${props.domain}/mypage/checked`;
+    const redirectUrl = `${domain}/mypage/edit`;
     const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${apiKey}&redirect_uri=${redirectUrl}&response_type=code`;
     window.location.href = kakaoURL;
   };
@@ -42,7 +62,7 @@ function EditUser(props) {
     await axios
       .post("/api/v1/user/rel/integ/kakao", null, {
         headers: {
-          Authorization: props.user.accessToken,
+          Authorization: user.accessToken,
         },
       })
       .then(res => {
@@ -57,17 +77,17 @@ function EditUser(props) {
     await axios
       .get(editUrl, {
         headers: {
-          Authorization: props.user.accessToken,
+          Authorization: user.accessToken,
         },
       })
       .then(res => {
         console.log(res);
         if (res.data.code === "C000") {
-          let mypageURL = `${props.domain}/mypage/checked`;
+          let mypageURL = `${domain}/mypage/edit`;
           alert("연동이 완료되었습니다.");
           window.location.href = mypageURL;
         } else {
-          let mypageURL = `${props.domain}/mypage/checked`;
+          let mypageURL = `${domain}/mypage/edit`;
           alert(res.data.message);
           window.location.href = mypageURL;
         }
@@ -79,7 +99,7 @@ function EditUser(props) {
   const getUserInfo = async () => {
     await axios
       .post("/api/v1/user/myinfo", null, {
-        headers: { Authorization: props.user.accessToken },
+        headers: { Authorization: user.accessToken },
       })
       .then(res => {
         setUserInfo(res.data.user);
@@ -143,7 +163,7 @@ function EditUser(props) {
     axios
       .patch(url, data, {
         headers: {
-          Authorization: props.user.accessToken,
+          Authorization: user.accessToken,
         },
       })
       .then(res => {
@@ -164,7 +184,7 @@ function EditUser(props) {
   const logout = async () => {
     await axios
       .post("/api/v1/user/logout", null, {
-        headers: { Authorization: props.user.accessToken },
+        headers: { Authorization: user.accessToken },
       })
       .then(res => {
         dispatch(clearUser());
@@ -260,11 +280,7 @@ function EditUser(props) {
           </div>
           <div className="xl:col-span-6">
             {pwdOpen ? (
-              <NewPwd
-                setPwdOpen={setPwdOpen}
-                logout={logout}
-                user={props.user}
-              />
+              <NewPwd setPwdOpen={setPwdOpen} logout={logout} user={user} />
             ) : (
               <div className="p-2">
                 <button
@@ -477,7 +493,7 @@ function EditUser(props) {
         </div>
         <div className="w-full text-center">
           <Link
-            to="/cancel"
+            to="/mypage/cancel"
             className="transition text-center p-2 text-xs hover:text-stone-500"
           >
             회원탈퇴

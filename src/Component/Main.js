@@ -7,6 +7,7 @@ import Jumbotron from "./Main/Jumbotron";
 import SubContent from "./Main/SubContent";
 import Loading from "./Layout/Loading";
 import UserSection from "./User/UserSection";
+import { Helmet } from "react-helmet";
 
 function Main() {
   const location = useLocation();
@@ -48,6 +49,9 @@ function Main() {
   };
   return (
     <>
+      <Helmet>
+        <title>알바선물 | 면접보고 선물받자!</title>
+      </Helmet>
       {loading ? <Loading /> : null}
 
       <div className="mx-auto container">

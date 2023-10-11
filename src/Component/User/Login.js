@@ -70,7 +70,6 @@ function Login() {
     await axios
       .post("/api/v1/user/login", data)
       .then(res => {
-        console.log(res);
         if (res.data.code === "E005") {
           setCountOver(true);
           return alert(

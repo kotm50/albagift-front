@@ -6,7 +6,6 @@ import { clearUser } from "../../../Reducer/userSlice";
 
 import axios from "axios";
 import CouponList from "./CouponList";
-import UserSection from "../UserSection";
 
 function Coupon() {
   const dispatch = useDispatch();
@@ -26,6 +25,7 @@ function Coupon() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
+        console.log(res.data);
         if (res.data.code === "E999") {
           logout();
           return false;
@@ -53,10 +53,6 @@ function Coupon() {
   };
   return (
     <div className="xl:container xl:mx-auto">
-      <UserSection />
-      <h2 className="py-2 border-b text-xl xl:text-3xl mb-3">
-        보유 쿠폰 리스트
-      </h2>
       {couponList.length > 0 ? (
         <div className="grid grid-cols-2 xl:grid-cols-5 gap-2">
           {couponList.map((coupon, idx) => (

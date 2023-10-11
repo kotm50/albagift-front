@@ -132,7 +132,7 @@ function UserInformation() {
               {" "}
               <button
                 className="block text-center p-2 text-white bg-blue-500 hover:bg-blue-700 hover:animate-wiggle rounded"
-                onClick={e => navi("/coupon")}
+                onClick={e => navi("/mypage/coupon")}
               >
                 보유 쿠폰 확인하기
               </button>

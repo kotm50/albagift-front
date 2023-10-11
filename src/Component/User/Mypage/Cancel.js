@@ -17,8 +17,13 @@ function Cancel() {
   const [point, setPoint] = useState(0);
   const [isErr, setIsErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
+  const [agree, setAgree] = useState(false);
+  const [agreePls, setAgreePls] = useState(false);
+  const [errMsg, setErrMsg] = useState("");
 
   useEffect(() => {
+    setAgreePls(false);
+    setIsErr(false);
     setId(user.userId);
     setPoint(Number(user.point));
     //eslint-disable-next-line
@@ -26,10 +31,17 @@ function Cancel() {
 
   const cancelIt = async e => {
     e.preventDefault();
+    setAgreePls(false);
+    setIsErr(false);
     const really = window.confirm("정말 탈퇴하시겠습니까?");
     if (!really) {
       alert("탈퇴를 취소하셨습니다.\n메인페이지로 이동합니다");
       navi("/");
+      return false;
+    }
+    if (!agree) {
+      setErrMsg("위 내용을 읽고 동의하시면 체크해주세요");
+      setAgreePls(true);
       return false;
     }
     const data = {
@@ -92,22 +104,25 @@ function Cancel() {
       >
         <div className="text-base font-neobold text-left">
           <div className="font-neoextra text-xl">
-            {id || "무명회원"}님!
-            <br /> 탈퇴 하기 전에 확인해 주세요
+            {id || "무명회원"}님
+            <br /> 탈퇴 전에 확인해 주세요
           </div>
           <div className="bg-gray-100 mt-2 p-3 text-base">
             회원탈퇴를 진행하시면 <br className="xl:hidden" />
-            <span className="text-blue-500">30일의 유예기간</span>이 부여되며{" "}
-            <br />
+            <span className="text-blue-500 font-neoextra">30일의 유예기간</span>
+            이 부여되며 <br />
             유예기간 경과시 <br className="xl:hidden" />
             아래 항목이 삭제됩니다.
-            <div className="p-4 bg-white rounded-lg mt-2 text-sm">
+            <div className="p-4 bg-white rounded-lg my-2 text-sm">
               <ol className="flex flex-col gap-y-3 list-decimal pl-4">
                 <li>
                   잔여포인트는{" "}
                   <span className="text-red-500 font-neoextra">
                     즉시 소멸됩니다.
                   </span>
+                  <Link to="/list" className="text-xs hidden xl:inline">
+                    (사용하러 가기)
+                  </Link>
                   <div className="xl:w-1/2 mx-auto my-2 p-2 border border-sky-500 text-center">
                     잔여 포인트
                     <br />
@@ -120,9 +135,16 @@ function Cancel() {
                           : "text-lg"
                       } font-neoheavy text-sky-500`}
                     >
-                      {point.toLocaleString()}
+                      {point.toLocaleString()}{" "}
                     </span>
                     p
+                    <br />
+                    <Link
+                      to="/list"
+                      className="text-xs xl:hidden inline-block p-2 bg-sky-50"
+                    >
+                      포인트 사용하기
+                    </Link>
                   </div>
                 </li>
                 <li>
@@ -138,6 +160,10 @@ function Cancel() {
                   >
                     <FaTicketAlt className="inline" size={20} /> 보유쿠폰확인
                   </Link>
+                  *보유쿠폰을 저장하더라도
+                  <br className="xl:hidden" /> 유효기간이 경과되면{" "}
+                  <br className="xl:hidden" />{" "}
+                  <span className="font-neoextra">사용이 불가능 합니다</span>
                 </li>
                 <li>
                   탈퇴 후 1년간 재가입을 진행해도 프로모션 포인트는{" "}
@@ -150,21 +176,55 @@ function Cancel() {
                   파기됩니다.
                   <ul className="ml-2 list-disc">
                     <li>포인트 지급 및 사용 내역</li>
+                    <li>포인트 지급 신청 내역</li>
                     <li>불만 또는 분쟁처리에 관한 기록</li>
                     <li>부정이용(포인트 부정수급 등) 기록</li>
                   </ul>
                 </li>
               </ol>
             </div>
+            유예기간 중 로그인을 하시면{" "}
+            <span className="text-blue-500 font-neoextra">
+              탈퇴를 취소하실 수 있습니다.
+            </span>
           </div>
         </div>
         <div
+          id="agree"
+          className={`grid grid-cols-7 gap-1 ${agreePls ? "bg-rose-50" : null}`}
+        >
+          <label
+            htmlFor="agree"
+            className="text-sm text-left flex flex-col justify-center pl-2 py-2 col-span-6 text-stone-700"
+          >
+            위 내용을 숙지하였으며 탈퇴를 진행합니다
+          </label>
+          <div className="flex flex-col justify-center">
+            <input
+              type="checkbox"
+              id="agree"
+              onChange={e => {
+                setAgree(!agree);
+                setAgreePls(false);
+              }}
+              checked={agree}
+            />
+          </div>
+        </div>
+        {agreePls && (
+          <div className="text-center text-sm pb-2 text-rose-500">{errMsg}</div>
+        )}
+        <div
           id="pwd"
-          className="grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border"
+          className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
+            isErr ? "border-rose-500" : null
+          }`}
         >
           <label
             htmlFor="inputPwd"
-            className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100"
+            className={`text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100 ${
+              isErr ? "xl:bg-rose-100 text-rose-500 xl:text-black" : null
+            }`}
           >
             비밀번호
           </label>
@@ -172,7 +232,9 @@ function Cancel() {
             <input
               type="password"
               id="inputPwd"
-              className="border xl:border-0 p-2 w-full text-sm"
+              className={`border xl:border-0 p-2 w-full text-sm ${
+                isErr ? "border-rose-500" : null
+              }`}
               value={pwd}
               onChange={e => setPwd(e.currentTarget.value)}
               onBlur={e => setPwd(e.currentTarget.value)}

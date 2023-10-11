@@ -22,7 +22,7 @@ function Result() {
 
   useEffect(() => {
     if (timer === 0) {
-      navi("/coupon");
+      navi("/mypage/coupon");
     }
     //eslint-disable-next-line
   }, [timer]);

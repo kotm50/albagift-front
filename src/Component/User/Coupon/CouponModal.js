@@ -15,7 +15,22 @@ function CouponModal(props) {
             <div className="relative p-2 lg:p-6 flex-auto overflow-y-auto">
               <img src={props.coupon.couponImgUrl} alt="쿠폰이미지" />
             </div>
-            <div className="text-lg font-medium my-3 text-center">
+            <div className="text-sm my-2 text-center xl:block hidden">
+              쿠폰이미지를 우클릭 후{" "}
+              <span className="font-neoextra text-sky-500">
+                '이미지를 다른 이름으로 저장'
+              </span>
+              <br />
+              하시면 저장해서 쓰실 수 있습니다
+            </div>
+            <div className="text-sm my-2 text-center xl:hidden">
+              쿠폰이미지를 꾹 누르시고
+              <span className="font-neoextra text-sky-500">
+                '이미지 다운로드'
+              </span>
+              <br />를 누르시면 저장해서 쓰실 수 있습니다
+            </div>
+            <div className="text-lg font-neoextra my-2 text-center">
               쿠폰번호 :{" "}
               <span className="text-red-500">{props.coupon.pinNo}</span>
             </div>

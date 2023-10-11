@@ -21,7 +21,7 @@ body {
   background: #fafbfc;
 	background-size: 400% 400%;
 	animation: gradient 30s ease-in-out infinite;
-	height: 100vh;
+	min-height: 100vh;
 }
 
 @keyframes gradient {

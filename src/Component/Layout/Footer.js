@@ -37,7 +37,7 @@ function Footer() {
 
   return (
     <>
-      <div className="container mx-auto h-10 bg-white"></div>
+      <div className="container mx-auto h-10"></div>
       {!footless ? (
         <>
           <First />

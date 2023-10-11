@@ -7,6 +7,7 @@ import queryString from "query-string";
 import axios from "axios";
 
 import Pagenate from "../Layout/Pagenate";
+import { Helmet } from "react-helmet";
 
 function SearchResult() {
   let navi = useNavigate();
@@ -137,71 +138,77 @@ function SearchResult() {
   };
 
   return (
-    <div className="container mx-auto">
-      {load ? (
-        <>
-          <h3 className="text-lg xl:text-2xl p-2 bg-orange-50 rounded-lg mt-2 text-center xl:text-left">
-            <span className="font-neobold text-sky-500">{keyword}</span>
-            {checkName(keyword)} 검색하여 <br className="block xl:hidden" />총{" "}
-            <span className="font-neobold text-red-500">{resultNum}</span>개의
-            상품을 발견했습니다
-          </h3>
-          <div className="my-2 grid grid-cols-2 xl:grid-cols-5 gap-2">
-            {goods.map((good, idx) => (
-              <Link
-                key={idx}
-                to={`/detail/${good.goodsCode}`}
-                className="pb-0 min-h-0 h-fit"
-              >
-                <div className="group p-2 bg-white hover:border-2 hover:border-indigo-500 hover:bg-indigo-50 rounded drop-shadow hover:drop-shadow-xl">
-                  <div className="w-32 h-32 xl:w-60 xl:h-60 mx-auto rounded overflow-hidden max-w-full">
-                    {imgLoaded ? (
-                      <img
-                        src={good.goodsImgS}
-                        alt={good.goodsName}
-                        className="w-full mx-auto my-auto duration-300 transition-all ease-in-out group-hover:scale-125"
-                      />
-                    ) : (
-                      <>
+    <>
+      <Helmet>
+        <title>{keyword} 검색결과 | 알바선물</title>
+        <meta name="description" content={`${keyword} 검색결과 | 알바선물`} />
+      </Helmet>
+      <div className="container mx-auto">
+        {load ? (
+          <>
+            <h3 className="text-lg xl:text-2xl p-2 bg-orange-50 rounded-lg mt-2 text-center xl:text-left">
+              <span className="font-neobold text-sky-500">{keyword}</span>
+              {checkName(keyword)} 검색하여 <br className="block xl:hidden" />총{" "}
+              <span className="font-neobold text-red-500">{resultNum}</span>개의
+              상품을 발견했습니다
+            </h3>
+            <div className="my-2 grid grid-cols-2 xl:grid-cols-5 gap-2">
+              {goods.map((good, idx) => (
+                <Link
+                  key={idx}
+                  to={`/detail/${good.goodsCode}`}
+                  className="pb-0 min-h-0 h-fit"
+                >
+                  <div className="group p-2 bg-white hover:border-2 hover:border-indigo-500 hover:bg-indigo-50 rounded drop-shadow hover:drop-shadow-xl">
+                    <div className="w-32 h-32 xl:w-60 xl:h-60 mx-auto rounded overflow-hidden max-w-full">
+                      {imgLoaded ? (
                         <img
                           src={good.goodsImgS}
                           alt={good.goodsName}
-                          className="fixed top-0 left-0 w-0 h-0 opacity-0"
-                          onLoad={e => setImgLoaded(true)}
+                          className="w-full mx-auto my-auto duration-300 transition-all ease-in-out group-hover:scale-125"
                         />
-                        <div className="bg-slate-200 animate-pulse w-32 h-32 xl:w-60 xl:h-60"></div>
-                      </>
-                    )}
+                      ) : (
+                        <>
+                          <img
+                            src={good.goodsImgS}
+                            alt={good.goodsName}
+                            className="fixed top-0 left-0 w-0 h-0 opacity-0"
+                            onLoad={e => setImgLoaded(true)}
+                          />
+                          <div className="bg-slate-200 animate-pulse w-32 h-32 xl:w-60 xl:h-60"></div>
+                        </>
+                      )}
+                    </div>
+                    <div className="w-32 xl:w-60 mx-auto grid grid-cols-1 mt-2 pt-1 border-t border-gray-100 max-w-full">
+                      <p className="text-base group-hover:font-neobold keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left font-neobold text-blue-500">
+                        {good.brandName}
+                      </p>
+                      <p className="text-lg group-hover:font-neobold keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left">
+                        {good.goodsName}
+                      </p>
+                      <p className="text-lg text-left">
+                        <span className="text-xl text-rose-500">
+                          {Number(good.realPrice)}
+                        </span>{" "}
+                        P
+                      </p>
+                    </div>
                   </div>
-                  <div className="w-32 xl:w-60 mx-auto grid grid-cols-1 mt-2 pt-1 border-t border-gray-100 max-w-full">
-                    <p className="text-base group-hover:font-neobold keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left font-neobold text-blue-500">
-                      {good.brandName}
-                    </p>
-                    <p className="text-lg group-hover:font-neobold keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left">
-                      {good.goodsName}
-                    </p>
-                    <p className="text-lg text-left">
-                      <span className="text-xl text-rose-500">
-                        {Number(good.realPrice)}
-                      </span>{" "}
-                      P
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </>
-      ) : (
-        <div>{loadMsg}</div>
-      )}
-      <Pagenate
-        pagenate={pagenate}
-        page={Number(page)}
-        totalPage={Number(totalPage)}
-        pathName={pathName}
-      />
-    </div>
+                </Link>
+              ))}
+            </div>
+          </>
+        ) : (
+          <div>{loadMsg}</div>
+        )}
+        <Pagenate
+          pagenate={pagenate}
+          page={Number(page)}
+          totalPage={Number(totalPage)}
+          pathName={pathName}
+        />
+      </div>
+    </>
   );
 }
 

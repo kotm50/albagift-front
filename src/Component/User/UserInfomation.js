@@ -140,7 +140,7 @@ function UserInformation() {
                 className="block text-center p-2 border border-blue-500 hover:text-blue-700 hover:border-blue-700 hover:animate-wiggle rounded mb-3 xl:mb-0"
                 onClick={e => navi("/mypage")}
               >
-                개인정보 수정하기
+                마이페이지
               </button>
             </>
           )}

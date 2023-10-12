@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
+import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
+
 import axios from "axios";
+import AlertModal from "../Layout/AlertModal";
 
 function Admin() {
   const location = useLocation();
@@ -21,10 +25,22 @@ function Admin() {
       })
       .then(res => {
         if (res.data.code !== "A100") {
-          alert(
-            "관리자 전용 페이지입니다, 메인으로 이동합니다\n관리자 계정으로 로그인 하세요"
-          );
-          navi("/");
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"오류!!"} // 제목
+                  message={
+                    "관리자 전용 페이지입니다, 메인으로 이동합니다\n관리자 계정으로 로그인 하세요"
+                  } // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                  doIt={goMain} // 확인시 실행할 함수
+                />
+              );
+            },
+          });
         } else {
           setLoaded(true);
         }
@@ -34,6 +50,10 @@ function Admin() {
       });
   };
 
+  const goMain = () => {
+    navi("/");
+  };
+
   const resetGoods = async () => {
     await axios
       .post("/api/v1/shop/admin/bizapi", null, {
@@ -41,7 +61,20 @@ function Admin() {
       })
       .then(res => {
         if (res.data.code === "C000") {
-          alert("상품리셋 완료");
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"완료"} // 제목
+                  message={"상품리셋 완료"} // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                />
+              );
+            },
+          });
+          return true;
         }
       })
       .catch(e => {
@@ -56,7 +89,20 @@ function Admin() {
       })
       .then(res => {
         if (res.data.code === "C000") {
-          alert("브랜드리셋 완료");
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"완료"} // 제목
+                  message={"브랜드리셋 완료"} // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                />
+              );
+            },
+          });
+          return true;
         }
       })
       .catch(e => {

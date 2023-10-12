@@ -3,6 +3,10 @@ import { useSelector } from "react-redux";
 
 import bg from "../../Asset/bg_gift.png";
 import { Link } from "react-router-dom";
+import AlertModal from "../Layout/AlertModal";
+
+import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
+import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 
 function Jumbotron() {
   const user = useSelector(state => state.user);
@@ -33,7 +37,20 @@ function Jumbotron() {
               <button
                 className="block bg-teal-500 hover:bg-teal-700 text-white p-2 rounded-lg text-sm xl:text-base"
                 onClick={e => {
-                  return alert("이미 회원가입을 하셨습니다");
+                  confirmAlert({
+                    customUI: ({ onClose }) => {
+                      return (
+                        <AlertModal
+                          onClose={onClose} // 닫기
+                          title={"오류"} // 제목
+                          message={"이미 회원가입을 하셨습니다"} // 내용
+                          type={"alert"} // 타입 confirm, alert
+                          yes={"확인"} // 확인버튼 제목
+                        />
+                      );
+                    },
+                  });
+                  return false;
                 }}
               >
                 가입하여 1000p 받기 →

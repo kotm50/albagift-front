@@ -9,9 +9,11 @@ import dayjs from "dayjs";
 import "dayjs/locale/ko"; // 한국어 가져오기
 
 import CouponModal from "./CouponModal";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
+import AlertModal from "../../Layout/AlertModal";
 
 function CouponList(props) {
-  console.log(props.coupon);
   const dispatch = useDispatch();
   const navi = useNavigate();
   const [chkStat, setChkStat] = useState(false);
@@ -52,8 +54,8 @@ function CouponList(props) {
       })
       .then(res => {
         console.log(res);
-        if (res.data.couponDetail.code === "E999") {
-          logout();
+        if (res.data.code === "E999") {
+          logoutAlert(res.data.message);
           return false;
         }
         if (res.data.couponDetail.pinStatusCd === "01") {
@@ -82,15 +84,58 @@ function CouponList(props) {
       });
   };
 
+  const logoutAlert = m => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <AlertModal
+            onClose={onClose} // 닫기
+            title={"로그인 에러"} // 제목
+            message={m} // 내용
+            type={"alert"} // 타입 confirm, alert
+            yes={"다시 로그인 하기"} // 확인버튼 제목
+            doIt={logout} // 확인시 실행할 함수
+          />
+        );
+      },
+    });
+  };
+
   const openDetail = () => {
     if (statCode === "01") {
       setCouponModal(true);
     } else if (statCode === "") {
-      return alert(
-        "'사용가능 확인' 버튼을 눌러서 쿠폰이 사용가능한지 확인해주세요"
-      );
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <AlertModal
+              onClose={onClose} // 닫기
+              title={"쿠폰상세보기"} // 제목
+              message={
+                "'사용가능 확인' 버튼을 눌러서\n쿠폰이 사용가능한지 확인해주세요"
+              } // 내용
+              type={"alert"} // 타입 confirm, alert
+              yes={"확인"} // 확인버튼 제목
+            />
+          );
+        },
+      });
+      return false;
     } else {
-      return alert(`사용이 불가능한 쿠폰입니다\n사용불가사유 : ${statDetail}`);
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <AlertModal
+              onClose={onClose} // 닫기
+              title={"쿠폰 확인"} // 제목
+              message={`사용이 불가능한 쿠폰입니다\n사용불가사유 : ${statDetail}`} // 내용
+              type={"alert"} // 타입 confirm, alert
+              yes={"확인"} // 확인버튼 제목
+            />
+          );
+        },
+      });
+      return false;
     }
   };
 
@@ -100,13 +145,12 @@ function CouponList(props) {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        alert("세션이 만료되었습니다. 다시 로그인 해주세요");
+        dispatch(clearUser());
+        navi("/login");
       })
       .catch(e => {
         console.log(e);
       });
-    dispatch(clearUser());
-    navi("/login");
   };
   return (
     <>
@@ -132,7 +176,10 @@ function CouponList(props) {
           )}
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-1" data={props.coupon.trId}>
+      <div
+        className="grid grid-cols-1 xl:grid-cols-2 gap-1"
+        data={props.coupon.trId}
+      >
         <div>
           <button
             className="transition duration-300 w-full border border-teal-500 hover:border-teal-700 bg-teal-500 hover:bg-teal-700 text-white text-lg p-2"

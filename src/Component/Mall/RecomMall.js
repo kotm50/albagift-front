@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { clearUser } from "../../Reducer/userSlice";
+import { Link, useLocation } from "react-router-dom";
 
 function RecomMall(props) {
-  let navi = useNavigate();
-  const dispatch = useDispatch();
   const location = useLocation();
-  const user = useSelector(state => state.user);
   const [goods, setGoods] = useState([]);
   const [loadMsg, setLoadMsg] = useState("상품을 불러오고 있습니다");
   const [imgLoaded, setImgLoaded] = useState(false);
@@ -28,10 +23,6 @@ function RecomMall(props) {
     await axios
       .post(listUrl, data)
       .then(res => {
-        if (res.data.code === "E999") {
-          logout();
-          return false;
-        }
         setLoadMsg(res.data.message);
         setGoods(res.data.randList);
         if (res.data.randList.length > 0) {
@@ -41,20 +32,6 @@ function RecomMall(props) {
       .catch(e => {
         console.log(e, "에러");
       });
-  };
-  const logout = async () => {
-    await axios
-      .post("/api/v1/user/logout", null, {
-        headers: { Authorization: user.accessToken },
-      })
-      .then(res => {
-        alert("세션이 만료되었습니다. 다시 로그인 해주세요");
-      })
-      .catch(e => {
-        console.log(e);
-      });
-    dispatch(clearUser());
-    navi("/login");
   };
 
   return (

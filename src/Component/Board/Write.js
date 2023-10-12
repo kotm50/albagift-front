@@ -5,6 +5,10 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import Loading from "../Layout/Loading";
 
+import { confirmAlert } from "react-confirm-alert"; // Import
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
+import AlertModal from "../Layout/AlertModal";
+
 function Write() {
   const [loaded, setLoaded] = useState(false);
   const { pid } = useParams();
@@ -26,17 +30,32 @@ function Write() {
     if (user.accessToken !== "") {
       setLoaded(true);
     } else {
-      let goLogin = window.confirm(
-        "로그인이 필요합니다, 로그인을 진행해 주세요"
-      );
-      if (goLogin) {
-        navi("/login");
-      } else {
-        navi(-1);
-      }
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <AlertModal
+              onClose={onClose} // 닫기
+              title={"로그인"} // 제목
+              message={"로그인이 필요합니다, 로그인을 진행해 주세요"} // 내용
+              type={"confirm"} // 타입 confirm, alert
+              yes={"로그인 하기"} // 확인버튼 제목
+              no={"뒤로 가기"} // 취소버튼 제목
+              doIt={goLogin} // 확인시 실행할 함수
+              doNot={goBack} // 취소시 실행할 함수
+            />
+          );
+        },
+      });
     }
     //eslint-disable-next-line
   }, [location]);
+
+  const goLogin = () => {
+    navi("/login");
+  };
+  const goBack = () => {
+    navi(-1);
+  };
 
   const getPost = async () => {
     const data = {
@@ -59,8 +78,20 @@ function Write() {
         setLoaded(true);
       })
       .catch(e => {
-        alert("알 수 없는 오류가 발생했습니다");
-        navi(-1);
+        confirmAlert({
+          customUI: ({ onClose }) => {
+            return (
+              <AlertModal
+                onClose={onClose} // 닫기
+                title={"오류!!"} // 제목
+                message={"알 수 없는 오류가 발생했습니다"} // 내용
+                type={"alert"} // 타입 confirm, alert
+                yes={"뒤로 가기"} // 확인버튼 제목
+                doIt={goBack} // 확인시 실행할 함수
+              />
+            );
+          },
+        });
       });
   };
 
@@ -78,7 +109,20 @@ function Write() {
     if (boardId === "B02") {
       let isBefore = await isBeforeNow();
       if (!isBefore) {
-        return alert("면접일시는 현재시간보다 이전이어야 합니다.");
+        confirmAlert({
+          customUI: ({ onClose }) => {
+            return (
+              <AlertModal
+                onClose={onClose} // 닫기
+                title={"오류!!"} // 제목
+                message={"면접일시는 현재시간보다 이전이어야 합니다."} // 내용
+                type={"alert"} // 타입 confirm, alert
+                yes={"확인"} // 확인버튼 제목
+              />
+            );
+          },
+        });
+        return false;
       }
     }
     let postId = pid || "";
@@ -90,20 +134,52 @@ function Write() {
         })
         .then(res => {
           if (res.data.code === "C000") {
-            alert("등록되었습니다");
-            if (boardId === "B02") {
-              navi("/mypage/payhistory");
-            } else {
-              navi(`/board/list?boardId=${boardId}`);
-            }
+            confirmAlert({
+              customUI: ({ onClose }) => {
+                return (
+                  <AlertModal
+                    onClose={onClose} // 닫기
+                    title={"완료"} // 제목
+                    message={"수정했습니다"} // 내용
+                    type={"alert"} // 타입 confirm, alert
+                    yes={"확인"} // 확인버튼 제목
+                    doIt={goBoard} // 확인시 실행할 함수
+                  />
+                );
+              },
+            });
           } else {
-            alert(
-              `오류가 발생했습니다.관리자에게 문의해 주세요.\n(오류코드 : ${res.data.code})`
-            );
+            confirmAlert({
+              customUI: ({ onClose }) => {
+                return (
+                  <AlertModal
+                    onClose={onClose} // 닫기
+                    title={"오류!!"} // 제목
+                    message={"오류가 발생했습니다. 다시 시도해 주세요"} // 내용
+                    type={"alert"} // 타입 confirm, alert
+                    yes={"확인"} // 확인버튼 제목
+                  />
+                );
+              },
+            });
+            return false;
           }
         })
         .catch(e => {
-          alert("오류가 발생했습니다.\n관리자에게 문의해 주세요");
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"오류!!"} // 제목
+                  message={"오류가 발생했습니다. 다시 시도해 주세요"} // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                />
+              );
+            },
+          });
+          return false;
         });
     } else {
       await axios
@@ -112,21 +188,48 @@ function Write() {
         })
         .then(res => {
           if (res.data.code === "C000") {
-            alert("등록되었습니다");
-            if (boardId === "B02") {
-              navi("/mypage/payhistory");
-            } else {
-              navi(`/board/list?boardId=${boardId}`);
-            }
+            confirmAlert({
+              customUI: ({ onClose }) => {
+                return (
+                  <AlertModal
+                    onClose={onClose} // 닫기
+                    title={"완료"} // 제목
+                    message={"등록했습니다"} // 내용
+                    type={"alert"} // 타입 confirm, alert
+                    yes={"확인"} // 확인버튼 제목
+                    doIt={goBoard} // 확인시 실행할 함수
+                  />
+                );
+              },
+            });
           } else {
-            alert(
-              `오류가 발생했습니다.관리자에게 문의해 주세요.\n(오류코드 : ${res.data.code})`
-            );
+            confirmAlert({
+              customUI: ({ onClose }) => {
+                return (
+                  <AlertModal
+                    onClose={onClose} // 닫기
+                    title={"오류!!"} // 제목
+                    message={"오류가 발생했습니다. 다시 시도해 주세요"} // 내용
+                    type={"alert"} // 타입 confirm, alert
+                    yes={"확인"} // 확인버튼 제목
+                  />
+                );
+              },
+            });
+            return false;
           }
         })
         .catch(e => {
           console.log(e);
         });
+    }
+  };
+
+  const goBoard = () => {
+    if (boardId === "B02") {
+      navi("/mypage/payhistory");
+    } else {
+      navi(`/board/list?boardId=${boardId}`);
     }
   };
 

@@ -36,7 +36,7 @@ function PayList(props) {
               className="bg-green-500 py-1 px-4 hover:bg-green-700 text-center text-white"
               onClick={e => setEdit(!edit)}
             >
-              면접시간수정
+              {!edit ? "면접시간수정" : "수정취소하기"}
             </button>
           </div>
           <div className="text-center">
@@ -51,7 +51,7 @@ function PayList(props) {
           수정이 불가능 합니다
         </div>
       )}
-      {edit && <PayModify doc={props.doc} />}
+      {edit && <PayModify doc={props.doc} getList={props.getList} />}
     </>
   );
 }

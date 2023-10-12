@@ -1,11 +1,24 @@
 import React from "react";
+import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
+import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import AlertModal from "../../Layout/AlertModal";
 
 function CouponModal(props) {
   const handleCopy = () => {
-    alert(
-      `쿠폰번호가 복사되었습니다 필요한 곳에 붙여넣기 해주세요\n복사한 쿠폰번호:${props.coupon.pinNo}`
-    );
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <AlertModal
+            onClose={onClose} // 닫기
+            title={"복사완료"} // 제목
+            message={`쿠폰번호가 복사되었습니다.\n필요한 곳에 붙여넣기 해주세요`} // 내용
+            type={"alert"} // 타입 confirm, alert
+            yes={"확인"} // 확인버튼 제목
+          />
+        );
+      },
+    });
   };
   return (
     <>
@@ -15,7 +28,7 @@ function CouponModal(props) {
             <div className="relative p-2 lg:p-6 flex-auto overflow-y-auto">
               <img src={props.coupon.couponImgUrl} alt="쿠폰이미지" />
             </div>
-            <div className="text-sm my-2 text-center xl:block hidden">
+            <div className="text-sm my-1 text-center xl:block hidden">
               쿠폰이미지를 우클릭 후{" "}
               <span className="font-neoextra text-sky-500">
                 '이미지를 다른 이름으로 저장'
@@ -23,14 +36,17 @@ function CouponModal(props) {
               <br />
               하시면 저장해서 쓰실 수 있습니다
             </div>
-            <div className="text-sm my-2 text-center xl:hidden">
+            <div className="text-sm my-1 text-center xl:hidden">
               쿠폰이미지를 꾹 누르시고
+              <br />
               <span className="font-neoextra text-sky-500">
                 '이미지 다운로드'
               </span>
-              <br />를 누르시면 저장해서 쓰실 수 있습니다
+              를 누르시면
+              <br />
+              저장해서 쓰실 수 있습니다
             </div>
-            <div className="text-lg font-neoextra my-2 text-center">
+            <div className="text-lg font-neoextra my-1 text-center">
               쿠폰번호 :{" "}
               <span className="text-red-500">{props.coupon.pinNo}</span>
             </div>

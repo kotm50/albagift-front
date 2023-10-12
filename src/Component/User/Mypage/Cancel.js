@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
+import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 
 import { clearUser } from "../../../Reducer/userSlice";
 
 import { FaTicketAlt } from "react-icons/fa";
+import AlertModal from "../../Layout/AlertModal";
 
 function Cancel() {
   const navi = useNavigate();
@@ -29,16 +32,34 @@ function Cancel() {
     //eslint-disable-next-line
   }, [location]);
 
+  const cancelConfirm = e => {
+    e.preventDefault();
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <AlertModal
+            onClose={onClose} // 닫기
+            title={"확인"} // 제목
+            message={"탈퇴를 진행하실 건가요?"} // 내용
+            type={"confirm"} // 타입 confirm, alert
+            yes={"계속이용하기"} // 확인버튼 제목
+            no={"탈퇴진행하기"} // 취소버튼 제목
+            doIt={cancelCancel} // 확인시 실행할 함수
+            doNot={cancelIt} // 취소시 실행할 함수
+          />
+        );
+      },
+    });
+  };
+
+  const cancelCancel = () => {
+    navi("/mypage");
+  };
+
   const cancelIt = async e => {
     e.preventDefault();
     setAgreePls(false);
     setIsErr(false);
-    const really = window.confirm("정말 탈퇴하시겠습니까?");
-    if (!really) {
-      alert("탈퇴를 취소하셨습니다.\n메인페이지로 이동합니다");
-      navi("/");
-      return false;
-    }
     if (!agree) {
       setErrMsg("위 내용을 읽고 동의하시면 체크해주세요");
       setAgreePls(true);
@@ -72,7 +93,20 @@ function Cancel() {
       })
       .then(res => {
         if (res.data.code === "C000") {
-          logout();
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"확인"} // 제목
+                  message={res.data.message} // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                  doIt={logout} // 확인시 실행할 함수
+                />
+              );
+            },
+          });
         } else {
           setErrMessage(res.data.message);
           setIsErr(true);
@@ -88,16 +122,15 @@ function Cancel() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        alert("회원탈퇴가 완료되었습니다.\n이용해 주셔서 감사합니다.");
+        dispatch(clearUser());
+        navi("/");
       })
       .catch(e => {
         console.log(e);
       });
-    dispatch(clearUser());
-    navi("/login");
   };
   return (
-    <form onSubmit={e => cancelIt(e)}>
+    <form onSubmit={e => cancelConfirm(e)}>
       <div
         id="cancelArea"
         className="my-2 mx-auto p-2 xl:p-10 border shadow-lg rounded-lg grid grid-cols-1 gap-3 bg-white w-full"

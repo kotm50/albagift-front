@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
+import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
+import AlertModal from "./AlertModal";
 
 function SearchArea(props) {
   const location = useLocation();
@@ -15,7 +18,20 @@ function SearchArea(props) {
     if (searchKeyword !== "") {
       navi(`/search/${searchKeyword}`);
     } else {
-      return alert("검색어를 입력해 주세요");
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <AlertModal
+              onClose={onClose} // 닫기
+              title={"오류!!"} // 제목
+              message={"검색어를 입력해 주세요"} // 내용
+              type={"alert"} // 타입 confirm, alert
+              yes={"확인"} // 확인버튼 제목
+            />
+          );
+        },
+      });
+      return false;
     }
   };
   return (

@@ -6,6 +6,10 @@ import axios from "axios";
 import queryString from "query-string";
 
 import Loading from "../Layout/Loading";
+import AlertModal from "../Layout/AlertModal";
+
+import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
+import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 function Detail() {
   const user = useSelector(state => state.user);
   const navi = useNavigate();
@@ -21,12 +25,28 @@ function Detail() {
     if (location.state) {
       boardId = location.state.boardId;
     } else {
-      alert("잘못된 접근입니다");
-      navi("/");
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <AlertModal
+              onClose={onClose} // 닫기
+              title={"오류"} // 제목
+              message={"잘못된 접근입니다"} // 내용
+              type={"alert"} // 타입 confirm, alert
+              yes={"확인"} // 확인버튼 제목
+              doIt={goMain} // 확인시 실행할 함수
+            />
+          );
+        },
+      });
     }
     getDetail(boardId);
     //eslint-disable-next-line
   }, []);
+
+  const goMain = () => {
+    navi("/");
+  };
 
   const getDetail = async boardId => {
     const data = {
@@ -45,7 +65,6 @@ function Detail() {
         setLoading(false);
       })
       .catch(e => {
-        alert("알 수 없는 오류가 발생했습니다");
         navi(-1);
       });
   };

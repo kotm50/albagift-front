@@ -253,3 +253,12 @@ div.footer-top {
   max-width: 100%;
   min-height:600px;
 }
+
+#alertmodal {
+  width:400px;
+  max-width:95vw;
+}
+
+.react-confirm-alert-overlay {
+  background-color:rgba(255, 255, 255, 0.5)!important;
+}

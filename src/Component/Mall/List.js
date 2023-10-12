@@ -4,6 +4,9 @@ import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { clearUser } from "../../Reducer/userSlice";
 
+import { confirmAlert } from "react-confirm-alert"; // Import
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
+
 import queryString from "query-string";
 
 import { getNewToken } from "../../Reducer/userSlice";
@@ -13,6 +16,7 @@ import UserSection from "../User/UserSection";
 import Loading from "../Layout/Loading";
 import ImgLoad from "./ImgLoad";
 import { Helmet } from "react-helmet";
+import AlertModal from "../Layout/AlertModal";
 
 function List() {
   const dispatch = useDispatch();
@@ -88,7 +92,7 @@ function List() {
       })
       .then(res => {
         if (res.data.code === "E999") {
-          logout();
+          logoutAlert(res.data.message);
           return false;
         }
         const totalP = res.data.totalPages;
@@ -153,21 +157,36 @@ function List() {
     ];
   }
 
+  const logoutAlert = m => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <AlertModal
+            onClose={onClose} // 닫기
+            title={"로그인 에러"} // 제목
+            message={m} // 내용
+            type={"alert"} // 타입 confirm, alert
+            yes={"다시 로그인 하기"} // 확인버튼 제목
+            doIt={logout} // 확인시 실행할 함수
+          />
+        );
+      },
+    });
+  };
+
   const logout = async () => {
     await axios
       .post("/api/v1/user/logout", null, {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        alert("세션이 만료되었습니다. 다시 로그인 해주세요");
+        dispatch(clearUser());
+        navi("/login");
       })
       .catch(e => {
         console.log(e);
       });
-    dispatch(clearUser());
-    navi("/login");
   };
-
   return (
     <>
       <Helmet>

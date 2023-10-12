@@ -2,8 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import UserInformation from "./UserInfomation";
 
+import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
+import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
+
 import coin from "../../Asset/coin.png";
 import calendar from "../../Asset/calendar.png";
+import AlertModal from "../Layout/AlertModal";
 
 function UserSection() {
   return (
@@ -30,7 +34,19 @@ function UserSection() {
           to="/attendance"
           onClick={e => {
             e.preventDefault();
-            alert("죄송합니다. 해당 기능은 현재 준비중입니다 🙏");
+            confirmAlert({
+              customUI: ({ onClose }) => {
+                return (
+                  <AlertModal
+                    onClose={onClose} // 닫기
+                    title={"오류"} // 제목
+                    message={"죄송합니다. 해당 기능은 현재 준비중입니다 🙏"} // 내용
+                    type={"alert"} // 타입 confirm, alert
+                    yes={"확인"} // 확인버튼 제목
+                  />
+                );
+              },
+            });
           }}
         >
           <div className="text-left xl:text-xl mb-1">

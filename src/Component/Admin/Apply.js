@@ -25,7 +25,7 @@ function Apply(props) {
           console.log(e);
         });
     } else {
-      alert("구 회원 리스트 불러오는 중 입니다");
+      console.log("구 회원 리스트 불러오는 중 입니다");
     }
   };
 

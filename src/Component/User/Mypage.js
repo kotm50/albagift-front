@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
 
+import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
+import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
+
 import { Helmet } from "react-helmet";
 
 import list from "../../Asset/mypage/list.png";
 import user from "../../Asset/mypage/user.png";
 import coupon from "../../Asset/mypage/coupon.png";
 import diamond from "../../Asset/mypage/diamond.png";
+import AlertModal from "../Layout/AlertModal";
 
 function Mypage() {
   const location = useLocation();
@@ -38,7 +42,7 @@ function Mypage() {
         >
           <Link
             to="/mypage/pwdchk"
-            className="p-4 text-center hover:bg-blue-50 rounded-lg flex flex-col justify-center gap-2 group hover:text-indigo-500"
+            className="p-4 text-center bg-blue-50 hover:bg-blue-200 rounded-lg flex flex-col justify-center gap-2 group"
           >
             <div className="w-20 h-20 mx-auto rounded-full bg-white flex flex-col justify-center text-gray-500 group-hover:bg-indigo-500 group-hover:text-white">
               <img
@@ -51,7 +55,7 @@ function Mypage() {
           </Link>
           <Link
             to="/mypage/coupon"
-            className="p-4 text-center hover:bg-blue-50 rounded-lg flex flex-col justify-center gap-2 group hover:text-indigo-500"
+            className="p-4 text-center bg-blue-50 hover:bg-blue-200 rounded-lg flex flex-col justify-center gap-2 group"
           >
             <div className="w-20 h-20 mx-auto rounded-full bg-white flex flex-col justify-center text-gray-500 group-hover:bg-indigo-500 group-hover:text-white">
               <img
@@ -64,10 +68,22 @@ function Mypage() {
           </Link>
           <Link
             to="/mypage/pwdchk"
-            className="p-4 text-center hover:bg-blue-50 rounded-lg flex flex-col justify-center gap-2 group hover:text-indigo-500"
+            className="p-4 text-center bg-blue-50 hover:bg-blue-200 rounded-lg flex flex-col justify-center gap-2 group"
             onClick={e => {
               e.preventDefault();
-              alert("죄송합니다. 해당 기능은 현재 준비중입니다 🙏");
+              confirmAlert({
+                customUI: ({ onClose }) => {
+                  return (
+                    <AlertModal
+                      onClose={onClose} // 닫기
+                      title={"오류"} // 제목
+                      message={"죄송합니다. 해당 기능은 현재 준비중입니다 🙏"} // 내용
+                      type={"alert"} // 타입 confirm, alert
+                      yes={"확인"} // 확인버튼 제목
+                    />
+                  );
+                },
+              });
             }}
           >
             <div className="w-20 h-20 mx-auto rounded-full bg-white flex flex-col justify-center text-gray-500 group-hover:bg-indigo-500 group-hover:text-white">
@@ -81,7 +97,7 @@ function Mypage() {
           </Link>
           <Link
             to="/mypage/payhistory"
-            className="p-4 text-center hover:bg-blue-50 rounded-lg flex flex-col justify-center gap-2 group hover:text-indigo-500"
+            className="p-4 text-center bg-blue-50 hover:bg-blue-200 rounded-lg flex flex-col justify-center gap-2 group"
           >
             <div className="w-20 h-20 mx-auto rounded-full bg-white flex flex-col justify-center text-gray-500 group-hover:bg-indigo-500 group-hover:text-white">
               <img

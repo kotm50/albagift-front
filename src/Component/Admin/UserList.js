@@ -3,8 +3,11 @@ import { useLocation } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
 import { getNewToken } from "../../Reducer/userSlice";
+import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
+import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 
 import axios from "axios";
+import AlertModal from "../Layout/AlertModal";
 
 //import { dummyUser } from "./dummy";
 
@@ -22,12 +25,26 @@ function UserList() {
 
   useEffect(() => {
     if (point < 0) {
-      alert("마이너스로 지정할 수 없습니다");
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <AlertModal
+              onClose={onClose} // 닫기
+              title={"오류!!"} // 제목
+              message={"마이너스로 지정할 수 없습니다"} // 내용
+              type={"alert"} // 타입 confirm, alert
+              yes={"확인"} // 확인버튼 제목
+            />
+          );
+        },
+      });
       setPoint(0);
+      return false;
     }
   }, [point]);
 
   const getUserList = async b => {
+    setLoading("잠시만 기다려 주세요...");
     setUsers([]);
     await axios
       .post("/api/v1/user/admin/userlst", null, {
@@ -46,7 +63,7 @@ function UserList() {
         if (res.data.length === 0) {
           setLoading("회원이 없습니다");
         } else {
-          setLoading("로딩 완료");
+          setLoading("잠시만 기다려 주세요...");
         }
       })
       .catch(e => {
@@ -92,6 +109,7 @@ function UserList() {
   };
 
   const incPoint = async () => {
+    setLoading("잠시만 기다려 주세요");
     const request = {
       idList: selectedUsersId,
       point: point,
@@ -111,6 +129,19 @@ function UserList() {
           }
         }
         if (res.data.code === "C000") {
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"완료"} // 제목
+                  message={res.data.message} // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                />
+              );
+            },
+          });
           getUserList(isAgree);
           setPoint(0);
           setSelectedUsers([]);
@@ -123,6 +154,7 @@ function UserList() {
   };
 
   const decPoint = async () => {
+    setLoading("잠시만 기다려 주세요");
     const request = {
       idList: selectedUsersId,
       point: point,
@@ -142,6 +174,19 @@ function UserList() {
           }
         }
         if (res.data.code === "C000") {
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"완료"} // 제목
+                  message={res.data.message} // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                />
+              );
+            },
+          });
           getUserList(isAgree);
           setPoint(0);
           setSelectedUsers([]);
@@ -164,23 +209,21 @@ function UserList() {
     <>
       {users.length > 0 ? (
         <>
-          <div className="flex justify-end gap-2 text-sm font-neoextra">
-            <div className="flex justify-end gap-2 text-sm font-neoextra">
-              <div className="flex items-center">
-                <input
-                  id="agreeUser"
-                  type="checkbox"
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  checked={isAgree}
-                  onChange={e => setIsAgree(!isAgree)}
-                />
-                <label
-                  htmlFor="agreeUser"
-                  className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >
-                  동의회원만 보기
-                </label>
-              </div>
+          <div className="flex justify-end gap-2 text-sm font-neoextra container mx-auto">
+            <div className="flex items-center">
+              <input
+                id="agreeUser"
+                type="checkbox"
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                checked={isAgree}
+                onChange={e => setIsAgree(!isAgree)}
+              />
+              <label
+                htmlFor="agreeUser"
+                className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                동의회원만 보기
+              </label>
             </div>
           </div>
           <div className="grid grid-cols-1 xl:grid-cols-5 gap-2 mt-2 bg-white p-2 container mx-auto">
@@ -237,7 +280,9 @@ function UserList() {
           </div>
         </>
       ) : (
-        <>{loading}</>
+        <div className="container mx-auto text-center font-neoextra text-3xl">
+          {loading}
+        </div>
       )}
       {selectedUsers.length > 0 && (
         <>

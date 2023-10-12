@@ -64,7 +64,7 @@ function Payhistory() {
                         : "hover:bg-gray-100"
                     }`}
                   >
-                    <PayList doc={doc} />
+                    <PayList doc={doc} getList={getList} />
                   </div>
                 ))}
               </div>

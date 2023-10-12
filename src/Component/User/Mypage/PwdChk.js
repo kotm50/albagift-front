@@ -61,10 +61,8 @@ function PwdChk(props) {
           id="chkArea"
           className="my-10 mx-auto p-2 grid grid-cols-1 gap-3 bg-white w-full"
         >
-          <div className="text-lg font-medium text-center">마이페이지</div>
           <div className="text-sm font-normal text-left">
-            개인정보 보호를 위해
-            <br />
+            개인정보 보호를 위해 <br className="xl:hidden" />
             비밀번호를 한번 더 입력 해 주세요
           </div>
           <div

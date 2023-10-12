@@ -7,6 +7,9 @@ import { buyGift } from "../../Reducer/userSlice";
 import { getNewToken, clearUser } from "../../Reducer/userSlice";
 import axios from "axios";
 
+import { confirmAlert } from "react-confirm-alert"; // Import
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
+
 import dompurify from "dompurify";
 
 import UserSection from "../User/UserSection";
@@ -14,6 +17,7 @@ import Loading from "../Layout/Loading";
 
 import { RiKakaoTalkFill } from "react-icons/ri";
 import RecomMall from "./RecomMall";
+import AlertModal from "../Layout/AlertModal";
 
 // kakao 기능 동작을 위해 넣어준다.
 const { Kakao } = window;
@@ -50,7 +54,7 @@ function Detail() {
       })
       .then(res => {
         if (res.data.code === "E999") {
-          logout();
+          logoutAlert(res.data.message);
           return false;
         }
         if (res.headers.authorization) {
@@ -68,6 +72,23 @@ function Detail() {
       .catch(e => {
         console.log(e);
       });
+  };
+
+  const logoutAlert = m => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <AlertModal
+            onClose={onClose} // 닫기
+            title={"로그인 에러"} // 제목
+            message={m} // 내용
+            type={"alert"} // 타입 confirm, alert
+            yes={"다시 로그인 하기"} // 확인버튼 제목
+            doIt={logout} // 확인시 실행할 함수
+          />
+        );
+      },
+    });
   };
 
   const contentForm = c => {
@@ -96,51 +117,127 @@ function Detail() {
     setContent(replacedText);
   };
 
+  const loginAlert = () => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <AlertModal
+            onClose={onClose} // 닫기
+            title={"구매 오류"} // 제목
+            message={"상품을 구매하려면 로그인 해주세요"} // 내용
+            type={"alert"} // 타입 confirm, alert
+            yes={"로그인 하기"} // 확인버튼 제목
+            doIt={goLogin} // 확인시 실행할 함수
+          />
+        );
+      },
+    });
+  };
+  const goLogin = () => {
+    navi("/login");
+  };
+
   const buyIt = async () => {
     if (user.accessToken === "") {
-      alert("로그인을 해주세요");
-      navi("/login");
+      loginAlert();
       return false;
     }
-    const confirm = window.confirm(
-      `상품을 구매하시겠습니까?\n${goods.realPrice}포인트가 차감됩니다`
-    );
-    if (confirm) {
-      let data = {
-        goodsCode: goodscode,
-      };
-      let buy = Number(user.point) - Number(goods.realPrice);
-      if (buy < 0) {
-        return alert("포인트가 부족합니다");
-      }
-      await axios
-        .post("/api/v1/shop/goods/send", data, {
-          headers: { Authorization: user.accessToken },
-        })
-        .then(res => {
-          console.log(res);
-          if (res.data.code === "E999") {
-            logout();
-            return false;
-          }
-          if (res.data.code === "C000") {
-            alert("구매 완료!");
-            dispatch(
-              buyGift({
-                point: res.data.point,
-              })
-            );
-            navi(`/result`);
-          } else {
-            alert(res.data.message);
-          }
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    } else {
+
+    let buy = Number(user.point) - Number(goods.realPrice);
+    if (buy < 0) {
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <AlertModal
+              onClose={onClose} // 닫기
+              title={"구매 오류"} // 제목
+              message={"포인트가 부족합니다"} // 내용
+              type={"alert"} // 타입 confirm, alert
+              yes={"확인"} // 확인버튼 제목
+            />
+          );
+        },
+      });
       return false;
     }
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <AlertModal
+            onClose={onClose} // 닫기
+            title={"기프티콘을 구매하시겠습니까?"} // 제목
+            message={`${goods.realPrice}포인트가 차감됩니다`} // 내용
+            type={"confirm"} // 타입 confirm, alert
+            yes={"네"} // 확인버튼 제목
+            no={"아니요"} // 취소버튼 제목
+            doIt={doBuy} // 확인시 실행할 함수
+            doNot={doNotBuy} // 취소시 실행할 함수
+          />
+        );
+      },
+    });
+  };
+
+  const doBuy = async () => {
+    let data = {
+      goodsCode: goodscode,
+    };
+    await axios
+      .post("/api/v1/shop/goods/send", data, {
+        headers: { Authorization: user.accessToken },
+      })
+      .then(res => {
+        console.log(res);
+        if (res.data.code === "E999") {
+          logoutAlert(res.data.message);
+          return false;
+        }
+        if (res.data.code === "C000") {
+          dispatch(
+            buyGift({
+              point: res.data.point,
+            })
+          );
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"구매 완료"} // 제목
+                  message={"구매를 완료했습니다"} // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                  doIt={goResult} // 확인시 실행할 함수
+                />
+              );
+            },
+          });
+        } else {
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"구매 실패"} // 제목
+                  message={res.data.message} // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                />
+              );
+            },
+          });
+          return false;
+        }
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+  const doNotBuy = () => {
+    return false;
+  };
+  const goResult = () => {
+    navi(`/result`);
   };
 
   const logout = async () => {
@@ -149,13 +246,12 @@ function Detail() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        alert("세션이 만료되었습니다. 다시 로그인 해주세요");
+        dispatch(clearUser());
+        navi("/login");
       })
       .catch(e => {
         console.log(e);
       });
-    dispatch(clearUser());
-    navi("/login");
   };
 
   const shareKakao = () => {

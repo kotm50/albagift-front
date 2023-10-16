@@ -2,14 +2,17 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import queryString from "query-string";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Loading from "../Layout/Loading";
 
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import AlertModal from "../Layout/AlertModal";
+import { logoutAlert } from "../LogoutUtil";
+import { clearUser } from "../../Reducer/userSlice";
 
 function Write() {
+  const dispatch = useDispatch();
   const [loaded, setLoaded] = useState(false);
   const { pid } = useParams();
   const user = useSelector(state => state.user);
@@ -69,6 +72,17 @@ function Write() {
         },
       })
       .then(res => {
+        if (res.data.code === "E999") {
+          logoutAlert(
+            null,
+            null,
+            dispatch,
+            clearUser,
+            navi,
+            user,
+            res.data.message
+          );
+        }
         const detail = res.data.post;
         if (res.data.code === "C000") {
           setDate(detail.intvDate);
@@ -250,7 +264,7 @@ function Write() {
     return str;
   };
   return (
-    <div className="w-1/2 p-2 mx-auto bg-white my-2">
+    <div className="container xl:w-1/2 p-2 mx-auto bg-white my-2">
       {loaded ? (
         <>
           {boardId === "B02" ? (

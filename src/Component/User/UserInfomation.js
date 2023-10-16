@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { clearUser, refreshPoint } from "../../Reducer/userSlice";
-
+import { clearUser, getNewToken, refreshPoint } from "../../Reducer/userSlice";
+import { /* logoutAlert, */ logout } from "../LogoutUtil";
 import axios from "axios";
 
 function UserInformation() {
@@ -16,6 +16,7 @@ function UserInformation() {
       // const diffTime = Math.floor((now - user.lastLogin) / 1000 / 60);
       refreshPoints();
     }
+    console.log(user);
     //eslint-disable-next-line
   }, [location]);
 
@@ -32,33 +33,37 @@ function UserInformation() {
             })
           );
         }
-      })
-      .catch(e => {
-        if (user.admin) {
-          return true;
-        } else {
-          alert("포인트를 불러올 수 없습니다. 다시 로그인 해주세요");
-          logout();
-        }
-      });
-  };
-
-  const logout = async () => {
-    await axios
-      .post("/api/v1/user/logout", null, {
-        headers: { Authorization: user.accessToken },
-      })
-      .then(res => {
-        if (res.data.code === "C001") {
-          navi("/");
+        if (res.headers.authorization) {
+          if (res.headers.authorization !== user.accessToken) {
+            dispatch(
+              getNewToken({
+                accessToken: res.headers.authorization,
+              })
+            );
+          }
         }
       })
       .catch(e => {
         console.log(e);
+        if (user.admin) {
+          return true;
+        } else {
+          return false;
+          /*
+          logoutAlert(
+            null,
+            logout,
+            dispatch,
+            clearUser,
+            navi,
+            user,
+            "오류가 발생했습니다. 다시 로그인 해주세요"
+          );
+          */
+        }
       });
-    dispatch(clearUser());
-    navi("/");
   };
+
   return (
     <>
       {user.userId === "" ? (
@@ -112,7 +117,7 @@ function UserInformation() {
             </div>
             <button
               className="font-neobold p-2 border border-gray-300 text-gray-500 hover:text-gray-700 hover:border-gray-700 hover:bg-gray-100 rounded xl:col-span-1 col-span-2"
-              onClick={e => logout()}
+              onClick={e => logout(dispatch, clearUser, navi, user)}
             >
               로그아웃
             </button>

@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { clearUser } from "../../Reducer/userSlice";
+import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { category } from "../Data/Category";
-
+import AlertModal from "../Layout/AlertModal";
+import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
+import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 function Recommend(props) {
-  let navi = useNavigate();
-  const dispatch = useDispatch();
   const location = useLocation();
   const user = useSelector(state => state.user);
   const [goods, setGoods] = useState([]);
@@ -35,40 +34,42 @@ function Recommend(props) {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        if (res.data.code === "E999") {
-          logout();
-          return false;
-        }
+        console.log(res);
         setLoadMsg(res.data.message);
-        if (c === 1) {
-          setGoods(res.data.cafeList);
-          if (res.data.cafeList.length > 0) {
-            setLoaded(true);
+        if (res.data.code === "C000") {
+          if (c === 1) {
+            setGoods(res.data.cafeList);
+            if (res.data.cafeList.length > 0) {
+              setLoaded(true);
+            }
+          } else {
+            setGoods(res.data.randList);
+            if (res.data.randList.length > 0) {
+              setLoaded(true);
+            }
           }
         } else {
-          setGoods(res.data.randList);
-          if (res.data.randList.length > 0) {
-            setLoaded(true);
-          }
+          return false;
         }
-      })
-      .catch(e => {
-        console.log(e, "에러");
-      });
-  };
-  const logout = async () => {
-    await axios
-      .post("/api/v1/user/logout", null, {
-        headers: { Authorization: user.accessToken },
-      })
-      .then(res => {
-        alert("세션이 만료되었습니다. 다시 로그인 해주세요");
       })
       .catch(e => {
         console.log(e);
+        confirmAlert({
+          customUI: ({ onClose }) => {
+            return (
+              <AlertModal
+                onClose={onClose} // 닫기
+                title={"오류"} // 제목
+                message={
+                  "상품 불러오기를 실패했습니다\n관리자에게 문의해주세요"
+                } // 내용
+                type={"alert"} // 타입 confirm, alert
+                yes={"확인"} // 확인버튼 제목
+              />
+            );
+          },
+        });
       });
-    dispatch(clearUser());
-    navi("/login");
   };
 
   return (

@@ -13,7 +13,7 @@ import Join from "./Component/User/Join";
 import KakaoTest from "./Component/KakaoTest";
 import Mypage from "./Component/User/Mypage";
 import Admin from "./Component/Admin/Admin";
-import AdminMain from "./Component/Admin/Main";
+//import AdminMain from "./Component/Admin/Main";
 import UserList from "./Component/Admin/UserList";
 import List from "./Component/Mall/List";
 import Detail from "./Component/Mall/Detail";
@@ -42,6 +42,7 @@ import JoinBack from "./Component/User/JoinBack";
 import PwdChk from "./Component/User/Mypage/PwdChk";
 import EditUser from "./Component/User/Mypage/EditUser";
 import Payhistory from "./Component/User/Payhistory";
+//import MyMain from "./Component/User/Mypage/MyMain";
 
 function App() {
   const thisLocation = useLocation();
@@ -81,7 +82,7 @@ function App() {
           <Route path="/join/:promo?" element={<Join />} />
           <Route path="/joinback/:promo?" element={<JoinBack />} />
           <Route path="/mypage" element={<Mypage />}>
-            <Route path="" element={<PwdChk />} />
+            <Route path="" element={<Payhistory />} />
             <Route path="pwdchk" element={<PwdChk />} />
             <Route path="edit" element={<EditUser />} />
             <Route path="coupon" element={<Coupon />} />
@@ -90,7 +91,7 @@ function App() {
           </Route>
           <Route path="/newpwd" element={<NewPwd />} />
           <Route path="/admin" element={<Admin />}>
-            <Route path="" element={<AdminMain />} />
+            <Route path="" element={<UserList />} />
             <Route path="user" element={<UserList />} />
             <Route path="reset" element={<GiftReset />} />
             <Route path="loginlog" element={<LoginLog />} />

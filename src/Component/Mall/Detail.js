@@ -4,7 +4,7 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { buyGift } from "../../Reducer/userSlice";
 
-import { getNewToken, clearUser } from "../../Reducer/userSlice";
+import { clearUser } from "../../Reducer/userSlice";
 import axios from "axios";
 
 import { confirmAlert } from "react-confirm-alert"; // Import
@@ -13,11 +13,11 @@ import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import dompurify from "dompurify";
 
 import UserSection from "../User/UserSection";
-import Loading from "../Layout/Loading";
 
 import { RiKakaoTalkFill } from "react-icons/ri";
 import RecomMall from "./RecomMall";
 import AlertModal from "../Layout/AlertModal";
+import { logoutAlert } from "../LogoutUtil";
 
 // kakao 기능 동작을 위해 넣어준다.
 const { Kakao } = window;
@@ -37,7 +37,7 @@ function Detail() {
   const sanitizer = dompurify.sanitize;
   let navi = useNavigate();
   const { goodscode } = useParams();
-  const [goods, setGoods] = useState("");
+  const [goods, setGoods] = useState({});
   const [content, setContent] = useState("");
   const [imgLoaded, setImgLoaded] = useState(false);
   const [isShare, setIsShare] = useState(false);
@@ -49,46 +49,14 @@ function Detail() {
   const getGoods = async () => {
     setImgLoaded(false);
     await axios
-      .get(`/api/v1/shop/goods/detail/${goodscode}`, {
-        headers: { Authorization: user.accessToken },
-      })
+      .get(`/api/v1/shop/goods/detail/${goodscode}`)
       .then(res => {
-        if (res.data.code === "E999") {
-          logoutAlert(res.data.message);
-          return false;
-        }
-        if (res.headers.authorization) {
-          if (res.headers.authorization !== user.accessToken) {
-            dispatch(
-              getNewToken({
-                accessToken: res.headers.authroiztion,
-              })
-            );
-          }
-        }
         setGoods(res.data.goods);
         contentForm(res.data.goods.content);
       })
       .catch(e => {
         console.log(e);
       });
-  };
-
-  const logoutAlert = m => {
-    confirmAlert({
-      customUI: ({ onClose }) => {
-        return (
-          <AlertModal
-            onClose={onClose} // 닫기
-            title={"로그인 에러"} // 제목
-            message={m} // 내용
-            type={"alert"} // 타입 confirm, alert
-            yes={"다시 로그인 하기"} // 확인버튼 제목
-            doIt={logout} // 확인시 실행할 함수
-          />
-        );
-      },
-    });
   };
 
   const contentForm = c => {
@@ -187,9 +155,9 @@ function Detail() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        console.log(res);
         if (res.data.code === "E999") {
-          logoutAlert(res.data.message);
+          logoutAlert(null, null, dispatch, clearUser, navi, user);
+          setGoods("");
           return false;
         }
         if (res.data.code === "C000") {
@@ -240,20 +208,6 @@ function Detail() {
     navi(`/result`);
   };
 
-  const logout = async () => {
-    await axios
-      .post("/api/v1/user/logout", null, {
-        headers: { Authorization: user.accessToken },
-      })
-      .then(res => {
-        dispatch(clearUser());
-        navi("/login");
-      })
-      .catch(e => {
-        console.log(e);
-      });
-  };
-
   const shareKakao = () => {
     Kakao.Share.sendDefault({
       objectType: "feed",
@@ -279,20 +233,22 @@ function Detail() {
   };
   return (
     <>
-      {goods !== "" && (
+      {goods !== "" ? (
         <Helmet>
-          <title>
-            {goods.goodsName} - {goods.brandName} | 알바선물
-          </title>
+          <title>{`${goods.goodsName} - ${goods.brandName} | 알바선물`}</title>
           <meta
             name="description"
             content={`${goods.goodsName} - ${goods.brandName}  | 알바선물`}
           />
           <meta property="og:image" content={goods.goodsImgB} />
         </Helmet>
+      ) : (
+        <Helmet>
+          <title>{"상세페이지 | 알바선물"}</title>
+          <meta name="description" content="상세페이지  | 알바선물" />
+        </Helmet>
       )}
       <div className="xl:container mx-auto">
-        {!imgLoaded ? <Loading /> : null}
         <UserSection />
         {goods !== undefined && (
           <img

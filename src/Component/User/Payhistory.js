@@ -1,24 +1,44 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import Loading from "../Layout/Loading";
 import PayList from "./PayList";
+import queryString from "query-string";
+import Pagenate from "../Layout/Pagenate";
+import AlertModal from "../Layout/AlertModal";
+import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
+import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
+import PayModal from "./PayModal";
+import { logoutAlert } from "../LogoutUtil";
+import { clearUser } from "../../Reducer/userSlice";
 
 function Payhistory() {
+  const dispatch = useDispatch();
+  const navi = useNavigate();
   const location = useLocation();
   const user = useSelector(state => state.user);
   const [list, setList] = useState([]);
   const [loaded, setLoaded] = useState(false);
+
+  const pathName = location.pathname;
+  const parsed = queryString.parse(location.search);
+  const page = parsed.page || 1;
+  const keyword = parsed.keyword || "";
+  const [totalPage, setTotalPage] = useState(1);
+  const [pagenate, setPagenate] = useState([]);
+
   useEffect(() => {
-    getList();
+    loadList(page);
     //eslint-disable-next-line
   }, [location]);
 
-  const getList = async () => {
-    console.log(user);
-    const data = {
+  const loadList = async p => {
+    setList([]);
+    let data = {
       boardId: "B02",
+      page: p || 1,
+      size: 20,
     };
     await axios
       .post("/api/v1/board/get/pnt/posts/list", data, {
@@ -27,14 +47,137 @@ function Payhistory() {
         },
       })
       .then(res => {
-        console.log(res.data);
-        res.data.code === "E403" && alert(res.data.message);
-        res.data.code === "C000" && setLoaded(true);
+        setLoaded(true);
+        if (res.data.code === "C000") {
+          const totalP = res.data.totalPages;
+          setTotalPage(res.data.totalPages);
+          const pagenate = generatePaginationArray(p, totalP);
+          setPagenate(pagenate);
+        } else {
+          if (res.data.code === "E999") {
+            logoutAlert(
+              null,
+              null,
+              dispatch,
+              clearUser,
+              navi,
+              user,
+              res.data.message
+            );
+            return false;
+          }
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"오류!!"} // 제목
+                  message={res.data.message} // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                  doIt={goBack} // 확인시 실행할 함수
+                />
+              );
+            },
+          });
+        }
         setList(res.data.postList ?? [{ postId: "없음" }]);
       })
       .catch(e => {
-        alert("알 수 없는 오류가 발생했습니다");
+        console.log(e);
+        confirmAlert({
+          customUI: ({ onClose }) => {
+            return (
+              <AlertModal
+                onClose={onClose} // 닫기
+                title={"오류!!"} // 제목
+                message={"알 수 없는 오류가 발생했습니다"} // 내용
+                type={"alert"} // 타입 confirm, alert
+                yes={"확인"} // 확인버튼 제목
+                doIt={goBack} // 확인시 실행할 함수
+              />
+            );
+          },
+        });
+        return false;
       });
+
+    function generatePaginationArray(currentPage, totalPage) {
+      let paginationArray = [];
+
+      // 최대 페이지가 4 이하인 경우
+      if (Number(totalPage) <= 4) {
+        for (let i = 1; i <= totalPage; i++) {
+          paginationArray.push(i);
+        }
+        return paginationArray;
+      }
+
+      // 현재 페이지가 1 ~ 3인 경우
+      if (Number(currentPage) <= 3) {
+        return [1, 2, 3, 4, 5];
+      }
+
+      // 현재 페이지가 totalPage ~ totalPage - 2인 경우
+      if (Number(currentPage) >= Number(totalPage) - 2) {
+        return [
+          Number(totalPage) - 4,
+          Number(totalPage) - 3,
+          Number(totalPage) - 2,
+          Number(totalPage) - 1,
+          Number(totalPage),
+        ];
+      }
+
+      // 그 외의 경우
+      return [
+        Number(currentPage) - 2,
+        Number(currentPage) - 1,
+        Number(currentPage),
+        Number(currentPage) + 1,
+        Number(currentPage) + 2,
+      ];
+    }
+  };
+
+  const goBack = () => {
+    navi("/mypage/pwdchk");
+  };
+
+  const listModal = doc => {
+    console.log(doc.status);
+    if (doc.status === "S") {
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <PayModal
+              onClose={onClose}
+              doc={doc}
+              loadList={loadList}
+              user={user}
+            />
+          );
+        },
+      });
+    } else {
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <AlertModal
+              onClose={onClose} // 닫기
+              title={"면접날짜 수정/삭제"} // 제목
+              message={
+                doc.status === "Y"
+                  ? "이미 지급처리가 된 내용은\n수정/삭제가 불가능 합니다"
+                  : "이미 불가처리가 된 내용은\n수정/삭제가 불가능 합니다"
+              } // 내용
+              type={"alert"} // 타입 confirm, alert
+              yes={"확인"} // 확인버튼 제목
+            />
+          );
+        },
+      });
+    }
   };
 
   return (
@@ -43,28 +186,39 @@ function Payhistory() {
         <>
           {list.length > 0 ? (
             <>
-              <div className="grid grid-cols-7 py-2 bg-blue-50 divide-x">
-                <div className="font-neoextra text-center">면접날짜</div>
-                <div className="font-neoextra text-center">면접시간</div>
-                <div className="font-neoextra text-center">지급결과</div>
-                <div className="font-neoextra text-center col-span-2">
-                  지급액/사유<span className="text-sm font-neo">(불가시)</span>
+              <div className="text-xs xl:text-sm container mx-auto text-right mb-2">
+                날짜를 클릭하면 수정/삭제가 가능합니다.
+              </div>
+              <div className="text-sm xl:text-base grid grid-cols-3 xl:grid-cols-4 py-2 bg-blue-50 divide-x">
+                <div className="font-neoextra text-center hidden xl:block">
+                  입력일
                 </div>
-                <div className="font-neoextra text-center col-span-2">
-                  수정/취소
+                <div className="font-neoextra text-center">면접날짜</div>
+                <div className="font-neoextra text-center">처리결과</div>
+                <div className="font-neoextra text-center">
+                  지급액/사유
+                  <span className="text-sm font-neo hidden xl:inline">
+                    (불가시)
+                  </span>
                 </div>
               </div>
               <div className="grid grid-cols-1">
                 {list.map((doc, idx) => (
                   <div
                     key={idx}
-                    className={`grid grid-cols-7 py-2 gap-y-3 ${
+                    className={`hover:cursor-pointer hover:text-orange-500 text-sm xl:text-base grid grid-cols-3 xl:grid-cols-4 py-2 gap-y-3 ${
                       idx % 2 === 1
                         ? "bg-green-50 hover:bg-green-100"
                         : "hover:bg-gray-100"
                     }`}
+                    onClick={e => listModal(doc)}
                   >
-                    <PayList doc={doc} getList={getList} />
+                    <PayList
+                      doc={doc}
+                      loadList={loadList}
+                      page={page}
+                      user={user}
+                    />
                   </div>
                 ))}
               </div>
@@ -74,6 +228,14 @@ function Payhistory() {
       ) : (
         <Loading />
       )}
+
+      <Pagenate
+        pagenate={pagenate}
+        page={Number(page)}
+        totalPage={Number(totalPage)}
+        pathName={pathName}
+        keyword={keyword}
+      />
     </>
   );
 }

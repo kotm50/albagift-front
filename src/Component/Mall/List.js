@@ -1,44 +1,35 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { clearUser } from "../../Reducer/userSlice";
+import { Link, useLocation, useParams } from "react-router-dom";
 
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 
 import queryString from "query-string";
 
-import { getNewToken } from "../../Reducer/userSlice";
-
 import Pagenate from "../Layout/Pagenate";
 import UserSection from "../User/UserSection";
-import Loading from "../Layout/Loading";
 import ImgLoad from "./ImgLoad";
 import { Helmet } from "react-helmet";
 import AlertModal from "../Layout/AlertModal";
+import Sorry from "../doc/Sorry";
 
 function List() {
-  const dispatch = useDispatch();
   const [goods, setGoods] = useState([]);
-  let navi = useNavigate();
   const location = useLocation();
   const pathName = location.pathname;
   const { category, brand } = useParams();
   const parsed = queryString.parse(location.search);
   const page = parsed.page || 1;
-  const user = useSelector(state => state.user);
   const [loadMsg, setLoadMsg] = useState("상품을 불러오고 있습니다");
   const [loaded, setLoaded] = useState(false);
   const [totalPage, setTotalPage] = useState(1);
   const [pagenate, setPagenate] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [catName, setCatName] = useState("");
 
   useEffect(() => {
     // location이 바뀔 때마다 스크롤을 맨 위로 이동
     window.scrollTo(0, 0);
-    setLoading(true);
     setLoadMsg("상품을 불러오고 있습니다");
     getGoods(category, brand, page);
     setCatName(
@@ -74,7 +65,7 @@ function List() {
       listUrl = listUrl + "/" + c;
     }
     if (b !== undefined) {
-      listUrl = "/api/v1/shop/brand/goods/list";
+      listUrl = "/api/v1/shop/goods/list/brand";
       listUrl = listUrl + "/" + b;
     }
     if (c === "etc") {
@@ -88,35 +79,36 @@ function List() {
     await axios
       .get(listUrl, {
         params: data,
-        headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        if (res.data.code === "E999") {
-          logoutAlert(res.data.message);
-          return false;
-        }
+        console.log(res);
         const totalP = res.data.totalPages;
         setTotalPage(res.data.totalPages);
-        if (res.headers.authorization) {
-          if (res.headers.authorization !== user.accessToken) {
-            dispatch(
-              getNewToken({
-                accessToken: res.headers.authroiztion,
-              })
-            );
-          }
-        }
         const pagenate = generatePaginationArray(p, totalP);
         setPagenate(pagenate);
         setLoadMsg(res.data.message);
         setGoods(res.data.goodsList);
-        setLoading(false);
         if (res.data.goodsList.length > 0) {
           setLoaded(true);
         }
       })
       .catch(e => {
-        console.log(e, "에러");
+        console.log(e);
+        confirmAlert({
+          customUI: ({ onClose }) => {
+            return (
+              <AlertModal
+                onClose={onClose} // 닫기
+                title={"오류"} // 제목
+                message={
+                  "상품 불러오기를 실패했습니다\n관리자에게 문의해주세요"
+                } // 내용
+                type={"alert"} // 타입 confirm, alert
+                yes={"확인"} // 확인버튼 제목
+              />
+            );
+          },
+        });
       });
   };
 
@@ -156,44 +148,12 @@ function List() {
       Number(currentPage) + 2,
     ];
   }
-
-  const logoutAlert = m => {
-    confirmAlert({
-      customUI: ({ onClose }) => {
-        return (
-          <AlertModal
-            onClose={onClose} // 닫기
-            title={"로그인 에러"} // 제목
-            message={m} // 내용
-            type={"alert"} // 타입 confirm, alert
-            yes={"다시 로그인 하기"} // 확인버튼 제목
-            doIt={logout} // 확인시 실행할 함수
-          />
-        );
-      },
-    });
-  };
-
-  const logout = async () => {
-    await axios
-      .post("/api/v1/user/logout", null, {
-        headers: { Authorization: user.accessToken },
-      })
-      .then(res => {
-        dispatch(clearUser());
-        navi("/login");
-      })
-      .catch(e => {
-        console.log(e);
-      });
-  };
   return (
     <>
       <Helmet>
         <title>{catName} | 알바선물 | 면접보고 선물받자!</title>
       </Helmet>
       <div className="xl:container mx-auto">
-        {loading ? <Loading /> : null}
         <UserSection />
         <h2 className="text-xl xl:text-2xl font-neoextra">
           <span className="inline-block py-2 px-6 bg-blue-500 text-white rounded-full">
@@ -231,7 +191,13 @@ function List() {
             ))}
           </div>
         ) : (
-          <div>{loadMsg}</div>
+          <>
+            {loadMsg === "상품을 불러오고 있습니다" ? (
+              <div className="text-center">{loadMsg}</div>
+            ) : (
+              <Sorry />
+            )}
+          </>
         )}
         <Pagenate
           pagenate={pagenate}

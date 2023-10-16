@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 
@@ -7,10 +6,9 @@ import axios from "axios";
 import AlertModal from "../Layout/AlertModal";
 
 function PayModify(props) {
-  const user = useSelector(state => state.user);
-  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
-  const [hour, setHour] = useState("0");
-  const [minute, setMinute] = useState("00");
+  const [date, setDate] = useState(props.doc.intvDate);
+  const [hour, setHour] = useState(props.doc.intvTime);
+  const [minute, setMinute] = useState(props.doc.intvMin);
 
   const handleDateChange = event => {
     setDate(event.target.value);
@@ -59,13 +57,11 @@ function PayModify(props) {
       intvTime: hour,
       intvMin: minute,
     };
-    console.log(data);
     await axios
       .patch("/api/v1/board/upt/pnt/posts", data, {
-        headers: { Authorization: user.accessToken },
+        headers: { Authorization: props.user.accessToken },
       })
       .then(res => {
-        console.log(res);
         if (res.data.code === "C000") {
           confirmAlert({
             customUI: ({ onClose }) => {
@@ -80,11 +76,7 @@ function PayModify(props) {
               );
             },
           });
-
-          setDate(new Date().toISOString().split("T")[0]);
-          setHour("0");
-          setMinute("00");
-          props.getList();
+          props.loadList(props.page);
         } else {
           confirmAlert({
             customUI: ({ onClose }) => {

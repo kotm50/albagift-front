@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import Desktop from "./Calendar/Desktop";
+import Mobile from "./Calendar/Mobile";
 
 function Attendance() {
   const dates = ["일", "월", "화", "수", "목", "금", "토"];
@@ -99,67 +101,19 @@ function Attendance() {
   return (
     <>
       <div className="container mx-auto">
-        <h2 className="text-3xl font-neoextra">{month}월의 출석체크</h2>
-        <div className="grid grid-cols-7 gap-2 mb-2">
-          {dates.map((date, idx) => (
-            <div
-              className={`text-center rounded-lg ${
-                idx === 0
-                  ? "border border-orange-500 bg-orange-500 text-white"
-                  : idx === 6
-                  ? "border border-blue-500 bg-blue-500 text-white"
-                  : "border border-gray-300"
-              }`}
-              key={idx}
-            >
-              {date}
-            </div>
-          ))}
-        </div>
-        <div className="grid grid-cols-7 gap-2">
-          {before.length > 0 && (
-            <>
-              {before.map((date, idx) => (
-                <div
-                  className="bg-gray-100 text-gray-100 rounded-lg border border-gray-100"
-                  key={idx}
-                >
-                  {date}
-                </div>
-              ))}
-            </>
-          )}
-          {fullDate.length > 0 && (
-            <>
-              {fullDate.map((date, idx) => (
-                <div
-                  className={`bg-white-100 rounded-lg p-2 border shadow-sm ${
-                    date.date === "일"
-                      ? "border-orange-300"
-                      : date.date === "토"
-                      ? "border-blue-300"
-                      : null
-                  }`}
-                  key={idx}
-                >
-                  {date.day}/{date.date}요일
-                </div>
-              ))}
-            </>
-          )}
-          {after.length > 0 && (
-            <>
-              {after.map((date, idx) => (
-                <div
-                  className="bg-gray-100 text-gray-100 border-gray-100"
-                  key={idx}
-                >
-                  {date}
-                </div>
-              ))}
-            </>
-          )}
-        </div>
+        <h2 className="text-3xl font-neoextra my-4">{month}월의 출석체크</h2>
+        <Desktop
+          after={after}
+          before={before}
+          fullDate={fullDate}
+          dates={dates}
+        />
+        <Mobile
+          after={after}
+          before={before}
+          fullDate={fullDate}
+          dates={dates}
+        />
       </div>
     </>
   );

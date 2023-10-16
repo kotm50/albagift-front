@@ -11,13 +11,14 @@ import user from "../../Asset/mypage/user.png";
 import coupon from "../../Asset/mypage/coupon.png";
 import diamond from "../../Asset/mypage/diamond.png";
 import AlertModal from "../Layout/AlertModal";
+import UserInformation from "./UserInfomation";
 
 function Mypage() {
   const location = useLocation();
   const [title, setTitle] = useState("");
   useEffect(() => {
     location.pathname.split("/")[2] === "pwdchk"
-      ? setTitle("개인정보수정")
+      ? setTitle("마이페이지")
       : location.pathname.split("/")[2] === "edit"
       ? setTitle("개인정보수정")
       : location.pathname.split("/")[2] === "coupon"
@@ -35,7 +36,7 @@ function Mypage() {
       <Helmet>
         <title>{title} | 알바선물</title>
       </Helmet>
-      <div className="container mx-auto grid grid-cols-1 h-full ">
+      <div className="container mx-auto grid grid-cols-1 h-full">
         <div
           id="touch-target"
           className="container mx-auto flex flex-row flex-nowrap overflow-x-auto giftCategoryMenu gap-3 xl:justify-center"
@@ -109,13 +110,16 @@ function Mypage() {
             <span className="text-sm">지급신청내역</span>
           </Link>
         </div>
-        {title !== "" && title !== "회원탈퇴" ? (
+        {title !== "회원탈퇴" ? (
           <h2 className="text-3xl font-neoextra py-2 text-center mt-2">
             {title}
           </h2>
         ) : null}
 
         <Outlet />
+      </div>
+      <div className="hidden w-0 h-0 opacity-0">
+        <UserInformation />
       </div>
     </>
   );

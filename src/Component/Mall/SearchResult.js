@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { clearUser } from "../../Reducer/userSlice";
-import { getNewToken } from "../../Reducer/userSlice";
+import { useSelector } from "react-redux";
 import queryString from "query-string";
 import axios from "axios";
 
@@ -15,7 +13,6 @@ import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 
 function SearchResult() {
   let navi = useNavigate();
-  const dispatch = useDispatch();
   const { keyword } = useParams();
   const [goods, setGoods] = useState([]);
   const [resultNum, setResultNum] = useState();
@@ -47,20 +44,7 @@ function SearchResult() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        if (res.data.code === "E999") {
-          logoutAlert(res.data.message);
-          return false;
-        }
         setTotalPage(res.data.totalPages);
-        if (res.headers.authorization) {
-          if (res.headers.authorization !== user.accessToken) {
-            dispatch(
-              getNewToken({
-                accessToken: res.headers.authroiztion,
-              })
-            );
-          }
-        }
         const pagenate = generatePaginationArray(p, res.data.totalPages);
         setPagenate(pagenate);
         setGoods(res.data.goodsList);
@@ -68,6 +52,21 @@ function SearchResult() {
         setLoadMsg(res.data.message);
         if (res.data.goodsList.length > 0) {
           setLoad(true);
+        } else {
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"오류!!"} // 제목
+                  message={"검색결과가 없습니다"} // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                  doIt={goBack}
+                />
+              );
+            },
+          });
         }
       })
       .catch(e => {
@@ -126,34 +125,8 @@ function SearchResult() {
     return `으로`;
   }
 
-  const logoutAlert = m => {
-    confirmAlert({
-      customUI: ({ onClose }) => {
-        return (
-          <AlertModal
-            onClose={onClose} // 닫기
-            title={"로그인 에러"} // 제목
-            message={m} // 내용
-            type={"alert"} // 타입 confirm, alert
-            yes={"다시 로그인 하기"} // 확인버튼 제목
-            doIt={logout} // 확인시 실행할 함수
-          />
-        );
-      },
-    });
-  };
-  const logout = async () => {
-    await axios
-      .post("/api/v1/user/logout", null, {
-        headers: { Authorization: user.accessToken },
-      })
-      .then(res => {
-        dispatch(clearUser());
-        navi("/login");
-      })
-      .catch(e => {
-        console.log(e);
-      });
+  const goBack = () => {
+    navi(-1);
   };
 
   return (

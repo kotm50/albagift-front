@@ -1,9 +1,7 @@
+import Sorry from "./doc/Sorry";
+
 function KakaoTest() {
-  return (
-    <div className="container mx-auto">
-      <button className="p-2 bg-rose-500 text-white">export test</button>
-    </div>
-  );
+  return <Sorry message={"조회된 내역이 없습니다"} />;
 }
 
 export default KakaoTest;

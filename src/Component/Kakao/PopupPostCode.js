@@ -17,14 +17,19 @@ const PopupPostCode = props => {
       }
       fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
     }
-    props.setMainAddr(fullAddress);
+    if (props.modify) {
+      props.editIt("/api/v1/user/myinfo/editaddr", "mainAddr", fullAddress);
+      props.setMainAddr(fullAddress);
+    } else {
+      props.setMainAddr(fullAddress);
+    }
     props.onClose();
   };
 
   return (
     <div
       id="addrAPI"
-      className="fixed top-0 w-full h-screen bg-white border drop-shadow-md rounded z-40 xl:top-1/2 xl:left-1/2 xl:-translate-x-1/2 xl:-translate-y-1/2"
+      className="fixed top-0 botton-0 w-full h-full bg-white border drop-shadow-md rounded z-40 xl:top-1/2 xl:left-1/2 xl:-translate-x-1/2 xl:-translate-y-1/2"
     >
       <DaumPostcode className="addrAPIInput" onComplete={handlePostCode} />
       <button

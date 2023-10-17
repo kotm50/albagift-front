@@ -11,6 +11,10 @@ import PopupPostCode from "../Kakao/PopupPostCode";
 import Modal from "../doc/Modal";
 import Timer from "../Timer";
 
+import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
+import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
+import AlertModal from "../Layout/AlertModal";
+
 function Join() {
   const user = useSelector(state => state.user);
   const location = useLocation();
@@ -23,6 +27,7 @@ function Join() {
   const [dupId, setDupId] = useState(true);
   const [correctPwdChk, setCorrectPwdChk] = useState(true);
   const [correctPwd, setCorrectPwd] = useState(true);
+  const [pwdMsg, setPwdMsg] = useState("");
   const [mainAddr, setMainAddr] = useState("주소찾기를 눌러주세요");
   const [email, setEmail] = useState("");
 
@@ -55,6 +60,23 @@ function Join() {
     }
     //eslint-disable-next-line
   }, []);
+
+  //비밀번호 너무 길게쓰면 오류
+  const pwdAlert = () => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <AlertModal
+            onClose={onClose} // 닫기
+            title={"오류"} // 제목
+            message={"비밀번호는 20자를 넘길 수 없습니다"} // 내용
+            type={"alert"} // 타입 confirm, alert
+            yes={"확인"} // 확인버튼 제목
+          />
+        );
+      },
+    });
+  };
 
   //회원가입 실행
   const join = async e => {
@@ -127,16 +149,27 @@ function Join() {
 
   //비밀번호 양식 확인
   const testPwd = () => {
+    setPwdMsg("");
     const regex = /^(?=.*[a-zA-Z])(?=.*[0-9!@#$%^&*]).{2,}$/;
     let correct = regex.test(pwd);
     if (correct) {
-      if (pwd.length > 5) {
+      if (pwd.length > 7) {
+        if (pwd.length > 20) {
+          setPwdMsg("비밀번호는 최대 20자 입니다");
+          setCorrectPwd(false);
+          return false;
+        }
         setCorrectPwd(true);
+        return true;
       } else {
+        setPwdMsg("비밀번호는 8자 이상입니다");
         setCorrectPwd(false);
+        return false;
       }
     } else {
+      setPwdMsg("영어/숫자/특수문자 중 2가지 이상 포함해야 합니다");
       setCorrectPwd(false);
+      return false;
     }
   };
 
@@ -286,7 +319,7 @@ function Join() {
           <div
             id="id"
             className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
-              !correctId || (!dupId ? "xl:border-red-500" : undefined)
+              !correctId || (!dupId && "xl:border-red-500")
             }`}
           >
             <label
@@ -351,28 +384,34 @@ function Join() {
               <input
                 type="password"
                 id="inputPwd"
+                length="21"
                 className={`border ${
                   !correctPwd ? "border-red-500" : undefined
                 } xl:border-0 p-2 w-full text-sm`}
                 value={pwd}
                 onChange={e => {
-                  setPwd(e.currentTarget.value);
+                  if (e.currentTarget.value.length > 20) {
+                    pwdAlert();
+                    setPwd(e.currentTarget.value.substring(0, 20));
+                  } else {
+                    setPwd(e.currentTarget.value);
+                  }
                 }}
                 onBlur={e => {
-                  setPwd(e.currentTarget.value);
+                  if (e.currentTarget.value.length > 20) {
+                    pwdAlert();
+                    setPwd(e.currentTarget.value.substring(0, 20));
+                  } else {
+                    setPwd(e.currentTarget.value);
+                  }
                   if (pwd !== "") testPwd();
                 }}
-                placeholder="영어/숫자/특수문자 중 2가지 이상"
+                placeholder="8자 이상(영어/숫자/특수문자 중 2가지 이상 포함)"
                 autoComplete="off"
               />
             </div>
           </div>
-          {!correctPwd && (
-            <div className="text-sm text-rose-500">
-              비밀번호 양식이 틀렸습니다 <br className="block xl:hidden" />
-              확인 후 다시 입력해 주세요
-            </div>
-          )}
+          {!correctPwd && <div className="text-sm text-rose-500">{pwdMsg}</div>}
           <div
             id="pwdChk"
             className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
@@ -385,23 +424,32 @@ function Join() {
                 correctPwdChk ? "xl:bg-gray-100" : "xl:bg-red-100"
               } `}
             >
-              <div>
-                <span className="text-red-500">*</span>비밀번호확인
-              </div>
+              비밀번호확인
             </label>
             <div className="xl:col-span-4">
               <input
                 type="password"
                 id="inputPwdChk"
+                length="21"
                 className={`border ${
                   !correctPwdChk ? "border-red-500" : undefined
                 } xl:border-0 p-2 w-full text-sm`}
                 value={pwdChk}
                 onChange={e => {
-                  setPwdChk(e.currentTarget.value);
+                  if (e.currentTarget.value.length > 20) {
+                    pwdAlert();
+                    setPwdChk(e.currentTarget.value.substring(0, 20));
+                  } else {
+                    setPwdChk(e.currentTarget.value);
+                  }
                 }}
                 onBlur={e => {
-                  setPwdChk(e.currentTarget.value);
+                  if (e.currentTarget.value.length > 20) {
+                    pwdAlert();
+                    setPwdChk(e.currentTarget.value.substring(0, 20));
+                  } else {
+                    setPwdChk(e.currentTarget.value);
+                  }
                   if (pwdChk !== "") chkPwd();
                 }}
                 placeholder="비밀번호를 한번 더 입력해 주세요"
@@ -601,6 +649,7 @@ function Join() {
               <PopupPostCode
                 onClose={closePostCode}
                 setMainAddr={setMainAddr}
+                modify={false}
               />
             </PopupDom>
           )}

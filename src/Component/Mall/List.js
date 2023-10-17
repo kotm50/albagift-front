@@ -195,7 +195,7 @@ function List() {
             {loadMsg === "상품을 불러오고 있습니다" ? (
               <div className="text-center">{loadMsg}</div>
             ) : (
-              <Sorry />
+              <Sorry message={"조회된 내용이 없습니다"} />
             )}
           </>
         )}

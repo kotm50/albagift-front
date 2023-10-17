@@ -2,6 +2,10 @@ import React, { useState } from "react";
 
 import axios from "axios";
 
+import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
+import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
+import AlertModal from "../../Layout/AlertModal";
+
 function NewPwd(props) {
   const [beforePwd, setBeforePwd] = useState("");
   const [pwd, setPwd] = useState("");
@@ -41,6 +45,23 @@ function NewPwd(props) {
     } else {
       setCorrectPwdChk(true);
     }
+  };
+
+  //비밀번호 너무 길게쓰면 오류
+  const pwdAlert = () => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <AlertModal
+            onClose={onClose} // 닫기
+            title={"오류"} // 제목
+            message={"비밀번호는 20자를 넘길 수 없습니다"} // 내용
+            type={"alert"} // 타입 confirm, alert
+            yes={"확인"} // 확인버튼 제목
+          />
+        );
+      },
+    });
   };
 
   const editPwd = async e => {
@@ -117,6 +138,7 @@ function NewPwd(props) {
               <input
                 type="password"
                 id="inputBeforePwd"
+                length="21"
                 className={`border ${
                   isErr ? "border-red-500" : undefined
                 } xl:border-0 p-2 w-full text-sm`}
@@ -152,15 +174,26 @@ function NewPwd(props) {
               <input
                 type="password"
                 id="inputPwd"
+                length="21"
                 className={`border ${
                   !correctPwd ? "border-red-500" : undefined
                 } xl:border-0 p-2 w-full text-sm`}
                 value={pwd}
                 onChange={e => {
-                  setPwd(e.currentTarget.value);
+                  if (e.currentTarget.value.length > 20) {
+                    pwdAlert();
+                    setPwd(e.currentTarget.value.substring(0, 20));
+                  } else {
+                    setPwd(e.currentTarget.value);
+                  }
                 }}
                 onBlur={e => {
-                  setPwd(e.currentTarget.value);
+                  if (e.currentTarget.value.length > 20) {
+                    pwdAlert();
+                    setPwd(e.currentTarget.value.substring(0, 20));
+                  } else {
+                    setPwd(e.currentTarget.value);
+                  }
                   if (pwd !== "") testPwd();
                 }}
                 placeholder="영어/숫자/특수문자 중 2가지 이상"
@@ -192,6 +225,7 @@ function NewPwd(props) {
               <input
                 type="password"
                 id="inputPwdChk"
+                length="21"
                 className={`border ${
                   !correctPwdChk ? "border-red-500" : undefined
                 } xl:border-0 p-2 w-full text-sm`}

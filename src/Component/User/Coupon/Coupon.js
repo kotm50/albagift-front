@@ -1,28 +1,42 @@
 import React, { useState, useEffect } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { clearUser } from "../../../Reducer/userSlice";
 
 import axios from "axios";
+import queryString from "query-string";
 import CouponList from "./CouponList";
 import { logoutAlert } from "../../LogoutUtil";
+import Pagenate from "../../Layout/Pagenate";
+
+import Sorry from "../../doc/Sorry";
 
 function Coupon() {
   const dispatch = useDispatch();
   const navi = useNavigate();
   const user = useSelector(state => state.user);
+  const location = useLocation();
+  const pathName = location.pathname;
+  const parsed = queryString.parse(location.search);
+  const page = parsed.page || 1;
   const [couponList, setCouponList] = useState([]);
   const [loadList, setLoadList] = useState("쿠폰을 불러오고 있습니다");
+  const [totalPage, setTotalPage] = useState(1);
+  const [pagenate, setPagenate] = useState([]);
 
   useEffect(() => {
-    getCouponList();
+    getCouponList(page);
     //eslint-disable-next-line
   }, []);
 
-  const getCouponList = async () => {
+  const getCouponList = async p => {
+    const data = {
+      page: p,
+      size: 20,
+    };
     await axios
-      .post("/api/v1/shop/goods/buyList", null, {
+      .post("/api/v1/shop/goods/buyList", data, {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
@@ -38,12 +52,53 @@ function Coupon() {
           );
         }
         if (res.data.couponList.length === 0) {
-          setLoadList("쿠폰이 없습니다");
+          setLoadList("조회된 쿠폰이 없습니다");
         }
+        const totalP = res.data.totalPages;
+        setTotalPage(res.data.totalPages);
+        const pagenate = generatePaginationArray(p, totalP);
+        setPagenate(pagenate);
         setCouponList(res.data.couponList.reverse());
       })
       .catch(e => console.log(e));
   };
+
+  function generatePaginationArray(currentPage, totalPage) {
+    let paginationArray = [];
+
+    // 최대 페이지가 4 이하인 경우
+    if (Number(totalPage) <= 4) {
+      for (let i = 1; i <= totalPage; i++) {
+        paginationArray.push(i);
+      }
+      return paginationArray;
+    }
+
+    // 현재 페이지가 1 ~ 3인 경우
+    if (Number(currentPage) <= 3) {
+      return [1, 2, 3, 4, 5];
+    }
+
+    // 현재 페이지가 totalPage ~ totalPage - 2인 경우
+    if (Number(currentPage) >= Number(totalPage) - 2) {
+      return [
+        Number(totalPage) - 4,
+        Number(totalPage) - 3,
+        Number(totalPage) - 2,
+        Number(totalPage) - 1,
+        Number(totalPage),
+      ];
+    }
+
+    // 그 외의 경우
+    return [
+      Number(currentPage) - 2,
+      Number(currentPage) - 1,
+      Number(currentPage),
+      Number(currentPage) + 1,
+      Number(currentPage) + 2,
+    ];
+  }
 
   return (
     <div className="xl:container xl:mx-auto">
@@ -56,8 +111,14 @@ function Coupon() {
           ))}
         </div>
       ) : (
-        loadList
+        <Sorry message={loadList} />
       )}
+      <Pagenate
+        pagenate={pagenate}
+        page={Number(page)}
+        totalPage={Number(totalPage)}
+        pathName={pathName}
+      />
     </div>
   );
 }

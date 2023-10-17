@@ -2,13 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import UserInformation from "./UserInfomation";
 
-import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
-import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
-
 import coin from "../../Asset/coin.png";
 import calendar from "../../Asset/calendar.png";
-import AlertModal from "../Layout/AlertModal";
-
 function UserSection() {
   return (
     <div className="grid grid-cols-1 xl:grid-cols-3 gap-3 py-3">
@@ -30,30 +25,10 @@ function UserSection() {
         <div className="absolute hidden xl:block top-1/2 -translate-y-1/2 right-0 translate-x-1/3 w-40 h-40 xl:h-48 xl:w-48 bg-violet-500 rounded-full z-0"></div>
       </div>
       <div className="bg-violet-500 text-white px-2 pt-4 relative  flex-col justify-center overflow-hidden flex group xl:rounded-lg">
-        <Link
-          to="/attendance"
-          onClick={e => {
-            e.preventDefault();
-            confirmAlert({
-              customUI: ({ onClose }) => {
-                return (
-                  <AlertModal
-                    onClose={onClose} // 닫기
-                    title={"오류"} // 제목
-                    message={"죄송합니다. 해당 기능은 현재 준비중입니다 🙏"} // 내용
-                    type={"alert"} // 타입 confirm, alert
-                    yes={"확인"} // 확인버튼 제목
-                  />
-                );
-              },
-            });
-          }}
-        >
-          <div className="text-left xl:text-xl mb-1">
-            무료 포인트를 받으려면
-          </div>
+        <Link to="/mypage/payhistory">
+          <div className="text-left xl:text-xl mb-1">포인트 신청 하셨나요?</div>
           <div className="text-left text-3xl xl:text-4xl mb-5 text-yellow-300 font-neoextra">
-            출석체크 하세요
+            신청기록 확인
           </div>
         </Link>
         <img

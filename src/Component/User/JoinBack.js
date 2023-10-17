@@ -10,6 +10,10 @@ import PopupPostCode from "../Kakao/PopupPostCode";
 
 import Modal from "../doc/Modal";
 
+import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
+import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
+import AlertModal from "../Layout/AlertModal";
+
 function JoinBack() {
   const user = useSelector(state => state.user);
   const location = useLocation();
@@ -19,10 +23,13 @@ function JoinBack() {
   const [id, setId] = useState("");
   const [pwd, setPwd] = useState("");
   const [pwdChk, setPwdChk] = useState("");
+  const [realPwd, setRealPwd] = useState("");
+  const [realPwdChk, setRealPwdChk] = useState("");
   const [correctId, setCorrectId] = useState(true);
   const [dupId, setDupId] = useState(true);
   const [correctPwdChk, setCorrectPwdChk] = useState(true);
   const [correctPwd, setCorrectPwd] = useState(true);
+  const [pwdMsg, setPwdMsg] = useState(true);
   const [name, setName] = useState("");
   const [inputPhone, setInputPhone] = useState("");
   const [displayPhone, setDisplayPhone] = useState("");
@@ -73,7 +80,7 @@ function JoinBack() {
     const data = {
       userId: id,
       socialId: socialId,
-      userPwd: pwd,
+      userPwd: realPwd,
       userName: name,
       phone: inputPhone,
       birth: inputBirth,
@@ -106,6 +113,23 @@ function JoinBack() {
       .catch(e => {
         console.log(e);
       });
+  };
+
+  //비밀번호 너무 길게쓰면 오류
+  const pwdAlert = () => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <AlertModal
+            onClose={onClose} // 닫기
+            title={"오류"} // 제목
+            message={"비밀번호는 20자를 넘길 수 없습니다"} // 내용
+            type={"alert"} // 타입 confirm, alert
+            yes={"확인"} // 확인버튼 제목
+          />
+        );
+      },
+    });
   };
 
   const chkForm = () => {
@@ -142,24 +166,97 @@ function JoinBack() {
     return "완료";
   };
 
-  //비밀번호 양식 확인
-  const testPwd = () => {
-    const regex = /^(?=.*[a-zA-Z])(?=.*[0-9!@#$%^&*]).{2,}$/;
-    let correct = regex.test(pwd);
-    if (correct) {
-      if (pwd.length > 5) {
-        setCorrectPwd(true);
+  const handlePasswordChange = e => {
+    if (e.target.value.length < pwd.length) {
+      setPwd(pwd.slice(0, -1));
+      setRealPwd(realPwd.slice(0, -1));
+      return false;
+    }
+    if (e.target.value.length > 20) {
+      pwdAlert();
+      return false;
+    }
+    if (e.target.value.length > 0) {
+      const inputValue = e.target.value;
+      console.log(e.target.value);
+      const lastStr = inputValue.charAt(inputValue.length - 1);
+      if (e.target.value.length === 1) {
+        setRealPwd(lastStr);
+        setPwd("*");
       } else {
-        setCorrectPwd(false);
+        setRealPwd(realPwd + lastStr);
+        const maskedValue =
+          "*".repeat(inputValue.length - 1) +
+          inputValue.charAt(inputValue.length - 1);
+        setPwd(maskedValue);
       }
     } else {
+      setRealPwd("");
+      setPwd("");
+    }
+  };
+
+  const handlePasswordCheckChange = e => {
+    if (e.target.value.length < pwdChk.length) {
+      setPwdChk(pwdChk.slice(0, -1));
+      setRealPwdChk(realPwdChk.slice(0, -1));
+      return false;
+    }
+    if (e.target.value.length > 20) {
+      pwdAlert();
+      return false;
+    }
+    if (e.target.value.length > 0) {
+      const inputValue = e.target.value;
+      console.log(e.target.value);
+      const lastStr = inputValue.charAt(inputValue.length - 1);
+      if (e.target.value.length === 1) {
+        setRealPwdChk(lastStr);
+        setPwdChk("*");
+      } else {
+        setRealPwdChk(realPwdChk + lastStr);
+        const maskedValue =
+          "*".repeat(inputValue.length - 1) +
+          inputValue.charAt(inputValue.length - 1);
+        setPwdChk(maskedValue);
+      }
+    } else {
+      setRealPwdChk("");
+      setPwdChk("");
+    }
+  };
+
+  //비밀번호 양식 확인
+  const testPwd = () => {
+    console.log(realPwd);
+    setPwdMsg("");
+    setCorrectPwd(false);
+    const regex = /^(?=.*[a-zA-Z])(?=.*[0-9!@#$%^&*]).{2,}$/;
+    let correct = regex.test(realPwd);
+    if (correct) {
+      if (realPwd.length > 7) {
+        if (realPwd.length > 20) {
+          setPwdMsg("비밀번호는 최대 20자 입니다");
+          setCorrectPwd(false);
+          return false;
+        }
+        setCorrectPwd(true);
+        return true;
+      } else {
+        setPwdMsg("비밀번호는 8자 이상입니다");
+        setCorrectPwd(false);
+        return false;
+      }
+    } else {
+      setPwdMsg("영어/숫자/특수문자 중 2가지 이상 포함해야 합니다");
       setCorrectPwd(false);
+      return false;
     }
   };
 
   //비밀번호 일치 확인
   const chkPwd = () => {
-    if (pwd !== pwdChk) {
+    if (realPwd !== realPwdChk) {
       setCorrectPwdChk(false);
     } else {
       setCorrectPwdChk(true);
@@ -292,6 +389,11 @@ function JoinBack() {
       <div
         id="joinArea"
         className="my-2 mx-auto p-2 border shadow-lg rounded-lg grid grid-cols-1 gap-3 bg-white w-full"
+        onKeyDown={e => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+          }
+        }}
       >
         <div className="text-lg font-medium text-center">회원가입</div>
         <div className="text-xs font-medium text-right">
@@ -300,7 +402,7 @@ function JoinBack() {
         <div
           id="id"
           className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
-            !correctId || (!dupId ? "xl:border-red-500" : undefined)
+            !correctId || (!dupId ? "xl:border-red-500" : "")
           }`}
         >
           <label
@@ -318,7 +420,7 @@ function JoinBack() {
               type="text"
               id="inputId"
               className={`border ${
-                !correctId || (!dupId ? "xl:border-red-500" : undefined)
+                !correctId || (!dupId ? "xl:border-red-500" : "")
               } xl:border-0 p-2 w-full text-sm`}
               value={id}
               onChange={e => {
@@ -345,6 +447,17 @@ function JoinBack() {
             확인 후 다시 입력해 주세요
           </div>
         )}
+        <button
+          className="block p-2 bg-gray-500 text-white"
+          onClick={e => {
+            e.preventDefault();
+            console.log(realPwd);
+            console.log(realPwdChk);
+            console.log(realPwd === realPwdChk);
+          }}
+        >
+          비번테스트
+        </button>
         <div
           id="pwd"
           className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
@@ -365,32 +478,25 @@ function JoinBack() {
             <input
               type="password"
               id="inputPwd"
+              length="21"
               className={`border ${
-                !correctPwd ? "border-red-500" : undefined
+                !correctPwd ? "border-red-500" : ""
               } xl:border-0 p-2 w-full text-sm`}
               value={pwd}
-              onChange={e => {
-                setPwd(e.currentTarget.value);
-              }}
+              onChange={handlePasswordChange}
               onBlur={e => {
-                setPwd(e.currentTarget.value);
-                if (pwd !== "") testPwd();
+                if (realPwd !== "") testPwd();
               }}
-              placeholder="영어/숫자/특수문자 중 2가지 이상"
+              placeholder="8자 이상(영어/숫자/특수문자 중 2가지 이상 포함)"
               autoComplete="off"
             />
           </div>
         </div>
-        {!correctPwd && (
-          <div className="text-sm text-rose-500">
-            비밀번호 양식이 틀렸습니다 <br className="block xl:hidden" />
-            확인 후 다시 입력해 주세요
-          </div>
-        )}
+        {!correctPwd && <div className="text-sm text-rose-500">{pwdMsg}</div>}
         <div
           id="pwdChk"
           className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
-            !correctPwdChk ? "xl:border-red-500" : undefined
+            !correctPwdChk ? "xl:border-red-500" : ""
           }`}
         >
           <label
@@ -405,16 +511,14 @@ function JoinBack() {
             <input
               type="password"
               id="inputPwdChk"
+              length="21"
               className={`border ${
-                !correctPwdChk ? "border-red-500" : undefined
+                !correctPwdChk ? "border-red-500" : ""
               } xl:border-0 p-2 w-full text-sm`}
               value={pwdChk}
-              onChange={e => {
-                setPwdChk(e.currentTarget.value);
-              }}
+              onChange={handlePasswordCheckChange}
               onBlur={e => {
-                setPwdChk(e.currentTarget.value);
-                if (pwdChk !== "") chkPwd();
+                if (realPwdChk !== "") chkPwd();
               }}
               placeholder="비밀번호를 한번 더 입력해 주세요"
               autoComplete="off"
@@ -509,9 +613,7 @@ function JoinBack() {
                 type="text"
                 id="inputMainAddr"
                 className={`border xl:border-0 p-2 w-full text-sm ${
-                  mainAddr === "주소찾기를 눌러주세요"
-                    ? "text-stone-500"
-                    : undefined
+                  mainAddr === "주소찾기를 눌러주세요" ? "text-stone-500" : ""
                 }`}
                 value={mainAddr}
                 onChange={e => setMainAddr(e.currentTarget.value)}
@@ -714,7 +816,7 @@ function JoinBack() {
           </button>
         </div>
       </div>
-      <div id="popupDom" className={isPopupOpen ? "popupModal" : undefined}>
+      <div id="popupDom" className={isPopupOpen ? "popupModal" : ""}>
         {isPopupOpen && (
           <PopupDom>
             <PopupPostCode onClose={closePostCode} setMainAddr={setMainAddr} />

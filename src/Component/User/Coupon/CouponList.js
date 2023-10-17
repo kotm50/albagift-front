@@ -159,7 +159,7 @@ function CouponList(props) {
       </div>
       <div className="p-2 grid grid-cols-1 xl:grid-cols-5">
         <div className="font-medium">상품명</div>
-        <div className="xl:col-span-4">
+        <div className="xl:col-span-4 truncate">
           {props.coupon.goodsName || "이름없음"}
         </div>
       </div>

@@ -42,6 +42,7 @@ import JoinBack from "./Component/User/JoinBack";
 import PwdChk from "./Component/User/Mypage/PwdChk";
 import EditUser from "./Component/User/Mypage/EditUser";
 import Payhistory from "./Component/User/Payhistory";
+import PointHistory from "./Component/User/PointHistory";
 //import MyMain from "./Component/User/Mypage/MyMain";
 
 function App() {
@@ -82,11 +83,12 @@ function App() {
           <Route path="/join/:promo?" element={<Join />} />
           <Route path="/joinback/:promo?" element={<JoinBack />} />
           <Route path="/mypage" element={<Mypage />}>
-            <Route path="" element={<Payhistory />} />
+            <Route path="" element={<PwdChk />} />
             <Route path="pwdchk" element={<PwdChk />} />
             <Route path="edit" element={<EditUser />} />
             <Route path="coupon" element={<Coupon />} />
             <Route path="payhistory" element={<Payhistory />} />
+            <Route path="pointhistory" element={<PointHistory />} />
             <Route path="cancel" element={<Cancel />} />
           </Route>
           <Route path="/newpwd" element={<NewPwd />} />

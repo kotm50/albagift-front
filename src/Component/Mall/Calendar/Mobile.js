@@ -3,10 +3,10 @@ import React from "react";
 function Mobile(props) {
   return (
     <>
-      <div className="xl:hidden grid grid-cols-7 border-y gap-y-2 gap-x-0 text-sm">
+      <div className="xl:hidden grid grid-cols-7 border-y gap-y-1 gap-x-0 text-sm bg-white">
         {props.dates.map((date, idx) => (
           <div
-            className={`text-center py-2 ${
+            className={`text-center py-2 border-b  ${
               idx === 0
                 ? "text-orange-500"
                 : idx === 6
@@ -19,16 +19,15 @@ function Mobile(props) {
           </div>
         ))}
       </div>
-      <div className="xl:hidden grid grid-cols-7 gap-y-2 gap-x-0 pt-1 text-sm">
+      <div className="xl:hidden grid grid-cols-7 gap-y-1 gap-x-0 pt-1 text-sm">
         {props.before.length > 0 && (
           <>
             {props.before.map((date, idx) => (
               <div
-                className="bg-gray-100 text-gray-100  border-gray-100 h-16 p-1"
+                className="bg-white text-gray-100 border-b  border-gray-100 h-16 p-1"
                 key={idx}
-              >
-                {date}
-              </div>
+                data={date}
+              ></div>
             ))}
           </>
         )}
@@ -36,7 +35,7 @@ function Mobile(props) {
           <>
             {props.fullDate.map((date, idx) => (
               <div
-                className={`bg-white-100 h-16 p-1 ${
+                className={`bg-white h-16 p-1 border-b ${
                   date.date === "일"
                     ? "text-orange-500"
                     : date.date === "토"
@@ -54,11 +53,10 @@ function Mobile(props) {
           <>
             {props.after.map((date, idx) => (
               <div
-                className="bg-gray-100 text-gray-100 border-gray-100 h-16 p-1"
+                className=" bg-white text-gray-100 border-gray-100 h-16 p-1"
                 key={idx}
-              >
-                {date}
-              </div>
+                data={date}
+              ></div>
             ))}
           </>
         )}

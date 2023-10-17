@@ -13,6 +13,9 @@ function PayModal(props) {
   const [editComplete, setEditComplete] = useState(false);
   const [deleteComplete, setDeleteComplete] = useState(false);
 
+  const [err, setErr] = useState(false);
+  const [errMsg, setErrMsg] = useState(false);
+
   const editIt = async () => {
     let data = {
       boardId: "B02",
@@ -26,9 +29,17 @@ function PayModal(props) {
         headers: { Authorization: props.user.accessToken },
       })
       .then(res => {
+        if (res.data.code === "E999") {
+          props.doLogout(res.data.message);
+          return false;
+        }
         if (res.data.code === "C000") {
           setEditComplete(true);
           setEditConfirm(false);
+        } else {
+          setEditConfirm(false);
+          setErrMsg(res.data.message);
+          setErr(true);
         }
       })
       .catch(e => {
@@ -60,9 +71,16 @@ function PayModal(props) {
       id="alertmodal"
       className="max-w-screen p-4 bg-white border text-sm xl:text-base"
     >
-      {!editConfirm && !deleteConfirm && !editComplete && !deleteComplete ? (
+      {!editConfirm &&
+      !deleteConfirm &&
+      !editComplete &&
+      !deleteComplete &&
+      !err ? (
         <>
           <h2 className="text-lg font-neoextra mb-2">면접날짜 수정/삭제</h2>
+          <div className="text-sm mb-2">
+            수정하려면 날짜와 시간을 선택하세요
+          </div>
           <div className="flex flex-row justify-start gap-1">
             <div className="px-2 py-3">면접날짜</div>
             <div className="p-2 text-center bg-white hover:bg-gray-50">
@@ -231,6 +249,31 @@ function PayModal(props) {
               }}
             >
               창닫기
+            </button>
+          </div>
+        </>
+      )}
+      {err && (
+        <>
+          <h2 className="text-lg font-neoextra mb-2">오류</h2>
+          <div className="px-2 py-4">{errMsg}</div>
+          <div className="flex flex-row justify-start gap-1">
+            <button
+              className="bg-rose-500 hover:bg-rose-700 text-white px-4 py-2 rounded"
+              onClick={e => {
+                setErr(false);
+                setErrMsg("");
+              }}
+            >
+              재수정하기
+            </button>
+            <button
+              className="bg-stone-500 hover:bg-stone-700 text-white px-4 py-2 rounded"
+              onClick={e => {
+                props.onClose();
+              }}
+            >
+              취소하기
             </button>
           </div>
         </>

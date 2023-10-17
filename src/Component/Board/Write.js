@@ -9,7 +9,7 @@ import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import AlertModal from "../Layout/AlertModal";
 import { logoutAlert } from "../LogoutUtil";
-import { clearUser } from "../../Reducer/userSlice";
+import { clearUser, getNewToken } from "../../Reducer/userSlice";
 
 function Write() {
   const dispatch = useDispatch();
@@ -147,6 +147,15 @@ function Write() {
           headers: { Authorization: user.accessToken },
         })
         .then(res => {
+          if (res.headers.authorization) {
+            if (res.headers.authorization !== user.accessToken) {
+              dispatch(
+                getNewToken({
+                  accessToken: res.headers.authorization,
+                })
+              );
+            }
+          }
           if (res.data.code === "C000") {
             confirmAlert({
               customUI: ({ onClose }) => {
@@ -169,7 +178,7 @@ function Write() {
                   <AlertModal
                     onClose={onClose} // 닫기
                     title={"오류!!"} // 제목
-                    message={"오류가 발생했습니다. 다시 시도해 주세요"} // 내용
+                    message={res.data.message} // 내용
                     type={"alert"} // 타입 confirm, alert
                     yes={"확인"} // 확인버튼 제목
                   />
@@ -180,19 +189,7 @@ function Write() {
           }
         })
         .catch(e => {
-          confirmAlert({
-            customUI: ({ onClose }) => {
-              return (
-                <AlertModal
-                  onClose={onClose} // 닫기
-                  title={"오류!!"} // 제목
-                  message={"오류가 발생했습니다. 다시 시도해 주세요"} // 내용
-                  type={"alert"} // 타입 confirm, alert
-                  yes={"확인"} // 확인버튼 제목
-                />
-              );
-            },
-          });
+          console.log(e);
           return false;
         });
     } else {
@@ -201,6 +198,15 @@ function Write() {
           headers: { Authorization: user.accessToken },
         })
         .then(res => {
+          if (res.headers.authorization) {
+            if (res.headers.authorization !== user.accessToken) {
+              dispatch(
+                getNewToken({
+                  accessToken: res.headers.authorization,
+                })
+              );
+            }
+          }
           if (res.data.code === "C000") {
             confirmAlert({
               customUI: ({ onClose }) => {
@@ -223,7 +229,7 @@ function Write() {
                   <AlertModal
                     onClose={onClose} // 닫기
                     title={"오류!!"} // 제목
-                    message={"오류가 발생했습니다. 다시 시도해 주세요"} // 내용
+                    message={res.data.message} // 내용
                     type={"alert"} // 타입 confirm, alert
                     yes={"확인"} // 확인버튼 제목
                   />

@@ -3,24 +3,22 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import Loading from "../Layout/Loading";
-import PayList from "./PayList";
 import queryString from "query-string";
 import Pagenate from "../Layout/Pagenate";
-import AlertModal from "../Layout/AlertModal";
-import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
-import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
-import PayModal from "./PayModal";
 import { logoutAlert } from "../LogoutUtil";
-import { clearUser, getNewToken } from "../../Reducer/userSlice";
+import { clearUser } from "../../Reducer/userSlice";
+import PointHistoryList from "./PointHistoryList";
 import Sorry from "../doc/Sorry";
 
-function Payhistory() {
+function PointHistory() {
   const dispatch = useDispatch();
   const navi = useNavigate();
   const location = useLocation();
   const user = useSelector(state => state.user);
   const [list, setList] = useState([]);
   const [loaded, setLoaded] = useState(false);
+
+  const [expire, setExpire] = useState("");
 
   const pathName = location.pathname;
   const parsed = queryString.parse(location.search);
@@ -37,27 +35,18 @@ function Payhistory() {
   const loadList = async p => {
     setList([]);
     let data = {
-      boardId: "B02",
       page: p || 1,
       size: 20,
     };
     await axios
-      .post("/api/v1/board/get/pnt/posts/list", data, {
+      .post("/api/v1/user/mypage/pnt/log", data, {
         headers: {
           Authorization: user.accessToken,
         },
       })
       .then(res => {
+        console.log(res);
         setLoaded(true);
-        if (res.headers.authorization) {
-          if (res.headers.authorization !== user.accessToken) {
-            dispatch(
-              getNewToken({
-                accessToken: res.headers.authorization,
-              })
-            );
-          }
-        }
         if (res.data.code === "C000") {
           const totalP = res.data.totalPages;
           setTotalPage(res.data.totalPages);
@@ -77,10 +66,10 @@ function Payhistory() {
             return false;
           }
         }
-        setList(res.data.postList ?? [{ postId: "없음" }]);
+        setList(res.data.logList ?? [{ currPoint: "없음" }]);
+        setExpire(res.data.pointExpiryDate ?? "");
       })
       .catch(e => {
-        console.log(e);
         setLoaded(true);
         return false;
       });
@@ -123,86 +112,52 @@ function Payhistory() {
     }
   };
 
-  const listModal = doc => {
-    console.log(doc.status);
-    if (doc.status === "S") {
-      confirmAlert({
-        customUI: ({ onClose }) => {
-          return (
-            <PayModal
-              onClose={onClose}
-              doc={doc}
-              loadList={loadList}
-              user={user}
-              doLogout={doLogout}
-            />
-          );
-        },
-      });
-    } else {
-      confirmAlert({
-        customUI: ({ onClose }) => {
-          return (
-            <AlertModal
-              onClose={onClose} // 닫기
-              title={"면접날짜 수정/삭제"} // 제목
-              message={
-                doc.status === "Y"
-                  ? "이미 지급처리가 된 내용은\n수정/삭제가 불가능 합니다"
-                  : "이미 불가처리가 된 내용은\n수정/삭제가 불가능 합니다"
-              } // 내용
-              type={"alert"} // 타입 confirm, alert
-              yes={"확인"} // 확인버튼 제목
-            />
-          );
-        },
-      });
-    }
-  };
-
-  const doLogout = async m => {
-    logoutAlert(null, null, dispatch, clearUser, navi, user, m);
-  };
-
   return (
     <>
       {loaded ? (
         <>
           {list.length > 0 ? (
             <>
-              <div className="text-xs xl:text-sm container mx-auto text-right mb-2">
-                날짜를 클릭하면 수정/삭제가 가능합니다.
+              <div className="xl:text-2xl mt-2 font-neo">
+                <span className="font-neoextra">{user.userId}</span>
+                님의 잔여포인트 :{" "}
+                <span className="font-neoextra text-rose-500">
+                  {user.point.toLocaleString()}
+                </span>
+                p
               </div>
-              <div className="text-sm xl:text-base grid grid-cols-3 xl:grid-cols-4 py-2 bg-blue-50 divide-x">
-                <div className="font-neoextra text-center hidden xl:block">
-                  입력일
-                </div>
-                <div className="font-neoextra text-center">면접날짜</div>
-                <div className="font-neoextra text-center">처리결과</div>
-                <div className="font-neoextra text-center">
-                  지급액/사유
-                  <span className="text-sm font-neo hidden xl:inline">
-                    (불가시)
+              {expire ? (
+                <div className="text-sm xl:text-base mb-2 font-neo">
+                  만료예정일 : {expire}{" "}
+                  <span className="text-rose-500">
+                    (만료예정일이 경과되면 포인트가 소멸합니다)
                   </span>
                 </div>
+              ) : (
+                <div className="text-sm xl:text-base mb-2 font-neo text-rose-500">
+                  (만료예정일이 경과되면 포인트가 소멸합니다)
+                </div>
+              )}
+              <div className="text-xs xl:text-base grid grid-cols-4 xl:grid-cols-5 py-2 bg-blue-50 divide-x">
+                <div className="font-neoextra text-center hidden xl:block ">
+                  일시
+                </div>
+                <div className="font-neoextra text-center">구분</div>
+                <div className="font-neoextra text-center">변동포인트</div>
+                <div className="font-neoextra text-center">설명</div>
+                <div className="font-neoextra text-center">잔여포인트</div>
               </div>
               <div className="grid grid-cols-1">
                 {list.map((doc, idx) => (
                   <div
                     key={idx}
-                    className={`hover:cursor-pointer hover:text-orange-500 text-sm xl:text-base grid grid-cols-3 xl:grid-cols-4 py-2 gap-y-3 ${
+                    className={`text-xs xl:text-base grid grid-cols-4 xl:grid-cols-5 py-2 gap-y-3 ${
                       idx % 2 === 1
                         ? "bg-green-50 hover:bg-green-100"
                         : "hover:bg-gray-100"
                     }`}
-                    onClick={e => listModal(doc)}
                   >
-                    <PayList
-                      doc={doc}
-                      loadList={loadList}
-                      page={page}
-                      user={user}
-                    />
+                    <PointHistoryList doc={doc} page={page} user={user} />
                   </div>
                 ))}
               </div>
@@ -214,18 +169,6 @@ function Payhistory() {
       ) : (
         <Loading />
       )}
-      <div
-        className={`xl:pr-0 container mx-auto flex ${
-          list.length > 0 ? "justify-end my-2" : "justify-center mt-5"
-        }`}
-      >
-        <button
-          className="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded"
-          onClick={e => navi("/board/write?boardId=B02")}
-        >
-          지급신청하기
-        </button>
-      </div>
       <Pagenate
         pagenate={pagenate}
         page={Number(page)}
@@ -237,4 +180,4 @@ function Payhistory() {
   );
 }
 
-export default Payhistory;
+export default PointHistory;

@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { clearUser, getNewToken, refreshPoint } from "../../Reducer/userSlice";
 import { /* logoutAlert, */ logout } from "../LogoutUtil";
 import axios from "axios";
 
 function UserInformation() {
+  const location = useLocation();
   const user = useSelector(state => state.user);
   const navi = useNavigate();
   const dispatch = useDispatch();
@@ -16,7 +17,6 @@ function UserInformation() {
       // const diffTime = Math.floor((now - user.lastLogin) / 1000 / 60);
       refreshPoints();
     }
-    console.log(user);
     //eslint-disable-next-line
   }, [location]);
 

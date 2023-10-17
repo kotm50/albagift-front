@@ -2,16 +2,16 @@ import React from "react";
 
 function Desktop(props) {
   return (
-    <>
-      <div className="hidden xl:grid grid-cols-7 gap-2 mb-2">
+    <div className="w-5/6 mx-auto">
+      <div className="hidden xl:grid grid-cols-7 border-t gap-y-1 gap-x-0 bg-white">
         {props.dates.map((date, idx) => (
           <div
-            className={`text-center rounded-lg ${
+            className={`text-center py-2 border-b  ${
               idx === 0
-                ? "border border-orange-500 bg-orange-500 text-white"
+                ? "text-orange-500"
                 : idx === 6
-                ? "border border-blue-500 bg-blue-500 text-white"
-                : "border border-gray-300"
+                ? "text-blue-500"
+                : "border-gray-300"
             }`}
             key={idx}
           >
@@ -19,12 +19,12 @@ function Desktop(props) {
           </div>
         ))}
       </div>
-      <div className="hidden xl:grid grid-cols-7 gap-2">
+      <div className="hidden xl:grid grid-cols-7 gap-y-1 gap-x-0 pt-1 border-b">
         {props.before.length > 0 && (
           <>
             {props.before.map((date, idx) => (
               <div
-                className="bg-gray-100 text-gray-100 rounded-lg border border-gray-100"
+                className="bg-gray-100 text-gray-100 border-b  border-gray-100 h-24 p-1"
                 key={idx}
               >
                 {date}
@@ -36,16 +36,16 @@ function Desktop(props) {
           <>
             {props.fullDate.map((date, idx) => (
               <div
-                className={`bg-white-100 rounded-lg p-2 border shadow-sm ${
+                className={`bg-white h-24 p-1 ${
                   date.date === "일"
-                    ? "border-orange-300"
+                    ? "text-orange-500"
                     : date.date === "토"
-                    ? "border-blue-300"
+                    ? "text-blue-500"
                     : null
                 }`}
                 key={idx}
               >
-                {date.day}/{date.date}요일
+                {date.day}
               </div>
             ))}
           </>
@@ -53,17 +53,12 @@ function Desktop(props) {
         {props.after.length > 0 && (
           <>
             {props.after.map((date, idx) => (
-              <div
-                className="bg-gray-100 text-gray-100 border-gray-100"
-                key={idx}
-              >
-                {date}
-              </div>
+              <div className="bg-white h-24 p-1" key={idx} data={date}></div>
             ))}
           </>
         )}
       </div>
-    </>
+    </div>
   );
 }
 

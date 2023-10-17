@@ -141,6 +141,7 @@ function EditUser(props) {
   const editIt = async (url, type, value) => {
     let data;
     let bValue = beforeValue;
+    console.log(value);
     if (value === "") {
       return alert("내용이 입력되지 않았습니다\n확인 후 다시 시도해 주세요");
     }
@@ -150,7 +151,7 @@ function EditUser(props) {
         return alert("이전 값과 동일합니다\n확인 후 다시 시도해 주세요");
       }
       data = {
-        mainAddr: mainAddr,
+        mainAddr: value,
       };
       bValue.mainAddr = mainAddr;
     }
@@ -160,6 +161,7 @@ function EditUser(props) {
         return alert("이전 값과 동일합니다\n확인 후 다시 시도해 주세요");
       }
     }
+    console.log(url, data);
     axios
       .patch(url, data, {
         headers: {
@@ -167,6 +169,7 @@ function EditUser(props) {
         },
       })
       .then(res => {
+        console.log(res);
         if (res.data.code === "C000") {
           if (type === "password") {
             logout();
@@ -398,22 +401,12 @@ function EditUser(props) {
                 disabled
               />
             </div>
-            <button
-              className="w-full h-full p-2 text-white bg-blue-500 hover:bg-blue-700 text-sm"
-              onClick={e => {
-                openPostCode();
-              }}
-            >
-              주소찾기
-            </button>
           </div>
           <button
             className="bg-teal-500 hover:bg-teal-700 text-white p-2"
-            onClick={e =>
-              editIt("/api/v1/user/myinfo/editaddr", "mainAddr", mainAddr)
-            }
+            onClick={e => openPostCode()}
           >
-            수정하기
+            주소수정
           </button>
         </div>
         <div
@@ -504,7 +497,12 @@ function EditUser(props) {
       <div id="popupDom" className={isPopupOpen ? "popupModal" : undefined}>
         {isPopupOpen && (
           <PopupDom>
-            <PopupPostCode onClose={closePostCode} setMainAddr={setMainAddr} />
+            <PopupPostCode
+              onClose={closePostCode}
+              setMainAddr={setMainAddr}
+              modify={true}
+              editIt={editIt}
+            />
           </PopupDom>
         )}
       </div>

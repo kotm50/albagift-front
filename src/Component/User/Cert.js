@@ -42,6 +42,7 @@ function Cert() {
     if (socialUser !== "") {
       data.socialId = socialUser.socialId;
       data.socialType = socialUser.socialType;
+      data.email = socialUser.email;
     }
     if (userId !== "") {
       data.userId = userId;
@@ -54,7 +55,7 @@ function Cert() {
         if (gubun === "join") {
           if (res.data.code === "C000") {
             navi("/join", {
-              state: { tempId: res.data.tempId, email: socialUser.kakaoEmail },
+              state: { tempId: res.data.tempId, email: socialUser.email },
             });
           } else {
             setGetTid(true);

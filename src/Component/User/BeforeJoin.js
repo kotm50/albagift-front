@@ -4,6 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { RiKakaoTalkFill } from "react-icons/ri";
+import AlertModal from "../Layout/AlertModal";
+
+import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
+import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 
 function BeforeJoin(props) {
   const [domain, setDomain] = useState("");
@@ -13,11 +17,27 @@ function BeforeJoin(props) {
     let domain = extractDomain();
     setDomain(domain);
     if (user.accessToken !== "") {
-      alert("이미 로그인 하셨습니다.\n메인으로 이동합니다");
-      navi("/");
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <AlertModal
+              onClose={onClose} // 닫기
+              title={"오류"} // 제목
+              message={"이미 로그인 하셨습니다.\n메인으로 이동합니다"} // 내용
+              type={"alert"} // 타입 confirm, alert
+              yes={"확인"} // 확인버튼 제목
+              doIt={goMain} // 확인시 실행할 함수
+            />
+          );
+        },
+      });
     }
     //eslint-disable-next-line
   }, []);
+
+  const goMain = () => {
+    navi("/");
+  };
 
   const extractDomain = () => {
     let protocol = window.location.protocol; // 프로토콜을 가져옵니다. (예: http: 또는 https:)

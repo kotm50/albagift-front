@@ -3,6 +3,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 import axios from "axios";
 
+import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
+import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
+import AlertModal from "../Layout/AlertModal";
+
 function FindPwd() {
   const navi = useNavigate();
   const location = useLocation();
@@ -56,17 +60,36 @@ function FindPwd() {
     }
   };
 
+  const errAlert = m => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <AlertModal
+            onClose={onClose} // 닫기
+            title={"오류"} // 제목
+            message={m} // 내용
+            type={"alert"} // 타입 confirm, alert
+            yes={"확인"} // 확인버튼 제목
+          />
+        );
+      },
+    });
+  };
+
   const editPwd = async e => {
     e.preventDefault();
 
     if (pwdChk === "") {
-      return alert("비밀번호를 확인해 주세요");
+      errAlert("비밀번호를 확인해 주세요");
+      return false;
     }
     if (!correctPwd) {
-      return alert("비밀번호 양식이 잘못되었습니다");
+      errAlert("비밀번호 양식이 잘못되었습니다");
+      return false;
     }
     if (!correctPwdChk) {
-      return alert("비밀번호가 일치하지 않습니다");
+      errAlert("비밀번호가 일치하지 않습니다");
+      return false;
     }
     axios
       .patch("/api/v1/user/upt/new/pwd", {
@@ -76,13 +99,28 @@ function FindPwd() {
       .then(res => {
         console.log(res);
         if (res.data.code === "C000") {
-          alert("비밀번호를 수정했습니다. 로그인 후 이용해 주세요");
-          navi("/login");
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"완료"} // 제목
+                  message={"비밀번호를 수정했습니다. 로그인 후 이용해 주세요"} // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                  doIt={goLogin} // 확인시 실행할 함수
+                />
+              );
+            },
+          });
         }
       })
       .catch(e => {
         console.log(e);
       });
+  };
+  const goLogin = () => {
+    navi("/login");
   };
 
   //아이디 중복검사
@@ -91,9 +129,22 @@ function FindPwd() {
       .get("/api/v1/user/dupchkid", { params: { userId: id } })
       .then(res => {
         if (res.data.code === "C000") {
-          alert(
-            "아이디를 찾을 수 없습니다. 아이디가 기억나지 않으시면\n'아이디 찾기'를 진행해 주세요"
-          );
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"오류"} // 제목
+                  message={
+                    "아이디를 찾을 수 없습니다. 아이디가 기억나지 않으시면\n'아이디 찾기'를 진행해 주세요"
+                  } // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                />
+              );
+            },
+          });
+          return false;
         } else {
           navi(`/cert?gubun=reco&userId=${id}`);
         }

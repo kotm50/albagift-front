@@ -266,7 +266,6 @@ function Login() {
             })
           );
           chkProto(token, user);
-          goMain();
         }
       })
       .catch(e => {
@@ -295,6 +294,8 @@ function Login() {
               );
             },
           });
+        } else {
+          goMain();
         }
       })
       .catch(e => {

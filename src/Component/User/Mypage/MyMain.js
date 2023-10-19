@@ -28,7 +28,7 @@ function MyMain() {
         setMeeting(res.data.postList.length);
       })
       .catch(e => {
-        alert("알 수 없는 오류가 발생했습니다");
+        console.log(e);
       });
   };
   return (

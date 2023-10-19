@@ -57,11 +57,27 @@ function Join() {
     }
 
     if (user.accessToken !== "") {
-      alert("이미 로그인 하셨습니다.\n메인으로 이동합니다");
-      navi("/");
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <AlertModal
+              onClose={onClose} // 닫기
+              title={"오류"} // 제목
+              message={"이미 로그인 하셨습니다.\n메인으로 이동합니다"} // 내용
+              type={"alert"} // 타입 confirm, alert
+              yes={"확인"} // 확인버튼 제목
+              doIt={goMain} // 확인시 실행할 함수
+            />
+          );
+        },
+      });
     }
     //eslint-disable-next-line
   }, []);
+
+  const goMain = () => {
+    navi("/");
+  };
 
   //비밀번호 너무 길게쓰면 오류
   const pwdAlert = () => {
@@ -79,13 +95,28 @@ function Join() {
       },
     });
   };
-
+  const goLogin = () => {
+    navi("/login");
+  };
   //회원가입 실행
   const join = async e => {
     e.preventDefault();
     let correctChk = await chkForm();
     if (correctChk !== "완료") {
-      return alert(correctChk + "\n확인 후 다시 시도해 주세요");
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <AlertModal
+              onClose={onClose} // 닫기
+              title={"경고창 제목입니다"} // 제목
+              message={correctChk + "\n확인 후 다시 시도해 주세요"} // 내용
+              type={"alert"} // 타입 confirm, alert
+              yes={"확인"} // 확인버튼 제목
+            />
+          );
+        },
+      });
+      return false;
     }
     const data = {
       userId: id,
@@ -105,8 +136,20 @@ function Join() {
       .then(res => {
         console.log(res);
         if (res.data.code === "C000") {
-          alert("환영합니다 ^^\n로그인을 진행해 주세요");
-          navi("/login");
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"가입완료"} // 제목
+                  message={"환영합니다 ^^\n로그인을 진행해 주세요"} // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                  doIt={goLogin} // 확인시 실행할 함수
+                />
+              );
+            },
+          });
         }
       })
       .catch(e => {
@@ -254,63 +297,6 @@ function Join() {
   const closePostCode = () => {
     setIsPopupOpen(false);
   };
-  //성별 바꾸기 라디오버튼
-  /*
-  const handleRadioChange = event => {
-    setGender(event.target.value);
-  };
-
-  //전화번호 중간에 '-' 표시하기.
-  const handlePhone = e => {
-    const rawValue = e.target.value.replace(/-/g, ""); // remove all dashes
-
-    if (rawValue.length > 11) {
-      alert("휴대폰 번호는 최대 11자리까지 입력 가능합니다");
-      return;
-    }
-
-    // check if the raw value is a valid number
-    if (!isNaN(Number(rawValue))) {
-      setInputPhone(rawValue);
-      let display = rawValue;
-      if (rawValue.length === 7) {
-        display = rawValue.replace(/(\d{3})(\d{4})/, "$1-$2");
-      } else if (rawValue.length >= 8 && rawValue.length < 10) {
-        display = rawValue.replace(/(\d{4})(\d{4})/, "$1-$2");
-      } else if (rawValue.length === 10) {
-        display = rawValue.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
-      } else if (rawValue.length === 11) {
-        display = rawValue.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
-      }
-      setDisplayPhone(display);
-    }
-  };
-
-  //생일 중간에 '년월일' 표시하기.
-
-  const handleBirth = e => {
-    if (e !== undefined) {
-      const rawValue = e.target.value.replace(/-/g, ""); // remove all dashes
-      setInputBirth(rawValue);
-      let display = rawValue;
-
-      if (rawValue.length > 6) {
-        alert("생년월일은 최대 6자리까지 입력 가능합니다");
-        return;
-      }
-
-      // check if the raw value is a valid number
-      if (!isNaN(Number(rawValue))) {
-        if (rawValue.length <= 4) {
-          display = rawValue.replace(/(\d{2})(\d{2})/, "$1-$2");
-        } else if (rawValue.length <= 6) {
-          display = rawValue.replace(/(\d{2})(\d{2})(\d{2})/, "$1-$2-$3");
-        }
-        setDisplayBirth(display);
-      }
-    }
-  };
-*/
   const handleAgreeAll = () => {
     if (agreeAll) {
       setAgreeAll(false);

@@ -64,16 +64,35 @@ function NewPwd(props) {
     });
   };
 
+  const errAlert = m => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <AlertModal
+            onClose={onClose} // 닫기
+            title={"오류"} // 제목
+            message={m} // 내용
+            type={"alert"} // 타입 confirm, alert
+            yes={"확인"} // 확인버튼 제목
+          />
+        );
+      },
+    });
+  };
+
   const editPwd = async e => {
     e.preventDefault();
     if (pwdChk === "") {
-      return alert("비밀번호를 확인해 주세요");
+      errAlert("비밀번호를 확인해 주세요");
+      return false;
     }
     if (!correctPwd) {
-      return alert("비밀번호 양식이 잘못되었습니다");
+      errAlert("비밀번호 양식이 잘못되었습니다");
+      return false;
     }
     if (!correctPwdChk) {
-      return alert("비밀번호가 일치하지 않습니다");
+      errAlert("비밀번호가 일치하지 않습니다");
+      return false;
     }
     axios
       .patch(

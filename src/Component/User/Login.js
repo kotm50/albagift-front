@@ -6,7 +6,12 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { loginUser } from "../../Reducer/userSlice";
 
+import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
+import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
+
 import { RiKakaoTalkFill } from "react-icons/ri";
+import BeforeJoin from "./BeforeJoin";
+import AlertModal from "../Layout/AlertModal";
 
 function Login() {
   const inputIdRef = useRef();
@@ -23,18 +28,39 @@ function Login() {
   const [errMessage, setErrMessage] = useState("");
   const [countOver, setCountOver] = useState(false);
 
+  const [socialData, setSocialData] = useState("");
+
+  const [modal, setModal] = useState(false);
+
   useEffect(() => {
     setSortParams();
     let domain = extractDomain();
     setDomain(domain);
     inputIdRef.current.focus();
     if (user.accessToken !== "") {
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <AlertModal
+              onClose={onClose} // 닫기
+              title={"오류!!"} // 제목
+              message={"이미 로그인 하셨습니다.\n메인으로 이동합니다"} // 내용
+              type={"alert"} // 타입 confirm, alert
+              yes={"확인"} // 확인버튼 제목
+              doIt={goMain} // 확인시 실행할 함수
+            />
+          );
+        },
+      });
       alert("이미 로그인 하셨습니다.\n메인으로 이동합니다");
       navi("/");
     }
     //eslint-disable-next-line
   }, []);
 
+  const goMain = () => {
+    navi("/");
+  };
   const setSortParams = () => {
     setSearchParams(searchParams);
     const code = searchParams.get("code");
@@ -78,11 +104,27 @@ function Login() {
         }
         const token = res.headers.authorization;
         if (res.data.code === "E002") {
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"로그인 안내"} // 제목
+                  message={"이미 탈퇴한 회원입니다.\n탈퇴를 취소하시겠습니까?"} // 내용
+                  type={"confirm"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                  no={"취소"} // 취소버튼 제목
+                  doIt={doRestore} // 확인시 실행할 함수
+                  doNot={doNotRestore} // 취소시 실행할 함수
+                />
+              );
+            },
+          });
+
           let restore = window.confirm(
             "이미 탈퇴한 회원입니다, 탈퇴를 취소하시겠습니까?"
           );
           if (restore) {
-            restoreAccount(id);
             return true;
           } else {
             return alert("다른 계정으로 로그인 해 주세요");
@@ -106,7 +148,7 @@ function Login() {
       });
   };
 
-  const restoreAccount = async id => {
+  const doRestore = async () => {
     let data = {
       userId: id,
     };
@@ -121,6 +163,23 @@ function Login() {
         }
       })
       .catch(error => console.log(error));
+  };
+
+  const doNotRestore = () => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <AlertModal
+            onClose={onClose} // 닫기
+            title={"로그인 안내"} // 제목
+            message={"다른 계정으로 로그인 해 주세요"} // 내용
+            type={"alert"} // 타입 confirm, alert
+            yes={"확인"} // 확인버튼 제목
+          />
+        );
+      },
+    });
+    return false;
   };
 
   const chkAdmin = async (token, user) => {
@@ -177,6 +236,35 @@ function Login() {
       });
   };
 
+  const doKakaoCert = () => {
+    confirmAlert({
+      customUI: ({ onClose, data }) => {
+        return (
+          <AlertModal
+            onClose={onClose} // 닫기
+            title={"환영합니다!"} // 제목
+            message={"카카오 계정으로 회원가입을 진행합니다"} // 내용
+            type={"alert"} // 타입 confirm, alert
+            yes={"확인"} // 확인버튼 제목
+            doIt={goCert} // 확인시 실행할 함수
+            data={data}
+          />
+        );
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (socialData !== "") {
+      doKakaoCert();
+    }
+    //eslint-disable-next-line
+  }, [socialData]);
+
+  const goCert = () => {
+    navi("/cert", { state: { socialUser: socialData } });
+  };
+
   const kakaoLoginCheck = async code => {
     const loginUrl = `/api/v1/user/login/kakao?code=${code}`;
     await axios
@@ -187,8 +275,8 @@ function Login() {
           data.socialId = res.data.socialUser.id;
           data.email = res.data.socialUser.email;
           data.socialType = res.data.socialUser.socialType;
-          alert(res.data.message);
-          navi("/cert", { state: { socialUser: data } });
+          console.log(data);
+          setSocialData(data);
         } else {
           dispatch(
             loginUser({
@@ -266,12 +354,19 @@ function Login() {
             </div>
           )}
           <div className="text-center text-sm text-gray-500 border-b pb-2">
-            <Link to="/cert">
+            <Link
+              to="/beforejoin"
+              onClick={e => {
+                e.preventDefault();
+                setModal(true);
+              }}
+            >
               처음이신가요? 여기를 눌러 <br className="block xl:hidden" />
               <span className="text-blue-500 border-b">회원가입</span>을 진행해
               주세요
             </Link>
           </div>
+          {modal ? <BeforeJoin setModal={setModal} /> : null}
           <div className="w-full">
             <button
               className="transition duration-100 w-full bg-emerald-500 hover:bg-emerald-700 p-2 text-white rounded hover:animate-wiggle"

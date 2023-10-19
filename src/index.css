@@ -259,6 +259,28 @@ div.footer-top {
   max-width:95vw;
 }
 
+
+#paymodal {
+  width:480px;
+  max-width:95vw;
+}
+
 .react-confirm-alert-overlay {
   background-color:rgba(255, 255, 255, 0.5)!important;
+}
+
+#popupDom {
+  background-color:transparent!important;
+}
+
+#beforejoin {
+  width:550px;
+  padding:20px;
+  max-width:90%;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  background-color:white;
+  z-index:999;
 }

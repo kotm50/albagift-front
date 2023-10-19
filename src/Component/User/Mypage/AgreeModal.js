@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 function AgreeModal(props) {
+  const checkRef = useRef();
   const [agree, setAgree] = useState(false);
+  const [alert, setAlert] = useState(false);
   return (
     <>
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none shadow-lg">
@@ -24,22 +26,38 @@ function AgreeModal(props) {
               <br />위 개인정보 수집·이용에 대한 동의를 거부할 권리가 있으나,
               수집 및 이용 동의를 거부하실 경우 서비스 이용이 제한됩니다.
             </div>
-            <div id="agreeIt" className="grid grid-cols-7 gap-1">
+            <div
+              id="agreeIt"
+              className={`grid grid-cols-7 gap-1 p-1 my-1 ${
+                alert ? "bg-rose-50" : agree ? "bg-green-50" : "bg-white"
+              }`}
+            >
               <label
                 htmlFor="agree"
-                className="text-sm font-neoextra text-left flex flex-col justify-center xl:pl-3 py-2 col-span-6"
+                className={`text-sm font-neoextra text-left flex flex-col justify-center xl:pl-3 py-2 col-span-6 ${
+                  alert ? "text-rose-500" : ""
+                }`}
               >
                 개인정보 수집 이용에 동의합니다
               </label>
               <div className="flex flex-col justify-center">
                 <input
+                  ref={checkRef}
                   type="checkbox"
                   id="agree"
-                  onChange={e => setAgree(!agree)}
+                  onChange={e => {
+                    setAgree(!agree);
+                    setAlert(false);
+                  }}
                   checked={agree}
                 />
               </div>
             </div>
+            {alert ? (
+              <div className="my-2 text-center text-rose-500 text-xs">
+                개인정보 수집 이용에 동의하셔야 수정 가능합니다
+              </div>
+            ) : null}
             <div className="grid grid-cols-1 xl:grid-cols-5 gap-2 text-sm">
               <div className="xl:col-span-4">
                 <button
@@ -48,9 +66,8 @@ function AgreeModal(props) {
                     if (agree) {
                       props.doCert();
                     } else {
-                      alert(
-                        "개인정보 수집 및 이용에 동의하셔야\n본인인증 후 연락처 수정이 가능합니다"
-                      );
+                      setAlert(true);
+                      checkRef.current.focus();
                     }
                   }}
                 >
@@ -64,7 +81,7 @@ function AgreeModal(props) {
                     props.setModal(false);
                   }}
                 >
-                  창 닫기
+                  창닫기
                 </button>
               </div>
             </div>

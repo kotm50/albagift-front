@@ -57,7 +57,6 @@ function Cancel() {
   };
 
   const cancelIt = async e => {
-    e.preventDefault();
     setAgreePls(false);
     setIsErr(false);
     if (!agree) {

@@ -42,7 +42,7 @@ function Pagenate(props) {
               <FaAngleLeft size={20} />
             </Link>
           )}
-          <div className="grid grid-cols-5 gap-3">
+          <div className="flex justify-center gap-3">
             {props.pagenate.map((pageNum, idx) => (
               <Link
                 to={`${props.pathName}?page=${pageNum}${

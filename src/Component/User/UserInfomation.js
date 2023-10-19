@@ -1,15 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { clearUser, getNewToken, refreshPoint } from "../../Reducer/userSlice";
 import { /* logoutAlert, */ logout } from "../LogoutUtil";
 import axios from "axios";
+import BeforeJoin from "./BeforeJoin";
 
 function UserInformation() {
   const location = useLocation();
   const user = useSelector(state => state.user);
   const navi = useNavigate();
   const dispatch = useDispatch();
+  const [modal, setModal] = useState(false);
 
   useEffect(() => {
     // const now = new Date();
@@ -81,8 +83,12 @@ function UserInformation() {
             </Link>
             <div className="w-11/12 xl:w-3/4 mx-auto grid grid-cols-3 divide-x-2 my-2">
               <Link
-                to="/cert"
+                to="/beforejoin"
                 className="text-sm text-center text-gray-500 hover:text-blue-500 flex flex-col justify-center"
+                onClick={e => {
+                  e.preventDefault();
+                  setModal(true);
+                }}
               >
                 회원가입
               </Link>
@@ -99,6 +105,8 @@ function UserInformation() {
                 비밀번호 찾기
               </Link>
             </div>
+
+            {modal ? <BeforeJoin setModal={setModal} /> : null}
           </div>
         </>
       ) : (
@@ -110,7 +118,10 @@ function UserInformation() {
             </div>
             <div className="font-neobold p-2 xl:col-span-2">
               💎{" "}
-              <span className="font-neoextra">
+              <span
+                className="font-neoextra hover:text-sky-500 hover:cursor-pointer"
+                onClick={e => navi("/mypage/pointhistory")}
+              >
                 {Number(user.point).toLocaleString()}
               </span>{" "}
               P

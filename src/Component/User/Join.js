@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import axios from "axios";
 
@@ -19,7 +19,6 @@ function Join() {
   const user = useSelector(state => state.user);
   const location = useLocation();
   let navi = useNavigate();
-  const { promo } = useParams();
   const [id, setId] = useState("");
   const [pwd, setPwd] = useState("");
   const [pwdChk, setPwdChk] = useState("");
@@ -90,13 +89,9 @@ function Join() {
       userPwd: pwd,
       mainAddr: mainAddr,
       email: email,
-      promo: false,
       tempId: tempId,
       agreeYn: "N",
     };
-    if (promo !== undefined) {
-      data.promo = true;
-    }
     if (marketingAgree) {
       data.agreeYn = "Y";
     }
@@ -450,7 +445,7 @@ function Join() {
                   } else {
                     setPwdChk(e.currentTarget.value);
                   }
-                  if (pwdChk !== "") chkPwd();
+                  chkPwd();
                 }}
                 placeholder="비밀번호를 한번 더 입력해 주세요"
                 autoComplete="off"

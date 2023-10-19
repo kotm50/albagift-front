@@ -48,6 +48,7 @@ function PwdChk(props) {
         } else {
           setErrMessage(res.data.message);
           setIsErr(true);
+          setPwd("");
         }
       })
       .catch(e => {
@@ -104,7 +105,12 @@ function PwdChk(props) {
                 id="inputPwd"
                 className="border xl:border-0 p-2 w-full text-sm"
                 value={pwd}
-                onChange={e => setPwd(e.currentTarget.value)}
+                onChange={e => {
+                  setPwd(e.currentTarget.value);
+                  if (pwd.length > 0) {
+                    setIsErr(false);
+                  }
+                }}
                 onBlur={e => setPwd(e.currentTarget.value)}
                 autoComplete="on"
               />

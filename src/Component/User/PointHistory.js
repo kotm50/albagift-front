@@ -126,8 +126,8 @@ function PointHistory() {
                 p
               </div>
               {expire ? (
-                <div className="text-sm xl:text-base mb-2 font-neo">
-                  만료예정일 : {expire}{" "}
+                <div className="text-sm xl:text-base mb-2 font-neo leading-6">
+                  만료예정일 : {expire} <br className="xl:hidden" />
                   <span className="text-rose-500">
                     (만료예정일이 경과되면 포인트가 소멸합니다)
                   </span>

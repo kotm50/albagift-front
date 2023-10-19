@@ -17,6 +17,7 @@ function Cert() {
   const [tid, setTid] = useState("");
 
   useEffect(() => {
+    console.log(location.state);
     if (location.state) {
       setSocialUser(location.state.socialUser);
     }

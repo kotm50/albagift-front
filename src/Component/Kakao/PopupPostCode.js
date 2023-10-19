@@ -27,21 +27,24 @@ const PopupPostCode = props => {
   };
 
   return (
-    <div
-      id="addrAPI"
-      className="fixed top-0 botton-0 w-full h-full bg-white border drop-shadow-md rounded z-40 xl:top-1/2 xl:left-1/2 xl:-translate-x-1/2 xl:-translate-y-1/2"
-    >
-      <DaumPostcode className="addrAPIInput" onComplete={handlePostCode} />
-      <button
-        type="button"
-        onClick={() => {
-          props.onClose();
-        }}
-        className="postCode_btn bg-rose-500 text-white py-2 w-full"
+    <>
+      <div
+        id="addrAPI"
+        className="fixed top-0 botton-0 w-full h-full bg-white border drop-shadow-md rounded z-50 xl:top-1/2 xl:left-1/2 xl:-translate-x-1/2 xl:-translate-y-1/2"
       >
-        닫기
-      </button>
-    </div>
+        <DaumPostcode className="addrAPIInput" onComplete={handlePostCode} />
+        <button
+          type="button"
+          onClick={() => {
+            props.onClose();
+          }}
+          className="postCode_btn bg-rose-500 text-white py-2 w-full"
+        >
+          닫기
+        </button>
+      </div>
+      <div className="opacity-25 fixed inset-0 z-40 bg-black h-screen overflow-hidden"></div>
+    </>
   );
 };
 

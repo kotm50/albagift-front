@@ -9,10 +9,14 @@ import queryString from "query-string";
 
 import axios from "axios";
 
+import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
+import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
+
 import PopupDom from "../../Kakao/PopupDom";
 import PopupPostCode from "../../Kakao/PopupPostCode";
 import NewPwd from "./NewPwd";
 import AgreeModal from "./AgreeModal";
+import AlertModal from "../../Layout/AlertModal";
 
 function EditUser(props) {
   const user = useSelector(state => state.user);
@@ -66,7 +70,19 @@ function EditUser(props) {
         },
       })
       .then(res => {
-        alert(`연동이 해제되었습니다`);
+        confirmAlert({
+          customUI: ({ onClose }) => {
+            return (
+              <AlertModal
+                onClose={onClose} // 닫기
+                title={"해제완료"} // 제목
+                message={"연동을 해제했습니다"} // 내용
+                type={"alert"} // 타입 confirm, alert
+                yes={"확인"} // 확인버튼 제목
+              />
+            );
+          },
+        });
         getUserInfo();
       })
       .catch(error => console.log(error));
@@ -84,11 +100,35 @@ function EditUser(props) {
         console.log(res);
         if (res.data.code === "C000") {
           let mypageURL = `${domain}/mypage/edit`;
-          alert("연동이 완료되었습니다.");
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"완료"} // 제목
+                  message={"연동이 완료되었습니다"} // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                />
+              );
+            },
+          });
           window.location.href = mypageURL;
         } else {
           let mypageURL = `${domain}/mypage/edit`;
-          alert(res.data.message);
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"결과"} // 제목
+                  message={res.data.message} // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                />
+              );
+            },
+          });
           window.location.href = mypageURL;
         }
       })
@@ -143,12 +183,38 @@ function EditUser(props) {
     let bValue = beforeValue;
     console.log(value);
     if (value === "") {
-      return alert("내용이 입력되지 않았습니다\n확인 후 다시 시도해 주세요");
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <AlertModal
+              onClose={onClose} // 닫기
+              title={"오류!!"} // 제목
+              message={"내용이 입력되지 않았습니다\n확인 후 다시 시도해 주세요"} // 내용
+              type={"alert"} // 타입 confirm, alert
+              yes={"확인"} // 확인버튼 제목
+            />
+          );
+        },
+      });
+      return false;
     }
 
     if (type === "mainAddr") {
       if (value === beforeValue.mainAddr) {
-        return alert("이전 값과 동일합니다\n확인 후 다시 시도해 주세요");
+        confirmAlert({
+          customUI: ({ onClose }) => {
+            return (
+              <AlertModal
+                onClose={onClose} // 닫기
+                title={"오류!!"} // 제목
+                message={"이전 값과 동일합니다\n확인 후 다시 시도해 주세요"} // 내용
+                type={"alert"} // 타입 confirm, alert
+                yes={"확인"} // 확인버튼 제목
+              />
+            );
+          },
+        });
+        return false;
       }
       data = {
         mainAddr: value,

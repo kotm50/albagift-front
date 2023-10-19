@@ -23,7 +23,7 @@ function SearchArea(props) {
           return (
             <AlertModal
               onClose={onClose} // 닫기
-              title={"오류!!"} // 제목
+              title={"오류"} // 제목
               message={"검색어를 입력해 주세요"} // 내용
               type={"alert"} // 타입 confirm, alert
               yes={"확인"} // 확인버튼 제목

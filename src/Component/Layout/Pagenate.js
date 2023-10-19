@@ -19,9 +19,9 @@ function Pagenate(props) {
   }, [props.page]);
   return (
     <>
-      {props.pagenate.length > 0 && (
+      {props.pagenate.length > 1 && (
         <div className="flex flex-row justify-center gap-3 my-5">
-          {props.page > 1 && (
+          {props.page > 2 && (
             <Link
               to={`${props.pathName}?page=1${
                 isSearching ? `&keyword=${props.keyword}` : ""

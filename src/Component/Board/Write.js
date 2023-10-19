@@ -97,7 +97,7 @@ function Write() {
             return (
               <AlertModal
                 onClose={onClose} // 닫기
-                title={"오류!!"} // 제목
+                title={"오류"} // 제목
                 message={"알 수 없는 오류가 발생했습니다"} // 내용
                 type={"alert"} // 타입 confirm, alert
                 yes={"뒤로 가기"} // 확인버튼 제목
@@ -128,7 +128,7 @@ function Write() {
             return (
               <AlertModal
                 onClose={onClose} // 닫기
-                title={"오류!!"} // 제목
+                title={"오류"} // 제목
                 message={"면접일시는 현재시간보다 이전이어야 합니다."} // 내용
                 type={"alert"} // 타입 confirm, alert
                 yes={"확인"} // 확인버튼 제목
@@ -177,7 +177,7 @@ function Write() {
                 return (
                   <AlertModal
                     onClose={onClose} // 닫기
-                    title={"오류!!"} // 제목
+                    title={"오류"} // 제목
                     message={res.data.message} // 내용
                     type={"alert"} // 타입 confirm, alert
                     yes={"확인"} // 확인버튼 제목
@@ -228,7 +228,7 @@ function Write() {
                 return (
                   <AlertModal
                     onClose={onClose} // 닫기
-                    title={"오류!!"} // 제목
+                    title={"오류"} // 제목
                     message={res.data.message} // 내용
                     type={"alert"} // 타입 confirm, alert
                     yes={"확인"} // 확인버튼 제목

@@ -30,7 +30,7 @@ function Admin() {
               return (
                 <AlertModal
                   onClose={onClose} // 닫기
-                  title={"오류!!"} // 제목
+                  title={"오류"} // 제목
                   message={
                     "관리자 전용 페이지입니다, 메인으로 이동합니다\n관리자 계정으로 로그인 하세요"
                   } // 내용

@@ -43,7 +43,7 @@ function Login() {
           return (
             <AlertModal
               onClose={onClose} // 닫기
-              title={"오류!!"} // 제목
+              title={"오류"} // 제목
               message={"이미 로그인 하셨습니다.\n메인으로 이동합니다"} // 내용
               type={"alert"} // 타입 confirm, alert
               yes={"확인"} // 확인버튼 제목
@@ -120,15 +120,6 @@ function Login() {
               );
             },
           });
-
-          let restore = window.confirm(
-            "이미 탈퇴한 회원입니다, 탈퇴를 취소하시겠습니까?"
-          );
-          if (restore) {
-            return true;
-          } else {
-            return alert("다른 계정으로 로그인 해 주세요");
-          }
         }
         if (res.data.code === "C000") {
           chkAdmin(token, res.data.user);

@@ -28,6 +28,7 @@ function EditUser(props) {
   const [userInfo, setUserInfo] = useState({});
   const [modal, setModal] = useState(false);
   const [domain, setDomain] = useState("");
+  const [correctEmail, setCorrectEmail] = useState(true);
   useEffect(() => {
     let domain = extractDomain();
     setDomain(domain);
@@ -188,7 +189,7 @@ function EditUser(props) {
           return (
             <AlertModal
               onClose={onClose} // 닫기
-              title={"오류!!"} // 제목
+              title={"오류"} // 제목
               message={"내용이 입력되지 않았습니다\n확인 후 다시 시도해 주세요"} // 내용
               type={"alert"} // 타입 confirm, alert
               yes={"확인"} // 확인버튼 제목
@@ -206,7 +207,7 @@ function EditUser(props) {
             return (
               <AlertModal
                 onClose={onClose} // 닫기
-                title={"오류!!"} // 제목
+                title={"오류"} // 제목
                 message={"이전 값과 동일합니다\n확인 후 다시 시도해 주세요"} // 내용
                 type={"alert"} // 타입 confirm, alert
                 yes={"확인"} // 확인버튼 제목
@@ -224,10 +225,22 @@ function EditUser(props) {
 
     if (type === "gender") {
       if (value === beforeValue.gender) {
-        return alert("이전 값과 동일합니다\n확인 후 다시 시도해 주세요");
+        confirmAlert({
+          customUI: ({ onClose }) => {
+            return (
+              <AlertModal
+                onClose={onClose} // 닫기
+                title={"오류"} // 제목
+                message={"이전 값과 동일합니다\n확인 후 다시 시도해 주세요"} // 내용
+                type={"alert"} // 타입 confirm, alert
+                yes={"확인"} // 확인버튼 제목
+              />
+            );
+          },
+        });
+        return false;
       }
     }
-    console.log(url, data);
     axios
       .patch(url, data, {
         headers: {
@@ -238,9 +251,21 @@ function EditUser(props) {
         console.log(res);
         if (res.data.code === "C000") {
           if (type === "password") {
-            logout();
+            logoutAlert();
           } else {
-            alert("수정이 완료되었습니다");
+            confirmAlert({
+              customUI: ({ onClose }) => {
+                return (
+                  <AlertModal
+                    onClose={onClose} // 닫기
+                    title={"완료"} // 제목
+                    message={"수정이 완료되었습니다"} // 내용
+                    type={"alert"} // 타입 confirm, alert
+                    yes={"확인"} // 확인버튼 제목
+                  />
+                );
+              },
+            });
             setBeforeValue(bValue);
           }
         }
@@ -257,12 +282,28 @@ function EditUser(props) {
       })
       .then(res => {
         dispatch(clearUser());
-        alert("비밀번호가 수정되었습니다.\n다시 로그인 해주세요");
       })
       .catch(e => {
         console.log(e);
       });
     navi("/login");
+  };
+
+  const logoutAlert = () => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <AlertModal
+            onClose={onClose} // 닫기
+            title={"수정완료"} // 제목
+            message={"비밀번호가 수정되었습니다.\n다시 로그인 해주세요"} // 내용
+            type={"alert"} // 타입 confirm, alert
+            yes={"확인"} // 확인버튼 제목
+            doIt={logout} // 확인시 실행할 함수
+          />
+        );
+      },
+    });
   };
 
   // 팝업창 열기
@@ -298,12 +339,48 @@ function EditUser(props) {
       })
       .then(res => {
         if (res.data.code === "C000") {
-          alert(res.data.message);
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"완료"} // 제목
+                  message={res.data.message} // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                />
+              );
+            },
+          });
+          return true;
         } else {
-          alert(`오류가 발생했습니다. (오류코드 : ${res.data.code})`);
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"오류"} // 제목
+                  message={`오류가 발생했습니다. (오류코드 : ${res.data.code})`} // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                />
+              );
+            },
+          });
+          return false;
         }
       })
       .catch(e => console.log(e));
+  };
+
+  //이메일 및 중복검사
+  const chkEmail = async () => {
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (emailPattern.test(email)) {
+      editIt("/api/v1/user/myinfo/editemail", "email", email);
+    } else {
+      setCorrectEmail(false);
+    }
   };
 
   return (
@@ -495,22 +572,32 @@ function EditUser(props) {
               id="inputEmail"
               className="border xl:border-0 p-2 w-full text-sm"
               value={email || ""}
-              onChange={e => setEmail(e.currentTarget.value)}
-              onBlur={e => setEmail(e.currentTarget.value)}
+              onChange={e => {
+                setEmail(e.currentTarget.value);
+                setCorrectEmail(true);
+              }}
+              onBlur={e => {
+                setEmail(e.currentTarget.value);
+                setCorrectEmail(true);
+              }}
               placeholder="이메일 주소를 입력하세요"
             />
           </div>
           <button
             className="bg-teal-500 hover:bg-teal-700 text-white p-2"
             onClick={e => {
-              alert(
-                "정책상 이메일 주소는 즉시 수정이 어렵습니다\n고객센터(1644-4223)에 문의해 주세요."
-              );
+              chkEmail();
             }}
           >
             수정하기
           </button>
         </div>
+        {!correctEmail && (
+          <div className="text-sm text-rose-500">
+            이메일 양식이 잘못되었습니다. <br className="block xl:hidden" />
+            확인 후 다시 입력해 주세요
+          </div>
+        )}
         <div
           id="social"
           className="grid grid-cols-1 xl:grid-cols-7 xl:divide-x xl:border"

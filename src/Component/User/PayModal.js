@@ -180,7 +180,7 @@ function PayModal(props) {
           <div className="px-2 py-4 text-center">
             위 내용으로 수정하시겠습니까?
           </div>
-          <div className="flex flex-row justify-center gap-1">
+          <div className="flex flex-row justify-center gap-3">
             <button
               className="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded"
               onClick={e => {
@@ -206,7 +206,7 @@ function PayModal(props) {
             면접날짜 수정하기
           </h2>
           <div className="px-2 py-4 text-center">수정 완료하였습니다</div>
-          <div className="flex flex-row justify-center gap-1">
+          <div className="flex flex-row justify-center gap-3">
             <button
               className="bg-stone-500 hover:bg-stone-700 text-white px-4 py-2 rounded"
               onClick={e => {
@@ -234,7 +234,7 @@ function PayModal(props) {
           <div className="px-2 py-4 text-center">
             위 지급신청을 삭제하시겠습니까?
           </div>
-          <div className="flex flex-row justify-center gap-1">
+          <div className="flex flex-row justify-center gap-3">
             <button
               className="bg-rose-500 hover:bg-rose-700 text-white px-4 py-2 rounded"
               onClick={e => {
@@ -260,7 +260,7 @@ function PayModal(props) {
             지급신청 취소
           </h2>
           <div className="px-2 py-4 text-center">신청내용을 삭제하였습니다</div>
-          <div className="flex flex-row justify-center gap-1">
+          <div className="flex flex-row justify-center gap-3">
             <button
               className="bg-stone-500 hover:bg-stone-700 text-white px-4 py-2 rounded"
               onClick={e => {
@@ -277,7 +277,7 @@ function PayModal(props) {
         <>
           <h2 className="text-lg font-neoextra mb-2 text-center">오류</h2>
           <div className="px-2 py-4 text-center">{errMsg}</div>
-          <div className="flex flex-row justify-center gap-1">
+          <div className="flex flex-row justify-center gap-3">
             <button
               className="bg-rose-500 hover:bg-rose-700 text-white px-4 py-2 rounded"
               onClick={e => {
@@ -293,7 +293,7 @@ function PayModal(props) {
                 props.onClose();
               }}
             >
-              취소하기
+              창 닫기
             </button>
           </div>
         </>

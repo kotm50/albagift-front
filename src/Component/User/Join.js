@@ -127,6 +127,9 @@ function Join() {
     if (pwd === "") {
       return "비밀번호가 입력되지 않았습니다";
     }
+    if (pwd !== pwdChk) {
+      return "비밀번호 확인을 진행해 주세요";
+    }
     if (!correctPwd) {
       return "비밀번호 양식이 잘못되었습니다";
     }

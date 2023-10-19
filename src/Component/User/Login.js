@@ -266,6 +266,7 @@ function Login() {
             })
           );
           chkProto(token, user);
+          goMain();
         }
       })
       .catch(e => {

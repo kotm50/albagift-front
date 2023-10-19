@@ -44,7 +44,7 @@ function EditUser(props) {
       kakaoLoginCheck(code);
     } else {
       setKakaoCheck(false);
-      getUserInfo(user.accessToken);
+      getUserInfo();
     }
     //setUserInfo(dummyUser);
     //eslint-disable-next-line
@@ -102,7 +102,7 @@ function EditUser(props) {
             );
           },
         });
-        getUserInfo(res.headers.authorization);
+        getUserInfo();
       })
       .catch(error => console.log(error));
   };
@@ -165,20 +165,14 @@ function EditUser(props) {
     let mypageURL = `${domain}/mypage/edit`;
     window.location.href = mypageURL;
   };
-  const getUserInfo = async t => {
-    let token;
-    if (t) {
-      token = t;
-    } else {
-      token = user.accessToken;
-    }
+  const getUserInfo = async () => {
     await axios
       .post("/api/v1/user/myinfo", null, {
-        headers: { Authorization: token },
+        headers: { Authorization: user.accessToken },
       })
       .then(res => {
         if (res.headers.authorization) {
-          if (res.headers.authorization !== token) {
+          if (res.headers.authorization !== user.accessToken) {
             dispatch(
               getNewToken({
                 accessToken: res.headers.authorization,
@@ -273,8 +267,8 @@ function EditUser(props) {
 
     const idPart = email.substring(0, 2); // 이메일 id 첫 2글자
     const domainPart = email.substring(atIndex + 1, atIndex + 2); // 도메인 첫 1글자
-    const modifiedId = `${idPart}******`;
-    const modifiedDomain = `${domainPart}******`;
+    const modifiedId = `${idPart}*****`;
+    const modifiedDomain = `${domainPart}*****`;
 
     // 조합하여 원하는 형식의 이메일을 만듭니다.
     const modifiedEmail = `${modifiedId}@${modifiedDomain}.com`;
@@ -419,7 +413,7 @@ function EditUser(props) {
                 );
               },
             });
-            getUserInfo(res.headers.authorization);
+            getUserInfo();
             setBeforeValue(bValue);
           }
         }
@@ -545,7 +539,10 @@ function EditUser(props) {
             className="my-2 mx-auto p-2 border shadow-lg rounded-lg grid grid-cols-1 gap-3 bg-white w-full"
           >
             <div className="grid grid-cols-1 divide-y">
-              <div id="id" className="grid grid-cols-7 gap-x-2">
+              <div
+                id="id"
+                className="grid grid-cols-7 gap-x-2 text-sm xl:text-base"
+              >
                 <div className="col-span-5 flex flex-col justify-center gap-y-2 py-4">
                   <div className="text-xl font-neoheavy text-left pl-2">
                     {id}
@@ -563,7 +560,10 @@ function EditUser(props) {
                   </button>
                 </div>
               </div>
-              <div id="pwd" className="grid grid-cols-7 gap-x-2">
+              <div
+                id="pwd"
+                className="grid grid-cols-7 gap-x-2 text-sm xl:text-base"
+              >
                 <div className="col-span-5 px-2 py-4">
                   <FaLock className="inline" /> 비밀번호
                 </div>
@@ -576,7 +576,10 @@ function EditUser(props) {
                   </button>
                 </div>
               </div>
-              <div id="mainAddr" className="grid grid-cols-7 gap-x-2">
+              <div
+                id="mainAddr"
+                className="grid grid-cols-7 gap-x-2 text-sm xl:text-base"
+              >
                 <div className="col-span-5 px-2 py-4">
                   <FaMapMarkerAlt className="inline" /> {mainAddr}
                 </div>
@@ -589,7 +592,10 @@ function EditUser(props) {
                   </button>
                 </div>
               </div>
-              <div id="email" className="grid grid-cols-7 gap-x-2">
+              <div
+                id="email"
+                className="grid grid-cols-7 gap-x-2 text-sm xl:text-base"
+              >
                 <div className="col-span-5 px-2 py-4">
                   <MdEmail className="inline" /> {email}
                 </div>
@@ -603,7 +609,10 @@ function EditUser(props) {
                 </div>
               </div>
 
-              <div id="kakao" className="grid grid-cols-7 gap-x-2">
+              <div
+                id="kakao"
+                className="grid grid-cols-7 gap-x-2 text-sm xl:text-base"
+              >
                 <div className="col-span-5 px-2 py-4">
                   <RiKakaoTalkFill className="inline" />{" "}
                   {socialType ? "연동중" : "미연동"}

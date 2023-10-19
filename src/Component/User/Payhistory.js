@@ -35,7 +35,6 @@ function Payhistory() {
   }, [location]);
 
   const loadList = async p => {
-    setList([]);
     let data = {
       boardId: "B02",
       page: p || 1,
@@ -81,6 +80,7 @@ function Payhistory() {
       })
       .catch(e => {
         console.log(e);
+        setList([]);
         setLoaded(true);
         return false;
       });

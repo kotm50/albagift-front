@@ -33,7 +33,6 @@ function PointHistory() {
   }, [location]);
 
   const loadList = async p => {
-    setList([]);
     let data = {
       page: p || 1,
       size: 20,
@@ -45,7 +44,6 @@ function PointHistory() {
         },
       })
       .then(res => {
-        console.log(res);
         setLoaded(true);
         if (res.data.code === "C000") {
           const totalP = res.data.totalPages;
@@ -70,6 +68,7 @@ function PointHistory() {
         setExpire(res.data.pointExpiryDate ?? "");
       })
       .catch(e => {
+        setList([]);
         setLoaded(true);
         return false;
       });

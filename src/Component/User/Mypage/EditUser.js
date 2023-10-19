@@ -210,6 +210,7 @@ function EditUser(props) {
   };
   //휴대폰 변경 전 본인인증
   const doCert = () => {
+    setModal(false);
     window.open(
       "/certification",
       "본인인증팝업",
@@ -224,8 +225,11 @@ function EditUser(props) {
   const changePhone = async d => {
     let data = d;
     data.gubun = "edit";
+
     await axios
-      .post("/api/v1/user/nice/dec/result", data)
+      .post("/api/v1/user/nice/dec/result", data, {
+        headers: { Authorization: user.accessToken },
+      })
       .then(res => {
         if (res.data.code === "C000") {
           alert(res.data.message);

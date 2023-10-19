@@ -1,6 +1,17 @@
+import { useEffect, useRef } from "react";
 import dompurify from "dompurify";
 
 function AlertModal(props) {
+  const confirmRef = useRef();
+  const alertRef = useRef();
+  useEffect(() => {
+    if (confirmRef.current) {
+      confirmRef.current.focus();
+    }
+    if (alertRef.current) {
+      alertRef.current.focus();
+    }
+  }, []);
   const sanitizer = dompurify.sanitize;
   return (
     <div id="alertmodal" className="max-w-screen p-4 bg-white border">
@@ -24,6 +35,7 @@ function AlertModal(props) {
         {props.type === "confirm" ? (
           <div className="grid grid-cols-2 gap-x-2">
             <button
+              ref={confirmRef}
               onClick={() => {
                 if (props.doIt) props.doIt();
                 props.onClose();
@@ -45,6 +57,7 @@ function AlertModal(props) {
         ) : (
           <div className="grid grid-cols-1">
             <button
+              ref={alertRef}
               onClick={() => {
                 if (props.doIt) props.doIt();
                 props.onClose();

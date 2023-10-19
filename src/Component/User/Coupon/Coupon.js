@@ -11,6 +11,7 @@ import { logoutAlert } from "../../LogoutUtil";
 import Pagenate from "../../Layout/Pagenate";
 
 import Sorry from "../../doc/Sorry";
+import Loading from "../../Layout/Loading";
 
 function Coupon() {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ function Coupon() {
   const [loadList, setLoadList] = useState("쿠폰을 불러오고 있습니다");
   const [totalPage, setTotalPage] = useState(1);
   const [pagenate, setPagenate] = useState([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     getCouponList(page);
@@ -31,6 +33,7 @@ function Coupon() {
   }, []);
 
   const getCouponList = async p => {
+    setLoaded(false);
     const data = {
       page: p,
       size: 20,
@@ -59,8 +62,14 @@ function Coupon() {
         const pagenate = generatePaginationArray(p, totalP);
         setPagenate(pagenate);
         setCouponList(res.data.couponList.reverse());
+        setLoaded(true);
       })
-      .catch(e => console.log(e));
+      .catch(e => {
+        console.log(e);
+        setCouponList([]);
+        setLoadList("조회된 쿠폰이 없습니다");
+        setLoaded(true);
+      });
   };
 
   function generatePaginationArray(currentPage, totalPage) {
@@ -102,23 +111,29 @@ function Coupon() {
 
   return (
     <div className="xl:container xl:mx-auto">
-      {couponList.length > 0 ? (
-        <div className="grid grid-cols-2 xl:grid-cols-5 gap-2">
-          {couponList.map((coupon, idx) => (
-            <div className="border p-2" key={idx}>
-              <CouponList coupon={coupon} />
+      {loaded ? (
+        <>
+          {couponList.length > 0 ? (
+            <div className="grid grid-cols-2 xl:grid-cols-5 gap-2">
+              {couponList.map((coupon, idx) => (
+                <div className="border p-2" key={idx}>
+                  <CouponList coupon={coupon} />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          ) : (
+            <Sorry message={loadList} />
+          )}
+          <Pagenate
+            pagenate={pagenate}
+            page={Number(page)}
+            totalPage={Number(totalPage)}
+            pathName={pathName}
+          />
+        </>
       ) : (
-        <Sorry message={loadList} />
+        <Loading />
       )}
-      <Pagenate
-        pagenate={pagenate}
-        page={Number(page)}
-        totalPage={Number(totalPage)}
-        pathName={pathName}
-      />
     </div>
   );
 }

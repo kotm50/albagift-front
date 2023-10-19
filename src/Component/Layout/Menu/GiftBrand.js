@@ -34,6 +34,7 @@ function GiftBrand(props) {
     await axios
       .get(listUrl, { token: user.accessToken })
       .then(res => {
+        console.log(res);
         setBrandList(res.data.brandsList);
       })
       .catch(e => {

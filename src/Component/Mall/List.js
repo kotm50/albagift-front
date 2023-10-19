@@ -75,13 +75,11 @@ function List() {
       page: p,
       size: 20,
     };
-    setGoods([]);
     await axios
       .get(listUrl, {
         params: data,
       })
       .then(res => {
-        console.log(res);
         const totalP = res.data.totalPages;
         setTotalPage(res.data.totalPages);
         const pagenate = generatePaginationArray(p, totalP);
@@ -109,6 +107,7 @@ function List() {
             );
           },
         });
+        setGoods([]);
       });
   };
 

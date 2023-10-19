@@ -26,9 +26,12 @@ function Join() {
   const [dupId, setDupId] = useState(true);
   const [correctPwdChk, setCorrectPwdChk] = useState(true);
   const [correctPwd, setCorrectPwd] = useState(true);
+
   const [pwdMsg, setPwdMsg] = useState("");
   const [mainAddr, setMainAddr] = useState("주소찾기를 눌러주세요");
   const [email, setEmail] = useState("");
+  const [dupEmail, setDupEmail] = useState(true);
+  const [correctEmail, setCorrectEmail] = useState(true);
 
   const [agreeAll, setAgreeAll] = useState(false);
   const [termsAgree, setTermsAgree] = useState(false);
@@ -202,6 +205,25 @@ function Join() {
       }
     } else {
       setCorrectId(false);
+    }
+  };
+  //이메일 및 중복검사
+  const chkEmail = async () => {
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (emailPattern.test(email)) {
+      setCorrectEmail(true);
+      await axios
+        .get("/api/v1/user/dupchkemail", { params: { email: email } })
+        .then(res => {
+          if (res.data.code === "C000") {
+            setDupEmail(true);
+          } else {
+            setDupEmail(false);
+          }
+        })
+        .catch(e => console.log(e));
+    } else {
+      setCorrectEmail(false);
     }
   };
   /*
@@ -515,15 +537,33 @@ function Join() {
                 id="inputEmail"
                 className="border xl:border-0 p-2 w-full text-sm"
                 value={email}
-                onChange={e => setEmail(e.currentTarget.value)}
+                onChange={e => {
+                  setEmail(e.currentTarget.value);
+                  setCorrectEmail(true);
+                }}
                 onBlur={e => {
                   setEmail(e.currentTarget.value);
+                  chkEmail();
                 }}
                 placeholder="이메일 주소를 입력하세요"
                 disabled={isSocialLogin}
               />
             </div>
           </div>
+
+          {!correctEmail && (
+            <div className="text-sm text-rose-500">
+              이메일 양식이 잘못되었습니다. <br className="block xl:hidden" />
+              확인 후 다시 입력해 주세요
+            </div>
+          )}
+
+          {!dupEmail && (
+            <div className="text-sm text-rose-500">
+              사용중인 이메일 입니다. <br className="block xl:hidden" />
+              확인 후 다시 입력해 주세요
+            </div>
+          )}
           <div className="border grid grid-cols-1 rounded px-2">
             <div id="allAgree" className="grid grid-cols-7 gap-1">
               <label

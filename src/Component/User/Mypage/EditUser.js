@@ -241,6 +241,43 @@ function EditUser(props) {
         return false;
       }
     }
+
+    if (type === "email") {
+      if (value === beforeValue.email) {
+        confirmAlert({
+          customUI: ({ onClose }) => {
+            return (
+              <AlertModal
+                onClose={onClose} // 닫기
+                title={"오류"} // 제목
+                message={"이전 값과 동일합니다\n확인 후 다시 시도해 주세요"} // 내용
+                type={"alert"} // 타입 confirm, alert
+                yes={"확인"} // 확인버튼 제목
+              />
+            );
+          },
+        });
+        return false;
+      }
+      if (!correctEmail) {
+        confirmAlert({
+          customUI: ({ onClose }) => {
+            return (
+              <AlertModal
+                onClose={onClose} // 닫기
+                title={"오류"} // 제목
+                message={
+                  "이메일 양식이 잘못 되었습니다.\n확인 후 다시 시도해 주세요"
+                } // 내용
+                type={"alert"} // 타입 confirm, alert
+                yes={"확인"} // 확인버튼 제목
+              />
+            );
+          },
+        });
+        return false;
+      }
+    }
     axios
       .patch(url, data, {
         headers: {
@@ -377,7 +414,7 @@ function EditUser(props) {
   const chkEmail = async () => {
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (emailPattern.test(email)) {
-      editIt("/api/v1/user/myinfo/editemail", "email", email);
+      setCorrectEmail(true);
     } else {
       setCorrectEmail(false);
     }
@@ -578,7 +615,7 @@ function EditUser(props) {
               }}
               onBlur={e => {
                 setEmail(e.currentTarget.value);
-                setCorrectEmail(true);
+                chkEmail();
               }}
               placeholder="이메일 주소를 입력하세요"
             />
@@ -586,7 +623,7 @@ function EditUser(props) {
           <button
             className="bg-teal-500 hover:bg-teal-700 text-white p-2"
             onClick={e => {
-              chkEmail();
+              editIt("/api/v1/user/myinfo/editemail", "email", email);
             }}
           >
             수정하기

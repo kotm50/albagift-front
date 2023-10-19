@@ -52,8 +52,6 @@ function Login() {
           );
         },
       });
-      alert("이미 로그인 하셨습니다.\n메인으로 이동합니다");
-      navi("/");
     }
     //eslint-disable-next-line
   }, []);
@@ -84,10 +82,23 @@ function Login() {
   };
 
   const login = async e => {
-    if (countOver) {
-      return alert("비밀번호 입력 횟수를 초과했습니다.");
-    }
     e.preventDefault();
+    if (countOver) {
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <AlertModal
+              onClose={onClose} // 닫기
+              title={"오류"} // 제목
+              message={"비밀번호 입력 횟수를 초과했습니다."} // 내용
+              type={"alert"} // 타입 confirm, alert
+              yes={"확인"} // 확인버튼 제목
+            />
+          );
+        },
+      });
+      return false;
+    }
     const data = {
       userId: id,
       userPwd: pwd,
@@ -98,9 +109,22 @@ function Login() {
       .then(res => {
         if (res.data.code === "E005") {
           setCountOver(true);
-          return alert(
-            "비밀번호 입력 횟수를 초과하였습니다.\n잠시 후 다시 시도해 주세요"
-          );
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"오류"} // 제목
+                  message={
+                    "비밀번호 입력 횟수를 초과하였습니다.\n잠시 후 다시 시도해 주세요"
+                  } // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                />
+              );
+            },
+          });
+          return false;
         }
         const token = res.headers.authorization;
         if (res.data.code === "E002") {
@@ -148,9 +172,35 @@ function Login() {
       .then(res => {
         if (res.data.code === "C000") {
           setPwd("");
-          return alert("탈퇴를 취소했습니다. 다시 로그인을 진행해 주세요.");
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"탈퇴 취소"} // 제목
+                  message={"탈퇴를 취소했습니다. 다시 로그인을 진행해 주세요."} // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                />
+              );
+            },
+          });
+          return true;
         } else {
-          return alert("알 수 없는 오류입니다\n관리자에게 문의해주세요");
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"오류"} // 제목
+                  message={"알 수 없는 오류입니다\n관리자에게 문의해주세요"} // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                />
+              );
+            },
+          });
+          return false;
         }
       })
       .catch(error => console.log(error));
@@ -190,8 +240,20 @@ function Login() {
               admin: true,
             })
           );
-          alert("관리자로 로그인 합니다");
-          navi("/");
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"안녕하세요"} // 제목
+                  message={"관리자로 로그인 합니다"} // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                  doIt={goMain} // 확인시 실행할 함수
+                />
+              );
+            },
+          });
         } else {
           dispatch(
             loginUser({
@@ -218,9 +280,21 @@ function Login() {
       })
       .then(res => {
         if (res.data.code === "C001") {
-          alert(res.data.message);
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"이관"} // 제목
+                  message={res.data.message} // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                  doIt={goMain} // 확인시 실행할 함수
+                />
+              );
+            },
+          });
         }
-        navi("/");
       })
       .catch(e => {
         console.log(e);

@@ -61,7 +61,7 @@ function Coupon() {
         setTotalPage(res.data.totalPages);
         const pagenate = generatePaginationArray(p, totalP);
         setPagenate(pagenate);
-        setCouponList(res.data.couponList.reverse());
+        setCouponList(res.data.couponList);
         setLoaded(true);
       })
       .catch(e => {

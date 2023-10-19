@@ -397,7 +397,7 @@ function EditUser(props) {
                 <AlertModal
                   onClose={onClose} // 닫기
                   title={"오류"} // 제목
-                  message={`오류가 발생했습니다. (오류코드 : ${res.data.code})`} // 내용
+                  message={res.data.message} // 내용
                   type={"alert"} // 타입 confirm, alert
                   yes={"확인"} // 확인버튼 제목
                 />

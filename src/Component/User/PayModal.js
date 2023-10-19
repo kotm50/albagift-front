@@ -276,8 +276,8 @@ function PayModal(props) {
       {err && (
         <>
           <h2 className="text-lg font-neoextra mb-2 text-center">오류</h2>
-          <div className="px-2 py-4">{errMsg}</div>
-          <div className="flex flex-row justify-start gap-1">
+          <div className="px-2 py-4 text-center">{errMsg}</div>
+          <div className="flex flex-row justify-center gap-1">
             <button
               className="bg-rose-500 hover:bg-rose-700 text-white px-4 py-2 rounded"
               onClick={e => {

@@ -24,7 +24,7 @@ function BeforeJoin(props) {
               onClose={onClose} // 닫기
               title={"오류"} // 제목
               message={"이미 로그인 하셨습니다.\n메인으로 이동합니다"} // 내용
-              type={"alert"} // 타입 confirm, alert
+              type={"alert"} // 타입 confirm(질문창), alert(경고창)
               yes={"확인"} // 확인버튼 제목
               doIt={goMain} // 확인시 실행할 함수
             />

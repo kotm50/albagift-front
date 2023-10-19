@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { getNewToken } from "../../../Reducer/userSlice";
 
-function PwdChk(props) {
+function PwdChk() {
+  const dispatch = useDispatch();
   const user = useSelector(state => state.user);
   const [id, setId] = useState("");
   const [pwd, setPwd] = useState("");
@@ -13,25 +15,9 @@ function PwdChk(props) {
 
   useEffect(() => {
     setId(user.userId);
-    let domain = extractDomain();
-    setDomain(domain);
+    setDomain(window.location.href);
     //eslint-disable-next-line
   }, []);
-
-  const extractDomain = () => {
-    let protocol = window.location.protocol; // 프로토콜을 가져옵니다. (예: http: 또는 https:)
-    let hostname = window.location.hostname; // 도메인 이름을 가져옵니다.
-    let port = window.location.port; // 포트 번호를 가져옵니다.
-
-    // 로컬호스트인 경우 프로토콜과 포트를 포함하여 반환
-    if (hostname === "localhost") {
-      return `${protocol}//${hostname}:${port}`;
-    }
-    let fullDomain = `${protocol}//${hostname}`;
-    // 일반 도메인인 경우 프로토콜과 함께 반환
-    return fullDomain;
-  };
-
   const identity = async e => {
     e.preventDefault();
     const data = {
@@ -42,8 +28,17 @@ function PwdChk(props) {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
+        if (res.headers.authorization) {
+          if (res.headers.authorization !== user.accessToken) {
+            dispatch(
+              getNewToken({
+                accessToken: res.headers.authorization,
+              })
+            );
+          }
+        }
         if (res.data.code === "C000") {
-          let mypageURL = `${domain}/mypage/edit`;
+          let mypageURL = `${domain}/edit`;
           window.location.href = mypageURL;
         } else {
           setErrMessage(res.data.message);

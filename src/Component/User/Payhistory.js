@@ -134,6 +134,8 @@ function Payhistory() {
               doc={doc}
               loadList={loadList}
               user={user}
+              dispatch={dispatch}
+              getNewToken={getNewToken}
               doLogout={doLogout}
             />
           );
@@ -172,7 +174,7 @@ function Payhistory() {
             <>
               <div className="text-xs xl:text-sm container mx-auto text-left mb-2">
                 내역을 <span className="hidden xl:inline">클릭</span>
-                <span clsaaName="inline xl:hidden">탭</span>하면 수정/삭제가
+                <span className="inline xl:hidden">탭</span>하면 수정/삭제가
                 가능합니다.
               </div>
               <div className="text-sm xl:text-base grid grid-cols-3 xl:grid-cols-4 py-2 bg-blue-50 divide-x">

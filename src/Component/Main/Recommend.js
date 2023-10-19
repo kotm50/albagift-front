@@ -34,7 +34,6 @@ function Recommend(props) {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        console.log(res);
         setLoadMsg(res.data.message);
         if (res.data.code === "C000") {
           if (c === 1) {

@@ -18,12 +18,6 @@ import NewPwd from "./NewPwd";
 import AgreeModal from "./AgreeModal";
 import AlertModal from "../../Layout/AlertModal";
 
-import { FaLock, FaMapMarkerAlt } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
-import { RiKakaoTalkFill } from "react-icons/ri";
-import { logoutAlert } from "../../LogoutUtil";
-import EmailModal from "./EmailModal";
-
 function EditUser(props) {
   const user = useSelector(state => state.user);
   const location = useLocation();
@@ -32,19 +26,16 @@ function EditUser(props) {
   const dispatch = useDispatch();
   const navi = useNavigate();
   const [userInfo, setUserInfo] = useState({});
-  const [personalModal, setPersonalModal] = useState(false);
-  const [pwdModal, setPwdModal] = useState(false);
-  const [emailModal, setEmailModal] = useState(false);
+  const [modal, setModal] = useState(false);
   const [domain, setDomain] = useState("");
-  const [kakaoCheck, setKakaoCheck] = useState(true);
+  const [correctEmail, setCorrectEmail] = useState(true);
   useEffect(() => {
     let domain = extractDomain();
     setDomain(domain);
+    getUserInfo();
     if (code !== "") {
+      console.log(code);
       kakaoLoginCheck(code);
-    } else {
-      setKakaoCheck(false);
-      getUserInfo(user.accessToken);
     }
     //setUserInfo(dummyUser);
     //eslint-disable-next-line
@@ -102,7 +93,7 @@ function EditUser(props) {
             );
           },
         });
-        getUserInfo(res.headers.authorization);
+        getUserInfo();
       })
       .catch(error => console.log(error));
   };
@@ -126,6 +117,7 @@ function EditUser(props) {
           }
         }
         if (res.data.code === "C000") {
+          let mypageURL = `${domain}/mypage/edit`;
           confirmAlert({
             customUI: ({ onClose }) => {
               return (
@@ -135,12 +127,13 @@ function EditUser(props) {
                   message={"연동이 완료되었습니다"} // 내용
                   type={"alert"} // 타입 confirm, alert
                   yes={"확인"} // 확인버튼 제목
-                  doIt={reload}
                 />
               );
             },
           });
+          window.location.href = mypageURL;
         } else {
+          let mypageURL = `${domain}/mypage/edit`;
           confirmAlert({
             customUI: ({ onClose }) => {
               return (
@@ -150,35 +143,25 @@ function EditUser(props) {
                   message={res.data.message} // 내용
                   type={"alert"} // 타입 confirm, alert
                   yes={"확인"} // 확인버튼 제목
-                  doIt={reload}
                 />
               );
             },
           });
+          window.location.href = mypageURL;
         }
       })
       .catch(e => {
         console.log(e, "에러");
       });
   };
-  const reload = () => {
-    let mypageURL = `${domain}/mypage/edit`;
-    window.location.href = mypageURL;
-  };
-  const getUserInfo = async t => {
-    let token;
-    if (t) {
-      token = t;
-    } else {
-      token = user.accessToken;
-    }
+  const getUserInfo = async () => {
     await axios
       .post("/api/v1/user/myinfo", null, {
-        headers: { Authorization: token },
+        headers: { Authorization: user.accessToken },
       })
       .then(res => {
         if (res.headers.authorization) {
-          if (res.headers.authorization !== token) {
+          if (res.headers.authorization !== user.accessToken) {
             dispatch(
               getNewToken({
                 accessToken: res.headers.authorization,
@@ -187,7 +170,7 @@ function EditUser(props) {
           }
         }
         if (res.data.code === "E999") {
-          logoutAlert(
+          logoutAlert2(
             null,
             null,
             dispatch,
@@ -215,18 +198,18 @@ function EditUser(props) {
 
   const [beforeValue, setBeforeValue] = useState({});
 
+  const [pwdOpen, setPwdOpen] = useState(false);
+
   // 팝업창 상태 관리
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
     setId(userInfo.userId);
     setName(userInfo.userName);
-    setPhone(getPhone(userInfo.phone || "01000000000"));
-    setBirth(getBirth(userInfo.birth || "000000", ".", 2));
-    setMainAddr(
-      modifyAddress(userInfo.mainAddr || "서울특별시 중구 세종대로 110")
-    );
-    setEmail(modifyEmail(userInfo.email || "abc@def.ghi"));
+    setPhone(userInfo.phone);
+    setBirth(userInfo.birth);
+    setMainAddr(userInfo.mainAddr);
+    setEmail(userInfo.email);
     setBeforeValue({
       mainAddr: userInfo.mainAddr,
       email: userInfo.email,
@@ -234,76 +217,10 @@ function EditUser(props) {
     setSocialType(userInfo.socialType);
   }, [userInfo]);
 
-  //생일변환
-  const getBirth = (str, separator, interval) => {
-    let result = "";
-    for (let i = 0; i < str.length; i += interval) {
-      let chunk = str.substring(i, i + interval);
-      result += chunk + separator;
-    }
-    // 맨 마지막의 separator를 제거하여 반환합니다.
-    return result.slice(0, -1);
-  };
-
-  //휴대폰변환
-  const getPhone = str => {
-    if (str.length !== 11) {
-      // 문자열이 11자리가 아닌 경우에 대한 예외 처리
-      return "Invalid input";
-    }
-
-    const firstPart = str.substring(0, 3); // 1, 2, 3번째 문자열
-    const secondPart = "****"; // 4, 5, 6, 7번째 문자열은 '*'로 대체
-    const thirdPart = str.substring(7, 11); // 8, 9, 10, 11번째 문자열
-
-    // 조합하여 원하는 형식의 문자열을 만듭니다.
-    const transformedString = `${firstPart}-${secondPart}-${thirdPart}`;
-    return transformedString;
-  };
-
-  //이메일변환
-  const modifyEmail = email => {
-    const atIndex = email.indexOf("@");
-    const dotIndex = email.lastIndexOf(".");
-
-    if (atIndex === -1 || dotIndex === -1) {
-      // '@' 또는 '.'이 없는 경우에 대한 예외 처리
-      return "Invalid email";
-    }
-
-    const idPart = email.substring(0, 2); // 이메일 id 첫 2글자
-    const domainPart = email.substring(atIndex + 1, atIndex + 2); // 도메인 첫 1글자
-    const modifiedId = `${idPart}******`;
-    const modifiedDomain = `${domainPart}******`;
-
-    // 조합하여 원하는 형식의 이메일을 만듭니다.
-    const modifiedEmail = `${modifiedId}@${modifiedDomain}.com`;
-    return modifiedEmail;
-  };
-
-  //주소지 변환
-  const modifyAddress = address => {
-    const addressArray = address.split(" ");
-    if (addressArray.length < 4) {
-      // 주소지가 너무 짧은 경우에 대한 예외 처리
-      return "Invalid address";
-    }
-
-    const firstPart = addressArray[0] + " " + addressArray[1]; // 첫번째와 두번째 부분
-    const thirdPart =
-      addressArray[2].endsWith("로") ||
-      addressArray[2].endsWith("동") ||
-      addressArray[2].endsWith("리")
-        ? ""
-        : addressArray[2]; // 세번째 부분
-
-    // 조합하여 원하는 형식의 주소를 만듭니다.
-    const modifiedAddress = `${firstPart} ${thirdPart}`;
-    return modifiedAddress;
-  };
   const editIt = async (url, type, value) => {
     let data;
     let bValue = beforeValue;
+    console.log(value);
     if (value === "") {
       confirmAlert({
         customUI: ({ onClose }) => {
@@ -380,6 +297,24 @@ function EditUser(props) {
         });
         return false;
       }
+      if (!correctEmail) {
+        confirmAlert({
+          customUI: ({ onClose }) => {
+            return (
+              <AlertModal
+                onClose={onClose} // 닫기
+                title={"오류"} // 제목
+                message={
+                  "이메일 양식이 잘못 되었습니다.\n확인 후 다시 시도해 주세요"
+                } // 내용
+                type={"alert"} // 타입 confirm, alert
+                yes={"확인"} // 확인버튼 제목
+              />
+            );
+          },
+        });
+        return false;
+      }
 
       data = {
         email: value,
@@ -393,6 +328,7 @@ function EditUser(props) {
         },
       })
       .then(res => {
+        console.log(res);
         if (res.headers.authorization) {
           if (res.headers.authorization !== user.accessToken) {
             dispatch(
@@ -404,7 +340,7 @@ function EditUser(props) {
         }
         if (res.data.code === "C000") {
           if (type === "password") {
-            logoutAlert2();
+            logoutAlert();
           } else {
             confirmAlert({
               customUI: ({ onClose }) => {
@@ -419,7 +355,6 @@ function EditUser(props) {
                 );
               },
             });
-            getUserInfo(res.headers.authorization);
             setBeforeValue(bValue);
           }
         }
@@ -441,6 +376,23 @@ function EditUser(props) {
         console.log(e);
       });
     navi("/login");
+  };
+
+  const logoutAlert = () => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <AlertModal
+            onClose={onClose} // 닫기
+            title={"수정완료"} // 제목
+            message={"비밀번호가 수정되었습니다.\n다시 로그인 해주세요"} // 내용
+            type={"alert"} // 타입 confirm, alert
+            yes={"확인"} // 확인버튼 제목
+            doIt={logout} // 확인시 실행할 함수
+          />
+        );
+      },
+    });
   };
 
   const logoutAlert2 = () => {
@@ -471,7 +423,7 @@ function EditUser(props) {
   };
   //휴대폰 변경 전 본인인증
   const doCert = () => {
-    setPersonalModal(false);
+    setModal(false);
     window.open(
       "/certification",
       "본인인증팝업",
@@ -536,138 +488,301 @@ function EditUser(props) {
       .catch(e => console.log(e));
   };
 
+  //이메일 및 중복검사
+  const chkEmail = async () => {
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (emailPattern.test(email)) {
+      setCorrectEmail(true);
+    } else {
+      setCorrectEmail(false);
+    }
+  };
+
   return (
-    <>
-      {kakaoCheck ? null : (
-        <>
-          <div
-            id="editArea"
-            className="my-2 mx-auto p-2 border shadow-lg rounded-lg grid grid-cols-1 gap-3 bg-white w-full"
+    <div>
+      <div
+        id="editArea"
+        className="my-2 mx-auto p-2 border shadow-lg rounded-lg grid grid-cols-1 gap-3 bg-white w-full"
+      >
+        <div className="text-lg font-medium text-center">개인정보 수정하기</div>
+        <div
+          id="id"
+          className={`grid grid-cols-1 xl:grid-cols-7 xl:divide-x xl:border`}
+        >
+          <label
+            htmlFor="inputId"
+            className={`text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100`}
           >
-            <div className="grid grid-cols-1 divide-y">
-              <div id="id" className="grid grid-cols-7 gap-x-2">
-                <div className="col-span-5 flex flex-col justify-center gap-y-2 py-4">
-                  <div className="text-xl font-neoheavy text-left pl-2">
-                    {id}
-                    <span className="text-base font-neobold"> ({name})님</span>
-                  </div>
-                  <div className="text-sm text-left pl-2">{birth}</div>
-                  <div className="text-sm text-left pl-2">{phone}</div>
-                </div>
-                <div className="flex flex-col justify-center col-span-2">
-                  <button
-                    className="p-2 bg-gray-100 hover:bg-gray-200 text-sm rounded"
-                    onClick={e => setPersonalModal(true)}
-                  >
-                    수정
-                  </button>
-                </div>
-              </div>
-              <div id="pwd" className="grid grid-cols-7 gap-x-2">
-                <div className="col-span-5 px-2 py-4">
-                  <FaLock className="inline" /> 비밀번호
-                </div>
-                <div className="flex flex-col justify-center col-span-2">
-                  <button
-                    className="p-2 bg-gray-100 hover:bg-gray-200 text-sm rounded"
-                    onClick={e => setPwdModal(true)}
-                  >
-                    수정
-                  </button>
-                </div>
-              </div>
-              <div id="mainAddr" className="grid grid-cols-7 gap-x-2">
-                <div className="col-span-5 px-2 py-4">
-                  <FaMapMarkerAlt className="inline" /> {mainAddr}
-                </div>
-                <div className="flex flex-col justify-center col-span-2">
-                  <button
-                    className="p-2 bg-gray-100 hover:bg-gray-200 text-sm rounded"
-                    onClick={e => openPostCode()}
-                  >
-                    수정
-                  </button>
-                </div>
-              </div>
-              <div id="email" className="grid grid-cols-7 gap-x-2">
-                <div className="col-span-5 px-2 py-4">
-                  <MdEmail className="inline" /> {email}
-                </div>
-                <div className="flex flex-col justify-center col-span-2">
-                  <button
-                    className="p-2 bg-gray-100 hover:bg-gray-200 text-sm rounded"
-                    onClick={e => setEmailModal(true)}
-                  >
-                    수정
-                  </button>
-                </div>
-              </div>
-
-              <div id="kakao" className="grid grid-cols-7 gap-x-2">
-                <div className="col-span-5 px-2 py-4">
-                  <RiKakaoTalkFill className="inline" />{" "}
-                  {socialType ? "연동중" : "미연동"}
-                </div>
-                {socialType ? (
-                  <div className="flex flex-col justify-center col-span-2">
-                    <button
-                      className="p-2 bg-gray-100 hover:bg-gray-200 text-sm rounded"
-                      onClick={deleteKakao}
-                    >
-                      해제
-                    </button>
-                  </div>
-                ) : (
-                  <div className="flex flex-col justify-center col-span-2">
-                    <button
-                      className="p-2 bg-gray-100 hover:bg-gray-200 text-sm rounded"
-                      onClick={kakaoLogin}
-                    >
-                      연동
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-            {personalModal ? (
-              <AgreeModal doCert={doCert} setPersonalModal={setPersonalModal} />
-            ) : null}
-            {pwdModal ? (
-              <NewPwd setPwdModal={setPwdModal} logoutAlert={logoutAlert2} />
-            ) : null}
-            {emailModal ? (
-              <EmailModal
-                doCert={doCert}
-                setEmailModal={setEmailModal}
-                editIt={editIt}
+            아이디
+          </label>
+          <div className="xl:col-span-6">
+            <input
+              type="text"
+              id="inputId"
+              className={`border xl:border-0 p-2 w-full text-sm`}
+              value={id || ""}
+              onChange={e => {
+                setId(e.currentTarget.value);
+              }}
+              onBlur={e => {
+                setId(e.currentTarget.value);
+              }}
+              placeholder="영어와 숫자만 입력하세요"
+              autoComplete="off"
+              disabled
+            />
+          </div>
+        </div>
+        <div
+          id="pwd"
+          className="grid grid-cols-1 xl:grid-cols-7 xl:divide-x xl:border"
+        >
+          <div
+            htmlFor="inputPwd"
+            className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100 xl:p-2"
+          >
+            비밀번호
+          </div>
+          <div className="xl:col-span-6">
+            {pwdOpen ? (
+              <NewPwd
+                setPwdOpen={setPwdOpen}
+                logoutAlert={logoutAlert}
+                user={user}
               />
-            ) : null}
-          </div>
-
-          <div id="cancelArea" className="w-full mt-5">
-            <Link
-              to="/mypage/cancel"
-              className="transition p-2 text-xs hover:text-stone-500"
-            >
-              회원탈퇴
-            </Link>
-          </div>
-
-          <div id="popupDom" className={isPopupOpen ? "popupModal" : undefined}>
-            {isPopupOpen && (
-              <PopupDom>
-                <PopupPostCode
-                  onClose={closePostCode}
-                  setMainAddr={setMainAddr}
-                  modify={true}
-                  editIt={editIt}
-                />
-              </PopupDom>
+            ) : (
+              <div className="p-2">
+                <button
+                  className="w-full p-2 bg-blue-500 hover:bg-blue-700 text-white rounded-full hover:animate-wiggle"
+                  onClick={e => setPwdOpen(true)}
+                >
+                  비밀번호 변경하기
+                </button>
+              </div>
             )}
           </div>
-        </>
-      )}
-    </>
+        </div>
+
+        <div
+          id="name"
+          className="grid grid-cols-1 xl:grid-cols-7 xl:divide-x xl:border"
+        >
+          <label
+            htmlFor="inputName"
+            className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100"
+          >
+            이름
+          </label>
+          <div className="xl:col-span-6">
+            <input
+              type="text"
+              id="inputName"
+              className="border xl:border-0 p-2 w-full text-sm"
+              value={name || ""}
+              onChange={e => setName(e.currentTarget.value)}
+              onBlur={e => setName(e.currentTarget.value)}
+              placeholder="이름을 입력해 주세요"
+              disabled
+            />
+          </div>
+        </div>
+        <div
+          id="birth"
+          className="grid grid-cols-1 xl:grid-cols-7 xl:divide-x xl:border"
+        >
+          <label
+            htmlFor="inputBirth"
+            className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100"
+          >
+            생년월일
+          </label>
+          <div className="xl:col-span-6">
+            <input
+              type="text"
+              id="inputBirth"
+              className="border xl:border-0 p-2 w-full text-sm"
+              value={birth || ""}
+              placeholder="6자리 숫자로 입력하세요 - 990101"
+              disabled
+            />
+          </div>
+        </div>
+        <div
+          id="phone"
+          className="grid grid-cols-1 xl:grid-cols-7 xl:divide-x xl:border"
+        >
+          <label
+            htmlFor="inputPhone"
+            className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100"
+          >
+            연락처
+          </label>
+          <div className="xl:col-span-5">
+            <input
+              type="text"
+              id="inputPhone"
+              className="border xl:border-0 p-2 w-full text-sm"
+              value={phone || ""}
+              placeholder="숫자만 입력해 주세요 - 01012345678"
+              disabled
+            />
+          </div>
+          <button
+            className="bg-teal-500 hover:bg-teal-700 text-white p-2"
+            onClick={e => {
+              setModal(true);
+            }}
+          >
+            수정하기
+          </button>
+        </div>
+        <div className="text-xs text-center xl:text-right p-1">
+          이름/연락처를 수정하려면{" "}
+          <span className="font-neoextra">본인인증</span>이 필요합니다
+        </div>
+        {modal ? <AgreeModal doCert={doCert} setModal={setModal} /> : null}
+        <div
+          id="mainAddr"
+          className="grid grid-cols-1 xl:grid-cols-7 xl:divide-x xl:border"
+        >
+          <label
+            htmlFor="inputMainAddr"
+            className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100"
+          >
+            주소
+          </label>
+          <div className="xl:col-span-5 grid grid-cols-3 gap-1">
+            <div className="col-span-2" title={mainAddr}>
+              <input
+                type="text"
+                id="inputMainAddr"
+                className={`border xl:border-0 p-2 w-full text-sm ${
+                  mainAddr === "주소찾기를 눌러주세요"
+                    ? "text-stone-500"
+                    : undefined
+                }`}
+                value={mainAddr || ""}
+                onChange={e => setMainAddr(e.currentTarget.value)}
+                onBlur={e => setMainAddr(e.currentTarget.value)}
+                disabled
+              />
+            </div>
+          </div>
+          <button
+            className="bg-teal-500 hover:bg-teal-700 text-white p-2"
+            onClick={e => openPostCode()}
+          >
+            주소수정
+          </button>
+        </div>
+        <div
+          id="email"
+          className="grid grid-cols-1 xl:grid-cols-7 xl:divide-x xl:border"
+        >
+          <label
+            htmlFor="inputEmail"
+            className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100"
+          >
+            이메일
+          </label>
+          <div className="xl:col-span-5">
+            <input
+              type="text"
+              id="inputEmail"
+              className="border xl:border-0 p-2 w-full text-sm"
+              value={email || ""}
+              onChange={e => {
+                setEmail(e.currentTarget.value);
+                setCorrectEmail(true);
+              }}
+              onBlur={e => {
+                setEmail(e.currentTarget.value);
+                chkEmail();
+              }}
+              placeholder="이메일 주소를 입력하세요"
+            />
+          </div>
+          <button
+            className="bg-teal-500 hover:bg-teal-700 text-white p-2"
+            onClick={e => {
+              editIt("/api/v1/user/myinfo/editemail", "email", email);
+            }}
+          >
+            수정하기
+          </button>
+        </div>
+        {!correctEmail && (
+          <div className="text-sm text-rose-500">
+            이메일 양식이 잘못되었습니다. <br className="block xl:hidden" />
+            확인 후 다시 입력해 주세요
+          </div>
+        )}
+        <div
+          id="social"
+          className="grid grid-cols-1 xl:grid-cols-7 xl:divide-x xl:border"
+        >
+          <span className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100">
+            간편로그인
+          </span>
+          <div className="xl:col-span-5">
+            {socialType ? (
+              <div className="p-2">이미 연동된 계정입니다</div>
+            ) : (
+              <button
+                className="transition duration-100 w-full bg-yellow-300 hover:bg-yellow-500 p-2 text-black rounded hover:animate-wiggle"
+                onClick={kakaoLogin}
+              >
+                카카오 간편로그인
+              </button>
+            )}
+          </div>
+          <button
+            className="bg-teal-500 hover:bg-teal-700 text-white p-2 disabled:bg-gray-500"
+            onClick={deleteKakao}
+            disabled={!socialType}
+          >
+            연동해제
+          </button>
+        </div>
+        <div className="text-center text-sm text-gray-500 border-b pb-2">
+          수정하신 항목을 확인하시고 문제가 없으시다면 <br />각 항목 우측의
+          <span className="text-teal-500">'수정하기'</span> 버튼으로 회원정보를
+          수정하세요 <br />
+          수정을 완료하셨으면
+          <span className="text-red-500">'메인으로 이동'</span> 버튼으로
+          메인페이지로 돌아가세요
+        </div>
+        <div className="w-full">
+          <Link
+            to="/"
+            className="block transition duration-100 w-full border text-center hover:bg-red-50 border-red-500 hover:border-red-700 p-2 text-red-500 hover:text-red-700 rounded"
+          >
+            메인으로 이동
+          </Link>
+        </div>
+        <div className="w-full text-center">
+          <Link
+            to="/mypage/cancel"
+            className="transition text-center p-2 text-xs hover:text-stone-500"
+          >
+            회원탈퇴
+          </Link>
+        </div>
+      </div>
+
+      <div id="popupDom" className={isPopupOpen ? "popupModal" : undefined}>
+        {isPopupOpen && (
+          <PopupDom>
+            <PopupPostCode
+              onClose={closePostCode}
+              setMainAddr={setMainAddr}
+              modify={true}
+              editIt={editIt}
+            />
+          </PopupDom>
+        )}
+      </div>
+    </div>
   );
 }
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { buyGift } from "../../Reducer/userSlice";
+import { buyGift, getNewToken } from "../../Reducer/userSlice";
 
 import { clearUser } from "../../Reducer/userSlice";
 import axios from "axios";
@@ -155,6 +155,15 @@ function Detail() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
+        if (res.headers.authorization) {
+          if (res.headers.authorization !== user.accessToken) {
+            dispatch(
+              getNewToken({
+                accessToken: res.headers.authorization,
+              })
+            );
+          }
+        }
         if (res.data.code === "E999") {
           logoutAlert(null, null, dispatch, clearUser, navi, user);
           setGoods("");

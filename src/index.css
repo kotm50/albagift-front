@@ -150,8 +150,17 @@ input[type="number"] {
   max-width:640px;
 }
 
- #editArea {
-  max-width:1000px;
+
+#editArea {
+  width:95%;
+  max-width:480px;
+  margin:0 auto;
+}
+
+#cancelArea {
+  width:95%;
+  max-width:480px;
+  margin:20px auto 0;
 }
 
 
@@ -263,6 +272,11 @@ div.footer-top {
 #paymodal {
   width:480px;
   max-width:95vw;
+  z-index:999;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
 }
 
 .react-confirm-alert-overlay {

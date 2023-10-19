@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { clearUser } from "../../../Reducer/userSlice";
+import { clearUser, getNewToken } from "../../../Reducer/userSlice";
 
 import axios from "axios";
 
@@ -53,7 +53,15 @@ function CouponList(props) {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        console.log(res);
+        if (res.headers.authorization) {
+          if (res.headers.authorization !== user.accessToken) {
+            dispatch(
+              getNewToken({
+                accessToken: res.headers.authorization,
+              })
+            );
+          }
+        }
         if (res.data.code === "E999") {
           logoutAlert(res.data.message);
           return false;

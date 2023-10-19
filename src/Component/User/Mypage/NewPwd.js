@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import axios from "axios";
 
 import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 import AlertModal from "../../Layout/AlertModal";
+import { getNewToken } from "../../../Reducer/userSlice";
 
 function NewPwd(props) {
+  const pwdRef = useRef();
+  const user = useSelector(state => state.user);
+  const dispatch = useDispatch();
   const [beforePwd, setBeforePwd] = useState("");
   const [pwd, setPwd] = useState("");
   const [pwdChk, setPwdChk] = useState("");
@@ -14,6 +19,11 @@ function NewPwd(props) {
   const [correctPwd, setCorrectPwd] = useState(true);
   const [errMsg, setErrMsg] = useState("");
   const [isErr, setIsErr] = useState(false);
+
+  useEffect(() => {
+    pwdRef.current.focus();
+    //eslint-disable-next-line
+  }, []);
 
   //비밀번호 양식 확인
   const testPwd = () => {
@@ -100,13 +110,23 @@ function NewPwd(props) {
         { afterPwd: pwd, beforePwd: beforePwd },
         {
           headers: {
-            Authorization: props.user.accessToken,
+            Authorization: user.accessToken,
           },
         }
       )
       .then(res => {
+        if (res.headers.authorization) {
+          if (res.headers.authorization !== user.accessToken) {
+            dispatch(
+              getNewToken({
+                accessToken: res.headers.authorization,
+              })
+            );
+          }
+        }
         if (res.data.code === "C000") {
-          props.logout();
+          props.setPwdModal(false);
+          props.logoutAlert();
         } else if (res.data.code === "E001") {
           setErrMsg(res.data.message);
           setIsErr(true);
@@ -117,7 +137,7 @@ function NewPwd(props) {
       });
   };
   const cancelChange = () => {
-    props.setPwdOpen(false);
+    props.setPwdModal(false);
     setBeforePwd("");
     setPwd("");
     setPwdChk("");
@@ -125,159 +145,151 @@ function NewPwd(props) {
     setCorrectPwd(true);
   };
   return (
-    <form onSubmit={e => e.preventDefault()}>
-      <div className="p-2">
-        <button
-          className="w-full p-2 text-blue-500 hover:text-blue-700 bg-gray-100 hover:bg-gray-200 rounded-full hover:animate-wiggle"
-          onClick={e => cancelChange()}
-        >
-          비밀번호 변경취소
-        </button>
-      </div>
-      <div className="xl:p-2">
+    <>
+      <form onSubmit={e => editPwd(e)}>
         <div
           id="editArea"
-          className="my-2 mx-auto p-2 border rounded-lg grid grid-cols-1 gap-3 bg-gray-50 w-full"
+          className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 outline-none focus:outline-none shadow-lg"
         >
-          <div
-            id="beforePwd"
-            className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
-              isErr ? "xl:border-red-500" : undefined
-            }`}
-          >
-            <label
-              htmlFor="inputPwd"
-              className={`text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 ${
-                !isErr ? "xl:bg-gray-100" : "xl:bg-red-100"
-              } `}
-            >
-              기존 비밀번호
-            </label>
-            <div className="xl:col-span-4">
-              <input
-                type="password"
-                id="inputBeforePwd"
-                length="21"
-                className={`border ${
-                  isErr ? "border-red-500" : undefined
-                } xl:border-0 p-2 w-full text-sm`}
-                value={beforePwd}
-                onChange={e => {
-                  setBeforePwd(e.currentTarget.value);
-                  setIsErr(false);
-                }}
-                onBlur={e => {
-                  setBeforePwd(e.currentTarget.value);
-                }}
-                placeholder="현재 사용중인 비밀번호"
-                autoComplete="off"
-              />
+          <div className="xl:p-2">
+            <div className="my-2 mx-auto p-2 border rounded-lg grid grid-cols-1 gap-3 bg-gray-50 w-full">
+              <h2 className="my-3 text-2xl font-neoextra text-center">
+                비밀번호 변경하기
+              </h2>
+              <div id="beforePwd" className={`grid grid-cols-1`}>
+                <label
+                  htmlFor="inputBeforePwd"
+                  className={`text-sm text-left flex flex-col justify-center mb-2 `}
+                >
+                  기존 비밀번호
+                </label>
+                <div className="xl:col-span-4">
+                  <input
+                    ref={pwdRef}
+                    type="password"
+                    id="inputBeforePwd"
+                    length="21"
+                    className={`border ${
+                      isErr ? "border-red-500" : undefined
+                    } p-2 w-full text-sm`}
+                    value={beforePwd}
+                    onChange={e => {
+                      setBeforePwd(e.currentTarget.value);
+                      setIsErr(false);
+                    }}
+                    onBlur={e => {
+                      setBeforePwd(e.currentTarget.value);
+                    }}
+                    placeholder="현재 사용중인 비밀번호"
+                    autoComplete="off"
+                  />
+                </div>
+              </div>
+              {isErr && <div className="text-sm text-rose-500">{errMsg}</div>}
+              <div id="pwd" className={`grid grid-cols-1`}>
+                <label
+                  htmlFor="inputPwd"
+                  className={`text-sm text-left flex flex-col justify-center mb-2 `}
+                >
+                  새 비밀번호
+                </label>
+                <div className="xl:col-span-4">
+                  <input
+                    type="password"
+                    id="inputPwd"
+                    length="21"
+                    className={`border ${
+                      !correctPwd ? "border-red-500" : undefined
+                    } p-2 w-full text-sm`}
+                    value={pwd}
+                    onChange={e => {
+                      if (e.currentTarget.value.length > 20) {
+                        pwdAlert();
+                        setPwd(e.currentTarget.value.substring(0, 20));
+                      } else {
+                        setPwd(e.currentTarget.value);
+                      }
+                    }}
+                    onBlur={e => {
+                      if (e.currentTarget.value.length > 20) {
+                        pwdAlert();
+                        setPwd(e.currentTarget.value.substring(0, 20));
+                      } else {
+                        setPwd(e.currentTarget.value);
+                      }
+                      if (pwd !== "") testPwd();
+                    }}
+                    placeholder="영어/숫자/특수문자 중 2가지 이상"
+                    autoComplete="off"
+                  />
+                </div>
+              </div>
+              {!correctPwd && (
+                <div className="text-sm text-rose-500">
+                  비밀번호 양식이 틀렸습니다 <br className="block xl:hidden" />
+                  확인 후 다시 입력해 주세요
+                </div>
+              )}
+              <div
+                id="pwdChk"
+                className={`grid grid-cols-1 ${
+                  !correctPwdChk ? "xl:border-red-500" : undefined
+                }`}
+              >
+                <label
+                  htmlFor="inputPwdChk"
+                  className={`text-sm text-left flex flex-col justify-center mb-2 `}
+                >
+                  새 비밀번호확인
+                </label>
+                <div className="xl:col-span-4">
+                  <input
+                    type="password"
+                    id="inputPwdChk"
+                    length="21"
+                    className={`border ${
+                      !correctPwdChk ? "border-red-500" : undefined
+                    } p-2 w-full text-sm`}
+                    value={pwdChk}
+                    onChange={e => {
+                      setPwdChk(e.currentTarget.value);
+                    }}
+                    onBlur={e => {
+                      setPwdChk(e.currentTarget.value);
+                      if (pwdChk !== "") chkPwd();
+                    }}
+                    placeholder="비밀번호를 한번 더 입력해 주세요"
+                    autoComplete="off"
+                  />
+                </div>
+              </div>
+              {!correctPwdChk && (
+                <div className="text-sm text-rose-500">
+                  비밀번호가 일치하지 않습니다{" "}
+                  <br className="block xl:hidden" />
+                  확인 후 다시 입력해 주세요
+                </div>
+              )}
+              <div className="p-2 flex justify-center gap-x-2">
+                <button
+                  className="bg-teal-500 hover:bg-teal-700 text-white py-2 px-10"
+                  onClick={e => editPwd(e)}
+                >
+                  수정하기
+                </button>
+                <button
+                  className="px-4 py-2 bg-gray-500 hover:bg-gray-700 text-white"
+                  onClick={e => cancelChange()}
+                >
+                  취소하기
+                </button>
+              </div>
             </div>
-          </div>
-          {isErr && <div className="text-sm text-rose-500">{errMsg}</div>}
-          <div
-            id="pwd"
-            className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
-              !correctPwd ? "xl:border-red-500" : null
-            }`}
-          >
-            <label
-              htmlFor="inputPwd"
-              className={`text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 ${
-                correctPwd ? "xl:bg-gray-100" : "xl:bg-red-100"
-              } `}
-            >
-              새 비밀번호
-            </label>
-            <div className="xl:col-span-4">
-              <input
-                type="password"
-                id="inputPwd"
-                length="21"
-                className={`border ${
-                  !correctPwd ? "border-red-500" : undefined
-                } xl:border-0 p-2 w-full text-sm`}
-                value={pwd}
-                onChange={e => {
-                  if (e.currentTarget.value.length > 20) {
-                    pwdAlert();
-                    setPwd(e.currentTarget.value.substring(0, 20));
-                  } else {
-                    setPwd(e.currentTarget.value);
-                  }
-                }}
-                onBlur={e => {
-                  if (e.currentTarget.value.length > 20) {
-                    pwdAlert();
-                    setPwd(e.currentTarget.value.substring(0, 20));
-                  } else {
-                    setPwd(e.currentTarget.value);
-                  }
-                  if (pwd !== "") testPwd();
-                }}
-                placeholder="영어/숫자/특수문자 중 2가지 이상"
-                autoComplete="off"
-              />
-            </div>
-          </div>
-          {!correctPwd && (
-            <div className="text-sm text-rose-500">
-              비밀번호 양식이 틀렸습니다 <br className="block xl:hidden" />
-              확인 후 다시 입력해 주세요
-            </div>
-          )}
-          <div
-            id="pwdChk"
-            className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
-              !correctPwdChk ? "xl:border-red-500" : undefined
-            }`}
-          >
-            <label
-              htmlFor="inputPwdChk"
-              className={`text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 ${
-                correctPwdChk ? "xl:bg-gray-100" : "xl:bg-red-100"
-              } `}
-            >
-              새 비밀번호확인
-            </label>
-            <div className="xl:col-span-4">
-              <input
-                type="password"
-                id="inputPwdChk"
-                length="21"
-                className={`border ${
-                  !correctPwdChk ? "border-red-500" : undefined
-                } xl:border-0 p-2 w-full text-sm`}
-                value={pwdChk}
-                onChange={e => {
-                  setPwdChk(e.currentTarget.value);
-                }}
-                onBlur={e => {
-                  setPwdChk(e.currentTarget.value);
-                  if (pwdChk !== "") chkPwd();
-                }}
-                placeholder="비밀번호를 한번 더 입력해 주세요"
-                autoComplete="off"
-              />
-            </div>
-          </div>
-          {!correctPwdChk && (
-            <div className="text-sm text-rose-500">
-              비밀번호가 일치하지 않습니다 <br className="block xl:hidden" />
-              확인 후 다시 입력해 주세요
-            </div>
-          )}
-          <div className="p-2 text-center">
-            <button
-              className="bg-teal-500 hover:bg-teal-700 text-white py-2 px-10"
-              onClick={e => editPwd(e)}
-            >
-              수정하기
-            </button>
           </div>
         </div>
-      </div>
-    </form>
+      </form>
+      <div className="opacity-25 fixed inset-0 z-40 bg-black h-screen overflow-hidden"></div>
+    </>
   );
 }
 

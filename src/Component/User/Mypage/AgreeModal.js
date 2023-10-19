@@ -78,7 +78,7 @@ function AgreeModal(props) {
                 <button
                   className="p-2 border border-rose-500 text-rose-500 w-full hover:bg-gray-100"
                   onClick={e => {
-                    props.setModal(false);
+                    props.setPersonalModal(false);
                   }}
                 >
                   창닫기

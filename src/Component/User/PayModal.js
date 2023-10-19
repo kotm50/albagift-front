@@ -29,6 +29,15 @@ function PayModal(props) {
         headers: { Authorization: props.user.accessToken },
       })
       .then(res => {
+        if (res.headers.authorization) {
+          if (res.headers.authorization !== props.user.accessToken) {
+            props.dispatch(
+              props.getNewToken({
+                accessToken: res.headers.authorization,
+              })
+            );
+          }
+        }
         if (res.data.code === "E999") {
           props.doLogout(res.data.message);
           return false;
@@ -210,7 +219,7 @@ function PayModal(props) {
             <button
               className="bg-stone-500 hover:bg-stone-700 text-white px-4 py-2 rounded"
               onClick={e => {
-                props.loadList();
+                props.loadList(1);
                 props.onClose();
               }}
             >
@@ -264,7 +273,7 @@ function PayModal(props) {
             <button
               className="bg-stone-500 hover:bg-stone-700 text-white px-4 py-2 rounded"
               onClick={e => {
-                props.loadList();
+                props.loadList(1);
                 props.onClose();
               }}
             >

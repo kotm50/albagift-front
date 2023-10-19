@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { clearUser, getNewToken, refreshPoint } from "../../Reducer/userSlice";
-import { /* logoutAlert, */ logout } from "../LogoutUtil";
+import { logout, logoutAlert } from "../LogoutUtil";
 import axios from "axios";
 import BeforeJoin from "./BeforeJoin";
 
@@ -28,6 +28,18 @@ function UserInformation() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
+        if (res.data.code === "E999") {
+          logoutAlert(
+            null,
+            null,
+            dispatch,
+            clearUser,
+            navi,
+            user,
+            res.data.message
+          );
+          return false;
+        }
         if (res.data.user.point !== user.point) {
           dispatch(
             refreshPoint({
@@ -46,7 +58,6 @@ function UserInformation() {
         }
       })
       .catch(e => {
-        console.log(e);
         if (user.admin) {
           return true;
         } else {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import axios from "axios";
 import queryString from "query-string";
@@ -10,7 +10,9 @@ import AlertModal from "../Layout/AlertModal";
 
 import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
+import { getNewToken } from "../../Reducer/userSlice";
 function Detail() {
+  const dispatch = useDispatch();
   const user = useSelector(state => state.user);
   const navi = useNavigate();
   const location = useLocation();
@@ -59,8 +61,14 @@ function Detail() {
           Authorization: user.accessToken,
         },
       })
-      .then(res => {
-        console.log(res.data.post);
+      .then(async res => {
+        if (res.headers.authorization) {
+          await dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
+        }
         res.data.code === "C000" && setDetail(res.data.post);
         setLoading(false);
       })

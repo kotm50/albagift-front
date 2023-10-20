@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { clearUser } from "../../Reducer/userSlice";
+import { clearUser, getNewToken } from "../../Reducer/userSlice";
 
 function Recommend(props) {
   let navi = useNavigate();
@@ -31,7 +31,14 @@ function Recommend(props) {
         params: data,
         headers: { Authorization: user.accessToken },
       })
-      .then(res => {
+      .then(async res => {
+        if (res.headers.authorization) {
+          await dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
+        }
         if (res.data.code === "E999") {
           logout();
           return false;

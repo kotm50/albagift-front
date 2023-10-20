@@ -1,8 +1,10 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
+import { getNewToken } from "../../Reducer/userSlice";
 
 function GiftReset() {
+  const dispatch = useDispatch();
   const user = useSelector(state => state.user);
 
   const resetGoods = async () => {
@@ -10,8 +12,14 @@ function GiftReset() {
       .post("/api/v1/shop/admin/bizapi", null, {
         headers: { Authorization: user.accessToken },
       })
-      .then(res => {
-        console.log(res);
+      .then(async res => {
+        if (res.headers.authorization) {
+          await dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
+        }
         if (res.data.code === "C200") {
           alert("상품리셋 완료");
         }

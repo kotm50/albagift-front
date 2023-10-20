@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import queryString from "query-string";
 
@@ -7,8 +7,10 @@ import axios from "axios";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import Pagenate from "../Layout/Pagenate";
+import { getNewToken } from "../../Reducer/userSlice";
 
 function LoginLog() {
+  const dispatch = useDispatch();
   const navi = useNavigate();
   const location = useLocation();
   const pathName = location.pathname;
@@ -46,8 +48,14 @@ function LoginLog() {
         params: data,
         headers: { Authorization: user.accessToken },
       })
-      .then(res => {
-        console.log(res.data);
+      .then(async res => {
+        if (res.headers.authorization) {
+          await dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
+        }
         const totalP = res.data.totalPages;
         setTotalPage(res.data.totalPages);
         const pagenate = generatePaginationArray(p, totalP);

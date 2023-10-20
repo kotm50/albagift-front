@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { category } from "../Data/Category";
 import AlertModal from "../Layout/AlertModal";
 import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
+import { getNewToken } from "../../Reducer/userSlice";
 function Recommend(props) {
+  const dispatch = useDispatch();
   const location = useLocation();
   const user = useSelector(state => state.user);
   const [goods, setGoods] = useState([]);
@@ -33,7 +35,14 @@ function Recommend(props) {
       .get(listUrl, {
         headers: { Authorization: user.accessToken },
       })
-      .then(res => {
+      .then(async res => {
+        if (res.headers.authorization) {
+          await dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
+        }
         setLoadMsg(res.data.message);
         if (res.data.code === "C000") {
           if (c === 1) {
@@ -52,22 +61,24 @@ function Recommend(props) {
         }
       })
       .catch(e => {
-        console.log(e);
-        confirmAlert({
-          customUI: ({ onClose }) => {
-            return (
-              <AlertModal
-                onClose={onClose} // 닫기
-                title={"오류"} // 제목
-                message={
-                  "상품 불러오기를 실패했습니다\n관리자에게 문의해주세요"
-                } // 내용
-                type={"alert"} // 타입 confirm, alert
-                yes={"확인"} // 확인버튼 제목
-              />
-            );
-          },
-        });
+        setLoadMsg("오류가 발생했습니다");
+        if (props.first) {
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"오류"} // 제목
+                  message={
+                    "상품 불러오기를 실패했습니다\n관리자에게 문의해주세요"
+                  } // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                />
+              );
+            },
+          });
+        }
       });
   };
 

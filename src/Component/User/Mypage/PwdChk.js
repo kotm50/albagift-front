@@ -15,7 +15,7 @@ function PwdChk() {
 
   useEffect(() => {
     setId(user.userId);
-    setDomain(window.location.href);
+    setDomain(window.location.href.split("/").slice(0, 3).join("/"));
     //eslint-disable-next-line
   }, []);
   const identity = async e => {
@@ -29,16 +29,14 @@ function PwdChk() {
       })
       .then(res => {
         if (res.headers.authorization) {
-          if (res.headers.authorization !== user.accessToken) {
-            dispatch(
-              getNewToken({
-                accessToken: res.headers.authorization,
-              })
-            );
-          }
+          dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
         }
         if (res.data.code === "C000") {
-          let mypageURL = `${domain}/edit`;
+          let mypageURL = `${domain}/mypage/edit`;
           window.location.href = mypageURL;
         } else {
           setErrMessage(res.data.message);

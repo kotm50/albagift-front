@@ -28,7 +28,7 @@ const userSlice = createSlice({
       state.point = 0;
     },
     getNewToken: (state, action) => {
-      state.accessToken = action.payload.accessToken;
+      return { ...state, accessToken: action.payload.accessToken };
     },
     refreshPoint: (state, action) => {
       state.point = action.payload.point;

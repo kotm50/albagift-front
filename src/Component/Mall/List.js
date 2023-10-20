@@ -13,8 +13,11 @@ import ImgLoad from "./ImgLoad";
 import { Helmet } from "react-helmet";
 import AlertModal from "../Layout/AlertModal";
 import Sorry from "../doc/Sorry";
+import { useDispatch } from "react-redux";
+import { getNewToken } from "../../Reducer/userSlice";
 
 function List() {
+  const dispatch = useDispatch();
   const [goods, setGoods] = useState([]);
   const location = useLocation();
   const pathName = location.pathname;
@@ -79,7 +82,14 @@ function List() {
       .get(listUrl, {
         params: data,
       })
-      .then(res => {
+      .then(async res => {
+        if (res.headers.authorization) {
+          await dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
+        }
         const totalP = res.data.totalPages;
         setTotalPage(res.data.totalPages);
         const pagenate = generatePaginationArray(p, totalP);
@@ -171,7 +181,7 @@ function List() {
                   <div className="w-32 h-32 xl:w-60 xl:h-60 mx-auto rounded overflow-hidden max-w-full bg-white drop-shadow hover:drop-shadow-xl">
                     <ImgLoad good={good} />
                   </div>
-                  <div className="w-32 xl:w-60 mx-auto grid grid-cols-1 mt-2 pt-1 border-t border-gray-100 max-w-full mt-3">
+                  <div className="w-32 xl:w-60 mx-auto grid grid-cols-1 pt-1 border-t border-gray-100 max-w-full mt-3">
                     <p className="xl:text-base group-hover:font-neobold keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left font-neobold text-blue-500">
                       {good.brandName}
                     </p>

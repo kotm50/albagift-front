@@ -11,6 +11,7 @@ export const logoutAlert = (
   user,
   message
 ) => {
+  forceLogout(dispatch, clearUser, navi, user);
   return confirmAlert({
     customUI: ({ onClose }) => {
       return (
@@ -23,7 +24,6 @@ export const logoutAlert = (
             <div className="flex justify-center">
               <button
                 onClick={() => {
-                  forceLogout(dispatch, clearUser, navi, user);
                   onClose();
                 }}
                 className="border border-sky-500 bg-sky-500 text-white py-2 px-4"

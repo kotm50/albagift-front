@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 
-import axios from "axios";
-
 function PayModal(props) {
   const [date, setDate] = useState(props.doc.intvDate);
   const [hour, setHour] = useState(props.doc.intvTime);
@@ -9,71 +7,6 @@ function PayModal(props) {
 
   const [editConfirm, setEditConfirm] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(false);
-
-  const [editComplete, setEditComplete] = useState(false);
-  const [deleteComplete, setDeleteComplete] = useState(false);
-
-  const [err, setErr] = useState(false);
-  const [errMsg, setErrMsg] = useState(false);
-
-  const editIt = async () => {
-    let data = {
-      boardId: "B02",
-      postId: props.doc.postId,
-      intvDate: date,
-      intvTime: hour,
-      intvMin: minute,
-    };
-    await axios
-      .patch("/api/v1/board/upt/pnt/posts", data, {
-        headers: { Authorization: props.user.accessToken },
-      })
-      .then(res => {
-        if (res.headers.authorization) {
-          if (res.headers.authorization !== props.user.accessToken) {
-            props.dispatch(
-              props.getNewToken({
-                accessToken: res.headers.authorization,
-              })
-            );
-          }
-        }
-        if (res.data.code === "E999") {
-          props.doLogout(res.data.message);
-          return false;
-        }
-        if (res.data.code === "C000") {
-          setEditComplete(true);
-          setEditConfirm(false);
-        } else {
-          setEditConfirm(false);
-          setErrMsg(res.data.message);
-          setErr(true);
-        }
-      })
-      .catch(e => {
-        console.log(e);
-      });
-  };
-
-  const deleteIt = async () => {
-    const data = { boardId: "B02", postId: props.doc.postId };
-    await axios
-      .patch("/api/v1/board/del/posts", data, {
-        headers: {
-          Authorization: props.user.accessToken,
-        },
-      })
-      .then(res => {
-        if (res.data.code === "C000") {
-          setDeleteComplete(true);
-          setDeleteConfirm(false);
-        }
-      })
-      .catch(e => {
-        console.log(e);
-      });
-  };
 
   return (
     <div
@@ -88,11 +21,7 @@ function PayModal(props) {
       >
         X
       </button>
-      {!editConfirm &&
-      !deleteConfirm &&
-      !editComplete &&
-      !deleteComplete &&
-      !err ? (
+      {!editConfirm && !deleteConfirm ? (
         <>
           <h2 className="text-lg font-neoextra mb-2 text-center">
             면접날짜 수정/삭제
@@ -193,7 +122,8 @@ function PayModal(props) {
             <button
               className="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded"
               onClick={e => {
-                editIt();
+                props.editIt(props.doc, date, hour, minute);
+                props.onClose();
               }}
             >
               수정하기
@@ -205,25 +135,6 @@ function PayModal(props) {
               }}
             >
               취소하기
-            </button>
-          </div>
-        </>
-      )}
-      {editComplete && (
-        <>
-          <h2 className="text-lg font-neoextra mb-2 text-center">
-            면접날짜 수정하기
-          </h2>
-          <div className="px-2 py-4 text-center">수정 완료하였습니다</div>
-          <div className="flex flex-row justify-center gap-3">
-            <button
-              className="bg-stone-500 hover:bg-stone-700 text-white px-4 py-2 rounded"
-              onClick={e => {
-                props.loadList(1);
-                props.onClose();
-              }}
-            >
-              확인
             </button>
           </div>
         </>
@@ -247,7 +158,8 @@ function PayModal(props) {
             <button
               className="bg-rose-500 hover:bg-rose-700 text-white px-4 py-2 rounded"
               onClick={e => {
-                deleteIt();
+                props.deleteIt(props.doc);
+                props.onClose();
               }}
             >
               삭제하기
@@ -259,50 +171,6 @@ function PayModal(props) {
               }}
             >
               취소하기
-            </button>
-          </div>
-        </>
-      )}
-      {deleteComplete && (
-        <>
-          <h2 className="text-lg font-neoextra mb-2 text-center">
-            지급신청 취소
-          </h2>
-          <div className="px-2 py-4 text-center">신청내용을 삭제하였습니다</div>
-          <div className="flex flex-row justify-center gap-3">
-            <button
-              className="bg-stone-500 hover:bg-stone-700 text-white px-4 py-2 rounded"
-              onClick={e => {
-                props.loadList(1);
-                props.onClose();
-              }}
-            >
-              확인
-            </button>
-          </div>
-        </>
-      )}
-      {err && (
-        <>
-          <h2 className="text-lg font-neoextra mb-2 text-center">오류</h2>
-          <div className="px-2 py-4 text-center">{errMsg}</div>
-          <div className="flex flex-row justify-center gap-3">
-            <button
-              className="bg-rose-500 hover:bg-rose-700 text-white px-4 py-2 rounded"
-              onClick={e => {
-                setErr(false);
-                setErrMsg("");
-              }}
-            >
-              재수정하기
-            </button>
-            <button
-              className="bg-stone-500 hover:bg-stone-700 text-white px-4 py-2 rounded"
-              onClick={e => {
-                props.onClose();
-              }}
-            >
-              창 닫기
             </button>
           </div>
         </>

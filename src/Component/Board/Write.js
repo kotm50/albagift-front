@@ -148,13 +148,11 @@ function Write() {
         })
         .then(res => {
           if (res.headers.authorization) {
-            if (res.headers.authorization !== user.accessToken) {
-              dispatch(
-                getNewToken({
-                  accessToken: res.headers.authorization,
-                })
-              );
-            }
+            dispatch(
+              getNewToken({
+                accessToken: res.headers.authorization,
+              })
+            );
           }
           if (res.data.code === "C000") {
             confirmAlert({
@@ -199,13 +197,11 @@ function Write() {
         })
         .then(res => {
           if (res.headers.authorization) {
-            if (res.headers.authorization !== user.accessToken) {
-              dispatch(
-                getNewToken({
-                  accessToken: res.headers.authorization,
-                })
-              );
-            }
+            dispatch(
+              getNewToken({
+                accessToken: res.headers.authorization,
+              })
+            );
           }
           if (res.data.code === "C000") {
             confirmAlert({

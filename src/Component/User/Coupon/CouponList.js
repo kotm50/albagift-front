@@ -52,15 +52,13 @@ function CouponList(props) {
       .post("/api/v1/shop/goods/coupons", data, {
         headers: { Authorization: user.accessToken },
       })
-      .then(res => {
+      .then(async res => {
         if (res.headers.authorization) {
-          if (res.headers.authorization !== user.accessToken) {
-            dispatch(
-              getNewToken({
-                accessToken: res.headers.authorization,
-              })
-            );
-          }
+          await dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
         }
         if (res.data.code === "E999") {
           logoutAlert(res.data.message);

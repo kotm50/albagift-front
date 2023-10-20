@@ -20,7 +20,7 @@ function UserInformation() {
       refreshPoints();
     }
     //eslint-disable-next-line
-  }, [location]);
+  }, [location, user.accessToken]);
 
   const refreshPoints = async () => {
     await axios

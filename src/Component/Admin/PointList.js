@@ -68,22 +68,18 @@ function PointList() {
     const request = {
       postList: postList,
     };
-    console.log(request.postList);
     await axios
       .patch("/api/v1/board/admin/paymt/sts", request, {
         headers: { Authorization: user.accessToken },
       })
-      .then(res => {
+      .then(async res => {
         if (res.headers.authorization) {
-          if (res.headers.authorization !== user.accessToken) {
-            dispatch(
-              getNewToken({
-                accessToken: res.headers.authroiztion,
-              })
-            );
-          }
+          await dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
         }
-        console.log(res.data);
         if (res.data.code === "C000") {
           confirmAlert({
             customUI: ({ onClose }) => {
@@ -132,7 +128,14 @@ function PointList() {
           Authorization: user.accessToken,
         },
       })
-      .then(res => {
+      .then(async res => {
+        if (res.headers.authorization) {
+          await dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
+        }
         if (res.data.code === "C000") {
           const totalP = res.data.totalPages;
           setTotalPage(res.data.totalPages);

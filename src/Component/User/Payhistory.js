@@ -32,7 +32,7 @@ function Payhistory() {
   useEffect(() => {
     loadList(page);
     //eslint-disable-next-line
-  }, [location]);
+  }, [location, user.accessToken]);
 
   const loadList = async p => {
     let data = {
@@ -46,17 +46,15 @@ function Payhistory() {
           Authorization: user.accessToken,
         },
       })
-      .then(res => {
-        setLoaded(true);
+      .then(async res => {
         if (res.headers.authorization) {
-          if (res.headers.authorization !== user.accessToken) {
-            dispatch(
-              getNewToken({
-                accessToken: res.headers.authorization,
-              })
-            );
-          }
+          await dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
         }
+        setLoaded(true);
         if (res.data.code === "C000") {
           const totalP = res.data.totalPages;
           setTotalPage(res.data.totalPages);
@@ -132,11 +130,8 @@ function Payhistory() {
             <PayModal
               onClose={onClose}
               doc={doc}
-              loadList={loadList}
-              user={user}
-              dispatch={dispatch}
-              getNewToken={getNewToken}
-              doLogout={doLogout}
+              editIt={editIt}
+              deleteIt={deleteIt}
             />
           );
         },
@@ -164,6 +159,78 @@ function Payhistory() {
 
   const doLogout = async m => {
     logoutAlert(null, null, dispatch, clearUser, navi, user, m);
+  };
+
+  const editIt = async (doc, date, hour, minute) => {
+    console.log("수정전", user.accessToken);
+    let data = {
+      boardId: "B02",
+      postId: doc.postId,
+      intvDate: date,
+      intvTime: hour,
+      intvMin: minute,
+    };
+    await axios
+      .patch("/api/v1/board/upt/pnt/posts", data, {
+        headers: { Authorization: user.accessToken },
+      })
+      .then(res => {
+        if (res.headers.authorization) {
+          dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
+        }
+        if (res.data.code === "E999") {
+          doLogout(res.data.message);
+          return false;
+        }
+        confirmAlert({
+          customUI: ({ onClose }) => {
+            return (
+              <AlertModal
+                onClose={onClose} // 닫기
+                title={"완료"} // 제목
+                message={res.data.message} // 내용
+                type={"alert"} // 타입 confirm, alert
+                yes={"확인"} // 확인버튼 제목
+              />
+            );
+          },
+        });
+        if (res.headers.authorization === user.accessToken) {
+          loadList(page);
+        }
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
+  const deleteIt = async doc => {
+    const data = { boardId: "B02", postId: doc.postId };
+    await axios
+      .patch("/api/v1/board/del/posts", data, {
+        headers: {
+          Authorization: user.accessToken,
+        },
+      })
+      .then(res => {
+        if (res.headers.authorization) {
+          dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
+        }
+        if (res.headers.authorization === user.accessToken) {
+          loadList(page);
+        }
+      })
+      .catch(e => {
+        console.log(e);
+      });
   };
 
   return (

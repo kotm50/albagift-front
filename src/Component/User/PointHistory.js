@@ -6,7 +6,7 @@ import Loading from "../Layout/Loading";
 import queryString from "query-string";
 import Pagenate from "../Layout/Pagenate";
 import { logoutAlert } from "../LogoutUtil";
-import { clearUser } from "../../Reducer/userSlice";
+import { clearUser, getNewToken } from "../../Reducer/userSlice";
 import PointHistoryList from "./PointHistoryList";
 import Sorry from "../doc/Sorry";
 
@@ -43,7 +43,14 @@ function PointHistory() {
           Authorization: user.accessToken,
         },
       })
-      .then(res => {
+      .then(async res => {
+        if (res.headers.authorization) {
+          await dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
+        }
         setLoaded(true);
         if (res.data.code === "C000") {
           const totalP = res.data.totalPages;

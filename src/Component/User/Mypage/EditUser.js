@@ -36,19 +36,22 @@ function EditUser(props) {
   const [pwdModal, setPwdModal] = useState(false);
   const [emailModal, setEmailModal] = useState(false);
   const [domain, setDomain] = useState("");
-  const [kakaoCheck, setKakaoCheck] = useState(true);
   useEffect(() => {
     let domain = extractDomain();
     setDomain(domain);
     if (code !== "") {
       kakaoLoginCheck(code);
     } else {
-      setKakaoCheck(false);
       getUserInfo();
     }
     //setUserInfo(dummyUser);
     //eslint-disable-next-line
   }, [location]);
+
+  useEffect(() => {
+    getUserInfo();
+    //eslint-disable-next-line
+  }, [user.accessToken]);
 
   const extractDomain = () => {
     let protocol = window.location.protocol; // 프로토콜을 가져옵니다. (예: http: 또는 https:)
@@ -81,13 +84,11 @@ function EditUser(props) {
       })
       .then(res => {
         if (res.headers.authorization) {
-          if (res.headers.authorization !== user.accessToken) {
-            dispatch(
-              getNewToken({
-                accessToken: res.headers.authorization,
-              })
-            );
-          }
+          dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
         }
         confirmAlert({
           customUI: ({ onClose }) => {
@@ -102,7 +103,9 @@ function EditUser(props) {
             );
           },
         });
-        getUserInfo();
+        if (res.headers.authorization === user.accessToken) {
+          getUserInfo();
+        }
       })
       .catch(error => console.log(error));
   };
@@ -115,15 +118,13 @@ function EditUser(props) {
           Authorization: user.accessToken,
         },
       })
-      .then(res => {
+      .then(async res => {
         if (res.headers.authorization) {
-          if (res.headers.authorization !== user.accessToken) {
-            dispatch(
-              getNewToken({
-                accessToken: res.headers.authorization,
-              })
-            );
-          }
+          await dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
         }
         if (res.data.code === "C000") {
           confirmAlert({
@@ -170,15 +171,13 @@ function EditUser(props) {
       .post("/api/v1/user/myinfo", null, {
         headers: { Authorization: user.accessToken },
       })
-      .then(res => {
+      .then(async res => {
         if (res.headers.authorization) {
-          if (res.headers.authorization !== user.accessToken) {
-            dispatch(
-              getNewToken({
-                accessToken: res.headers.authorization,
-              })
-            );
-          }
+          await dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
         }
         if (res.data.code === "E999") {
           logoutAlert(
@@ -220,7 +219,11 @@ function EditUser(props) {
     setMainAddr(
       modifyAddress(userInfo.mainAddr || "서울특별시 중구 세종대로 110")
     );
-    setEmail(modifyEmail(userInfo.email || "abc@def.ghi"));
+    if (userInfo.email) {
+      setEmail(modifyEmail(userInfo.email));
+    } else {
+      setEmail("이메일 미등록");
+    }
     setBeforeValue({
       mainAddr: userInfo.mainAddr,
       email: userInfo.email,
@@ -388,13 +391,11 @@ function EditUser(props) {
       })
       .then(res => {
         if (res.headers.authorization) {
-          if (res.headers.authorization !== user.accessToken) {
-            dispatch(
-              getNewToken({
-                accessToken: res.headers.authorization,
-              })
-            );
-          }
+          dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
         }
         if (res.data.code === "C000") {
           if (type === "password") {
@@ -413,7 +414,9 @@ function EditUser(props) {
                 );
               },
             });
-            getUserInfo();
+            if (res.headers.authorization === user.accessToken) {
+              getUserInfo();
+            }
             setBeforeValue(bValue);
           }
         }
@@ -487,13 +490,11 @@ function EditUser(props) {
       })
       .then(res => {
         if (res.headers.authorization) {
-          if (res.headers.authorization !== user.accessToken) {
-            dispatch(
-              getNewToken({
-                accessToken: res.headers.authorization,
-              })
-            );
-          }
+          dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
         }
         if (res.data.code === "C000") {
           confirmAlert({
@@ -532,150 +533,146 @@ function EditUser(props) {
 
   return (
     <>
-      {kakaoCheck ? null : (
-        <>
+      <div
+        id="editArea"
+        className="my-2 mx-auto p-2 border shadow-lg rounded-lg grid grid-cols-1 gap-3 bg-white w-full"
+      >
+        <div className="grid grid-cols-1 divide-y">
           <div
-            id="editArea"
-            className="my-2 mx-auto p-2 border shadow-lg rounded-lg grid grid-cols-1 gap-3 bg-white w-full"
+            id="id"
+            className="grid grid-cols-7 gap-x-2 text-sm xl:text-base"
           >
-            <div className="grid grid-cols-1 divide-y">
-              <div
-                id="id"
-                className="grid grid-cols-7 gap-x-2 text-sm xl:text-base"
-              >
-                <div className="col-span-5 flex flex-col justify-center gap-y-2 py-4">
-                  <div className="text-xl font-neoheavy text-left pl-2">
-                    {id}
-                    <span className="text-base font-neobold"> ({name})님</span>
-                  </div>
-                  <div className="text-sm text-left pl-2">{birth}</div>
-                  <div className="text-sm text-left pl-2">{phone}</div>
-                </div>
-                <div className="flex flex-col justify-center col-span-2">
-                  <button
-                    className="p-2 bg-gray-100 hover:bg-gray-200 text-sm rounded"
-                    onClick={e => setPersonalModal(true)}
-                  >
-                    수정
-                  </button>
-                </div>
+            <div className="col-span-5 flex flex-col justify-center gap-y-2 py-4">
+              <div className="text-xl font-neoheavy text-left pl-2">
+                {id}
+                <span className="text-base font-neobold"> ({name})님</span>
               </div>
-              <div
-                id="pwd"
-                className="grid grid-cols-7 gap-x-2 text-sm xl:text-base"
-              >
-                <div className="col-span-5 px-2 py-4">
-                  <FaLock className="inline" /> 비밀번호
-                </div>
-                <div className="flex flex-col justify-center col-span-2">
-                  <button
-                    className="p-2 bg-gray-100 hover:bg-gray-200 text-sm rounded"
-                    onClick={e => setPwdModal(true)}
-                  >
-                    수정
-                  </button>
-                </div>
-              </div>
-              <div
-                id="mainAddr"
-                className="grid grid-cols-7 gap-x-2 text-sm xl:text-base"
-              >
-                <div className="col-span-5 px-2 py-4">
-                  <FaMapMarkerAlt className="inline" /> {mainAddr}
-                </div>
-                <div className="flex flex-col justify-center col-span-2">
-                  <button
-                    className="p-2 bg-gray-100 hover:bg-gray-200 text-sm rounded"
-                    onClick={e => openPostCode()}
-                  >
-                    수정
-                  </button>
-                </div>
-              </div>
-              <div
-                id="email"
-                className="grid grid-cols-7 gap-x-2 text-sm xl:text-base"
-              >
-                <div className="col-span-5 px-2 py-4">
-                  <MdEmail className="inline" /> {email}
-                </div>
-                <div className="flex flex-col justify-center col-span-2">
-                  <button
-                    className="p-2 bg-gray-100 hover:bg-gray-200 text-sm rounded"
-                    onClick={e => setEmailModal(true)}
-                  >
-                    수정
-                  </button>
-                </div>
-              </div>
-
-              <div
-                id="kakao"
-                className="grid grid-cols-7 gap-x-2 text-sm xl:text-base"
-              >
-                <div className="col-span-5 px-2 py-4">
-                  <RiKakaoTalkFill className="inline" />{" "}
-                  {socialType ? "연동중" : "미연동"}
-                </div>
-                {socialType ? (
-                  <div className="flex flex-col justify-center col-span-2">
-                    <button
-                      className="p-2 bg-gray-100 hover:bg-gray-200 text-sm rounded"
-                      onClick={deleteKakao}
-                    >
-                      해제
-                    </button>
-                  </div>
-                ) : (
-                  <div className="flex flex-col justify-center col-span-2">
-                    <button
-                      className="p-2 bg-gray-100 hover:bg-gray-200 text-sm rounded"
-                      onClick={kakaoLogin}
-                    >
-                      연동
-                    </button>
-                  </div>
-                )}
-              </div>
+              <div className="text-sm text-left pl-2">{birth}</div>
+              <div className="text-sm text-left pl-2">{phone}</div>
             </div>
-            {personalModal ? (
-              <AgreeModal doCert={doCert} setPersonalModal={setPersonalModal} />
-            ) : null}
-            {pwdModal ? (
-              <NewPwd setPwdModal={setPwdModal} logoutAlert={logoutAlert2} />
-            ) : null}
-            {emailModal ? (
-              <EmailModal
-                doCert={doCert}
-                setEmailModal={setEmailModal}
-                editIt={editIt}
-              />
-            ) : null}
+            <div className="flex flex-col justify-center col-span-2">
+              <button
+                className="p-2 bg-gray-100 hover:bg-gray-200 text-sm rounded"
+                onClick={e => setPersonalModal(true)}
+              >
+                수정
+              </button>
+            </div>
+          </div>
+          <div
+            id="pwd"
+            className="grid grid-cols-7 gap-x-2 text-sm xl:text-base"
+          >
+            <div className="col-span-5 px-2 py-4">
+              <FaLock className="inline" /> 비밀번호
+            </div>
+            <div className="flex flex-col justify-center col-span-2">
+              <button
+                className="p-2 bg-gray-100 hover:bg-gray-200 text-sm rounded"
+                onClick={e => setPwdModal(true)}
+              >
+                수정
+              </button>
+            </div>
+          </div>
+          <div
+            id="mainAddr"
+            className="grid grid-cols-7 gap-x-2 text-sm xl:text-base"
+          >
+            <div className="col-span-5 px-2 py-4">
+              <FaMapMarkerAlt className="inline" /> {mainAddr}
+            </div>
+            <div className="flex flex-col justify-center col-span-2">
+              <button
+                className="p-2 bg-gray-100 hover:bg-gray-200 text-sm rounded"
+                onClick={e => openPostCode()}
+              >
+                수정
+              </button>
+            </div>
+          </div>
+          <div
+            id="email"
+            className="grid grid-cols-7 gap-x-2 text-sm xl:text-base"
+          >
+            <div className="col-span-5 px-2 py-4">
+              <MdEmail className="inline" /> {email}
+            </div>
+            <div className="flex flex-col justify-center col-span-2">
+              <button
+                className="p-2 bg-gray-100 hover:bg-gray-200 text-sm rounded"
+                onClick={e => setEmailModal(true)}
+              >
+                수정
+              </button>
+            </div>
           </div>
 
-          <div id="cancelArea" className="w-full mt-5">
-            <Link
-              to="/mypage/cancel"
-              className="transition p-2 text-xs hover:text-stone-500"
-            >
-              회원탈퇴
-            </Link>
-          </div>
-
-          <div id="popupDom" className={isPopupOpen ? "popupModal" : undefined}>
-            {isPopupOpen && (
-              <PopupDom>
-                <PopupPostCode
-                  onClose={closePostCode}
-                  setMainAddr={setMainAddr}
-                  modify={true}
-                  editIt={editIt}
-                />
-              </PopupDom>
+          <div
+            id="kakao"
+            className="grid grid-cols-7 gap-x-2 text-sm xl:text-base"
+          >
+            <div className="col-span-5 px-2 py-4">
+              <RiKakaoTalkFill className="inline" />{" "}
+              {socialType ? "연동중" : "미연동"}
+            </div>
+            {socialType ? (
+              <div className="flex flex-col justify-center col-span-2">
+                <button
+                  className="p-2 bg-gray-100 hover:bg-gray-200 text-sm rounded"
+                  onClick={deleteKakao}
+                >
+                  해제
+                </button>
+              </div>
+            ) : (
+              <div className="flex flex-col justify-center col-span-2">
+                <button
+                  className="p-2 bg-gray-100 hover:bg-gray-200 text-sm rounded"
+                  onClick={kakaoLogin}
+                >
+                  연동
+                </button>
+              </div>
             )}
           </div>
-        </>
-      )}
+        </div>
+        {personalModal ? (
+          <AgreeModal doCert={doCert} setPersonalModal={setPersonalModal} />
+        ) : null}
+        {pwdModal ? (
+          <NewPwd setPwdModal={setPwdModal} logoutAlert={logoutAlert2} />
+        ) : null}
+        {emailModal ? (
+          <EmailModal
+            doCert={doCert}
+            setEmailModal={setEmailModal}
+            editIt={editIt}
+          />
+        ) : null}
+      </div>
+
+      <div id="cancelArea" className="w-full mt-5">
+        <Link
+          to="/mypage/cancel"
+          className="transition p-2 text-xs hover:text-stone-500"
+        >
+          회원탈퇴
+        </Link>
+      </div>
+
+      <div id="popupDom" className={isPopupOpen ? "popupModal" : undefined}>
+        {isPopupOpen && (
+          <PopupDom>
+            <PopupPostCode
+              onClose={closePostCode}
+              setMainAddr={setMainAddr}
+              modify={true}
+              editIt={editIt}
+            />
+          </PopupDom>
+        )}
+      </div>
     </>
   );
 }

@@ -50,7 +50,14 @@ function Detail() {
     setImgLoaded(false);
     await axios
       .get(`/api/v1/shop/goods/detail/${goodscode}`)
-      .then(res => {
+      .then(async res => {
+        if (res.headers.authorization) {
+          await dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
+        }
         setGoods(res.data.goods);
         contentForm(res.data.goods.content);
       })
@@ -154,15 +161,13 @@ function Detail() {
       .post("/api/v1/shop/goods/send", data, {
         headers: { Authorization: user.accessToken },
       })
-      .then(res => {
+      .then(async res => {
         if (res.headers.authorization) {
-          if (res.headers.authorization !== user.accessToken) {
-            dispatch(
-              getNewToken({
-                accessToken: res.headers.authorization,
-              })
-            );
-          }
+          await dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
         }
         if (res.data.code === "E999") {
           logoutAlert(null, null, dispatch, clearUser, navi, user);

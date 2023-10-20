@@ -62,8 +62,8 @@ function Main() {
       <MainCategory />
       {cateNums.length > 0 && (
         <>
-          <Recommend category={1} />
-          <Recommend category={cateNums[1]} />
+          <Recommend category={1} first={true} />
+          <Recommend category={cateNums[1]} first={false} />
         </>
       )}
     </>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { clearUser } from "../../../Reducer/userSlice";
+import { clearUser, getNewToken } from "../../../Reducer/userSlice";
 
 import axios from "axios";
 import queryString from "query-string";
@@ -43,6 +43,13 @@ function Coupon() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
+        if (res.headers.authorization) {
+          dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
+        }
         if (res.data.code === "E999") {
           logoutAlert(
             null,

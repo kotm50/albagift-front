@@ -31,6 +31,9 @@ function List() {
   const [catName, setCatName] = useState("");
 
   useEffect(() => {
+    setGoods([]);
+    setTotalPage(1);
+    setPagenate([]);
     // location이 바뀔 때마다 스크롤을 맨 위로 이동
     window.scrollTo(0, 0);
     setLoadMsg("상품을 불러오고 있습니다");

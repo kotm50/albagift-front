@@ -31,6 +31,8 @@ function PointHistory() {
 
   useEffect(() => {
     setList([]);
+    setTotalPage(1);
+    setPagenate([]);
     setLoaded(false);
     setSelectReason(select);
     loadList(page, select);

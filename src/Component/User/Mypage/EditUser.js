@@ -18,11 +18,12 @@ import NewPwd from "./NewPwd";
 import AgreeModal from "./AgreeModal";
 import AlertModal from "../../Layout/AlertModal";
 
-import { FaLock, FaMapMarkerAlt } from "react-icons/fa";
+import { FaLock, FaMapMarkerAlt, FaBell, FaBellSlash } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { RiKakaoTalkFill } from "react-icons/ri";
 import { logoutAlert } from "../../LogoutUtil";
 import EmailModal from "./EmailModal";
+import Marketing from "./Marketing";
 
 function EditUser(props) {
   const user = useSelector(state => state.user);
@@ -35,6 +36,7 @@ function EditUser(props) {
   const [personalModal, setPersonalModal] = useState(false);
   const [pwdModal, setPwdModal] = useState(false);
   const [emailModal, setEmailModal] = useState(false);
+  const [marketingModal, setMarketingModal] = useState(false);
   const [domain, setDomain] = useState("");
   useEffect(() => {
     let domain = extractDomain();
@@ -44,7 +46,6 @@ function EditUser(props) {
     } else {
       getUserInfo();
     }
-    //setUserInfo(dummyUser);
     //eslint-disable-next-line
   }, [location]);
 
@@ -205,6 +206,7 @@ function EditUser(props) {
   const [mainAddr, setMainAddr] = useState("주소찾기를 눌러주세요");
   const [email, setEmail] = useState("");
   const [socialType, setSocialType] = useState("");
+  const [agreeYn, setAgreeYn] = useState(false);
 
   const [beforeValue, setBeforeValue] = useState({});
 
@@ -229,6 +231,7 @@ function EditUser(props) {
       email: userInfo.email,
     });
     setSocialType(userInfo.socialType);
+    setAgreeYn(userInfo.agreeYn || false);
   }, [userInfo]);
 
   //생일변환
@@ -383,6 +386,13 @@ function EditUser(props) {
       };
       bValue.email = email;
     }
+
+    if (type === "agree") {
+      data = {
+        agreeYn: value,
+      };
+      bValue.agreeYn = agreeYn;
+    }
     axios
       .patch(url, data, {
         headers: {
@@ -400,6 +410,30 @@ function EditUser(props) {
         if (res.data.code === "C000") {
           if (type === "password") {
             logoutAlert2();
+          } else if (type === "agree") {
+            let resultMessage;
+            if (value === "Y") {
+              resultMessage = `처리결과 : 수신 동의\n처리일시 : ${res.data.responseDate}`;
+            } else {
+              resultMessage = `처리결과 : 수신 비동의\n처리일시 : ${res.data.responseDate}`;
+            }
+            confirmAlert({
+              customUI: ({ onClose }) => {
+                return (
+                  <AlertModal
+                    onClose={onClose} // 닫기
+                    title={"완료"} // 제목
+                    message={resultMessage} // 내용
+                    type={"alert"} // 타입 confirm, alert
+                    yes={"확인"} // 확인버튼 제목
+                  />
+                );
+              },
+            });
+            if (res.headers.authorization === user.accessToken) {
+              getUserInfo();
+            }
+            setBeforeValue(bValue);
           } else {
             confirmAlert({
               customUI: ({ onClose }) => {
@@ -636,6 +670,42 @@ function EditUser(props) {
               </div>
             )}
           </div>
+          <div
+            id="marketing"
+            className="grid grid-cols-7 gap-x-2 text-sm xl:text-base"
+          >
+            {userInfo.agreeYn === "Y" ? (
+              <>
+                <div className="col-span-5 px-2 py-4">
+                  <FaBell className="inline" /> 광고성 정보 수신 동의
+                </div>
+                <div className="flex flex-col justify-center col-span-2">
+                  <button
+                    className="p-2 bg-gray-100 hover:bg-gray-200 text-sm rounded"
+                    onClick={e =>
+                      editIt("/api/v1/user/myinfo/editagree", "agree", "N")
+                    }
+                  >
+                    동의취소
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="col-span-5 px-2 py-4">
+                  <FaBellSlash className="inline" /> 광고성 정보 수신 동의 안함
+                </div>
+                <div className="flex flex-col justify-center col-span-2">
+                  <button
+                    className="p-2 bg-gray-100 hover:bg-gray-200 text-sm rounded"
+                    onClick={e => setMarketingModal(true)}
+                  >
+                    동의하기
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
         {personalModal ? (
           <AgreeModal doCert={doCert} setPersonalModal={setPersonalModal} />
@@ -644,10 +714,13 @@ function EditUser(props) {
           <NewPwd setPwdModal={setPwdModal} logoutAlert={logoutAlert2} />
         ) : null}
         {emailModal ? (
-          <EmailModal
-            doCert={doCert}
-            setEmailModal={setEmailModal}
+          <EmailModal setEmailModal={setEmailModal} editIt={editIt} />
+        ) : null}
+        {marketingModal ? (
+          <Marketing
+            setMarketingModal={setMarketingModal}
             editIt={editIt}
+            agreeYn={agreeYn}
           />
         ) : null}
       </div>

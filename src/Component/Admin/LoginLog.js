@@ -36,6 +36,8 @@ function LoginLog() {
   const [searchEndDate, setSearchEndDate] = useState("");
   useEffect(() => {
     setLoginLogList([]);
+    setTotalPage(1);
+    setPagenate([]);
     setSearchKeyword("");
     if (keyword !== "") {
       setSearchKeyword(keyword);

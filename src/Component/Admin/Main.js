@@ -38,9 +38,15 @@ function Main() {
     setDataList([]);
     if (startDate !== "") {
       setInputStartDate(startDate);
+    } else {
+      setInputStartDate("");
+      setSearchStartDate("");
     }
     if (endDate !== "") {
       setInputEndDate(endDate);
+    } else {
+      setInputEndDate("");
+      setSearchEndDate("");
     }
     getData(page, startDate, endDate);
     //eslint-disable-next-line
@@ -82,6 +88,7 @@ function Main() {
         setDataList(res.data.pointList);
       })
       .catch(e => {
+        console.log(e);
         setLoaded(true);
       });
 
@@ -224,12 +231,35 @@ function Main() {
             <>
               <table className="w-full">
                 <thead>
-                  <tr className="bg-green-700 text-white font-neoextra">
-                    <td className="p-2 text-center border">로그 작성일</td>
-                    <td className="p-2 text-center border">지급 포인트</td>
-                    <td className="p-2 text-center border">차감 포인트</td>
-                    <td className="p-2 text-center border">사용 포인트</td>
-                    <td className="p-2 text-center border">실제 사용 금액</td>
+                  <tr className=" text-white font-neoextra">
+                    <td className="p-2 text-center border bg-gray-500">날짜</td>
+                    <td className="p-2 text-center border bg-green-700">
+                      지급 포인트
+                    </td>
+                    <td className="p-2 text-center border bg-green-700">
+                      관리자 지급 포인트
+                    </td>
+                    <td className="p-2 text-center border bg-green-700">
+                      프로모션 포인트
+                    </td>
+                    <td className="p-2 text-center border bg-green-700">
+                      게시판 신청 포인트
+                    </td>
+                    <td className="p-2 text-center border bg-rose-700">
+                      차감 포인트
+                    </td>
+                    <td className="p-2 text-center border bg-rose-700">
+                      소멸 포인트
+                    </td>
+                    <td className="p-2 text-center border bg-rose-700">
+                      관리자 차감 포인트
+                    </td>
+                    <td className="p-2 text-center border bg-rose-700">
+                      쿠폰 사용 포인트
+                    </td>
+                    <td className="p-2 text-center border bg-gray-500">
+                      기프티쇼 실제 사용 금액
+                    </td>
                   </tr>
                 </thead>
                 <tbody>
@@ -240,13 +270,32 @@ function Main() {
                     >
                       <td className="p-2 text-center border">{log.regDate}</td>
                       <td className="p-2 text-center border">
-                        {log.diriPoint}
+                        {log.plusPnt.toLocaleString()}p
                       </td>
                       <td className="p-2 text-center border">
-                        {log.dirdPoint}
+                        {log.apPnt.toLocaleString()}p
                       </td>
-                      <td className="p-2 text-center border">{log.usePoint}</td>
-                      <td className="p-2 text-center border">{log.bizPoint}</td>
+                      <td className="p-2 text-center border">
+                        {log.prPnt.toLocaleString()}p
+                      </td>
+                      <td className="p-2 text-center border">
+                        {log.abPnt.toLocaleString()}p
+                      </td>
+                      <td className="p-2 text-center border">
+                        {log.miunsPnt.toLocaleString()}p
+                      </td>
+                      <td className="p-2 text-center border">
+                        {log.exPnt.toLocaleString()}p
+                      </td>
+                      <td className="p-2 text-center border">
+                        {log.adPnt.toLocaleString()}p
+                      </td>
+                      <td className="p-2 text-center border">
+                        {log.cpPnt.toLocaleString()}p
+                      </td>
+                      <td className="p-2 text-center border">
+                        {log.bizPnt.toLocaleString()}원
+                      </td>
                     </tr>
                   ))}
                 </tbody>

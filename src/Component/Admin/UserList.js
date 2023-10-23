@@ -59,6 +59,8 @@ function UserList() {
 
   useEffect(() => {
     setUsers([]);
+    setTotalPage(1);
+    setPagenate([]);
     if (keyword !== "") {
       setSearchKeyword(keyword);
     }

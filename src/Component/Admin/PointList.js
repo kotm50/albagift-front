@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
@@ -18,6 +18,7 @@ import AlertModal from "../Layout/AlertModal";
 import Sorry from "../doc/Sorry";
 
 function PointList() {
+  const companyRef = useRef();
   const navi = useNavigate();
   const dispatch = useDispatch();
   const [loaded, setLoaded] = useState(false);
@@ -32,8 +33,11 @@ function PointList() {
   const keyword = parsed.keyword || "";
   const startDate = parsed.startDate || "";
   const endDate = parsed.endDate || "";
+  const select = parsed.select || "";
+  const agree = parsed.agree || "";
   const [point, setPoint] = useState("");
   const [reason, setReason] = useState("");
+  const [selectReason, setSelectReason] = useState("");
   const [totalPage, setTotalPage] = useState(1);
   const [pagenate, setPagenate] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -41,9 +45,13 @@ function PointList() {
   const [inputEndDate, setInputEndDate] = useState("");
   const [searchStartDate, setSearchStartDate] = useState("");
   const [searchEndDate, setSearchEndDate] = useState("");
+  const [company, setCompany] = useState("");
+  const [isAgree, setIsAgree] = useState(false);
 
   useEffect(() => {
     setList([]);
+    setTotalPage(1);
+    setPagenate([]);
     if (keyword !== "") {
       setSearchKeyword(keyword);
     }
@@ -53,7 +61,19 @@ function PointList() {
     if (endDate !== "") {
       setInputEndDate(endDate);
     }
-    loadList(page, keyword, startDate, endDate);
+    if (select !== "") {
+      setSelectReason(select);
+    }
+    if (agree !== "") {
+      if (agree === "Y") {
+        setIsAgree(true);
+      } else {
+        setIsAgree(false);
+      }
+    } else {
+      setIsAgree(false);
+    }
+    loadList(page, keyword, startDate, endDate, select, agree);
     //eslint-disable-next-line
   }, [location, user.accessToken]);
 
@@ -71,6 +91,12 @@ function PointList() {
     }
     //eslint-disable-next-line
   }, [inputStartDate, inputEndDate]);
+
+  //셀렉트박스or체크박스 변경
+  useEffect(() => {
+    searchIt();
+    //eslint-disable-next-line
+  }, [selectReason, isAgree]);
 
   const checkDocs = (doc, checked) => {
     if (checked) {
@@ -100,7 +126,34 @@ function PointList() {
     }
   };
 
+  const handleReasonSelect = e => {
+    setSelectReason(e.currentTarget.value);
+  };
+
+  const handleNumberKeyDown = e => {
+    const allowedKeys = ["Tab", "Delete", "Backspace", "Enter"];
+    if (!((e.key >= "0" && e.key <= "9") || allowedKeys.includes(e.key))) {
+      e.preventDefault();
+    }
+  };
+
   const pointSubmit = async b => {
+    if (company === "" || company.length < 4) {
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <AlertModal
+              onClose={onClose} // 닫기
+              title={"오류"} // 제목
+              message={"고객사번호를 정확히 입력해 주세요"} // 내용
+              type={"alert"} // 타입 confirm, alert
+              yes={"확인"} // 확인버튼 제목
+            />
+          );
+        },
+      });
+      return false;
+    }
     const postList = await payments(selectedDocsId, b);
     console.log(postList);
     const request = {
@@ -133,7 +186,7 @@ function PointList() {
             },
           });
           if (res.headers.authorization === user.accessToken) {
-            loadList(page, keyword, startDate, endDate);
+            loadList(page, keyword, startDate, endDate, select, agree);
           }
           setPoint(0);
           setSelectedDocs([]);
@@ -145,7 +198,7 @@ function PointList() {
       });
   };
 
-  const loadList = async (p, k, s, e) => {
+  const loadList = async (p, k, s, e, r, a) => {
     setLoaded(false);
     let data = {
       page: p,
@@ -160,6 +213,13 @@ function PointList() {
     if (e !== "") {
       data.endDate = e;
     }
+    if (r !== "") {
+      data.status = r;
+    }
+    if (a === "Y") {
+      data.agreeYn = a;
+    }
+    console.log(data);
     await axios
       .get("/api/v1/board/admin/posts", {
         params: data,
@@ -186,6 +246,7 @@ function PointList() {
         if (res.data.postList.length === 0) {
           return false;
         }
+        console.log(res.data.postList);
         setList(res.data.postList ?? [{ postId: "없음" }]);
       })
       .catch(e => {
@@ -254,7 +315,6 @@ function PointList() {
     if (inputStartDate !== "") {
       isAfter = inputStartDate <= inputEndDate;
     }
-    console.log(isAfter);
     if (!isAfter) {
       confirmAlert({
         customUI: ({ onClose }) => {
@@ -278,17 +338,30 @@ function PointList() {
       searchStartDate !== "" && searchEndDate !== ""
         ? `startDate=${searchStartDate}&endDate=${searchEndDate}`
         : ""
-    }`;
+    }${searchStartDate !== "" ? "&" : ""}${
+      selectReason !== "" ? `select=${selectReason}` : ""
+    }${selectReason !== "" ? "&" : ""}${isAgree ? "agree=Y" : ""}`;
     navi(domain);
   };
   const dateReset = () => {
+    setSearchKeyword("");
     setInputStartDate("");
     setInputEndDate("");
   };
-  const formatPhoneNumber = phoneNumber => {
-    return phoneNumber.slice(-4);
-  };
+  const getPhone = str => {
+    if (str.length !== 11) {
+      // 문자열이 11자리가 아닌 경우에 대한 예외 처리
+      return "Invalid input";
+    }
 
+    const firstPart = str.substring(0, 3); // 1, 2, 3번째 문자열
+    const secondPart = "****"; // 4, 5, 6, 7번째 문자열은 '*'로 대체
+    const thirdPart = str.substring(7, 11); // 8, 9, 10, 11번째 문자열
+
+    // 조합하여 원하는 형식의 문자열을 만듭니다.
+    const transformedString = `${firstPart}-${secondPart}-${thirdPart}`;
+    return transformedString;
+  };
   const handleChangeSelect = e => {
     setReason(e.currentTarget.value);
   };
@@ -297,6 +370,7 @@ function PointList() {
     let payArr = [];
 
     p.forEach(p => {
+      p.companyCode = company;
       if (b) {
         p.status = "Y";
         p.result = point;
@@ -309,36 +383,54 @@ function PointList() {
     return payArr;
   };
 
-  useEffect(() => {
-    // selectedDocs가 비어있을 때 모든 체크를 해제
-    if (selectedDocs.length === 0) {
-      list.forEach(doc => {
-        document.getElementById(doc.postId).checked = false;
-      });
-    }
-    //eslint-disable-next-line
-  }, [selectedDocs]);
-
   return (
     <>
       {loaded ? (
         <>
-          <h2 className="p-4 text-center font-neoheavy text-3xl">
+          <h2 className="p-4 text-center font-neoheavy text-3xl relative container mx-auto">
             지급 신청 목록
+            <div className="grid grid-cols-2 gap-2 absolute top-1/2 right-2 -translate-y-1/2 ">
+              <div className="flex justify-end gap-2 text-sm font-neoextra container mx-auto pr-4">
+                <div className="flex items-center">
+                  <input
+                    id="agreeUser"
+                    type="checkbox"
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    checked={isAgree}
+                    onChange={e => setIsAgree(!isAgree)}
+                  />
+                  <label
+                    htmlFor="agreeUser"
+                    className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  >
+                    동의회원만 보기
+                  </label>
+                </div>
+              </div>
+              <select
+                className="p-2 bg-white border font-medium text-sm hidden xl:block font-neobold xl:w-60"
+                onChange={handleReasonSelect}
+                value={selectReason}
+              >
+                <option value="">구분</option>
+                <option value="S">지급대기</option>
+                <option value="Y">지급완료</option>
+                <option value="N">지급불가</option>
+              </select>
+            </div>
           </h2>
           <div className="flex justify-between container mx-auto">
-            <div className="flex flex-row justify-start gap-3 mb-4 container mx-auto pl-4">
+            <div className="flex flex-row justify-between gap-3 mb-4 container mx-auto pl-4 pr-2">
               <div className="font-neoextra text-lg p-2">검색어</div>
               <div>
                 <input
                   value={searchKeyword}
                   className="border border-gray-300 p-2 w-80 block rounded-lg font-neo"
-                  placeholder="이름 또는 연락처를 입력해 주세요"
+                  placeholder="이름/연락처/고객사번호를 입력해 주세요"
                   onChange={e => setSearchKeyword(e.currentTarget.value)}
                   onKeyDown={handleKeyDown}
                 />
               </div>
-
               <div className="grid grid-cols-2">
                 <div className="flex justify-start">
                   <div className="font-neoextra text-lg p-2">조회 시작일</div>
@@ -367,7 +459,6 @@ function PointList() {
               >
                 검색하기
               </button>
-
               <button
                 className="bg-gray-500 hover:bg-gray-700 py-2 px-4 rounded-sm text-white"
                 onClick={e => {
@@ -402,6 +493,14 @@ function PointList() {
                   >
                     <div className="grid grid-cols-3 gap-2 mb-2">
                       <div className="font-medium flex flex-col justify-center text-right">
+                        고객사
+                      </div>
+                      <div className="font-normal col-span-2 flex flex-col justify-center">
+                        {doc.companyCode ? doc.companyCode : "미입력"}
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-3 gap-2 mb-2">
+                      <div className="font-medium flex flex-col justify-center text-right">
                         이름
                       </div>
                       <div className="font-normal col-span-2 flex flex-col justify-center">
@@ -413,7 +512,7 @@ function PointList() {
                         연락처
                       </div>
                       <div className="font-normal col-span-2 flex flex-col justify-center">
-                        {formatPhoneNumber(doc.phone)}
+                        {getPhone(doc.phone)}
                       </div>
                     </div>
                     <div className="grid grid-cols-3 gap-2 mb-2">
@@ -462,6 +561,8 @@ function PointList() {
             keyword={keyword}
             startDate={startDate}
             endDate={endDate}
+            select={select}
+            agree={agree}
           />
 
           {selectedDocs.length > 0 && (
@@ -477,11 +578,11 @@ function PointList() {
                       className="p-2 bg-yellow-50 rounded-xl flex flex-col gap-2 justify-center"
                     >
                       <p>이름 : {doc.name}</p>
-                      <p>연락처 : {doc.phone}</p>
+                      <p>연락처 : {getPhone(doc.phone)}</p>
                     </div>
                   ))}
                 </div>
-                <div className="mt-2 grid grid-cols-1 xl:grid-cols-2 gap-2">
+                <div className="mt-2 grid grid-cols-1 xl:grid-cols-3 gap-2">
                   <div className="grid grid-cols-1 gap-2 bg-blue-50 p-2">
                     <div className="text-lg font-neoextra">포인트 지급처리</div>
                     <input
@@ -517,6 +618,22 @@ function PointList() {
                     >
                       지급불가처리
                     </button>
+                  </div>
+                  <div className="grid grid-cols-1 gap-2 bg-emerald-50 p-2">
+                    <div className="text-lg font-neoextra">고객사 입력</div>
+                    <input
+                      ref={companyRef}
+                      type="text"
+                      className="p-2 bg-white border font-medium"
+                      maxLength={4}
+                      value={company}
+                      onKeyDown={handleNumberKeyDown}
+                      onChange={e => setCompany(e.currentTarget.value)}
+                      onBlur={e => setCompany(e.currentTarget.value)}
+                    />
+                    <div className="transition duration-150 ease-out p-2 bg-gray-500 text-white rounded-lg font-medium text-center">
+                      지급처리 or 지급불가처리를 눌러주세요
+                    </div>
                   </div>
                 </div>
               </div>

@@ -13,7 +13,7 @@ import Join from "./Component/User/Join";
 import KakaoTest from "./Component/KakaoTest";
 import Mypage from "./Component/User/Mypage";
 import Admin from "./Component/Admin/Admin";
-//import AdminMain from "./Component/Admin/Main";
+import AdminMain from "./Component/Admin/Main";
 import UserList from "./Component/Admin/UserList";
 import List from "./Component/Mall/List";
 import Detail from "./Component/Mall/Detail";
@@ -95,7 +95,7 @@ function App() {
           </Route>
           <Route path="/newpwd" element={<NewPwd />} />
           <Route path="/admin" element={<Admin />}>
-            <Route path="" element={<UserList />} />
+            <Route path="" element={<AdminMain />} />
             <Route path="user" element={<UserList />} />
             <Route path="reset" element={<GiftReset />} />
             <Route path="loginlog" element={<LoginLog />} />

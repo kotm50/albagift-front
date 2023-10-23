@@ -170,7 +170,7 @@ function Admin() {
                 to="/admin/"
                 className="hover:bg-indigo-100 p-2 text-center"
               >
-                메인으로
+                포인트 내역
               </Link>
               <Link
                 to="/admin/pointlist"

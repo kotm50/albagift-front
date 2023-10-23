@@ -7,6 +7,7 @@ import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 
 import list from "../../Asset/mypage/list.png";
+import interview from "../../Asset/mypage/interview.png";
 import user from "../../Asset/mypage/user.png";
 import coupon from "../../Asset/mypage/coupon.png";
 import diamond from "../../Asset/mypage/diamond.png";
@@ -52,6 +53,8 @@ function Mypage() {
       ? setTitle("포인트내역")
       : location.pathname.split("/")[2] === "payhistory"
       ? setTitle("지급신청내역")
+      : location.pathname.split("/")[2] === "pointrequest"
+      ? setTitle("면접포인트 지급신청")
       : location.pathname.split("/")[2] === "cancel"
       ? setTitle("회원탈퇴")
       : setTitle("개인정보수정");
@@ -89,6 +92,19 @@ function Mypage() {
                   />
                 </div>
                 <span className="text-sm">개인정보수정</span>
+              </Link>
+              <Link
+                to="/mypage/pointrequest"
+                className="p-4 text-center bg-blue-50 hover:bg-blue-200 rounded-lg flex flex-col justify-center gap-2 group"
+              >
+                <div className="w-20 h-20 mx-auto rounded-full bg-white flex flex-col justify-center text-gray-500 group-hover:bg-indigo-500 group-hover:text-white">
+                  <img
+                    src={interview}
+                    alt="포인트신청"
+                    className="mx-auto w-10 drop-shadow-lg"
+                  />
+                </div>
+                <span className="text-sm">포인트신청</span>
               </Link>
               <Link
                 to="/mypage/coupon"

@@ -212,9 +212,6 @@ function PointRequest() {
     <div className="container xl:w-1/2 p-2 mx-auto bg-white my-2">
       {loaded ? (
         <>
-          <h2 className="text-lg xl:text-2xl font-neobold mb-3">
-            면접포인트 신청하기
-          </h2>
           <div className="grid grid-cols-6 xl:grid-cols-10 gap-1 bg-gray-50 p-2 xl:mb-3">
             <div className="col-span-2 font-neobold text-right bg-indigo-50 p-2">
               이름

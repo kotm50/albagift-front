@@ -9,9 +9,13 @@ import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 
 import queryString from "query-string";
 
+import dayjs from "dayjs";
+import "dayjs/locale/ko";
+
 import Loading from "../Layout/Loading";
 import Pagenate from "../Layout/Pagenate";
 import AlertModal from "../Layout/AlertModal";
+import Sorry from "../doc/Sorry";
 
 function PointList() {
   const navi = useNavigate();
@@ -26,22 +30,49 @@ function PointList() {
   const parsed = queryString.parse(location.search);
   const page = parsed.page || 1;
   const keyword = parsed.keyword || "";
+  const startDate = parsed.startDate || "";
+  const endDate = parsed.endDate || "";
   const [point, setPoint] = useState("");
   const [reason, setReason] = useState("");
   const [totalPage, setTotalPage] = useState(1);
   const [pagenate, setPagenate] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
+  const [inputStartDate, setInputStartDate] = useState("");
+  const [inputEndDate, setInputEndDate] = useState("");
+  const [searchStartDate, setSearchStartDate] = useState("");
+  const [searchEndDate, setSearchEndDate] = useState("");
 
   useEffect(() => {
+    setList([]);
     if (keyword !== "") {
       setSearchKeyword(keyword);
     }
-    loadList(page, keyword);
+    if (startDate !== "") {
+      setInputStartDate(startDate);
+    }
+    if (endDate !== "") {
+      setInputEndDate(endDate);
+    }
+    loadList(page, keyword, startDate, endDate);
     //eslint-disable-next-line
-  }, [location]);
+  }, [location, user.accessToken]);
+
+  //날짜수정
+  useEffect(() => {
+    if (inputStartDate !== "") {
+      setSearchStartDate(dayjs(inputStartDate).format("YYYY-MM-DD"));
+    } else {
+      setSearchStartDate("");
+    }
+    if (inputEndDate !== "") {
+      setSearchEndDate(dayjs(inputEndDate).format("YYYY-MM-DD"));
+    } else {
+      setSearchEndDate("");
+    }
+    //eslint-disable-next-line
+  }, [inputStartDate, inputEndDate]);
 
   const checkDocs = (doc, checked) => {
-    console.log(doc);
     if (checked) {
       // 체크박스가 선택된 경우, 아이템을 배열에 추가
       setSelectedDocs([
@@ -62,6 +93,13 @@ function PointList() {
     }
   };
 
+  const handleKeyDown = e => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      searchIt();
+    }
+  };
+
   const pointSubmit = async b => {
     const postList = await payments(selectedDocsId, b);
     console.log(postList);
@@ -72,9 +110,9 @@ function PointList() {
       .patch("/api/v1/board/admin/paymt/sts", request, {
         headers: { Authorization: user.accessToken },
       })
-      .then(async res => {
+      .then(res => {
         if (res.headers.authorization) {
-          await dispatch(
+          dispatch(
             getNewToken({
               accessToken: res.headers.authorization,
             })
@@ -94,7 +132,9 @@ function PointList() {
               );
             },
           });
-          loadList(page, keyword);
+          if (res.headers.authorization === user.accessToken) {
+            loadList(page, keyword, startDate, endDate);
+          }
           setPoint(0);
           setSelectedDocs([]);
           setSelectedDocsId([]);
@@ -105,21 +145,20 @@ function PointList() {
       });
   };
 
-  const loadList = async (p, s) => {
-    let data = {};
-    if (s === "") {
-      data = {
-        boardId: "B02",
-        page: p,
-        size: 20,
-      };
-    } else {
-      data = {
-        boardId: "B02",
-        page: p,
-        size: 20,
-        searchKeyword: s,
-      };
+  const loadList = async (p, k, s, e) => {
+    setLoaded(false);
+    let data = {
+      page: p,
+      size: 20,
+    };
+    if (k !== "") {
+      data.searchKeyword = k;
+    }
+    if (s !== "") {
+      data.startDate = s;
+    }
+    if (e !== "") {
+      data.endDate = e;
     }
     await axios
       .get("/api/v1/board/admin/posts", {
@@ -128,45 +167,35 @@ function PointList() {
           Authorization: user.accessToken,
         },
       })
-      .then(async res => {
+      .then(res => {
+        console.log(res);
         if (res.headers.authorization) {
-          await dispatch(
+          dispatch(
             getNewToken({
               accessToken: res.headers.authorization,
             })
           );
         }
+        setLoaded(true);
         if (res.data.code === "C000") {
           const totalP = res.data.totalPages;
           setTotalPage(res.data.totalPages);
           const pagenate = generatePaginationArray(p, totalP);
           setPagenate(pagenate);
-          setLoaded(true);
-        } else {
-          confirmAlert({
-            customUI: ({ onClose }) => {
-              return (
-                <AlertModal
-                  onClose={onClose} // 닫기
-                  title={"오류!!"} // 제목
-                  message={res.data.message} // 내용
-                  type={"alert"} // 타입 confirm, alert
-                  yes={"확인"} // 확인버튼 제목
-                  doIt={goBack} // 확인시 실행할 함수
-                />
-              );
-            },
-          });
+        }
+        if (res.data.postList.length === 0) {
+          return false;
         }
         setList(res.data.postList ?? [{ postId: "없음" }]);
       })
       .catch(e => {
+        setLoaded(true);
         confirmAlert({
           customUI: ({ onClose }) => {
             return (
               <AlertModal
                 onClose={onClose} // 닫기
-                title={"오류!!"} // 제목
+                title={"오류"} // 제목
                 message={"알 수 없는 오류가 발생했습니다"} // 내용
                 type={"alert"} // 타입 confirm, alert
                 yes={"확인"} // 확인버튼 제목
@@ -221,12 +250,41 @@ function PointList() {
   };
 
   const searchIt = () => {
+    let isAfter = true;
+    if (inputStartDate !== "") {
+      isAfter = inputStartDate <= inputEndDate;
+    }
+    console.log(isAfter);
+    if (!isAfter) {
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <AlertModal
+              onClose={onClose} // 닫기
+              title={"조회 실패"} // 제목
+              message={"시작일은 종료일보다 이전이어야 합니다"} // 내용
+              type={"alert"} // 타입 confirm, alert
+              yes={"확인"} // 확인버튼 제목
+              doIt={dateReset}
+            />
+          );
+        },
+      });
+      return false;
+    }
     let domain = `${pathName}${
       searchKeyword !== "" ? `?keyword=${searchKeyword}` : ""
+    }${searchKeyword !== "" ? "&" : "?"}${
+      searchStartDate !== "" && searchEndDate !== ""
+        ? `startDate=${searchStartDate}&endDate=${searchEndDate}`
+        : ""
     }`;
     navi(domain);
   };
-
+  const dateReset = () => {
+    setInputStartDate("");
+    setInputEndDate("");
+  };
   const formatPhoneNumber = phoneNumber => {
     return phoneNumber.slice(-4);
   };
@@ -251,6 +309,16 @@ function PointList() {
     return payArr;
   };
 
+  useEffect(() => {
+    // selectedDocs가 비어있을 때 모든 체크를 해제
+    if (selectedDocs.length === 0) {
+      list.forEach(doc => {
+        document.getElementById(doc.postId).checked = false;
+      });
+    }
+    //eslint-disable-next-line
+  }, [selectedDocs]);
+
   return (
     <>
       {loaded ? (
@@ -258,22 +326,57 @@ function PointList() {
           <h2 className="p-4 text-center font-neoheavy text-3xl">
             지급 신청 목록
           </h2>
-          <div className="flex flex-row justify-start gap-3 mb-4 container mx-auto">
-            <div className="font-neo text-lg p-2">검색어</div>
-            <div>
-              <input
-                value={searchKeyword}
-                className="border border-gray-300 p-2 w-80 block rounded-lg font-neo"
-                placeholder="이름 또는 연락처를 입력해 주세요"
-                onChange={e => setSearchKeyword(e.currentTarget.value)}
-              />
-            </div>
-            <div>
+          <div className="flex justify-between container mx-auto">
+            <div className="flex flex-row justify-start gap-3 mb-4 container mx-auto pl-4">
+              <div className="font-neoextra text-lg p-2">검색어</div>
+              <div>
+                <input
+                  value={searchKeyword}
+                  className="border border-gray-300 p-2 w-80 block rounded-lg font-neo"
+                  placeholder="이름 또는 연락처를 입력해 주세요"
+                  onChange={e => setSearchKeyword(e.currentTarget.value)}
+                  onKeyDown={handleKeyDown}
+                />
+              </div>
+
+              <div className="grid grid-cols-2">
+                <div className="flex justify-start">
+                  <div className="font-neoextra text-lg p-2">조회 시작일</div>
+                  <input
+                    type="date"
+                    value={inputStartDate}
+                    className="border border-gray-300 p-2 w-80 block rounded-lg font-neo"
+                    placeholder="이름 또는 연락처를 입력해 주세요"
+                    onChange={e => setInputStartDate(e.currentTarget.value)}
+                  />
+                </div>
+                <div className="flex justify-start">
+                  <div className="font-neoextra text-lg p-2">조회 종료일</div>
+                  <input
+                    type="date"
+                    value={inputEndDate}
+                    className="border border-gray-300 p-2 w-80 block rounded-lg font-neo"
+                    placeholder="이름 또는 연락처를 입력해 주세요"
+                    onChange={e => setInputEndDate(e.currentTarget.value)}
+                  />
+                </div>
+              </div>
               <button
                 className="bg-blue-500 hover:bg-blue-700 py-2 px-4 rounded-sm text-white"
                 onClick={searchIt}
               >
                 검색하기
+              </button>
+
+              <button
+                className="bg-gray-500 hover:bg-gray-700 py-2 px-4 rounded-sm text-white"
+                onClick={e => {
+                  setSearchKeyword("");
+                  setInputStartDate("");
+                  setInputEndDate("");
+                }}
+              >
+                초기화
               </button>
             </div>
           </div>
@@ -348,7 +451,7 @@ function PointList() {
               ))}
             </div>
           ) : (
-            <div>목록을 불러오지 못했습니다.</div>
+            <Sorry message={"조회된 내역이 없습니다"} />
           )}
 
           <Pagenate
@@ -357,6 +460,8 @@ function PointList() {
             totalPage={Number(totalPage)}
             pathName={pathName}
             keyword={keyword}
+            startDate={startDate}
+            endDate={endDate}
           />
 
           {selectedDocs.length > 0 && (

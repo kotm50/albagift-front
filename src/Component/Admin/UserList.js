@@ -7,9 +7,12 @@ import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 
 import axios from "axios";
+
 import AlertModal from "../Layout/AlertModal";
 import queryString from "query-string";
 import Pagenate from "../Layout/Pagenate";
+import Sorry from "../doc/Sorry";
+import Loading from "../Layout/Loading";
 
 //import { dummyUser } from "./dummy";
 
@@ -21,10 +24,10 @@ function UserList() {
   const [selectedUsersId, setSelectedUsersId] = useState([]);
   const location = useLocation();
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState("잠시만 기다려 주세요");
+  const [loaded, setLoaded] = useState(false);
   const [isAgree, setIsAgree] = useState(false);
 
-  const [point, setPoint] = useState("");
+  const [point, setPoint] = useState(0);
 
   const pathName = location.pathname;
   const parsed = queryString.parse(location.search);
@@ -36,6 +39,7 @@ function UserList() {
 
   useEffect(() => {
     if (point < 0) {
+      setPoint(0);
       confirmAlert({
         customUI: ({ onClose }) => {
           return (
@@ -49,32 +53,37 @@ function UserList() {
           );
         },
       });
-      setPoint(0);
       return false;
     }
   }, [point]);
 
   useEffect(() => {
+    setUsers([]);
     if (keyword !== "") {
       setSearchKeyword(keyword);
     }
     loadList(page, keyword, isAgree);
     //eslint-disable-next-line
-  }, [location, isAgree]);
+  }, [location, isAgree, user.accessToken]);
 
-  const loadList = async (p, s, b) => {
-    let data = {};
-    if (s === "") {
-      data = {
-        page: p,
-        size: 20,
-      };
-    } else {
-      data = {
-        page: p,
-        size: 20,
-        searchKeyword: s,
-      };
+  const handleKeyDown = e => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      searchIt();
+    }
+  };
+
+  const loadList = async (p, k, b) => {
+    setLoaded(false);
+    let data = {
+      page: p,
+      size: 20,
+    };
+    if (k !== "") {
+      data.searchKeyword = k;
+    }
+    if (b) {
+      data.agreeYn = "Y";
     }
     await axios
       .post("/api/v1/user/admin/userlst", data, {
@@ -83,6 +92,14 @@ function UserList() {
         },
       })
       .then(res => {
+        if (res.headers.authorization) {
+          dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
+        }
+        setLoaded(true);
         if (res.data.code === "C000") {
           const totalP = res.data.totalPages;
           setTotalPage(res.data.totalPages);
@@ -110,10 +127,13 @@ function UserList() {
         } else {
           users = res.data.userList;
         }
+        if (users.length === 0) {
+          return false;
+        }
         setUsers(users);
       })
       .catch(e => {
-        console.log(e);
+        setLoaded(true);
         confirmAlert({
           customUI: ({ onClose }) => {
             return (
@@ -180,35 +200,6 @@ function UserList() {
     navi(domain);
   };
 
-  const getUserList = async b => {
-    setLoading("잠시만 기다려 주세요...");
-    setUsers([]);
-    await axios
-      .post("/api/v1/user/admin/userlst", null, {
-        headers: {
-          Authorization: user.accessToken,
-        },
-      })
-      .then(res => {
-        const userList = res.data.userList;
-        if (!b) {
-          setUsers(userList);
-        } else {
-          const list = userList.filter(item => item.agreeYn === "Y");
-          setUsers(list);
-        }
-        if (res.data.length === 0) {
-          setLoading("회원이 없습니다");
-        } else {
-          setLoading("잠시만 기다려 주세요...");
-        }
-      })
-      .catch(e => {
-        console.log(e);
-        setLoading("오류가 발생했습니다.");
-      });
-  };
-
   const checkUsers = (user, checked) => {
     if (checked) {
       // 체크박스가 선택된 경우, 아이템을 배열에 추가
@@ -234,19 +225,35 @@ function UserList() {
     }
   };
 
-  const formatPhoneNumber = phoneNumber => {
-    if (phoneNumber && phoneNumber.length === 11) {
-      const formattedNumber = phoneNumber.replace(
-        /(\d{3})(\d{4})(\d{4})/,
-        "$1-$2-$3"
-      );
-      return formattedNumber;
+  //생일변환
+  const getBirth = (str, separator, interval) => {
+    let result = "";
+    for (let i = 0; i < str.length; i += interval) {
+      let chunk = str.substring(i, i + interval);
+      result += chunk + separator;
     }
-    return phoneNumber;
+    // 맨 마지막의 separator를 제거하여 반환합니다.
+    return result.slice(0, -1);
+  };
+
+  //휴대폰변환
+  const getPhone = str => {
+    if (str.length !== 11) {
+      // 문자열이 11자리가 아닌 경우에 대한 예외 처리
+      return "Invalid input";
+    }
+
+    const firstPart = str.substring(0, 3); // 1, 2, 3번째 문자열
+    const secondPart = "****"; // 4, 5, 6, 7번째 문자열은 '*'로 대체
+    const thirdPart = str.substring(7, 11); // 8, 9, 10, 11번째 문자열
+
+    // 조합하여 원하는 형식의 문자열을 만듭니다.
+    const transformedString = `${firstPart}-${secondPart}-${thirdPart}`;
+    return transformedString;
   };
 
   const incPoint = async () => {
-    setLoading("잠시만 기다려 주세요");
+    setLoaded(false);
     const request = {
       idList: selectedUsersId,
       point: point,
@@ -265,6 +272,8 @@ function UserList() {
             );
           }
         }
+
+        setLoaded(true);
         if (res.data.code === "C000") {
           confirmAlert({
             customUI: ({ onClose }) => {
@@ -279,7 +288,9 @@ function UserList() {
               );
             },
           });
-          getUserList(isAgree);
+          if (res.headers.authorization === user.accessToken) {
+            loadList(page, keyword, isAgree);
+          }
           setPoint(0);
           setSelectedUsers([]);
           setSelectedUsersId([]);
@@ -291,7 +302,7 @@ function UserList() {
   };
 
   const decPoint = async () => {
-    setLoading("잠시만 기다려 주세요");
+    setLoaded(false);
     const request = {
       idList: selectedUsersId,
       point: point,
@@ -301,6 +312,7 @@ function UserList() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
+        setLoaded(true);
         if (res.headers.authorization) {
           if (res.headers.authorization !== user.accessToken) {
             dispatch(
@@ -324,7 +336,9 @@ function UserList() {
               );
             },
           });
-          getUserList(isAgree);
+          if (res.headers.authorization === user.accessToken) {
+            loadList(page, keyword, isAgree);
+          }
           setPoint(0);
           setSelectedUsers([]);
           setSelectedUsersId([]);
@@ -335,107 +349,145 @@ function UserList() {
       });
   };
 
+  useEffect(() => {
+    // selectedUsers가 비어있을 때 모든 체크를 해제
+    if (selectedUsers.length === 0) {
+      users.forEach(user => {
+        document.getElementById(user.userId).checked = false;
+      });
+    }
+    //eslint-disable-next-line
+  }, [selectedUsers]);
+
   return (
     <>
-      {users.length > 0 ? (
+      {loaded ? (
         <>
-          <div className="flex justify-end gap-2 text-sm font-neoextra container mx-auto">
-            <div className="flex items-center">
-              <input
-                id="agreeUser"
-                type="checkbox"
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                checked={isAgree}
-                onChange={e => setIsAgree(!isAgree)}
-              />
-              <label
-                htmlFor="agreeUser"
-                className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-              >
-                동의회원만 보기
-              </label>
-            </div>
-          </div>
+          {users.length > 0 ? (
+            <>
+              <h2 className="p-4 text-center font-neoheavy text-3xl">
+                회원 목록
+              </h2>
+              <div className="flex justify-between container mx-auto">
+                <div className="flex flex-row justify-start gap-3 mb-4 container mx-auto pl-4">
+                  <div className="font-neoextra text-lg p-2">검색어</div>
+                  <div>
+                    <input
+                      type="text"
+                      value={searchKeyword}
+                      className="border border-gray-300 p-2 w-80 block rounded-lg font-neo"
+                      placeholder="이름 또는 연락처를 입력해 주세요"
+                      onChange={e => setSearchKeyword(e.currentTarget.value)}
+                      onKeyDown={handleKeyDown}
+                    />
+                  </div>
+                  <button
+                    className="bg-blue-500 hover:bg-blue-700 py-2 px-4 rounded-sm text-white"
+                    onClick={searchIt}
+                  >
+                    검색하기
+                  </button>
 
-          <h2 className="p-4 text-center font-neoheavy text-3xl">
-            지급 신청 목록
-          </h2>
-          <div className="flex flex-row justify-start gap-3 mb-4 container mx-auto">
-            <div className="font-neo text-lg p-2">검색어</div>
-            <div>
-              <input
-                value={searchKeyword}
-                className="border border-gray-300 p-2 w-80 block rounded-lg font-neo"
-                placeholder="이름 또는 연락처를 입력해 주세요"
-                onChange={e => setSearchKeyword(e.currentTarget.value)}
-              />
-            </div>
-            <div>
-              <button
-                className="bg-blue-500 hover:bg-blue-700 py-2 px-4 rounded-sm text-white"
-                onClick={searchIt}
-              >
-                검색하기
-              </button>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 xl:grid-cols-5 gap-2 mt-2 bg-white p-2 container mx-auto">
-            {users.map((user, idx) => (
-              <div key={idx}>
-                <input
-                  type="checkbox"
-                  value={user.userId}
-                  className="hidden peer"
-                  id={user.userId}
-                  onChange={e => checkUsers(user, e.target.checked)}
-                />
-                <label
-                  htmlFor={user.userId}
-                  className="block p-2 bg-teal-50 hover:bg-teal-200 text-black rounded-lg border-2 border-teal-50 hover:border-teal-200 peer-checked:border-teal-500 peer-checked:hover:border-teal-500"
-                >
-                  <div className="grid grid-cols-3 gap-2 mb-2">
-                    <div className="font-medium flex flex-col justify-center text-right">
-                      이름
-                    </div>
-                    <div className="font-normal col-span-2 flex flex-col justify-center">
-                      {user.userName}
-                      {user.useYn === "S" && (
-                        <span className="text-rose-500 text-sm ml-2">
-                          (탈퇴예정)
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-3 gap-2 mb-2">
-                    <div className="font-medium flex flex-col justify-center text-right">
-                      연락처
-                    </div>
-                    <div className="font-normal col-span-2 flex flex-col justify-center">
-                      {user.agreeYn === "Y"
-                        ? formatPhoneNumber(user.phone)
-                        : "비공개"}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-3 gap-2 mb-2">
-                    <div className="font-medium flex flex-col justify-center text-right">
-                      포인트
-                    </div>
-                    <div
-                      className="font-normal col-span-2 flex flex-col justify-center"
-                      title={user.point}
+                  <button
+                    className="bg-gray-500 hover:bg-gray-700 py-2 px-4 rounded-sm text-white"
+                    onClick={e => {
+                      setSearchKeyword("");
+                    }}
+                  >
+                    초기화
+                  </button>
+                </div>
+                <div className="flex justify-end gap-2 text-sm font-neoextra container mx-auto pr-4">
+                  <div className="flex items-center">
+                    <input
+                      id="agreeUser"
+                      type="checkbox"
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      checked={isAgree}
+                      onChange={e => setIsAgree(!isAgree)}
+                    />
+                    <label
+                      htmlFor="agreeUser"
+                      className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                     >
-                      {user.point} point
-                    </div>
+                      동의회원만 보기
+                    </label>
                   </div>
-                </label>
+                </div>
               </div>
-            ))}
-          </div>
+              <div className="grid grid-cols-1 xl:grid-cols-5 gap-2 mt-2 bg-white p-2 container mx-auto">
+                {users.map((user, idx) => (
+                  <div key={idx}>
+                    <input
+                      type="checkbox"
+                      value={user.userId}
+                      className="hidden peer"
+                      id={user.userId}
+                      onChange={e => checkUsers(user, e.target.checked)}
+                    />
+                    <label
+                      htmlFor={user.userId}
+                      className="block p-2 bg-teal-50 hover:bg-teal-200 text-black rounded-lg border-2 border-teal-50 hover:border-teal-200 peer-checked:border-teal-500 peer-checked:hover:border-teal-500"
+                    >
+                      <div className="grid grid-cols-3 gap-2 mb-2">
+                        <div className="font-medium flex flex-col justify-center text-right font-neo">
+                          이름
+                        </div>
+                        <div className="font-normal col-span-2 flex flex-col justify-center">
+                          {user.userName}
+                          {user.useYn === "S" && (
+                            <span className="text-rose-500 text-sm ml-2">
+                              (탈퇴예정)
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-3 gap-2 mb-2">
+                        <div className="font-medium flex flex-col justify-center text-right font-neo">
+                          연락처
+                        </div>
+                        <div className="font-normal col-span-2 flex flex-col justify-center">
+                          {getPhone(user.phone)}
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-3 gap-2 mb-2">
+                        <div className="font-medium flex flex-col justify-center text-right font-neo">
+                          성별
+                        </div>
+                        <div className="font-normal col-span-2 flex flex-col justify-center">
+                          {user.gender === "1" ? "남자" : "여자"}
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-3 gap-2 mb-2">
+                        <div className="font-medium flex flex-col justify-center text-right font-neo">
+                          생년월일
+                        </div>
+                        <div className="font-normal col-span-2 flex flex-col justify-center">
+                          {getBirth(user.birth, ".", 2)}
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-3 gap-2 mb-2">
+                        <div className="font-medium flex flex-col justify-center text-right font-neo">
+                          포인트
+                        </div>
+                        <div
+                          className="font-normal col-span-2 flex flex-col justify-center"
+                          title={user.point}
+                        >
+                          {Number(user.point).toLocaleString()} point
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : (
+            <Sorry message={"조회된 내역이 없습니다"} />
+          )}
         </>
       ) : (
-        <div className="container mx-auto text-center font-neoextra text-3xl">
-          {loading}
-        </div>
+        <Loading />
       )}
 
       <Pagenate
@@ -458,7 +510,7 @@ function UserList() {
                   className="p-2 bg-yellow-50 rounded-xl flex flex-col gap-2 justify-center"
                 >
                   <p>이름 : {user.name}</p>
-                  <p>연락처 : {user.agreeYn === "Y" ? user.phone : "비공개"}</p>
+                  <p>연락처 : {getPhone(user.phone)}</p>
                 </div>
               ))}
             </div>
@@ -466,39 +518,39 @@ function UserList() {
               <div className="grid grid-cols-3 gap-2">
                 <button
                   className="transition duration-150 ease-out p-2 bg-green-700 hover:bg-green-900 text-white"
-                  onClick={e => setPoint(Number(point) + 1000)}
+                  onClick={e => setPoint(1000)}
                 >
-                  +1000
+                  1,000원
                 </button>
                 <button
                   className="transition duration-150 ease-out p-2 bg-green-700 hover:bg-green-900 text-white"
-                  onClick={e => setPoint(Number(point) + 5000)}
+                  onClick={e => setPoint(5000)}
                 >
-                  + 5000
+                  5,000원
                 </button>
                 <button
                   className="transition duration-150 ease-out p-2 bg-green-700 hover:bg-green-900 text-white"
-                  onClick={e => setPoint(Number(point) + 10000)}
+                  onClick={e => setPoint(10000)}
                 >
-                  + 10000
+                  10,000원
                 </button>
                 <button
-                  className="transition duration-150 ease-out p-2 bg-rose-700 hover:bg-rose-900 text-white"
-                  onClick={e => setPoint(Number(point) - 1000)}
+                  className="transition duration-150 ease-out p-2 bg-green-700 hover:bg-green-900 text-white"
+                  onClick={e => setPoint(20000)}
                 >
-                  - 1000
+                  20,000원
                 </button>
                 <button
-                  className="transition duration-150 ease-out p-2 bg-rose-700 hover:bg-rose-900 text-white"
-                  onClick={e => setPoint(Number(point) - 5000)}
+                  className="transition duration-150 ease-out p-2 bg-green-700 hover:bg-green-900 text-white"
+                  onClick={e => setPoint(30000)}
                 >
-                  - 5000
+                  30,000원
                 </button>
                 <button
                   className="transition duration-150 ease-out p-2 bg-rose-700 hover:bg-rose-900 text-white"
                   onClick={e => setPoint(0)}
                 >
-                  0 으로
+                  0원
                 </button>
               </div>
               <div className="grid grid-cols-1 gap-2">
@@ -508,6 +560,15 @@ function UserList() {
                   value={point}
                   onChange={e => setPoint(e.currentTarget.value)}
                   onBlur={e => setPoint(e.currentTarget.value)}
+                  onKeyDown={e => {
+                    if (
+                      e.key === "-" ||
+                      e.key === "ArrowUp" ||
+                      e.key === "ArrowDown"
+                    ) {
+                      e.preventDefault();
+                    }
+                  }}
                 />
                 <div className="grid grid-cols-2 gap-2">
                   <button

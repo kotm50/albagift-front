@@ -12,9 +12,9 @@ function GiftReset() {
       .post("/api/v1/shop/admin/bizapi", null, {
         headers: { Authorization: user.accessToken },
       })
-      .then(async res => {
+      .then(res => {
         if (res.headers.authorization) {
-          await dispatch(
+          dispatch(
             getNewToken({
               accessToken: res.headers.authorization,
             })
@@ -35,6 +35,13 @@ function GiftReset() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
+        if (res.headers.authorization) {
+          dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
+        }
         alert("브랜드리셋 완료");
       })
       .catch(e => {

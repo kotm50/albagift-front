@@ -6,13 +6,13 @@ import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBDzJQwRT4Xf_pQ6u6OjkAH2qzs1104v-4",
-  authDomain: "koti-survey.firebaseapp.com",
-  projectId: "koti-survey",
-  storageBucket: "koti-survey.appspot.com",
-  messagingSenderId: "304040793796",
-  appId: "1:304040793796:web:3b9d3a63aae5fcfd405b91",
-  measurementId: "G-WCPP6LFN94",
+  apiKey: process.env.REACT_APP_apikey,
+  authDomain: process.env.REACT_APP_authDomain,
+  projectId: process.env.REACT_APP_projectId,
+  storageBucket: process.env.REACT_APP_storageBucket,
+  messagingSenderId: process.env.REACT_APP_messagingSenderId,
+  appId: process.env.REACT_APP_appId,
+  measurementId: process.env.REACT_APP_measurementId,
 };
 
 // Initialize Firebase

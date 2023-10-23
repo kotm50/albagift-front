@@ -22,33 +22,43 @@ function Payhistory() {
   const [list, setList] = useState([]);
   const [loaded, setLoaded] = useState(false);
 
+  const [selectReason, setSelectReason] = useState("");
+
   const pathName = location.pathname;
   const parsed = queryString.parse(location.search);
   const page = parsed.page || 1;
   const keyword = parsed.keyword || "";
+  const select = parsed.select || "";
   const [totalPage, setTotalPage] = useState(1);
   const [pagenate, setPagenate] = useState([]);
 
   useEffect(() => {
-    loadList(page);
+    setList([]);
+    setLoaded(false);
+    setSelectReason(select);
+    loadList(page, select);
     //eslint-disable-next-line
   }, [location, user.accessToken]);
 
-  const loadList = async p => {
+  const loadList = async (p, s) => {
     let data = {
       boardId: "B02",
       page: p || 1,
       size: 20,
     };
+    if (s !== "") {
+      data.status = s;
+    }
+    console.log(data);
     await axios
       .post("/api/v1/board/get/pnt/posts/list", data, {
         headers: {
           Authorization: user.accessToken,
         },
       })
-      .then(async res => {
+      .then(res => {
         if (res.headers.authorization) {
-          await dispatch(
+          dispatch(
             getNewToken({
               accessToken: res.headers.authorization,
             })
@@ -122,7 +132,6 @@ function Payhistory() {
   };
 
   const listModal = doc => {
-    console.log(doc.status);
     if (doc.status === "S") {
       confirmAlert({
         customUI: ({ onClose }) => {
@@ -162,7 +171,6 @@ function Payhistory() {
   };
 
   const editIt = async (doc, date, hour, minute) => {
-    console.log("수정전", user.accessToken);
     let data = {
       boardId: "B02",
       postId: doc.postId,
@@ -200,7 +208,7 @@ function Payhistory() {
           },
         });
         if (res.headers.authorization === user.accessToken) {
-          loadList(page);
+          loadList(page, select);
         }
       })
       .catch(e => {
@@ -233,17 +241,45 @@ function Payhistory() {
       });
   };
 
+  const handleChangeSelect = e => {
+    setSelectReason(e.currentTarget.value);
+    navi(`/mypage/payhistory?select=${e.currentTarget.value}`);
+  };
+
   return (
     <>
       {loaded ? (
         <>
           {list.length > 0 ? (
             <>
-              <div className="text-xs xl:text-sm container mx-auto text-left mb-2">
-                내역을 <span className="hidden xl:inline">클릭</span>
-                <span className="inline xl:hidden">탭</span>하면 수정/삭제가
-                가능합니다.
+              <div className="flex justify-between my-2">
+                <div className="text-xs xl:text-sm container mx-auto xl:text-left text-sky-500 text-center items-center">
+                  내역을 <span className="hidden xl:inline">클릭</span>
+                  <span className="inline xl:hidden">탭</span>하면 수정/삭제가
+                  가능합니다.
+                </div>
+                <select
+                  className="p-2 bg-white border font-medium text-sm hidden xl:block"
+                  onChange={handleChangeSelect}
+                  value={selectReason}
+                >
+                  <option value="">처리결과</option>
+                  <option value="S">심사중</option>
+                  <option value="Y">지급완료</option>
+                  <option value="N">지급불가</option>
+                </select>
               </div>
+
+              <select
+                className="p-2 bg-white border font-medium text-sm  xl:hidden block mb-3"
+                onChange={handleChangeSelect}
+                value={selectReason}
+              >
+                <option value="">처리결과</option>
+                <option value="S">심사중</option>
+                <option value="Y">지급완료</option>
+                <option value="N">지급불가</option>
+              </select>
               <div className="text-sm xl:text-base grid grid-cols-3 xl:grid-cols-4 py-2 bg-blue-50 divide-x">
                 <div className="font-neoextra text-center hidden xl:block">
                   입력일
@@ -303,6 +339,7 @@ function Payhistory() {
         totalPage={Number(totalPage)}
         pathName={pathName}
         keyword={keyword}
+        select={select}
       />
     </>
   );

@@ -19,33 +19,46 @@ function PointHistory() {
   const [loaded, setLoaded] = useState(false);
 
   const [expire, setExpire] = useState("");
+  const [selectReason, setSelectReason] = useState("");
 
   const pathName = location.pathname;
   const parsed = queryString.parse(location.search);
   const page = parsed.page || 1;
   const keyword = parsed.keyword || "";
+  const select = parsed.select || "";
   const [totalPage, setTotalPage] = useState(1);
   const [pagenate, setPagenate] = useState([]);
 
   useEffect(() => {
-    loadList(page);
+    setList([]);
+    setLoaded(false);
+    setSelectReason(select);
+    loadList(page, select);
     //eslint-disable-next-line
-  }, [location]);
+  }, [location, user.accessToken]);
 
-  const loadList = async p => {
+  const handleChangeSelect = e => {
+    setSelectReason(e.currentTarget.value);
+    navi(`/mypage/pointhistory?select=${e.currentTarget.value}`);
+  };
+
+  const loadList = async (p, r) => {
     let data = {
       page: p || 1,
       size: 20,
     };
+    if (r !== "") {
+      data.gubun = r;
+    }
     await axios
       .post("/api/v1/user/mypage/pnt/log", data, {
         headers: {
           Authorization: user.accessToken,
         },
       })
-      .then(async res => {
+      .then(res => {
         if (res.headers.authorization) {
-          await dispatch(
+          dispatch(
             getNewToken({
               accessToken: res.headers.authorization,
             })
@@ -72,6 +85,7 @@ function PointHistory() {
           }
         }
         setList(res.data.logList ?? [{ currPoint: "없음" }]);
+
         setExpire(res.data.pointExpiryDate ?? "");
       })
       .catch(e => {
@@ -132,18 +146,42 @@ function PointHistory() {
                 </span>
                 p
               </div>
-              {expire ? (
-                <div className="text-sm xl:text-base mb-2 font-neo leading-6">
-                  만료예정일 : {expire} <br className="xl:hidden" />
-                  <span className="text-rose-500">
+
+              <div className="flex justify-between">
+                {expire ? (
+                  <div className="text-sm xl:text-base mb-2 font-neo leading-6">
+                    만료예정일 : {expire} <br className="xl:hidden" />
+                    <span className="text-rose-500">
+                      (만료예정일이 경과되면 포인트가 소멸합니다)
+                    </span>
+                  </div>
+                ) : (
+                  <div className="text-sm xl:text-base mb-2 font-neo text-rose-500">
                     (만료예정일이 경과되면 포인트가 소멸합니다)
-                  </span>
-                </div>
-              ) : (
-                <div className="text-sm xl:text-base mb-2 font-neo text-rose-500">
-                  (만료예정일이 경과되면 포인트가 소멸합니다)
-                </div>
-              )}
+                  </div>
+                )}
+
+                <select
+                  className="p-2 bg-white border font-medium text-sm hidden xl:block"
+                  onChange={handleChangeSelect}
+                  value={selectReason}
+                >
+                  <option value="">구분</option>
+                  <option value="B">구매</option>
+                  <option value="P">지급</option>
+                  <option value="D">차감</option>
+                </select>
+              </div>
+              <select
+                className="p-2 bg-white border font-medium text-sm block xl:hidden mb-3"
+                onChange={handleChangeSelect}
+                value={selectReason}
+              >
+                <option value="">구분</option>
+                <option value="B">구매</option>
+                <option value="P">지급</option>
+                <option value="D">차감</option>
+              </select>
               <div className="text-xs xl:text-base grid grid-cols-4 xl:grid-cols-5 py-2 bg-blue-50 divide-x">
                 <div className="font-neoextra text-center hidden xl:block ">
                   일시

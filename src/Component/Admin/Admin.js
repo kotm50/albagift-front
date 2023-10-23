@@ -14,9 +14,32 @@ function Admin() {
   let navi = useNavigate();
   const user = useSelector(state => state.user);
   useEffect(() => {
-    chkAdmin(user);
+    if (
+      user.accessToken === "" ||
+      user.accessToken === undefined ||
+      user.accessToken === null
+    ) {
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <AlertModal
+              onClose={onClose} // 닫기
+              title={"인증실패"} // 제목
+              message={"관리자로 로그인 해주세요"} // 내용
+              type={"alert"} // 타입 confirm, alert
+              yes={"확인"} // 확인버튼 제목
+              doIt={goLogin} // 확인시 실행할 함수
+            />
+          );
+        },
+      });
+    } else {
+      chkAdmin(user);
+    }
     //eslint-disable-next-line
   }, [location]);
+
+  const goLogin = () => [navi("/login")];
 
   const chkAdmin = async user => {
     await axios
@@ -113,7 +136,10 @@ function Admin() {
     <>
       {loaded && (
         <>
-          <div className="bg-white p-2 container mx-auto">
+          <div className="container mx-auto text-center text-lg md:hidden">
+            관리자 페이지 모바일은 개발중입니다.
+          </div>
+          <div className="bg-white p-2 container mx-auto hidden xl:block">
             <div className="flex justify-between mb-3 p-2">
               <div className="mb-2 text-xl xl:text-3xl">
                 안녕하세요 면접샵 관리자 페이지 입니다

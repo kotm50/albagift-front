@@ -8,7 +8,7 @@ function UserSection() {
   return (
     <div className="grid grid-cols-1 xl:grid-cols-3 gap-3 py-3">
       <div className="bg-green-700 text-white px-2 pt-4  xl:rounded-lg relative  flex-col justify-center overflow-hidden  group hidden xl:flex">
-        <Link to="/board/write?boardId=B02" className="z-40">
+        <Link to="/mypage/pointrequest" className="z-40">
           <div className="text-left xl:text-xl mb-1">면접보고 오셨어요?</div>
           <div className="text-left text-3xl xl:text-4xl mb-5 text-yellow-300 font-neoextra">
             포인트 신청하세요!
@@ -38,9 +38,8 @@ function UserSection() {
       <div className="border p-2">
         <UserInformation />
       </div>
-
       <div className="bg-green-700 text-white px-2 pt-4  xl:rounded-lg relative  flex-col justify-center overflow-hidden flex group xl:hidden">
-        <Link to="/board/write?boardId=B02" className="z-40">
+        <Link to="/mypage/pointrequest" className="z-40">
           <div className="text-left xl:text-xl mb-1">면접보고 오셨어요?</div>
           <div className="text-left text-3xl xl:text-4xl mb-5 text-yellow-300 font-neoextra">
             포인트 신청하세요!

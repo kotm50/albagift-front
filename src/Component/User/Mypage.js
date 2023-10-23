@@ -20,7 +20,11 @@ function Mypage() {
   const [title, setTitle] = useState("");
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
-    if (users.userId === "") {
+    if (
+      users.userId === "" ||
+      users.userId === null ||
+      users.userId === undefined
+    ) {
       confirmAlert({
         customUI: ({ onClose }) => {
           return (

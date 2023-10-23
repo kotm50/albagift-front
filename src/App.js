@@ -43,6 +43,7 @@ import PwdChk from "./Component/User/Mypage/PwdChk";
 import EditUser from "./Component/User/Mypage/EditUser";
 import Payhistory from "./Component/User/Payhistory";
 import PointHistory from "./Component/User/PointHistory";
+import PointRequest from "./Component/User/PointRequest";
 //import MyMain from "./Component/User/Mypage/MyMain";
 
 function App() {
@@ -89,6 +90,7 @@ function App() {
             <Route path="coupon" element={<Coupon />} />
             <Route path="payhistory" element={<Payhistory />} />
             <Route path="pointhistory" element={<PointHistory />} />
+            <Route path="pointrequest" element={<PointRequest />} />
             <Route path="cancel" element={<Cancel />} />
           </Route>
           <Route path="/newpwd" element={<NewPwd />} />

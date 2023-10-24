@@ -238,9 +238,16 @@ function EditUser() {
   //생일변환
   const getBirth = (str, separator, interval) => {
     let result = "";
-    for (let i = 0; i < str.length; i += interval) {
-      let chunk = str.substring(i, i + interval);
-      result += chunk + separator;
+    if (str.length === 6) {
+      for (let i = 0; i < str.length; i += interval) {
+        let chunk = str.substring(i, i + interval);
+        result += chunk + separator;
+      }
+    } else if (str.length === 8) {
+      let firstChunk = str.substring(0, 4);
+      let secondChunk = str.substring(4, 6);
+      let thirdChunk = str.substring(6, 8);
+      result = `${firstChunk}${separator}${secondChunk}.${thirdChunk}`;
     }
     // 맨 마지막의 separator를 제거하여 반환합니다.
     return result.slice(0, -1);

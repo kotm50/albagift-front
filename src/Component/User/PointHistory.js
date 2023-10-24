@@ -138,52 +138,52 @@ function PointHistory() {
     <>
       {loaded ? (
         <>
+          <div className="xl:text-2xl mt-2 font-neo">
+            <span className="font-neoextra">{user.userId}</span>
+            님의 잔여포인트 :{" "}
+            <span className="font-neoextra text-rose-500">
+              {user.point.toLocaleString()}
+            </span>
+            p
+          </div>
+
+          <div className="flex justify-between">
+            {expire ? (
+              <div className="text-sm xl:text-base mb-2 font-neo leading-6">
+                만료예정일 : {expire} <br className="xl:hidden" />
+                <span className="text-rose-500">
+                  (만료예정일이 경과되면 포인트가 소멸합니다)
+                </span>
+              </div>
+            ) : (
+              <div className="text-sm xl:text-base mb-2 font-neo text-rose-500">
+                (만료예정일이 경과되면 포인트가 소멸합니다)
+              </div>
+            )}
+
+            <select
+              className="p-2 bg-white border font-medium text-sm hidden xl:block"
+              onChange={handleChangeSelect}
+              value={selectReason}
+            >
+              <option value="">구분</option>
+              <option value="B">구매</option>
+              <option value="P">지급</option>
+              <option value="D">차감</option>
+            </select>
+          </div>
+          <select
+            className="p-2 bg-white border font-medium text-sm block xl:hidden mb-3"
+            onChange={handleChangeSelect}
+            value={selectReason}
+          >
+            <option value="">구분</option>
+            <option value="B">구매</option>
+            <option value="P">지급</option>
+            <option value="D">차감</option>
+          </select>
           {list.length > 0 ? (
             <>
-              <div className="xl:text-2xl mt-2 font-neo">
-                <span className="font-neoextra">{user.userId}</span>
-                님의 잔여포인트 :{" "}
-                <span className="font-neoextra text-rose-500">
-                  {user.point.toLocaleString()}
-                </span>
-                p
-              </div>
-
-              <div className="flex justify-between">
-                {expire ? (
-                  <div className="text-sm xl:text-base mb-2 font-neo leading-6">
-                    만료예정일 : {expire} <br className="xl:hidden" />
-                    <span className="text-rose-500">
-                      (만료예정일이 경과되면 포인트가 소멸합니다)
-                    </span>
-                  </div>
-                ) : (
-                  <div className="text-sm xl:text-base mb-2 font-neo text-rose-500">
-                    (만료예정일이 경과되면 포인트가 소멸합니다)
-                  </div>
-                )}
-
-                <select
-                  className="p-2 bg-white border font-medium text-sm hidden xl:block"
-                  onChange={handleChangeSelect}
-                  value={selectReason}
-                >
-                  <option value="">구분</option>
-                  <option value="B">구매</option>
-                  <option value="P">지급</option>
-                  <option value="D">차감</option>
-                </select>
-              </div>
-              <select
-                className="p-2 bg-white border font-medium text-sm block xl:hidden mb-3"
-                onChange={handleChangeSelect}
-                value={selectReason}
-              >
-                <option value="">구분</option>
-                <option value="B">구매</option>
-                <option value="P">지급</option>
-                <option value="D">차감</option>
-              </select>
               <div className="text-xs xl:text-base grid grid-cols-4 xl:grid-cols-5 py-2 bg-blue-50 divide-x">
                 <div className="font-neoextra text-center hidden xl:block ">
                   일시

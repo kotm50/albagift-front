@@ -25,7 +25,7 @@ import { logoutAlert } from "../../LogoutUtil";
 import EmailModal from "./EmailModal";
 import Marketing from "./Marketing";
 
-function EditUser(props) {
+function EditUser() {
   const user = useSelector(state => state.user);
   const location = useLocation();
   const parsed = queryString.parse(location.search);
@@ -192,6 +192,7 @@ function EditUser(props) {
           );
           return false;
         }
+
         setUserInfo(res.data.user);
       })
       .catch(e => {

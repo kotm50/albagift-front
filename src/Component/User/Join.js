@@ -184,7 +184,7 @@ function Join() {
       return "이용약관에 동의하지 않으면\n가입이 불가능 합니다";
     }
     if (!priAgree) {
-      return "개인정보처리방침에 동의하지 않으면 가입이 불가능 합니다";
+      return "개인정보처리방침에 동의하지 않으면\n가입이 불가능 합니다";
     }
     return "완료";
   };
@@ -253,6 +253,7 @@ function Join() {
   };
   //이메일 및 중복검사
   const chkEmail = async () => {
+    setCorrectEmail(true);
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (emailPattern.test(email)) {
       setCorrectEmail(true);
@@ -263,6 +264,7 @@ function Join() {
             setDupEmail(true);
           } else {
             setDupEmail(false);
+            return false;
           }
         })
         .catch(e => console.log(e));
@@ -527,6 +529,7 @@ function Join() {
                 onChange={e => {
                   setEmail(e.currentTarget.value);
                   setCorrectEmail(true);
+                  setDupEmail(true);
                 }}
                 onBlur={e => {
                   setEmail(e.currentTarget.value);

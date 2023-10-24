@@ -59,7 +59,6 @@ function PointHistory() {
         },
       })
       .then(res => {
-        console.log(res);
         if (res.headers.authorization) {
           dispatch(
             getNewToken({

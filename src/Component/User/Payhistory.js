@@ -328,7 +328,7 @@ function Payhistory() {
       >
         <button
           className="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded"
-          onClick={e => navi("/board/write?boardId=B02")}
+          onClick={e => navi("/mypage/pointrequest")}
         >
           지급신청하기
         </button>

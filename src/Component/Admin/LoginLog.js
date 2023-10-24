@@ -177,6 +177,22 @@ function LoginLog() {
   };
 
   const searchIt = () => {
+    if (searchKeyword.length === 1) {
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <AlertModal
+              onClose={onClose} // 닫기
+              title={"조회 실패"} // 제목
+              message={"검색어는 두 글자 이상 입력하세요"} // 내용
+              type={"alert"} // 타입 confirm, alert
+              yes={"확인"} // 확인버튼 제목
+            />
+          );
+        },
+      });
+      return false;
+    }
     let isAfter = true;
     if (inputStartDate !== "") {
       isAfter = inputStartDate <= inputEndDate;

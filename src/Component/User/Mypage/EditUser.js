@@ -692,15 +692,19 @@ function EditUser(props) {
               </>
             ) : (
               <>
-                <div className="col-span-5 px-2 py-4">
-                  <FaBellSlash className="inline" /> 광고성 정보 수신 동의 안함
+                <div
+                  className="col-span-7 xl:col-span-5 px-2 py-4 hover:text-orange-500 hover:cursor-pointer"
+                  onClick={e => setMarketingModal(true)}
+                >
+                  <FaBellSlash className="inline" /> 알바선물의 다양한 정보를
+                  받아보세요!
                 </div>
-                <div className="flex flex-col justify-center col-span-2">
+                <div className="flex-col justify-center col-span-2 hidden xl:flex">
                   <button
                     className="p-2 bg-gray-100 hover:bg-gray-200 text-sm rounded"
                     onClick={e => setMarketingModal(true)}
                   >
-                    동의하기
+                    정보받기
                   </button>
                 </div>
               </>

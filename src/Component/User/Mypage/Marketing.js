@@ -1,17 +1,5 @@
-import React, { useState, useEffect } from "react";
-
 function Marketing(props) {
-  const [agree, setAgree] = useState(true);
-
-  useEffect(() => {
-    if (props.setMarketingModal === true) {
-      setAgree(props.agreeYn);
-    }
-    //eslint-disable-next-line
-  }, [props.setMarketingModal]);
-
   const agreeConfirm = b => {
-    console.log(agree);
     props.setMarketingModal(false);
     if (b === "Y") {
       props.editIt("/api/v1/user/myinfo/editagree", "agree", b);

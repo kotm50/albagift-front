@@ -72,7 +72,6 @@ function Cancel() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        console.log(res);
         if (res.data.code === "C000") {
           deleteId();
         } else {

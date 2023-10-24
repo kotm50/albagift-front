@@ -103,7 +103,6 @@ function Login() {
       userId: id,
       userPwd: pwd,
     };
-    console.log(data);
     await axios
       .post("/api/v1/user/login", data)
       .then(res => {
@@ -342,7 +341,6 @@ function Login() {
           data.socialId = res.data.socialUser.id;
           data.email = res.data.socialUser.email;
           data.socialType = res.data.socialUser.socialType;
-          console.log(data);
           setSocialData(data);
         } else {
           dispatch(

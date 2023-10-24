@@ -78,10 +78,6 @@ function Transfer() {
           }
         }
       });
-      console.log(documents.length);
-      console.log(documents2.length);
-      console.log(documents3.length);
-      console.log(documents);
       setApplies(documents);
       setApplies2(documents2);
       setApplies3(documents3);

@@ -35,6 +35,7 @@ function PointList() {
   const endDate = parsed.endDate || "";
   const select = parsed.select || "";
   const agree = parsed.agree || "";
+  const sType = parsed.sType || "";
   const [point, setPoint] = useState("");
   const [reason, setReason] = useState("");
   const [selectReason, setSelectReason] = useState("");
@@ -47,6 +48,7 @@ function PointList() {
   const [searchEndDate, setSearchEndDate] = useState("");
   const [company, setCompany] = useState("");
   const [isAgree, setIsAgree] = useState(false);
+  const [searchType, setSearchType] = useState("");
 
   useEffect(() => {
     setList([]);
@@ -73,7 +75,12 @@ function PointList() {
     } else {
       setIsAgree(false);
     }
-    loadList(page, keyword, startDate, endDate, select, agree);
+    if (sType !== "") {
+      setSearchType(sType);
+    } else {
+      setSearchType("");
+    }
+    loadList(page, keyword, startDate, endDate, select, agree, sType);
     //eslint-disable-next-line
   }, [location, user.accessToken]);
 
@@ -155,7 +162,6 @@ function PointList() {
       return false;
     }
     const postList = await payments(selectedDocsId, b);
-    console.log(postList);
     const request = {
       postList: postList,
     };
@@ -186,7 +192,7 @@ function PointList() {
             },
           });
           if (res.headers.authorization === user.accessToken) {
-            loadList(page, keyword, startDate, endDate, select, agree);
+            loadList(page, keyword, startDate, endDate, select, agree, sType);
           }
           setPoint(0);
           setSelectedDocs([]);
@@ -198,7 +204,8 @@ function PointList() {
       });
   };
 
-  const loadList = async (p, k, s, e, r, a) => {
+  const loadList = async (p, k, s, e, r, a, t) => {
+    //p=페이지,k=키워드,s=시작일,e=종료일,r=셀렉트,a=동의,t=검색타입
     setLoaded(false);
     let data = {
       page: p,
@@ -219,7 +226,9 @@ function PointList() {
     if (a === "Y") {
       data.agreeYn = a;
     }
-    console.log(data);
+    if (t !== "") {
+      data.searchType = Number(t);
+    }
     await axios
       .get("/api/v1/board/admin/posts", {
         params: data,
@@ -228,7 +237,6 @@ function PointList() {
         },
       })
       .then(res => {
-        console.log(res);
         if (res.headers.authorization) {
           dispatch(
             getNewToken({
@@ -246,7 +254,6 @@ function PointList() {
         if (res.data.postList.length === 0) {
           return false;
         }
-        console.log(res.data.postList);
         setList(res.data.postList ?? [{ postId: "없음" }]);
       })
       .catch(e => {
@@ -340,7 +347,9 @@ function PointList() {
         : ""
     }${searchStartDate !== "" ? "&" : ""}${
       selectReason !== "" ? `select=${selectReason}` : ""
-    }${selectReason !== "" ? "&" : ""}${isAgree ? "agree=Y" : ""}`;
+    }${selectReason !== "" ? "&" : ""}${isAgree ? "agree=Y" : ""}${
+      isAgree ? "&" : ""
+    }${searchType !== "" ? `sType=${searchType}` : ""}`;
     navi(domain);
   };
   const dateReset = () => {
@@ -351,7 +360,7 @@ function PointList() {
   const getPhone = str => {
     if (str.length !== 11) {
       // 문자열이 11자리가 아닌 경우에 대한 예외 처리
-      return "Invalid input";
+      return "미입력";
     }
 
     const firstPart = str.substring(0, 3); // 1, 2, 3번째 문자열
@@ -364,6 +373,10 @@ function PointList() {
   };
   const handleChangeSelect = e => {
     setReason(e.currentTarget.value);
+  };
+
+  const handleSearchType = e => {
+    setSearchType(e.currentTarget.value);
   };
 
   const payments = (p, b) => {
@@ -419,9 +432,18 @@ function PointList() {
               </select>
             </div>
           </h2>
-          <div className="flex justify-between container mx-auto">
-            <div className="flex flex-row justify-between gap-3 mb-4 container mx-auto pl-4 pr-2">
-              <div className="font-neoextra text-lg p-2">검색어</div>
+          <div className="flex justify-between container mx-auto pl-2 pr-2 mb-4">
+            <div className="flex flex-row justify-start gap-3">
+              <div className="font-neo text-lg">
+                <select
+                  className="p-2 bg-white border font-medium"
+                  onChange={handleSearchType}
+                  value={searchType}
+                >
+                  <option value="1">이름/연락처</option>
+                  <option value="2">고객사번호</option>
+                </select>
+              </div>
               <div>
                 <input
                   value={searchKeyword}
@@ -431,28 +453,30 @@ function PointList() {
                   onKeyDown={handleKeyDown}
                 />
               </div>
-              <div className="grid grid-cols-2">
-                <div className="flex justify-start">
-                  <div className="font-neoextra text-lg p-2">조회 시작일</div>
-                  <input
-                    type="date"
-                    value={inputStartDate}
-                    className="border border-gray-300 p-2 w-80 block rounded-lg font-neo"
-                    placeholder="이름 또는 연락처를 입력해 주세요"
-                    onChange={e => setInputStartDate(e.currentTarget.value)}
-                  />
-                </div>
-                <div className="flex justify-start">
-                  <div className="font-neoextra text-lg p-2">조회 종료일</div>
-                  <input
-                    type="date"
-                    value={inputEndDate}
-                    className="border border-gray-300 p-2 w-80 block rounded-lg font-neo"
-                    placeholder="이름 또는 연락처를 입력해 주세요"
-                    onChange={e => setInputEndDate(e.currentTarget.value)}
-                  />
-                </div>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <div className="flex justify-start">
+                <div className="font-neoextra text-lg p-2">조회 시작일</div>
+                <input
+                  type="date"
+                  value={inputStartDate}
+                  className="border border-gray-300 p-2 w-64 block rounded-lg font-neo"
+                  placeholder="이름 또는 연락처를 입력해 주세요"
+                  onChange={e => setInputStartDate(e.currentTarget.value)}
+                />
               </div>
+              <div className="flex justify-start">
+                <div className="font-neoextra text-lg p-2">조회 종료일</div>
+                <input
+                  type="date"
+                  value={inputEndDate}
+                  className="border border-gray-300 p-2 w-64 block rounded-lg font-neo"
+                  placeholder="이름 또는 연락처를 입력해 주세요"
+                  onChange={e => setInputEndDate(e.currentTarget.value)}
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
               <button
                 className="bg-blue-500 hover:bg-blue-700 py-2 px-4 rounded-sm text-white"
                 onClick={searchIt}
@@ -563,6 +587,7 @@ function PointList() {
             endDate={endDate}
             select={select}
             agree={agree}
+            sType={sType}
           />
 
           {selectedDocs.length > 0 && (

@@ -12,6 +12,7 @@ function Pagenate(props) {
   const [isDate, setIsDate] = useState(false);
   const [isSelect, setIsSelect] = useState(false);
   const [isAgree, setIsAgree] = useState(false);
+  const [isSearchType, setIsSearchType] = useState(false);
   useEffect(() => {
     if (props.keyword && props.keyword !== "") {
       setIsSearching(true);
@@ -37,6 +38,12 @@ function Pagenate(props) {
     } else {
       setIsAgree(false);
     }
+    if (props.sType && props.sType !== "") {
+      setIsSearchType(true);
+    } else {
+      setIsSearchType(false);
+    }
+
     //eslint-disable-next-line
   }, [props.page]);
   return (
@@ -53,7 +60,7 @@ function Pagenate(props) {
                   : ""
               }${isSelect ? `&select=${props.select}` : ""}${
                 isAgree ? `&agree=${props.agree}` : ""
-              }`}
+              }${isSearchType ? `&sType=${props.sType}` : ""}`}
               className="transition duration-300 ease-in-out pageButton hover:scale-110 hidden xl:block"
             >
               <FaAngleDoubleLeft size={20} />
@@ -70,7 +77,7 @@ function Pagenate(props) {
                   : ""
               }${isSelect ? `&select=${props.select}` : ""}${
                 isAgree ? `&agree=${props.agree}` : ""
-              }`}
+              }${isSearchType ? `&sType=${props.sType}` : ""}`}
               className="transition duration-300 ease-in-out pageButton hover:scale-110"
             >
               <FaAngleLeft size={20} />
@@ -87,7 +94,7 @@ function Pagenate(props) {
                     : ""
                 }${isSelect ? `&select=${props.select}` : ""}${
                   isAgree ? `&agree=${props.agree}` : ""
-                }`}
+                }${isSearchType ? `&sType=${props.sType}` : ""}`}
                 key={idx}
                 className={`transition duration-300 ease-in-out pageButton hover:scale-110 ${
                   props.page === pageNum ? "selectedPage" : null
@@ -107,7 +114,7 @@ function Pagenate(props) {
                   : ""
               }${isSelect ? `&select=${props.select}` : ""}${
                 isAgree ? `&agree=${props.agree}` : ""
-              }`}
+              }${isSearchType ? `&sType=${props.sType}` : ""}`}
               className="transition duration-300 ease-in-out pageButton hover:scale-110"
             >
               <FaAngleRight size={20} />
@@ -123,7 +130,7 @@ function Pagenate(props) {
                   : ""
               }${isSelect ? `&select=${props.select}` : ""}${
                 isAgree ? `&agree=${props.agree}` : ""
-              }`}
+              }${isSearchType ? `&sType=${props.sType}` : ""}`}
               className="transition duration-300 ease-in-out pageButton hover:scale-110 hidden xl:block"
             >
               <FaAngleDoubleRight size={20} />

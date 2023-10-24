@@ -51,7 +51,6 @@ function Payhistory() {
     if (s !== "") {
       data.status = s;
     }
-    console.log(data);
     await axios
       .post("/api/v1/board/get/pnt/posts/list", data, {
         headers: {

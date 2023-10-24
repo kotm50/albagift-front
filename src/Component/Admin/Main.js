@@ -68,7 +68,6 @@ function Main() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        console.log(res);
         if (res.headers.authorization) {
           dispatch(
             getNewToken({

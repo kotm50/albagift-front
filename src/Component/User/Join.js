@@ -129,12 +129,10 @@ function Join() {
     if (marketingAgree) {
       data.agreeYn = "Y";
     }
-    console.log(data);
     let url = "/api/v1/user/join";
     await axios
       .post(url, data)
       .then(res => {
-        console.log(res);
         if (res.data.code === "C000") {
           confirmAlert({
             customUI: ({ onClose }) => {

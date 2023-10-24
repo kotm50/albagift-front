@@ -94,8 +94,6 @@ function Attendance() {
       }
       setAfter(aArr);
     }
-
-    console.log(beforeLength, afterLength);
   };
 
   return (

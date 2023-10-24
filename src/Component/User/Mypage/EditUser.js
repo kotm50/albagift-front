@@ -250,7 +250,7 @@ function EditUser() {
       result = `${firstChunk}${separator}${secondChunk}.${thirdChunk}`;
     }
     // 맨 마지막의 separator를 제거하여 반환합니다.
-    return result.slice(0, -1);
+    return result;
   };
 
   //휴대폰변환

@@ -108,7 +108,7 @@ function Join() {
           return (
             <AlertModal
               onClose={onClose} // 닫기
-              title={"경고창 제목입니다"} // 제목
+              title={"가입실패"} // 제목
               message={correctChk + "\n확인 후 다시 시도해 주세요"} // 내용
               type={"alert"} // 타입 confirm, alert
               yes={"확인"} // 확인버튼 제목
@@ -181,7 +181,7 @@ function Join() {
       return "주소를 입력해 주세요";
     }
     if (!termsAgree) {
-      return "이용약관에 동의하지 않으면 가입이 불가능 합니다";
+      return "이용약관에 동의하지 않으면\n가입이 불가능 합니다";
     }
     if (!priAgree) {
       return "개인정보처리방침에 동의하지 않으면 가입이 불가능 합니다";

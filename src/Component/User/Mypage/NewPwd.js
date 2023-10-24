@@ -128,6 +128,9 @@ function NewPwd(props) {
         } else if (res.data.code === "E001") {
           setErrMsg(res.data.message);
           setIsErr(true);
+        } else if (res.data.code === "E003") {
+          setErrMsg(res.data.message);
+          setIsErr(true);
         }
       })
       .catch(e => {

@@ -251,36 +251,35 @@ function Payhistory() {
     <>
       {loaded ? (
         <>
+          <div className="flex justify-between my-2">
+            <div className="text-xs xl:text-sm container mx-auto xl:text-left text-sky-500 text-center items-center">
+              내역을 <span className="hidden xl:inline">클릭</span>
+              <span className="inline xl:hidden">탭</span>하면 수정/삭제가
+              가능합니다.
+            </div>
+            <select
+              className="p-2 bg-white border font-medium text-sm hidden xl:block"
+              onChange={handleChangeSelect}
+              value={selectReason}
+            >
+              <option value="">처리결과</option>
+              <option value="S">심사중</option>
+              <option value="Y">지급완료</option>
+              <option value="N">지급불가</option>
+            </select>
+          </div>
+          <select
+            className="p-2 bg-white border font-medium text-sm  xl:hidden block mb-3"
+            onChange={handleChangeSelect}
+            value={selectReason}
+          >
+            <option value="">처리결과</option>
+            <option value="S">심사중</option>
+            <option value="Y">지급완료</option>
+            <option value="N">지급불가</option>
+          </select>
           {list.length > 0 ? (
             <>
-              <div className="flex justify-between my-2">
-                <div className="text-xs xl:text-sm container mx-auto xl:text-left text-sky-500 text-center items-center">
-                  내역을 <span className="hidden xl:inline">클릭</span>
-                  <span className="inline xl:hidden">탭</span>하면 수정/삭제가
-                  가능합니다.
-                </div>
-                <select
-                  className="p-2 bg-white border font-medium text-sm hidden xl:block"
-                  onChange={handleChangeSelect}
-                  value={selectReason}
-                >
-                  <option value="">처리결과</option>
-                  <option value="S">심사중</option>
-                  <option value="Y">지급완료</option>
-                  <option value="N">지급불가</option>
-                </select>
-              </div>
-
-              <select
-                className="p-2 bg-white border font-medium text-sm  xl:hidden block mb-3"
-                onChange={handleChangeSelect}
-                value={selectReason}
-              >
-                <option value="">처리결과</option>
-                <option value="S">심사중</option>
-                <option value="Y">지급완료</option>
-                <option value="N">지급불가</option>
-              </select>
               <div className="text-sm xl:text-base grid grid-cols-3 xl:grid-cols-4 py-2 bg-blue-50 divide-x">
                 <div className="font-neoextra text-center hidden xl:block">
                   입력일

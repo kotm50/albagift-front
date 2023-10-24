@@ -456,6 +456,7 @@ function PointList() {
                   onChange={handleSearchType}
                   value={searchType}
                 >
+                  <option value="">검색항목</option>
                   <option value="1">이름/연락처</option>
                   <option value="2">고객사번호</option>
                 </select>

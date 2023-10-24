@@ -29,7 +29,7 @@ function Result() {
 
   return (
     <div>
-      <h1 className="text-center text-xl xl:text-4xl font-medium">
+      <h1 className="text-center text-xl xl:text-4xl font-medium mt-4">
         구매가 완료되었습니다.
         <br className="block xl:hidden" /> 이용해주셔서 감사합니다.
       </h1>

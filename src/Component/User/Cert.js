@@ -17,6 +17,7 @@ function Cert() {
   const [tid, setTid] = useState("");
 
   useEffect(() => {
+    console.log(location.state);
     if (location.state) {
       setSocialUser(location.state.socialUser);
     }
@@ -76,6 +77,10 @@ function Cert() {
       })
       .catch(e => console.log(e));
   };
+
+  const goMain = () => {
+    navi("/");
+  };
   return (
     <>
       {!getTid ? (
@@ -123,7 +128,7 @@ function Cert() {
               className="w-full drop-shadow-lg"
             />
           </div>
-          <div className="absolute z-20 w-64 xl:w-96 bottom-20 left-1/2 -translate-x-1/2">
+          <div className="absolute z-20 w-64 xl:w-96 bottom-20 left-1/2 -translate-x-1/2 grid grid-cols-1 gap-y-3">
             <button
               className="py-3 bg-black hover:bg-stone-800 text-white w-full rounded-full"
               onClick={doCert}
@@ -136,6 +141,12 @@ function Cert() {
                 : gubun === "reco"
                 ? "비밀번호 찾기"
                 : null}
+            </button>
+            <button
+              className="py-2 bg-white border border-black hover:border-stone-800 text-black w-full rounded-full hover:bg-gray-100"
+              onClick={goMain}
+            >
+              메인으로 이동하기
             </button>
           </div>
         </div>

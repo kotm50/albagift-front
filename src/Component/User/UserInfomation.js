@@ -9,14 +9,11 @@ import BeforeJoin from "./BeforeJoin";
 function UserInformation() {
   const location = useLocation();
   const user = useSelector(state => state.user);
-  const modalState = useSelector(state => state.modal);
   const navi = useNavigate();
   const dispatch = useDispatch();
   const [modal, setModal] = useState(false);
 
   useEffect(() => {
-    console.log(modalState.lastOpen, modalState.oneDay);
-    console.log(modalState);
     // const now = new Date();
     if (user.userId !== "") {
       // const diffTime = Math.floor((now - user.lastLogin) / 1000 / 60);

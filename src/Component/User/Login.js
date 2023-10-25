@@ -54,12 +54,17 @@ function Login() {
     }
     //eslint-disable-next-line
   }, []);
+
   useEffect(() => {
     if (code !== "") {
       kakaoLoginCheck(code);
     }
     //eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    console.log(location);
+  }, [location]);
 
   const goMain = () => {
     navi("/");

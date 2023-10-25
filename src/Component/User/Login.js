@@ -59,7 +59,7 @@ function Login() {
       kakaoLoginCheck(code);
     }
     //eslint-disable-next-line
-  }, [location]);
+  }, []);
 
   const goMain = () => {
     navi("/");

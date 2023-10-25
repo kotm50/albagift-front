@@ -1,4 +1,11 @@
+import { useEffect } from "react";
 function KakaoTest() {
+  useEffect(() => {
+    const scrollDown = () => {
+      window.scrollTo(0, 160);
+    };
+    scrollDown(); // 모바일 디바이스일 때만 화면을 아래로 160px 스크롤합니다.
+  }, []);
   return (
     <div>
       <h1 className="text-center text-xl xl:text-4xl font-medium mt-4">
@@ -11,15 +18,6 @@ function KakaoTest() {
           쿠폰리스트로 이동합니다
         </div>
       </div>
-      <button
-        className="p-2 bg-green-500 text-white"
-        onClick={e => {
-          // location이 바뀔 때마다 스크롤을 맨 위로 이동
-          window.scrollTo(0, 0);
-        }}
-      >
-        위로
-      </button>
     </div>
   );
 }

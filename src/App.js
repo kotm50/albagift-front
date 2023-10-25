@@ -51,6 +51,12 @@ function App() {
   useEffect(() => {
     // location이 바뀔 때마다 스크롤을 맨 위로 이동
     window.scrollTo(0, 0);
+    if (thisLocation.pathname === "/login") {
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      if (isMobile) {
+        window.scrollTo(0, 160);
+      }
+    }
     // eslint-disable-next-line
   }, [thisLocation]);
   const now = dayjs().format("YYYY년MM월DD일");

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import axios from "axios";
+import queryString from "query-string";
 
 import { useSelector, useDispatch } from "react-redux";
 import { loginUser } from "../../Reducer/userSlice";
@@ -14,6 +15,7 @@ import BeforeJoin from "./BeforeJoin";
 import AlertModal from "../Layout/AlertModal";
 
 function Login() {
+  const location = useLocation();
   const inputIdRef = useRef();
   const inputPwdRef = useRef();
   let navi = useNavigate();
@@ -21,8 +23,8 @@ function Login() {
   const dispatch = useDispatch();
   const [id, setId] = useState("");
   const [pwd, setPwd] = useState("");
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [domain, setDomain] = useState("");
+  const parsed = queryString.parse(location.search);
+  const code = parsed.code || "";
 
   const [isErr, setIsErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
@@ -33,17 +35,7 @@ function Login() {
   const [modal, setModal] = useState(false);
 
   useEffect(() => {
-    setSortParams();
-    let domain = extractDomain();
-    setDomain(domain);
     inputIdRef.current.focus();
-    const isMobileDevice = /Mobi|Android/i.test(navigator.userAgent);
-    if (isMobileDevice) {
-      const scrollDown = () => {
-        window.scrollTo(0, 160);
-      };
-      scrollDown(); // 모바일 디바이스일 때만 화면을 아래로 160px 스크롤합니다.
-    }
     if (user.accessToken !== "") {
       confirmAlert({
         customUI: ({ onClose }) => {
@@ -62,30 +54,15 @@ function Login() {
     }
     //eslint-disable-next-line
   }, []);
+  useEffect(() => {
+    if (code !== "") {
+      kakaoLoginCheck(code);
+    }
+    //eslint-disable-next-line
+  }, [location]);
 
   const goMain = () => {
     navi("/");
-  };
-  const setSortParams = () => {
-    setSearchParams(searchParams);
-    const code = searchParams.get("code");
-    if (code) {
-      kakaoLoginCheck(code);
-    }
-  };
-
-  const extractDomain = () => {
-    let protocol = window.location.protocol; // 프로토콜을 가져옵니다. (예: http: 또는 https:)
-    let hostname = window.location.hostname; // 도메인 이름을 가져옵니다.
-    let port = window.location.port; // 포트 번호를 가져옵니다.
-
-    // 로컬호스트인 경우 프로토콜과 포트를 포함하여 반환
-    if (hostname === "localhost") {
-      return `${protocol}//${hostname}:${port}`;
-    }
-    let fullDomain = `${protocol}//${hostname}`;
-    // 일반 도메인인 경우 프로토콜과 함께 반환
-    return fullDomain;
   };
 
   const login = async e => {
@@ -371,7 +348,7 @@ function Login() {
   const kakaoLogin = e => {
     e.preventDefault();
     const apiKey = "e8b025aca3eb87648da9d341528bca5a";
-    const redirectUrl = `${domain}/login`;
+    const redirectUrl = window.location.href;
     const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${apiKey}&redirect_uri=${redirectUrl}&response_type=code`;
     window.location.href = kakaoURL;
   };

@@ -37,6 +37,13 @@ function Login() {
     let domain = extractDomain();
     setDomain(domain);
     inputIdRef.current.focus();
+    const isMobileDevice = /Mobi|Android/i.test(navigator.userAgent);
+    if (isMobileDevice) {
+      const scrollDown = () => {
+        window.scrollTo(0, 160);
+      };
+      scrollDown(); // 모바일 디바이스일 때만 화면을 아래로 160px 스크롤합니다.
+    }
     if (user.accessToken !== "") {
       confirmAlert({
         customUI: ({ onClose }) => {

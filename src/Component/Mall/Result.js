@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function Result() {
+  const location = useLocation();
   let navi = useNavigate();
   const [timer, setTimer] = useState(3);
   useEffect(() => {
@@ -19,6 +20,11 @@ function Result() {
     return () => clearInterval(intervalId);
     //eslint-disable-next-line
   }, []);
+  useEffect(() => {
+    // location이 바뀔 때마다 스크롤을 맨 위로 이동
+    window.scrollTo(0, 0);
+    //eslint-disable-next-line
+  }, [location]);
 
   useEffect(() => {
     if (timer === 0) {

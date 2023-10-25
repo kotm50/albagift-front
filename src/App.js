@@ -49,10 +49,8 @@ import PointRequest from "./Component/User/PointRequest";
 function App() {
   const thisLocation = useLocation();
   useEffect(() => {
-    window.scroll({
-      top: 0,
-      behavior: "smooth",
-    });
+    // location이 바뀔 때마다 스크롤을 맨 위로 이동
+    window.scrollTo(0, 0);
     // eslint-disable-next-line
   }, [thisLocation]);
   const now = dayjs().format("YYYY년MM월DD일");

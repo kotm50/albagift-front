@@ -41,7 +41,7 @@ function ToTop() {
           {showButton && (
             <button
               className="animate-bounce fixed p-2 drop-shadow-lg bottom-5 right-5 bg-white hover:bg-indigo-500 hover:text-white border border-gray-200 hover:border-0 rounded-full"
-              onClick={e => scrollToTop()}
+              onClick={scrollToTop}
             >
               <AiOutlineArrowUp />
             </button>

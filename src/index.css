@@ -264,10 +264,22 @@ div.footer-top {
 }
 
 #alertmodal {
-  width:400px;
-  max-width:95vw;
+  width:480px;
+  max-width:100%;
 }
 
+.react-confirm-alert-overlay{
+  width:100%!important;
+  max-width:100vh!important;
+}
+
+#react-confirm-alert{
+  width:100%;
+}
+
+.react-confirm-alert {
+  max-width:100%!important;
+}
 
 #paymodal {
   width:480px;

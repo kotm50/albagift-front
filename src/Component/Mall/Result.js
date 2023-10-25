@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 function Result() {
   let navi = useNavigate();
-  const [timer, setTimer] = useState(5);
+  const [timer, setTimer] = useState(3);
   useEffect(() => {
     const intervalId = setInterval(() => {
       setTimer(prevTimer => {
@@ -33,7 +33,7 @@ function Result() {
         구매가 완료되었습니다.
         <br className="block xl:hidden" /> 이용해주셔서 감사합니다.
       </h1>
-      <div className="countainer mx-auto bg-indigo-50 p-4 mt-5 rounded-lg">
+      <div className="countainer mx-auto bg-indigo-50 p-4 mt-2 xl:mt-5 rounded-lg">
         <div className="xl:text-lg text-center">
           <strong className="text-rose-500 text-xl xl:text-2xl">{timer}</strong>{" "}
           초 후 쿠폰리스트로 이동합니다

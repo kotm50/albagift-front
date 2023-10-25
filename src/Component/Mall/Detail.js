@@ -332,7 +332,7 @@ function Detail() {
                         setIsShare(!isShare);
                       }}
                     >
-                      공유하기
+                      공유<span className="hidden xl:inline">하기</span>
                     </button>
                   </div>
                   {isShare && (

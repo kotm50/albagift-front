@@ -12,6 +12,17 @@ function AlertModal(props) {
       alertRef.current.focus();
     }
   }, []);
+  useEffect(() => {
+    const handleBack = event => {
+      props.onClose(); // props.onClose()를 실행하여 부모 컴포넌트의 onClose 함수를 호출합니다.
+    };
+
+    window.addEventListener("popstate", handleBack);
+
+    return () => {
+      window.removeEventListener("popstate", handleBack); // 컴포넌트가 언마운트될 때 이벤트 리스너를 정리합니다.
+    };
+  }, [props]);
   const sanitizer = dompurify.sanitize;
   return (
     <div id="alertmodal" className="max-w-screen p-4 bg-white border rounded">

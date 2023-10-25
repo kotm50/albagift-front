@@ -25,13 +25,13 @@ function Jumbotron() {
             당신의 구직활동을 응원하겠습니다.
           </div>
 
-          <div className="flex flex-row justify-center xl:justify-start gap-5 my-2">
+          <div className="flex flex-row justify-center xl:justify-start gap-3 my-2">
             {user.accessToken === "" ? (
               <Link
                 to="/promo"
                 className="block bg-teal-500 hover:bg-teal-700 text-white p-2 rounded-lg text-sm xl:text-base"
               >
-                가입하여 1000p 받기 →
+                가입하여 1000p 받기
               </Link>
             ) : (
               <button
@@ -53,7 +53,7 @@ function Jumbotron() {
                   return false;
                 }}
               >
-                가입하여 1000p 받기 →
+                가입하여 1000p 받기
               </button>
             )}
 

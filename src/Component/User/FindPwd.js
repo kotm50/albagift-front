@@ -126,7 +126,7 @@ function FindPwd() {
   //아이디 중복검사
   const chkId = async () => {
     await axios
-      .get("/api/v1/user/dupchkid", { params: { userId: id } })
+      .post("/api/v1/user/nice/auth/pwd", { userId: id })
       .then(res => {
         if (res.data.code !== "C000") {
           confirmAlert({

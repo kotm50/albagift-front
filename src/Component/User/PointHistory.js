@@ -162,7 +162,7 @@ function PointHistory() {
             )}
 
             <select
-              className="p-2 bg-white border font-medium text-sm hidden xl:block mb-3"
+              className="p-2 bg-white border font-medium text-sm hidden xl:block mb-2"
               onChange={handleChangeSelect}
               value={selectReason}
             >
@@ -173,7 +173,7 @@ function PointHistory() {
             </select>
           </div>
           <select
-            className="p-2 bg-white border font-medium text-sm block xl:hidden mb-3"
+            className="p-2 bg-white border font-medium text-sm block xl:hidden mb-2"
             onChange={handleChangeSelect}
             value={selectReason}
           >

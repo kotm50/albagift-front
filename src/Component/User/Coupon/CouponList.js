@@ -160,8 +160,12 @@ function CouponList(props) {
   };
   return (
     <>
-      <div className="max-w-full h-28 xl:w-64 xl:h-64 overflow-hidden mx-auto">
-        <img src={props.coupon.goodsImgB} alt="쿠폰이미지" />
+      <div className="max-w-full w-32 h-32 xl:w-64 xl:h-64 overflow-hidden mx-auto">
+        <img
+          src={props.coupon.goodsImgB}
+          alt="쿠폰이미지"
+          className="max-w-full"
+        />
       </div>
       <div className="p-2 grid grid-cols-1 xl:grid-cols-5">
         <div className="font-medium">상품명</div>

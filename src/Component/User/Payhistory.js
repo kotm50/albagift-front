@@ -269,7 +269,7 @@ function Payhistory() {
             </select>
           </div>
           <select
-            className="p-2 bg-white border font-medium text-sm  xl:hidden block mb-3"
+            className="p-2 bg-white border font-medium text-sm  xl:hidden block mb-2"
             onChange={handleChangeSelect}
             value={selectReason}
           >

@@ -128,7 +128,7 @@ function FindPwd() {
     await axios
       .get("/api/v1/user/dupchkid", { params: { userId: id } })
       .then(res => {
-        if (res.data.code === "C000") {
+        if (res.data.code !== "C000") {
           confirmAlert({
             customUI: ({ onClose }) => {
               return (

@@ -135,9 +135,7 @@ function FindPwd() {
                 <AlertModal
                   onClose={onClose} // 닫기
                   title={"오류"} // 제목
-                  message={
-                    "아이디를 찾을 수 없습니다. 아이디가 기억나지 않으시면\n'아이디 찾기'를 진행해 주세요"
-                  } // 내용
+                  message={res.data.message} // 내용
                   type={"alert"} // 타입 confirm, alert
                   yes={"확인"} // 확인버튼 제목
                 />

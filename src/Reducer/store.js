@@ -5,9 +5,11 @@ import { combineReducers } from "redux";
 import { persistReducer } from "redux-persist";
 import thunk from "redux-thunk";
 import userSlice from "./userSlice";
+import modalSlice from "./modalSlice";
 
 const reducers = combineReducers({
   user: userSlice,
+  modal: modalSlice,
 });
 
 const persistConfig = {

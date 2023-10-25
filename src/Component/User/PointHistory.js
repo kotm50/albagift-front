@@ -138,7 +138,7 @@ function PointHistory() {
     <>
       {loaded ? (
         <>
-          <div className="xl:text-2xl mt-2 font-neo">
+          <div className="xl:text-2xl my-2 font-neo">
             <span className="font-neoextra">{user.userId}</span>
             님의 잔여포인트 :{" "}
             <span className="font-neoextra text-rose-500">
@@ -162,7 +162,7 @@ function PointHistory() {
             )}
 
             <select
-              className="p-2 bg-white border font-medium text-sm hidden xl:block"
+              className="p-2 bg-white border font-medium text-sm hidden xl:block mb-3"
               onChange={handleChangeSelect}
               value={selectReason}
             >

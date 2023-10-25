@@ -177,7 +177,7 @@ function Login() {
                 <AlertModal
                   onClose={onClose} // 닫기
                   title={"탈퇴 취소"} // 제목
-                  message={"탈퇴를 취소했습니다. 다시 로그인을 진행해 주세요."} // 내용
+                  message={"탈퇴를 취소했습니다\n다시 로그인을 진행해 주세요."} // 내용
                   type={"alert"} // 타입 confirm, alert
                   yes={"확인"} // 확인버튼 제목
                 />

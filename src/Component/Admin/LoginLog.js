@@ -164,7 +164,7 @@ function LoginLog() {
   const getPhone = str => {
     if (str.length !== 11) {
       // 문자열이 11자리가 아닌 경우에 대한 예외 처리
-      return "Invalid input";
+      return "연락처 미등록";
     }
 
     const firstPart = str.substring(0, 3); // 1, 2, 3번째 문자열

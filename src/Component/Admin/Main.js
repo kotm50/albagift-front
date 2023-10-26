@@ -64,16 +64,11 @@ function Main() {
     // 현재 달의 첫째 날 계산
     const firstDay = new Date(currentYear, currentMonth, 1);
 
-    // 다음 달의 첫째 날을 구하고 거기서 하루를 빼면 현재 달의 마지막 날이 된다.
-    const nextMonth = currentMonth === 11 ? 0 : currentMonth + 1; // 11월인 경우 0으로 설정하여 연도를 증가시킴
-    const nextMonthFirstDay = new Date(currentYear, nextMonth, 1);
-    const lastDay = new Date(nextMonthFirstDay - 86400000); // 86,400,000은 하루의 밀리초 수
     const firstDayFormat = dayjs(firstDay).format("YYYY-MM-DD");
-    const lastDayFormat = dayjs(lastDay).format("YYYY-MM-DD");
-    setInputStartDate(firstDay);
-    setInputEndDate(lastDay);
-    console.log(firstDayFormat, lastDayFormat);
-    getData(firstDayFormat, lastDayFormat);
+    const toDayFormat = dayjs(today).format("YYYY-MM-DD");
+    setInputStartDate(firstDayFormat);
+    setInputEndDate(toDayFormat);
+    getData(firstDayFormat, toDayFormat);
   };
   const getData = async (s, e) => {
     setLoaded(false);

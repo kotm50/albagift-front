@@ -367,16 +367,6 @@ function UserList() {
       });
   };
 
-  useEffect(() => {
-    // selectedUsers가 비어있을 때 모든 체크를 해제
-    if (selectedUsers.length === 0) {
-      users.forEach(user => {
-        document.getElementById(user.userId).checked = false;
-      });
-    }
-    //eslint-disable-next-line
-  }, [selectedUsers]);
-
   return (
     <>
       {loaded ? (

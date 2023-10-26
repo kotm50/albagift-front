@@ -578,9 +578,15 @@ function PointList() {
                         {doc.status === "S" ? (
                           <span className="text-blue-500">지급대기</span>
                         ) : doc.status === "N" ? (
-                          <span className="text-red-500">지급불가</span>
+                          <div>
+                            <span className="text-red-500">지급불가</span> (
+                            {doc.result})
+                          </div>
                         ) : doc.status === "Y" ? (
-                          <span className="text-green-500">지급완료</span>
+                          <div>
+                            <span className="text-green-500">지급완료</span> (
+                            {Number(doc.result).toLocaleString()}p)
+                          </div>
                         ) : (
                           "오류"
                         )}

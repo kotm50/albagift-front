@@ -34,6 +34,16 @@ function Main() {
   const [inputEndDate, setInputEndDate] = useState("");
   const [searchStartDate, setSearchStartDate] = useState("");
   const [searchEndDate, setSearchEndDate] = useState("");
+
+  const [apPntTotal, setApPntTotal] = useState(0);
+  const [prPntTotal, setPrPntTotal] = useState(0);
+  const [abPntTotal, setAbPntTotal] = useState(0);
+  const [plusPntTotal, setPlusPntTotal] = useState(0);
+  const [exPntTotal, setExPntTotal] = useState(0);
+  const [adPntTotal, setAdPntTotal] = useState(0);
+  const [cpPntTotal, setCpPntTotal] = useState(0);
+  const [miunsPntTotal, setMinusPntTotal] = useState(0);
+  const [bizPntTotal, setBizPntTotal] = useState(0);
   useEffect(() => {
     setDataList([]);
     if (startDate !== "") {
@@ -83,6 +93,36 @@ function Main() {
         setTotalPage(res.data.totalPages);
         const pagenate = generatePaginationArray(p, totalP);
         setPagenate(pagenate);
+        let apPntTotal = 0;
+        let prPntTotal = 0;
+        let abPntTotal = 0;
+        let plusPntTotal = 0;
+        let exPntTotal = 0;
+        let adPntTotal = 0;
+        let cpPntTotal = 0;
+        let miunsPntTotal = 0;
+        let bizPntTotal = 0;
+        res.data.pointList.forEach(doc => {
+          apPntTotal = apPntTotal + doc.apPnt;
+          prPntTotal = prPntTotal + doc.prPnt;
+          abPntTotal = abPntTotal + doc.abPnt;
+          plusPntTotal = plusPntTotal + doc.plusPnt;
+          exPntTotal = exPntTotal + doc.exPnt;
+          adPntTotal = adPntTotal + doc.adPnt;
+          cpPntTotal = cpPntTotal + doc.cpPnt;
+          miunsPntTotal = miunsPntTotal + doc.miunsPnt;
+          bizPntTotal = bizPntTotal + doc.bizPnt;
+        });
+
+        setApPntTotal(apPntTotal);
+        setPrPntTotal(prPntTotal);
+        setAbPntTotal(abPntTotal);
+        setPlusPntTotal(plusPntTotal);
+        setExPntTotal(exPntTotal);
+        setAdPntTotal(adPntTotal);
+        setCpPntTotal(cpPntTotal);
+        setMinusPntTotal(miunsPntTotal);
+        setBizPntTotal(bizPntTotal);
 
         setDataList(res.data.pointList);
       })
@@ -233,9 +273,6 @@ function Main() {
                   <tr className=" text-white font-neoextra">
                     <td className="p-2 text-center border bg-gray-500">날짜</td>
                     <td className="p-2 text-center border bg-green-700">
-                      지급 포인트
-                    </td>
-                    <td className="p-2 text-center border bg-green-700">
                       관리자 지급 포인트
                     </td>
                     <td className="p-2 text-center border bg-green-700">
@@ -244,8 +281,8 @@ function Main() {
                     <td className="p-2 text-center border bg-green-700">
                       게시판 신청 포인트
                     </td>
-                    <td className="p-2 text-center border bg-rose-700">
-                      차감 포인트
+                    <td className="p-2 text-center border bg-green-700">
+                      총 지급 포인트
                     </td>
                     <td className="p-2 text-center border bg-rose-700">
                       소멸 포인트
@@ -256,21 +293,51 @@ function Main() {
                     <td className="p-2 text-center border bg-rose-700">
                       쿠폰 사용 포인트
                     </td>
+                    <td className="p-2 text-center border bg-rose-700">
+                      총 차감 포인트
+                    </td>
                     <td className="p-2 text-center border bg-gray-500">
                       기프티쇼 실제 사용 금액
                     </td>
                   </tr>
                 </thead>
                 <tbody>
+                  <tr className="bg-sky-50 border-b-2 border-stone-700">
+                    <td className="p-2 text-center border">합계</td>
+                    <td className="p-2 text-center border">
+                      {apPntTotal.toLocaleString()}p
+                    </td>
+                    <td className="p-2 text-center border">
+                      {prPntTotal.toLocaleString()}p
+                    </td>
+                    <td className="p-2 text-center border">
+                      {abPntTotal.toLocaleString()}p
+                    </td>
+                    <td className="p-2 text-center border">
+                      {plusPntTotal.toLocaleString()}p
+                    </td>
+                    <td className="p-2 text-center border">
+                      {exPntTotal.toLocaleString()}p
+                    </td>
+                    <td className="p-2 text-center border">
+                      {adPntTotal.toLocaleString()}p
+                    </td>
+                    <td className="p-2 text-center border">
+                      {cpPntTotal.toLocaleString()}p
+                    </td>
+                    <td className="p-2 text-center border">
+                      {miunsPntTotal.toLocaleString()}p
+                    </td>
+                    <td className="p-2 text-center border">
+                      {bizPntTotal.toLocaleString()}원
+                    </td>
+                  </tr>
                   {dataList.map((log, idx) => (
                     <tr
                       key={idx}
                       className={`${idx % 2 === 1 ? "bg-yellow-50" : null}`}
                     >
                       <td className="p-2 text-center border">{log.regDate}</td>
-                      <td className="p-2 text-center border">
-                        {log.plusPnt.toLocaleString()}p
-                      </td>
                       <td className="p-2 text-center border">
                         {log.apPnt.toLocaleString()}p
                       </td>
@@ -281,7 +348,7 @@ function Main() {
                         {log.abPnt.toLocaleString()}p
                       </td>
                       <td className="p-2 text-center border">
-                        {log.miunsPnt.toLocaleString()}p
+                        {log.plusPnt.toLocaleString()}p
                       </td>
                       <td className="p-2 text-center border">
                         {log.exPnt.toLocaleString()}p
@@ -291,6 +358,9 @@ function Main() {
                       </td>
                       <td className="p-2 text-center border">
                         {log.cpPnt.toLocaleString()}p
+                      </td>
+                      <td className="p-2 text-center border">
+                        {log.miunsPnt.toLocaleString()}p
                       </td>
                       <td className="p-2 text-center border">
                         {log.bizPnt.toLocaleString()}원

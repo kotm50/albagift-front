@@ -317,7 +317,7 @@ function Login() {
   }, [socialData]);
 
   const goCert = () => {
-    navi("/cert", { state: { socialUser: socialData } });
+    navi("/cert", { state: { socialUser: socialData }, replace: true });
   };
 
   const kakaoLoginCheck = async code => {

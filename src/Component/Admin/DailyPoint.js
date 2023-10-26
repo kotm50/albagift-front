@@ -31,12 +31,11 @@ function DailyPoint() {
     setLoaded(false);
     let data = {
       page: p,
-      size: 20,
+      size: 2,
     };
     if (s !== "") {
       data.startDate = s;
     }
-    console.log(data);
     await axios
       .post("/api/v1/user/admin/search/todayPnt", data, {
         headers: { Authorization: user.accessToken },

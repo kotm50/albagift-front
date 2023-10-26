@@ -301,7 +301,9 @@ function Main() {
                         idx % 2 === 1 ? "bg-yellow-50" : null
                       } hover:cursor-pointer hover:text-orange-500`}
                       onClick={e =>
-                        navi(`/admin/dailypoint?startDate=${log.regDate}`)
+                        navi(`/admin/dailypoint?startDate=${log.regDate}`, {
+                          state: { log: log },
+                        })
                       }
                     >
                       <td className="p-2 text-center border">{log.regDate}</td>

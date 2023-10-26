@@ -21,8 +21,14 @@ function DailyPoint() {
   const [dataList, setDataList] = useState([]);
   const [totalPage, setTotalPage] = useState(1);
   const [pagenate, setPagenate] = useState([]);
+  const [log, setLog] = useState("");
 
   useEffect(() => {
+    if (location.state) {
+      setLog(location.state.log);
+    } else {
+      setLog("");
+    }
     getLog(page, startDate);
     //eslint-disable-next-line
   }, [location]);
@@ -31,7 +37,7 @@ function DailyPoint() {
     setLoaded(false);
     let data = {
       page: p,
-      size: 2,
+      size: 20,
     };
     if (s !== "") {
       data.startDate = s;
@@ -41,7 +47,6 @@ function DailyPoint() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        console.log(res);
         if (res.headers.authorization) {
           dispatch(
             getNewToken({
@@ -113,6 +118,65 @@ function DailyPoint() {
           <h2 className="p-4 text-center font-neoheavy text-3xl">
             {startDate} 포인트 내역
           </h2>
+          {log !== "" ? (
+            <div className="grid grid-cols-9 divide-x border mb-3">
+              <div className="p-2 text-center bg-green-700 text-white text-sm">
+                관리자 지급 포인트
+              </div>
+              <div className="p-2 text-center bg-green-700 text-white text-sm">
+                프로모션 포인트
+              </div>
+              <div className="p-2 text-center bg-green-700 text-white text-sm">
+                게시판 신청 포인트
+              </div>
+              <div className="p-2 text-center bg-green-700 text-white text-sm">
+                총 지급 포인트
+              </div>
+              <div className="p-2 text-center bg-rose-700 text-white text-sm">
+                소멸 포인트
+              </div>
+              <div className="p-2 text-center bg-rose-700 text-white text-sm">
+                관리자 차감 포인트
+              </div>
+              <div className="p-2 text-center bg-rose-700 text-white text-sm">
+                쿠폰 사용 포인트
+              </div>
+              <div className="p-2 text-center bg-rose-700 text-white text-sm">
+                총 차감 포인트
+              </div>
+              <div className="p-2 text-center bg-gray-700 text-white text-sm">
+                기프티쇼 실제 사용 금액
+              </div>
+              <div className="p-2 text-center">
+                {log.apPnt.toLocaleString()}p
+              </div>
+              <div className="p-2 text-center">
+                {log.prPnt.toLocaleString()}p
+              </div>
+              <div className="p-2 text-center">
+                {log.abPnt.toLocaleString()}p
+              </div>
+              <div className="p-2 text-center">
+                {log.plusPnt.toLocaleString()}p
+              </div>
+              <div className="p-2 text-center">
+                {log.exPnt.toLocaleString()}p
+              </div>
+              <div className="p-2 text-center">
+                {log.adPnt.toLocaleString()}p
+              </div>
+              <div className="p-2 text-center">
+                {log.cpPnt.toLocaleString()}p
+              </div>
+              <div className="p-2 text-center">
+                {log.miunsPnt.toLocaleString()}p
+              </div>
+              <div className="p-2 text-center">
+                {log.bizPnt.toLocaleString()}원
+              </div>
+            </div>
+          ) : null}
+
           {dataList.length > 0 ? (
             <>
               <div className="text-xs xl:text-base grid grid-cols-4 xl:grid-cols-5 py-2 bg-green-50 divide-x">
@@ -203,6 +267,7 @@ function DailyPoint() {
         totalPage={Number(totalPage)}
         pathName={pathName}
         startDate={startDate}
+        log={log}
       />
     </>
   );

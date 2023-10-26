@@ -63,6 +63,7 @@ function Pagenate(props) {
               }${isEndDate ? `&endDate=${props.endDate}` : ""}${
                 isAgree ? `&agree=${props.agree}` : ""
               }${isSearchType ? `&sType=${props.sType}` : ""}`}
+              state={{ log: props.log }}
               className="transition duration-300 ease-in-out pageButton hover:scale-110 hidden xl:block"
             >
               <FaAngleDoubleLeft size={20} />
@@ -78,6 +79,7 @@ function Pagenate(props) {
               }${isEndDate ? `&endDate=${props.endDate}` : ""}${
                 isAgree ? `&agree=${props.agree}` : ""
               }${isSearchType ? `&sType=${props.sType}` : ""}`}
+              state={{ log: props.log }}
               className="transition duration-300 ease-in-out pageButton hover:scale-110"
             >
               <FaAngleLeft size={20} />
@@ -93,6 +95,7 @@ function Pagenate(props) {
                 }${isEndDate ? `&endDate=${props.endDate}` : ""}${
                   isAgree ? `&agree=${props.agree}` : ""
                 }${isSearchType ? `&sType=${props.sType}` : ""}`}
+                state={{ log: props.log }}
                 key={idx}
                 className={`transition duration-300 ease-in-out pageButton hover:scale-110 ${
                   props.page === pageNum ? "selectedPage" : null
@@ -111,6 +114,7 @@ function Pagenate(props) {
               }${isEndDate ? `&endDate=${props.endDate}` : ""}${
                 isAgree ? `&agree=${props.agree}` : ""
               }${isSearchType ? `&sType=${props.sType}` : ""}`}
+              state={{ log: props.log }}
               className="transition duration-300 ease-in-out pageButton hover:scale-110"
             >
               <FaAngleRight size={20} />
@@ -125,6 +129,7 @@ function Pagenate(props) {
               }${isEndDate ? `&endDate=${props.endDate}` : ""}${
                 isAgree ? `&agree=${props.agree}` : ""
               }${isSearchType ? `&sType=${props.sType}` : ""}`}
+              state={{ log: props.log }}
               className="transition duration-300 ease-in-out pageButton hover:scale-110 hidden xl:block"
             >
               <FaAngleDoubleRight size={20} />

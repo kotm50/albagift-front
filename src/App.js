@@ -44,6 +44,7 @@ import EditUser from "./Component/User/Mypage/EditUser";
 import Payhistory from "./Component/User/Payhistory";
 import PointHistory from "./Component/User/PointHistory";
 import PointRequest from "./Component/User/PointRequest";
+import DailyPoint from "./Component/Admin/DailyPoint";
 //import MyMain from "./Component/User/Mypage/MyMain";
 
 function App() {
@@ -104,6 +105,7 @@ function App() {
             <Route path="reset" element={<GiftReset />} />
             <Route path="loginlog" element={<LoginLog />} />
             <Route path="pointlist" element={<PointList />} />
+            <Route path="dailypoint" element={<DailyPoint />} />
             <Route path="transfer" element={<Transfer />} />
           </Route>
           <Route path="/test" element={<KakaoTest />} />

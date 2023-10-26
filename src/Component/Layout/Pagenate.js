@@ -9,7 +9,8 @@ import {
 
 function Pagenate(props) {
   const [isSearching, setIsSearching] = useState(false);
-  const [isDate, setIsDate] = useState(false);
+  const [isStartDate, setIsStartDate] = useState(false);
+  const [isEndDate, setIsEndDate] = useState(false);
   const [isSelect, setIsSelect] = useState(false);
   const [isAgree, setIsAgree] = useState(false);
   const [isSearchType, setIsSearchType] = useState(false);
@@ -21,12 +22,15 @@ function Pagenate(props) {
     }
     if (props.startDate && props.startDate !== "") {
       if (props.endDate && props.endDate !== "") {
-        setIsDate(true);
+        setIsStartDate(true);
+        setIsEndDate(true);
       } else {
-        setIsDate(false);
+        setIsStartDate(true);
+        setIsEndDate(false);
       }
     } else {
-      setIsDate(false);
+      setIsStartDate(false);
+      setIsEndDate(false);
     }
     if (props.select && props.select !== "") {
       setIsSelect(true);
@@ -54,11 +58,9 @@ function Pagenate(props) {
             <Link
               to={`${props.pathName}?page=1${
                 isSearching ? `&keyword=${props.keyword}` : ""
-              }${
-                isDate
-                  ? `&startDate=${props.startDate}&endDate=${props.endDate}`
-                  : ""
               }${isSelect ? `&select=${props.select}` : ""}${
+                isStartDate ? `&startDate=${props.startDate}` : ""
+              }${isEndDate ? `&endDate=${props.endDate}` : ""}${
                 isAgree ? `&agree=${props.agree}` : ""
               }${isSearchType ? `&sType=${props.sType}` : ""}`}
               className="transition duration-300 ease-in-out pageButton hover:scale-110 hidden xl:block"
@@ -71,11 +73,9 @@ function Pagenate(props) {
             <Link
               to={`${props.pathName}?page=${props.page - 1}${
                 isSearching ? `&keyword=${props.keyword}` : ""
-              }${
-                isDate
-                  ? `&startDate=${props.startDate}&endDate=${props.endDate}`
-                  : ""
               }${isSelect ? `&select=${props.select}` : ""}${
+                isStartDate ? `&startDate=${props.startDate}` : ""
+              }${isEndDate ? `&endDate=${props.endDate}` : ""}${
                 isAgree ? `&agree=${props.agree}` : ""
               }${isSearchType ? `&sType=${props.sType}` : ""}`}
               className="transition duration-300 ease-in-out pageButton hover:scale-110"
@@ -88,11 +88,9 @@ function Pagenate(props) {
               <Link
                 to={`${props.pathName}?page=${pageNum}${
                   isSearching ? `&keyword=${props.keyword}` : ""
-                }${
-                  isDate
-                    ? `&startDate=${props.startDate}&endDate=${props.endDate}`
-                    : ""
                 }${isSelect ? `&select=${props.select}` : ""}${
+                  isStartDate ? `&startDate=${props.startDate}` : ""
+                }${isEndDate ? `&endDate=${props.endDate}` : ""}${
                   isAgree ? `&agree=${props.agree}` : ""
                 }${isSearchType ? `&sType=${props.sType}` : ""}`}
                 key={idx}
@@ -108,11 +106,9 @@ function Pagenate(props) {
             <Link
               to={`${props.pathName}?page=${props.page + 1}${
                 isSearching ? `&keyword=${props.keyword}` : ""
-              }${
-                isDate
-                  ? `&startDate=${props.startDate}&endDate=${props.endDate}`
-                  : ""
               }${isSelect ? `&select=${props.select}` : ""}${
+                isStartDate ? `&startDate=${props.startDate}` : ""
+              }${isEndDate ? `&endDate=${props.endDate}` : ""}${
                 isAgree ? `&agree=${props.agree}` : ""
               }${isSearchType ? `&sType=${props.sType}` : ""}`}
               className="transition duration-300 ease-in-out pageButton hover:scale-110"
@@ -124,11 +120,9 @@ function Pagenate(props) {
             <Link
               to={`${props.pathName}?page=${props.totalPage}${
                 isSearching ? `&keyword=${props.keyword}` : ""
-              }${
-                isDate
-                  ? `&startDate=${props.startDate}&endDate=${props.endDate}`
-                  : ""
               }${isSelect ? `&select=${props.select}` : ""}${
+                isStartDate ? `&startDate=${props.startDate}` : ""
+              }${isEndDate ? `&endDate=${props.endDate}` : ""}${
                 isAgree ? `&agree=${props.agree}` : ""
               }${isSearchType ? `&sType=${props.sType}` : ""}`}
               className="transition duration-300 ease-in-out pageButton hover:scale-110 hidden xl:block"

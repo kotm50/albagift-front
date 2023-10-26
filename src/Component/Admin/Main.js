@@ -8,7 +8,6 @@ import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
-import Pagenate from "../Layout/Pagenate";
 
 import axios from "axios";
 import { getNewToken } from "../../Reducer/userSlice";
@@ -23,13 +22,10 @@ function Main() {
   const location = useLocation();
   const pathName = location.pathname;
   const parsed = queryString.parse(location.search);
-  const page = parsed.page || 1;
   const startDate = parsed.startDate || "";
   const endDate = parsed.endDate || "";
   const [loaded, setLoaded] = useState(false);
   const [dataList, setDataList] = useState([]);
-  const [totalPage, setTotalPage] = useState(1);
-  const [pagenate, setPagenate] = useState([]);
   const [inputStartDate, setInputStartDate] = useState("");
   const [inputEndDate, setInputEndDate] = useState("");
   const [searchStartDate, setSearchStartDate] = useState("");
@@ -48,31 +44,43 @@ function Main() {
     setDataList([]);
     if (startDate !== "") {
       setInputStartDate(startDate);
-    } else {
-      setInputStartDate("");
-      setSearchStartDate("");
     }
     if (endDate !== "") {
       setInputEndDate(endDate);
-    } else {
-      setInputEndDate("");
-      setSearchEndDate("");
     }
-    getData(page, startDate, endDate);
+    if (startDate !== "" && endDate !== "") {
+      getData(startDate, endDate);
+    } else {
+      getMonthandLoadList();
+    }
     //eslint-disable-next-line
-  }, [location]);
-  const getData = async (p, s, e) => {
+  }, [location, user.accessToken]);
+
+  const getMonthandLoadList = () => {
+    const today = new Date();
+    const currentYear = today.getFullYear();
+    const currentMonth = today.getMonth(); // 0부터 시작하므로 0~11 사이의 값
+
+    // 현재 달의 첫째 날 계산
+    const firstDay = new Date(currentYear, currentMonth, 1);
+
+    // 다음 달의 첫째 날을 구하고 거기서 하루를 빼면 현재 달의 마지막 날이 된다.
+    const nextMonth = currentMonth === 11 ? 0 : currentMonth + 1; // 11월인 경우 0으로 설정하여 연도를 증가시킴
+    const nextMonthFirstDay = new Date(currentYear, nextMonth, 1);
+    const lastDay = new Date(nextMonthFirstDay - 86400000); // 86,400,000은 하루의 밀리초 수
+    const firstDayFormat = dayjs(firstDay).format("YYYY-MM-DD");
+    const lastDayFormat = dayjs(lastDay).format("YYYY-MM-DD");
+    setInputStartDate(firstDay);
+    setInputEndDate(lastDay);
+    console.log(firstDayFormat, lastDayFormat);
+    getData(firstDayFormat, lastDayFormat);
+  };
+  const getData = async (s, e) => {
     setLoaded(false);
     let data = {
-      page: p,
-      size: 20,
+      startDate: s,
+      endDate: e,
     };
-    if (s !== "") {
-      data.startDate = s;
-    }
-    if (e !== "") {
-      data.endDate = e;
-    }
     await axios
       .post("/api/v1/user/admin/search/datePnt", data, {
         headers: { Authorization: user.accessToken },
@@ -89,10 +97,6 @@ function Main() {
         if (res.data.pointList.length === 0) {
           return false;
         }
-        const totalP = res.data.totalPages;
-        setTotalPage(res.data.totalPages);
-        const pagenate = generatePaginationArray(p, totalP);
-        setPagenate(pagenate);
         let apPntTotal = 0;
         let prPntTotal = 0;
         let abPntTotal = 0;
@@ -130,43 +134,6 @@ function Main() {
         console.log(e);
         setLoaded(true);
       });
-
-    function generatePaginationArray(currentPage, totalPage) {
-      let paginationArray = [];
-
-      // 최대 페이지가 4 이하인 경우
-      if (Number(totalPage) <= 4) {
-        for (let i = 1; i <= totalPage; i++) {
-          paginationArray.push(i);
-        }
-        return paginationArray;
-      }
-
-      // 현재 페이지가 1 ~ 3인 경우
-      if (Number(currentPage) <= 3) {
-        return [1, 2, 3, 4, 5];
-      }
-
-      // 현재 페이지가 totalPage ~ totalPage - 2인 경우
-      if (Number(currentPage) >= Number(totalPage) - 2) {
-        return [
-          Number(totalPage) - 4,
-          Number(totalPage) - 3,
-          Number(totalPage) - 2,
-          Number(totalPage) - 1,
-          Number(totalPage),
-        ];
-      }
-
-      // 그 외의 경우
-      return [
-        Number(currentPage) - 2,
-        Number(currentPage) - 1,
-        Number(currentPage),
-        Number(currentPage) + 1,
-        Number(currentPage) + 2,
-      ];
-    }
   };
 
   const searchIt = () => {
@@ -335,7 +302,12 @@ function Main() {
                   {dataList.map((log, idx) => (
                     <tr
                       key={idx}
-                      className={`${idx % 2 === 1 ? "bg-yellow-50" : null}`}
+                      className={`${
+                        idx % 2 === 1 ? "bg-yellow-50" : null
+                      } hover:cursor-pointer hover:text-orange-500`}
+                      onClick={e =>
+                        navi(`/admin/dailypoint?startDate=${log.regDate}`)
+                      }
                     >
                       <td className="p-2 text-center border">{log.regDate}</td>
                       <td className="p-2 text-center border">
@@ -369,14 +341,6 @@ function Main() {
                   ))}
                 </tbody>
               </table>
-              <Pagenate
-                pagenate={pagenate}
-                page={Number(page)}
-                totalPage={Number(totalPage)}
-                pathName={pathName}
-                startDate={startDate}
-                endDate={endDate}
-              />
             </>
           ) : (
             <Sorry message={"조회된 내역이 없습니다"} />

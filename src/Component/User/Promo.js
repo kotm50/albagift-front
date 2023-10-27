@@ -29,7 +29,7 @@ import explain2 from "../../Asset/Promo/explain2.png";
 import explain3 from "../../Asset/Promo/explain3.png";
 import explain4 from "../../Asset/Promo/explain4.png";
 
-import Recommend from "./Recommend";
+import Recommend from "../Main/Recommend";
 
 function Promo() {
   const user = useSelector(state => state.user);

@@ -106,7 +106,7 @@ function Info() {
                 {p.id === 4 && (
                   <div className="mt-2 p-2 text-center">
                     면접포인트는 획득일로부터 <br className="xl:hidden" />
-                    <span className="text-rose-500">6개월 뒤에 소멸됩니다</span>
+                    <span className="text-rose-500">6개월 뒤 소멸됩니다</span>
                     <br />
                     <br className="xl:hidden" />
                     <span className="text-sm xl:text-base">

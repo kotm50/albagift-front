@@ -71,7 +71,7 @@ function Info() {
           <ol className="grid grid-cols-1 xl:grid-cols-3 text-black gap-2">
             {process.map((p, idx) => (
               <li className="bg-white p-2 rounded-lg" key={idx}>
-                <h3 className="xl:text-lg font-medium mb-2">
+                <h3 className="text-sm xl:text-lg font-medium mb-2">
                   {p.id}. {p.title}
                 </h3>
                 <div className="w-full p-2 border">
@@ -96,18 +96,29 @@ function Info() {
                 {isLogin && p.id === 3 && (
                   <div className="text-center mt-2 p-2">
                     <Link
-                      to="/getpoint"
+                      to="/mypage/pointrequest"
                       className="hidden p-2 bg-blue-500 hover:bg-blue-700 text-white hover:font-medium"
                     >
                       지급신청 페이지 바로가기
                     </Link>
                   </div>
                 )}
+                {p.id === 4 && (
+                  <div className="mt-2 p-2 text-center">
+                    면접포인트는 획득일로부터 <br className="xl:hidden" />
+                    <span className="text-rose-500">6개월 뒤 소멸됩니다</span>
+                    <br />
+                    <br className="xl:hidden" />
+                    <span className="text-sm xl:text-base">
+                      단, 포인트 획득시 소멸기한이 갱신됩니다
+                    </span>
+                  </div>
+                )}
                 {isLogin && p.id === 5 && (
-                  <div className="text-center mt-2 p-2">
+                  <div className="text-center mt-2 p-2 flex flex-col justify-center">
                     <Link
-                      to={`/coupon`}
-                      className="p-2 bg-blue-500 hover:bg-blue-700 text-white hover:font-medium"
+                      to={`/mypage/coupon`}
+                      className="block p-2 bg-blue-500 hover:bg-blue-700 text-white hover:font-medium text-sm xl:text-base"
                     >
                       쿠폰 보관함 페이지 바로가기
                     </Link>

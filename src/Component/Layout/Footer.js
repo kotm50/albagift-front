@@ -37,7 +37,10 @@ function Footer() {
 
   return (
     <>
-      <div className="container mx-auto h-10"></div>
+      {thisLocation.pathname !== "/renew" ? (
+        <div className="container mx-auto h-10"></div>
+      ) : null}
+
       {!footless ? (
         <>
           <First />

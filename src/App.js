@@ -45,6 +45,8 @@ import Payhistory from "./Component/User/Payhistory";
 import PointHistory from "./Component/User/PointHistory";
 import PointRequest from "./Component/User/PointRequest";
 import DailyPoint from "./Component/Admin/DailyPoint";
+import RenewalModal from "./Component/Mall/RenewalModal";
+import Renew from "./Component/Mall/Renew";
 //import MyMain from "./Component/User/Mypage/MyMain";
 
 function App() {
@@ -71,13 +73,17 @@ function App() {
         <title>알바선물 | 면접보고 선물받자! {now}</title>
       </Helmet>
       <Header />
+      <RenewalModal />
       <div
         id="content"
-        className={`w-full font-pretendard dark:text-white pb-3`}
+        className={`w-full font-pretendard dark:text-white ${
+          thisLocation.pathname !== "/renew" ? "pb-3" : "pb-0"
+        }`}
       >
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/attendance" element={<Attendance />} />
+          <Route path="/renew" element={<Renew />} />
           <Route path="/promo" element={<Promo />} />
           <Route path="/giftinfo" element={<Info />} />
           <Route path="/list/:category?/:brand?" element={<List />} />

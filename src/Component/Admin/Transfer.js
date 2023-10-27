@@ -32,6 +32,7 @@ function Transfer() {
       const documents = []; // 문서를 저장할 배열
       const documents2 = []; // 문서를 저장할 배열
       const documents3 = []; // 문서를 저장할 배열
+      const total = [];
 
       snapshot.forEach(doc => {
         doc.data().docId = doc.id;
@@ -50,39 +51,43 @@ function Transfer() {
               doc.data().phone !== undefined &&
               doc.data().phone !== ""
             ) {
-              let docData = {};
-              docData.protoName = doc.data().name;
-              docData.protoPhone = doc.data().phone;
-              docData.protoPoint = doc.data().point;
-              docData.uid = doc.data().uid;
-              // 중복 체크를 위한 플래그
-              let isDuplicate = false;
+              if (Number(doc.data().point) > 0) {
+                let docData = {};
+                docData.protoName = doc.data().name;
+                docData.protoPhone = doc.data().phone;
+                docData.protoPoint = doc.data().point;
+                docData.uid = doc.data().uid;
+                // 중복 체크를 위한 플래그
+                let isDuplicate = false;
 
-              // 배열에서 중복 체크
-              documents.forEach(existingDoc => {
-                if (
-                  existingDoc.protoName === docData.protoName &&
-                  existingDoc.protoPhone === docData.protoPhone
-                ) {
-                  isDuplicate = true;
-                  return; // 중복된 경우 추가하지 않고 반복문을 빠져나갑니다.
-                }
-              });
+                // 배열에서 중복 체크
+                documents.forEach(existingDoc => {
+                  if (
+                    existingDoc.protoName === docData.protoName &&
+                    existingDoc.protoPhone === docData.protoPhone
+                  ) {
+                    isDuplicate = true;
+                    return; // 중복된 경우 추가하지 않고 반복문을 빠져나갑니다.
+                  }
+                });
 
-              // 중복되지 않았을 때만 배열에 추가
-              if (!isDuplicate) {
-                if (documents.length < 50) {
-                  documents.push(docData);
-                } else if (documents2.length < 50) {
-                  documents2.push(docData);
-                } else {
-                  documents3.push(docData); // 문서 데이터를 배열에 추가
+                // 중복되지 않았을 때만 배열에 추가
+                if (!isDuplicate) {
+                  total.push(docData);
+                  if (documents.length < 50) {
+                    documents.push(docData);
+                  } else if (documents2.length < 50) {
+                    documents2.push(docData);
+                  } else {
+                    documents3.push(docData); // 문서 데이터를 배열에 추가
+                  }
                 }
               }
             }
           }
         }
       });
+      console.log(total.length, total);
       setApplies(documents);
       setApplies2(documents2);
       setApplies3(documents3);
@@ -119,6 +124,7 @@ function Transfer() {
           inputDoc.goodsName = docData.goodsName;
           inputDoc.couponImgUrl = docData.couponImgUrl;
           inputDoc.goodsImgB = docData.goodsImgB;
+          inputDoc.limitDate = await timestampToDate(docData.limitDate);
           documents.push(inputDoc);
         }
       }
@@ -127,6 +133,18 @@ function Transfer() {
     } catch (error) {
       console.error("문서 수를 가져오는 동안 오류 발생:", error);
     }
+  };
+
+  const timestampToDate = timestamp => {
+    const date = timestamp.toDate();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const seconds = String(date.getSeconds()).padStart(2, "0");
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.00`;
   };
   const chkCoupon = async c => {
     const data = {
@@ -151,6 +169,7 @@ function Transfer() {
     let data = {
       couponList: coupons,
     };
+    console.log(data);
     await axios
       .post("/api/v1/shop/proto/coupon", data, {
         headers: { Authorization: user.accessToken },

@@ -191,10 +191,10 @@ function Admin() {
                 로그인 기록
               </Link>
               <Link
-                to="/admin/transfer"
+                to="/admin/adminpwd"
                 className="hover:bg-indigo-100 p-2 text-center"
               >
-                구버전 회원
+                관리자 암호변경
               </Link>
             </div>
           </div>

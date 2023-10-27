@@ -84,7 +84,7 @@ function UserInformation() {
           <div className="grid grid-cols-1 gap-y-2 xl:h-40">
             <div className="text-center mt-2 xl:mb-2">
               로그인하여 알바선물의
-              <br className="xl:hidden" /> 다양한 혜택을 누려보세요~
+              <br className="xl:hidden" /> 다양한 혜택을 누려보세요
             </div>
             <Link
               to="/login"

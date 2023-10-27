@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../firebase"; // Firebase 초기화 후에 db 객체 가져오기
 
 import { useSelector } from "react-redux";
 
 import Apply from "./Apply";
+
+import axios from "axios";
 
 function Transfer() {
   const user = useSelector(state => state.user);
@@ -13,8 +15,11 @@ function Transfer() {
   const [applies2, setApplies2] = useState([]);
   const [applies3, setApplies3] = useState([]);
 
+  const [coupons, setCoupons] = useState([]);
+
   useEffect(() => {
     getApply();
+    getCoupon();
     //eslint-disable-next-line
   }, []);
 
@@ -86,6 +91,80 @@ function Transfer() {
     }
   };
 
+  const getCoupon = async () => {
+    setCoupons([]);
+    const couponCollectionRef = collection(db, "gifttrade"); // 'coupon' 컬렉션의 참조 가져오기
+    const today = new Date();
+    const startOfToday = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate()
+    );
+    const q = query(couponCollectionRef, where("limitDate", ">", startOfToday));
+
+    try {
+      const querySnapshot = await getDocs(q); // 컬렉션의 모든 문서 스냅샷 가져오기
+      const documents = []; // 문서를 저장할 배열
+
+      for (const doc of querySnapshot.docs) {
+        const docData = doc.data();
+        const inputDoc = {};
+        const isUsable = await chkCoupon(docData.trId);
+        if (isUsable) {
+          inputDoc.trId = docData.trId;
+          inputDoc.phone = docData.phone;
+          inputDoc.orderNo = docData.orderNo;
+          inputDoc.pinNo = docData.pinNo;
+          inputDoc.goodsCode = docData.goodsCode;
+          inputDoc.goodsName = docData.goodsName;
+          inputDoc.couponImgUrl = docData.couponImgUrl;
+          inputDoc.goodsImgB = docData.goodsImgB;
+          documents.push(inputDoc);
+        }
+      }
+      console.log(documents);
+      setCoupons(documents);
+    } catch (error) {
+      console.error("문서 수를 가져오는 동안 오류 발생:", error);
+    }
+  };
+  const chkCoupon = async c => {
+    const data = {
+      trId: c,
+    };
+    try {
+      const response = await axios.post("/api/v1/shop/goods/coupons", data, {
+        headers: { Authorization: user.accessToken },
+      });
+      if (response.data.couponDetail.pinStatusCd === "01") {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  };
+
+  const updateCoupon = async () => {
+    let data = {
+      couponList: coupons,
+    };
+    await axios
+      .post("/api/v1/shop/proto/coupon", data, {
+        headers: { Authorization: user.accessToken },
+        maxContentLength: Infinity,
+        maxBodyLength: Infinity,
+      })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
   return (
     <div className="container mx-auto text-center mt-2">
       {applies.length > 0 && (
@@ -95,6 +174,20 @@ function Transfer() {
           applies3={applies3}
           user={user}
         />
+      )}
+      {coupons.length > 0 && (
+        <>
+          <div className="p-2 text-center mb-2">
+            사용가능 쿠폰 총 {coupons.length}개<br />
+            <br />
+            <button
+              className="bg-green-500 hover:bg-green-700 p-2"
+              onClick={updateCoupon}
+            >
+              입력하기
+            </button>
+          </div>
+        </>
       )}
     </div>
   );

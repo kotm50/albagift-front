@@ -9,7 +9,7 @@ function PointHistoryList(props) {
       <div
         className={`text-center p-1 flex flex-col justify-center ${
           props.doc.gubun === "B"
-            ? "text-blue-700"
+            ? "text-rose-700"
             : props.doc.gubun === "P"
             ? "text-green-700"
             : props.doc.gubun === "D"
@@ -25,8 +25,22 @@ function PointHistoryList(props) {
           ? "차감"
           : "확인불가"}
       </div>
-      <div className="text-center p-1 flex flex-col justify-center">
+      <div
+        className={`text-center p-1 flex flex-col justify-center ${
+          props.doc.gubun === "B"
+            ? "text-rose-700"
+            : props.doc.gubun === "P"
+            ? "text-green-700"
+            : props.doc.gubun === "D"
+            ? "text-rose-700"
+            : ""
+        }`}
+      >
+        {props.doc.gubun === "P" ? "+" : "-"}
         {props.doc.point.toLocaleString()}p
+      </div>
+      <div className="text-center p-1 flex flex-col justify-center">
+        {props.doc.currPoint.toLocaleString()}p
       </div>
       <div className="text-center p-1 flex flex-col justify-center truncate">
         {props.doc.logType === "CP"
@@ -44,9 +58,6 @@ function PointHistoryList(props) {
           : props.doc.logType === "PO"
           ? "포인트 이관"
           : "확인불가"}
-      </div>
-      <div className="text-center p-1 flex flex-col justify-center">
-        {props.doc.currPoint.toLocaleString()}p
       </div>
     </>
   );

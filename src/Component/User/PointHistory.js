@@ -190,8 +190,8 @@ function PointHistory() {
                 </div>
                 <div className="font-neoextra text-center">구분</div>
                 <div className="font-neoextra text-center">변동포인트</div>
-                <div className="font-neoextra text-center">설명</div>
                 <div className="font-neoextra text-center">잔여포인트</div>
+                <div className="font-neoextra text-center">설명</div>
               </div>
               <div className="grid grid-cols-1">
                 {list.map((doc, idx) => (
@@ -199,8 +199,8 @@ function PointHistory() {
                     key={idx}
                     className={`text-xs xl:text-base grid grid-cols-4 xl:grid-cols-5 py-2 gap-y-3 ${
                       idx % 2 === 1
-                        ? "bg-green-50 hover:bg-green-100"
-                        : "hover:bg-gray-100"
+                        ? "bg-gray-100 hover:bg-gray-200"
+                        : "hover:bg-gray-200"
                     }`}
                   >
                     <PointHistoryList doc={doc} page={page} user={user} />

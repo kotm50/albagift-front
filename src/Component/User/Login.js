@@ -70,6 +70,9 @@ function Login() {
     navi("/");
   };
 
+  const goAdmin = () => {
+    navi("/admin");
+  };
   const login = async e => {
     e.preventDefault();
     if (countOver) {
@@ -237,7 +240,7 @@ function Login() {
                   message={"관리자로 로그인 합니다"} // 내용
                   type={"alert"} // 타입 confirm, alert
                   yes={"확인"} // 확인버튼 제목
-                  doIt={goMain} // 확인시 실행할 함수
+                  doIt={goAdmin} // 확인시 실행할 함수
                 />
               );
             },

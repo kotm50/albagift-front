@@ -299,8 +299,8 @@ function Payhistory() {
                     key={idx}
                     className={`hover:cursor-pointer hover:text-orange-500 text-sm xl:text-base grid grid-cols-3 xl:grid-cols-4 py-2 gap-y-3 ${
                       idx % 2 === 1
-                        ? "bg-green-50 hover:bg-green-100"
-                        : "hover:bg-gray-100"
+                        ? "bg-gray-100 hover:bg-gray-200"
+                        : "hover:bg-gray-200"
                     }`}
                     onClick={e => listModal(doc)}
                   >

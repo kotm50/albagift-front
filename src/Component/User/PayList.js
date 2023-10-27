@@ -12,9 +12,9 @@ function PayList(props) {
       <div
         className={`text-center p-1  flex flex-col justify-center ${
           props.doc.status === "Y"
-            ? "text-green-500"
+            ? "text-green-700"
             : props.doc.status === "N"
-            ? "text-rose-500"
+            ? "text-rose-700"
             : null
         }`}
       >
@@ -30,7 +30,7 @@ function PayList(props) {
         {props.doc.status === "S"
           ? "심사중"
           : props.doc.status === "Y"
-          ? Number(props.doc.result).toLocaleString()
+          ? `+${Number(props.doc.result).toLocaleString()}p`
           : props.doc.result}
       </div>
     </>

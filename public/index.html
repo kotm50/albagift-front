@@ -3,8 +3,8 @@
 
 <head>
   <meta charset="utf-8" />
-  <!-- Expires 속성 사용: 즉시 캐시 만료 -->
-  <meta http-equiv="Expires" content="0">
+  <meta http-equiv="Cache-Control" content="max-age=31536000" />
+  <meta http-equiv="Cache-Control" content="no-cache" />
   <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#000000" />
@@ -54,8 +54,6 @@
   <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.4.0/kakao.min.js"
     integrity="sha384-mXVrIX2T/Kszp6Z0aEWaA8Nm7J6/ZeWXbL8UpGRjKwWe56Srd/iyNmWMBhcItAjH"
     crossorigin="anonymous"></script>
-  <!-- Cache-control 속성 사용: 캐시를 하지 않음 -->
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 </head>
 
 <body>

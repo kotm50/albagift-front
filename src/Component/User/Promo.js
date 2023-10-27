@@ -115,7 +115,7 @@ function Promo() {
               <div className="w-full mt-2">
                 <button
                   className="block py-2 mx-auto bg-indigo-500 text-white hover:animate-bounce rounded-full px-4"
-                  onClick={e => navi("/join/promo")}
+                  onClick={e => navi("/cert")}
                 >
                   가입하기
                 </button>
@@ -242,9 +242,6 @@ function Promo() {
         </div>
       </div>
       <Recommend category={1} />
-      <div className="text-center py-1 text-sm bg-gray-700 text-white">
-        Copyright ⓒ Albagift. All rights reserved
-      </div>
       <div className="fixed top-0 right-20 z-40 min-w-fit min-h-fit p-2 bg-black text-white rounded-b-lg drop-shadow-md text-lg font-neoextra">
         <Link to="/">
           <FaHouseUser size={28} className="inline-block mr-3" />

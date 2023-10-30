@@ -119,7 +119,7 @@ function DailyPoint() {
             {startDate} 포인트 내역
           </h2>
           {log !== "" ? (
-            <div className="grid grid-cols-9 divide-x border mb-3">
+            <div className="grid grid-cols-10 divide-x border mb-3">
               <div className="p-2 text-center bg-green-700 text-white text-sm">
                 관리자 지급 포인트
               </div>
@@ -217,8 +217,6 @@ function DailyPoint() {
                         ? "지급"
                         : doc.gubun === "D"
                         ? "차감"
-                        : doc.gubun === "TR"
-                        ? "이관"
                         : "확인불가"}
                     </div>
                     <div className="text-center p-1 hidden xl:block truncate">
@@ -255,6 +253,8 @@ function DailyPoint() {
                         : doc.logType === "AB"
                         ? "면접 지급"
                         : doc.logType === "PO"
+                        ? "포인트 이관"
+                        : doc.logType === "TR"
                         ? "포인트 이관"
                         : "확인불가"}
                     </div>

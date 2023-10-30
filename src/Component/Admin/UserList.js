@@ -506,10 +506,12 @@ function UserList() {
                         </div>
                       </div>
                     </label>
-                    <div className="text-center px-2 mb-3">
+                    <div className="text-center px-2 mb-3 hidden">
                       <button
                         className="bg-indigo-500 hover:bg-indigo-700 text-white p-2 rounded-lg w-full"
-                        onClick={e => console.log(user.userId)}
+                        onClick={e =>
+                          navi(`/admin/userdetail?userId=${user.userId}`)
+                        }
                       >
                         포인트 내역 확인
                       </button>

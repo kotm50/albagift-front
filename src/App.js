@@ -48,6 +48,7 @@ import DailyPoint from "./Component/Admin/DailyPoint";
 import RenewalModal from "./Component/Mall/RenewalModal";
 import Renew from "./Component/Mall/Renew";
 import AdminPwd from "./Component/Admin/AdminPwd";
+import UserDetail from "./Component/Admin/UserDetail";
 //import MyMain from "./Component/User/Mypage/MyMain";
 
 function App() {
@@ -115,6 +116,7 @@ function App() {
             <Route path="dailypoint" element={<DailyPoint />} />
             <Route path="transfer" element={<Transfer />} />
             <Route path="adminpwd" element={<AdminPwd />} />
+            <Route path="userdetail" element={<UserDetail />} />
           </Route>
           <Route path="/test" element={<KakaoTest />} />
           <Route path="/popup" element={<PopupTest />} />

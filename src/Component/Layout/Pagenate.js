@@ -13,12 +13,19 @@ function Pagenate(props) {
   const [isEndDate, setIsEndDate] = useState(false);
   const [isSelect, setIsSelect] = useState(false);
   const [isAgree, setIsAgree] = useState(false);
+  const [isUserId, setIsUserId] = useState(false);
   const [isSearchType, setIsSearchType] = useState(false);
   useEffect(() => {
     if (props.keyword && props.keyword !== "") {
       setIsSearching(true);
     } else {
       setIsSearching(false);
+    }
+
+    if (props.userId && props.userId !== "") {
+      setIsUserId(true);
+    } else {
+      setIsUserId(false);
     }
     if (props.startDate && props.startDate !== "") {
       if (props.endDate && props.endDate !== "") {
@@ -62,7 +69,9 @@ function Pagenate(props) {
                 isStartDate ? `&startDate=${props.startDate}` : ""
               }${isEndDate ? `&endDate=${props.endDate}` : ""}${
                 isAgree ? `&agree=${props.agree}` : ""
-              }${isSearchType ? `&sType=${props.sType}` : ""}`}
+              }${isSearchType ? `&sType=${props.sType}` : ""}${
+                isUserId ? `&userId=${props.userId}` : ""
+              }`}
               state={{ log: props.log }}
               className="transition duration-300 ease-in-out pageButton hover:scale-110 hidden xl:block"
             >
@@ -78,7 +87,9 @@ function Pagenate(props) {
                 isStartDate ? `&startDate=${props.startDate}` : ""
               }${isEndDate ? `&endDate=${props.endDate}` : ""}${
                 isAgree ? `&agree=${props.agree}` : ""
-              }${isSearchType ? `&sType=${props.sType}` : ""}`}
+              }${isSearchType ? `&sType=${props.sType}` : ""}${
+                isUserId ? `&userId=${props.userId}` : ""
+              }`}
               state={{ log: props.log }}
               className="transition duration-300 ease-in-out pageButton hover:scale-110"
             >
@@ -94,7 +105,9 @@ function Pagenate(props) {
                   isStartDate ? `&startDate=${props.startDate}` : ""
                 }${isEndDate ? `&endDate=${props.endDate}` : ""}${
                   isAgree ? `&agree=${props.agree}` : ""
-                }${isSearchType ? `&sType=${props.sType}` : ""}`}
+                }${isSearchType ? `&sType=${props.sType}` : ""}${
+                  isUserId ? `&userId=${props.userId}` : ""
+                }`}
                 state={{ log: props.log }}
                 key={idx}
                 className={`transition duration-300 ease-in-out pageButton hover:scale-110 ${
@@ -113,7 +126,9 @@ function Pagenate(props) {
                 isStartDate ? `&startDate=${props.startDate}` : ""
               }${isEndDate ? `&endDate=${props.endDate}` : ""}${
                 isAgree ? `&agree=${props.agree}` : ""
-              }${isSearchType ? `&sType=${props.sType}` : ""}`}
+              }${isSearchType ? `&sType=${props.sType}` : ""}${
+                isUserId ? `&userId=${props.userId}` : ""
+              }`}
               state={{ log: props.log }}
               className="transition duration-300 ease-in-out pageButton hover:scale-110"
             >
@@ -128,7 +143,9 @@ function Pagenate(props) {
                 isStartDate ? `&startDate=${props.startDate}` : ""
               }${isEndDate ? `&endDate=${props.endDate}` : ""}${
                 isAgree ? `&agree=${props.agree}` : ""
-              }${isSearchType ? `&sType=${props.sType}` : ""}`}
+              }${isSearchType ? `&sType=${props.sType}` : ""}${
+                isUserId ? `&userId=${props.userId}` : ""
+              }`}
               state={{ log: props.log }}
               className="transition duration-300 ease-in-out pageButton hover:scale-110 hidden xl:block"
             >

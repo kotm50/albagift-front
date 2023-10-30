@@ -60,13 +60,12 @@ function Certification() {
       integrityValue: integrity_value,
     };
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    console.log(isMobile ? "모바일" : "모바일아님");
     if (!isMobile) {
       window.opener.parentCallback(data);
       window.close();
     } else {
       navi(
-        `/cert?=tokenVersionId=${data.tokenVersionId}&encData=${data.encData}&intergrityValue=${data.integrityValue}`
+        `/cert?tokenVersionId=${data.tokenVersionId}&encData=${data.encData}&intergrityValue=${data.integrityValue}`
       );
     }
   };

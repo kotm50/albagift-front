@@ -32,6 +32,7 @@ function Main() {
   const [searchEndDate, setSearchEndDate] = useState("");
 
   const [apPntTotal, setApPntTotal] = useState(0);
+  const [trPntTotal, setTrPntTotal] = useState(0);
   const [prPntTotal, setPrPntTotal] = useState(0);
   const [abPntTotal, setAbPntTotal] = useState(0);
   const [plusPntTotal, setPlusPntTotal] = useState(0);
@@ -93,6 +94,7 @@ function Main() {
           return false;
         }
         let apPntTotal = 0;
+        let trPntTotal = 0;
         let prPntTotal = 0;
         let abPntTotal = 0;
         let plusPntTotal = 0;
@@ -103,6 +105,7 @@ function Main() {
         let bizPntTotal = 0;
         res.data.pointList.forEach(doc => {
           apPntTotal = apPntTotal + doc.apPnt;
+          trPntTotal = trPntTotal + doc.trPnt;
           prPntTotal = prPntTotal + doc.prPnt;
           abPntTotal = abPntTotal + doc.abPnt;
           plusPntTotal = plusPntTotal + doc.plusPnt;
@@ -114,6 +117,7 @@ function Main() {
         });
 
         setApPntTotal(apPntTotal);
+        setTrPntTotal(trPntTotal);
         setPrPntTotal(prPntTotal);
         setAbPntTotal(abPntTotal);
         setPlusPntTotal(plusPntTotal);
@@ -238,6 +242,9 @@ function Main() {
                       관리자 지급 포인트
                     </td>
                     <td className="p-2 text-center border bg-green-700">
+                      이관 포인트
+                    </td>
+                    <td className="p-2 text-center border bg-green-700">
                       프로모션 포인트
                     </td>
                     <td className="p-2 text-center border bg-green-700">
@@ -268,6 +275,9 @@ function Main() {
                     <td className="p-2 text-center border">합계</td>
                     <td className="p-2 text-center border">
                       {apPntTotal.toLocaleString()}p
+                    </td>
+                    <td className="p-2 text-center border">
+                      {trPntTotal.toLocaleString()}p
                     </td>
                     <td className="p-2 text-center border">
                       {prPntTotal.toLocaleString()}p
@@ -309,6 +319,9 @@ function Main() {
                       <td className="p-2 text-center border">{log.regDate}</td>
                       <td className="p-2 text-center border">
                         {log.apPnt.toLocaleString()}p
+                      </td>
+                      <td className="p-2 text-center border">
+                        {log.trPnt.toLocaleString()}p
                       </td>
                       <td className="p-2 text-center border">
                         {log.prPnt.toLocaleString()}p

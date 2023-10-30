@@ -1,13 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 function KakaoTest() {
-  const [agent, setAgent] = useState("");
+  const [page, setPage] = useState("");
+  const [size, setSize] = useState("");
 
-  useEffect(() => {
-    console.log(window.navigator.userAgent);
-    setAgent(window.navigator.userAgent);
-  }, []);
-  return <div className="container mx-auto">{agent}</div>;
+  return (
+    <div className="container mx-auto">
+      <form action="/api/v1/shop/goods/list" method="post">
+        <input
+          type="text"
+          className="m-2 p-2 border"
+          id="page"
+          name="page"
+          value={page}
+          onChange={e => setPage(Number(e.currentTarget.value))}
+        />
+        <input
+          type="text"
+          className="m-2 p-2 border"
+          id="size"
+          name="size"
+          value={size}
+          onChange={e => setSize(Number(e.currentTarget.value))}
+        />
+        <button type="submit" className="bg-green-500 p-2 text-white">
+          후아
+        </button>
+      </form>
+    </div>
+  );
 }
 
 export default KakaoTest;

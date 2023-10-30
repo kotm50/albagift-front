@@ -24,11 +24,13 @@ function Cert() {
       setSocialUser(location.state.socialUser);
     }
     if (tokenVersionId !== "" && encData !== "" && integrityValue !== "") {
-      certToBack({
+      const data = {
         tokenVersionId: tokenVersionId,
         encData: encData,
         integrityValue: integrityValue,
-      });
+      };
+
+      certToBack(data);
     }
     //eslint-disable-next-line
   }, [location]);
@@ -60,10 +62,12 @@ function Cert() {
     if (userId !== "") {
       data.userId = userId;
     }
+    console.log(data);
     //data = {token, enc, int, gubun, id, email}
     await axios
       .post("/api/v1/user/nice/dec/result", data)
       .then(res => {
+        console.log(res);
         if (gubun === "join") {
           if (res.data.code === "C000") {
             navi("/join", {

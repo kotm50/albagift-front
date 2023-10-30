@@ -127,6 +127,9 @@ function DailyPoint() {
                 프로모션 포인트
               </div>
               <div className="p-2 text-center bg-green-700 text-white text-sm">
+                이관 포인트
+              </div>
+              <div className="p-2 text-center bg-green-700 text-white text-sm">
                 게시판 신청 포인트
               </div>
               <div className="p-2 text-center bg-green-700 text-white text-sm">
@@ -149,6 +152,9 @@ function DailyPoint() {
               </div>
               <div className="p-2 text-center">
                 {log.apPnt.toLocaleString()}p
+              </div>
+              <div className="p-2 text-center">
+                {log.trPnt.toLocaleString()}p
               </div>
               <div className="p-2 text-center">
                 {log.prPnt.toLocaleString()}p
@@ -211,6 +217,8 @@ function DailyPoint() {
                         ? "지급"
                         : doc.gubun === "D"
                         ? "차감"
+                        : doc.gubun === "TR"
+                        ? "이관"
                         : "확인불가"}
                     </div>
                     <div className="text-center p-1 hidden xl:block truncate">

@@ -102,7 +102,7 @@ function Footer() {
                   사업자등록번호: 227-87-02579
                 </div>
                 <div className="text-left font-neo">
-                  Copyright ⓒ Albagift. All rights reserved
+                  Copyright ⓒ Albagift.com All rights reserved
                 </div>
               </div>
               <div className="flex flex-col justify-start gap-1 text-gray-700 pl-2 xl:pl-0 text-sm my-10">

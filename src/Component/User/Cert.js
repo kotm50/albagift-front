@@ -12,14 +12,23 @@ function Cert() {
   const parsed = queryString.parse(location.search);
   const gubun = parsed.gubun || "join";
   const userId = parsed.userId || "";
+  const tokenVersionId = parsed.tokenVersionId || "";
+  const encData = parsed.tokenVersionId || "";
+  const integrityValue = parsed.tokenVersionId || "";
   const [socialUser, setSocialUser] = useState("");
   const [getTid, setGetTid] = useState(false);
   const [tid, setTid] = useState("");
 
   useEffect(() => {
-    console.log(location.state);
     if (location.state) {
       setSocialUser(location.state.socialUser);
+    }
+    if (tokenVersionId !== "" && encData !== "" && integrityValue !== "") {
+      certToBack({
+        tokenVersionId: tokenVersionId,
+        encData: encData,
+        integrityValue: integrityValue,
+      });
     }
     //eslint-disable-next-line
   }, [location]);
@@ -34,6 +43,10 @@ function Cert() {
     window.parentCallback = d => {
       certToBack(d);
     };
+  };
+
+  const doCertMobile = () => {
+    navi("/certification");
   };
 
   const certToBack = async d => {
@@ -130,8 +143,21 @@ function Cert() {
           </div>
           <div className="absolute z-20 w-64 xl:w-96 bottom-20 left-1/2 -translate-x-1/2 grid grid-cols-1 gap-y-3">
             <button
-              className="py-3 bg-black hover:bg-stone-800 text-white w-full rounded-full"
+              className="py-3 bg-black hover:bg-stone-800 text-white w-full rounded-full hidden xl:block"
               onClick={doCert}
+            >
+              본인인증하고{" "}
+              {gubun === "join"
+                ? "회원가입 하기"
+                : gubun === "find"
+                ? "아이디 찾기"
+                : gubun === "reco"
+                ? "비밀번호 찾기"
+                : null}
+            </button>
+            <button
+              className="py-3 bg-black hover:bg-stone-800 text-white w-full rounded-full block xl:hidden"
+              onClick={doCertMobile}
             >
               본인인증하고{" "}
               {gubun === "join"

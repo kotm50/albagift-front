@@ -62,10 +62,6 @@ function Login() {
     //eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    console.log(location);
-  }, [location]);
-
   const goMain = () => {
     navi("/");
   };

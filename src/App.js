@@ -58,7 +58,7 @@ function App() {
     if (thisLocation.pathname === "/login") {
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       if (isMobile) {
-        window.scrollTo(0, 160);
+        window.scrollTo(0, 120);
       }
     }
     // eslint-disable-next-line

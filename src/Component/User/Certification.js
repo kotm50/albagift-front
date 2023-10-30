@@ -59,6 +59,7 @@ function Certification() {
       encData: enc_data,
       integrityValue: integrity_value,
     };
+    console.log(data);
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     if (!isMobile) {
       window.opener.parentCallback(data);

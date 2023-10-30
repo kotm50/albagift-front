@@ -12,9 +12,6 @@ function Cert() {
   const parsed = queryString.parse(location.search);
   const gubun = parsed.gubun || "join";
   const userId = parsed.userId || "";
-  const tokenVersionId = parsed.tokenVersionId || "";
-  const encData = parsed.tokenVersionId || "";
-  const integrityValue = parsed.tokenVersionId || "";
   const [socialUser, setSocialUser] = useState("");
   const [getTid, setGetTid] = useState(false);
   const [tid, setTid] = useState("");
@@ -22,15 +19,6 @@ function Cert() {
   useEffect(() => {
     if (location.state) {
       setSocialUser(location.state.socialUser);
-    }
-    if (tokenVersionId !== "" && encData !== "" && integrityValue !== "") {
-      const data = {
-        tokenVersionId: tokenVersionId,
-        encData: encData,
-        integrityValue: integrityValue,
-      };
-
-      certToBack(data);
     }
     //eslint-disable-next-line
   }, [location]);
@@ -47,10 +35,6 @@ function Cert() {
     };
   };
 
-  const doCertMobile = () => {
-    navi("/certification");
-  };
-
   const certToBack = async d => {
     let data = d;
     data.gubun = gubun;
@@ -62,12 +46,10 @@ function Cert() {
     if (userId !== "") {
       data.userId = userId;
     }
-    console.log(data);
     //data = {token, enc, int, gubun, id, email}
     await axios
       .post("/api/v1/user/nice/dec/result", data)
       .then(res => {
-        console.log(res);
         if (gubun === "join") {
           if (res.data.code === "C000") {
             navi("/join", {
@@ -147,21 +129,8 @@ function Cert() {
           </div>
           <div className="absolute z-20 w-64 xl:w-96 bottom-20 left-1/2 -translate-x-1/2 grid grid-cols-1 gap-y-3">
             <button
-              className="py-3 bg-black hover:bg-stone-800 text-white w-full rounded-full hidden xl:block"
+              className="py-3 bg-black hover:bg-stone-800 text-white w-full rounded-full"
               onClick={doCert}
-            >
-              본인인증하고{" "}
-              {gubun === "join"
-                ? "회원가입 하기"
-                : gubun === "find"
-                ? "아이디 찾기"
-                : gubun === "reco"
-                ? "비밀번호 찾기"
-                : null}
-            </button>
-            <button
-              className="py-3 bg-black hover:bg-stone-800 text-white w-full rounded-full block xl:hidden"
-              onClick={doCertMobile}
             >
               본인인증하고{" "}
               {gubun === "join"

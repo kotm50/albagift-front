@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import axios from "axios";
 
@@ -8,14 +8,13 @@ import Loading from "../Layout/Loading";
 
 function Certification() {
   const location = useLocation();
-  const navi = useNavigate();
+
   const parsed = queryString.parse(location.search);
   const token_version_id = parsed.token_version_id || "";
   const enc_data = parsed.enc_data || "";
   const integrity_value = parsed.integrity_value || "";
 
   useEffect(() => {
-    alert(location.search);
     if (integrity_value === "" && enc_data === "" && token_version_id === "") {
       getData();
     } else {
@@ -60,16 +59,9 @@ function Certification() {
       encData: enc_data,
       integrityValue: integrity_value,
     };
-    console.log(data);
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    if (!isMobile) {
-      window.opener.parentCallback(data);
-      window.close();
-    } else {
-      navi(
-        `/cert?tokenVersionId=${data.tokenVersionId}&encData=${data.encData}&intergrityValue=${data.integrityValue}`
-      );
-    }
+
+    window.opener.parentCallback(data);
+    window.close();
   };
   return (
     <div>

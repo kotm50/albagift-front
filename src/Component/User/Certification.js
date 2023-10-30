@@ -15,6 +15,7 @@ function Certification() {
   const integrity_value = parsed.integrity_value || "";
 
   useEffect(() => {
+    console.log(location);
     if (integrity_value === "" && enc_data === "" && token_version_id === "") {
       getData();
     } else {

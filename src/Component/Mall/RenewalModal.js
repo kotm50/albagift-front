@@ -9,20 +9,25 @@ function RenewalModal() {
   const location = useLocation();
   const dispatch = useDispatch();
   const modalState = useSelector(state => state.modal);
+  const user = useSelector(state => state.user);
   const [isOpen, setIsOpen] = useState(false);
   const [isOneDay, setIsOneDay] = useState(false);
 
   useEffect(() => {
-    if (modalState.lastOpen === "") {
-      setIsOpen(true);
-      dispatch(
-        dayModal({
-          oneDay: "N",
-          lastOpen: new Date(),
-        })
-      );
+    if (user.admin) {
+      setIsOpen(false);
     } else {
-      isAfterDay(modalState.lastOpen, modalState.oneDay);
+      if (modalState.lastOpen === "") {
+        setIsOpen(true);
+        dispatch(
+          dayModal({
+            oneDay: "N",
+            lastOpen: new Date(),
+          })
+        );
+      } else {
+        isAfterDay(modalState.lastOpen, modalState.oneDay);
+      }
     }
     //eslint-disable-next-line
   }, [location]);

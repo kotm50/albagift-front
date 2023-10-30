@@ -71,7 +71,7 @@ function App() {
   return (
     <>
       <Helmet>
-        <title>알바선물 | 면접보고 선물받자! {now}</title>
+        <title>알바선물 | 면접보고 선물받자! ver {now}</title>
       </Helmet>
       <Header />
       <RenewalModal />

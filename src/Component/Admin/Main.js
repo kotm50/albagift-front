@@ -277,7 +277,7 @@ function Main() {
                       {apPntTotal.toLocaleString()}p
                     </td>
                     <td className="p-2 text-center border">
-                      {trPntTotal.toLocaleString()}p
+                      {trPntTotal ? trPntTotal.toLocaleString() : 0}p
                     </td>
                     <td className="p-2 text-center border">
                       {prPntTotal.toLocaleString()}p
@@ -321,7 +321,7 @@ function Main() {
                         {log.apPnt.toLocaleString()}p
                       </td>
                       <td className="p-2 text-center border">
-                        {log.trPnt.toLocaleString()}p
+                        {log.trPnt ? log.trPnt.toLocaleString() : 0}p
                       </td>
                       <td className="p-2 text-center border">
                         {log.prPnt.toLocaleString()}p

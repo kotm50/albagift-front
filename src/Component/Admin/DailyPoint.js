@@ -124,10 +124,10 @@ function DailyPoint() {
                 관리자 지급 포인트
               </div>
               <div className="p-2 text-center bg-green-700 text-white text-sm">
-                프로모션 포인트
+                이관 포인트
               </div>
               <div className="p-2 text-center bg-green-700 text-white text-sm">
-                이관 포인트
+                프로모션 포인트
               </div>
               <div className="p-2 text-center bg-green-700 text-white text-sm">
                 게시판 신청 포인트
@@ -148,7 +148,7 @@ function DailyPoint() {
                 총 차감 포인트
               </div>
               <div className="p-2 text-center bg-gray-700 text-white text-sm">
-                기프티쇼 실제 사용 금액
+                기프티쇼 실제 사용액
               </div>
               <div className="p-2 text-center">
                 {log.apPnt.toLocaleString()}p

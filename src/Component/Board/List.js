@@ -12,7 +12,7 @@ function List() {
   const user = useSelector(state => state.user);
   const location = useLocation();
   const parsed = queryString.parse(location.search);
-  const boardId = parsed.boardId || "B02";
+  const boardId = parsed.boardId || "B00";
 
   useEffect(() => {
     loadList();
@@ -30,8 +30,9 @@ function List() {
         },
       })
       .then(res => {
+        console.log(res);
         res.data.code === "E403" && alert(res.data.message);
-        res.data.code === "C000" ? setLoaded(true) : navi("/");
+        res.data.code === "C000" ? setLoaded(true) : console.log("에러");
 
         setList(res.data.postList ?? [{ postId: "없음" }]);
       })

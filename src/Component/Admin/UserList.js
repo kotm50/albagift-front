@@ -246,12 +246,19 @@ function UserList() {
   //생일변환
   const getBirth = (str, separator, interval) => {
     let result = "";
-    for (let i = 0; i < str.length; i += interval) {
-      let chunk = str.substring(i, i + interval);
-      result += chunk + separator;
+    if (str.length === 6) {
+      for (let i = 0; i < str.length; i += interval) {
+        let chunk = str.substring(i, i + interval);
+        result += chunk + separator;
+      }
+    } else if (str.length === 8) {
+      let firstChunk = str.substring(0, 4);
+      let secondChunk = str.substring(4, 6);
+      let thirdChunk = str.substring(6, 8);
+      result = `${firstChunk}${separator}${secondChunk}.${thirdChunk}`;
     }
     // 맨 마지막의 separator를 제거하여 반환합니다.
-    return result.slice(0, -1);
+    return result;
   };
 
   //휴대폰변환
@@ -439,15 +446,23 @@ function UserList() {
                     >
                       <div className="grid grid-cols-3 gap-2 mb-2">
                         <div className="font-medium flex flex-col justify-center text-right font-neo">
-                          이름
+                          아이디
                         </div>
                         <div className="font-normal col-span-2 flex flex-col justify-center">
-                          {user.userName}
+                          {user.userId}
                           {user.useYn === "S" && (
                             <span className="text-rose-500 text-sm ml-2">
                               (탈퇴예정)
                             </span>
                           )}
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-3 gap-2 mb-2">
+                        <div className="font-medium flex flex-col justify-center text-right font-neo">
+                          이름
+                        </div>
+                        <div className="font-normal col-span-2 flex flex-col justify-center">
+                          {user.userName}
                         </div>
                       </div>
                       <div className="grid grid-cols-3 gap-2 mb-2">
@@ -471,7 +486,7 @@ function UserList() {
                           생년월일
                         </div>
                         <div className="font-normal col-span-2 flex flex-col justify-center">
-                          {getBirth(user.birth, ".", 2)}
+                          {getBirth(user.birth || "000000", ".", 2)}
                         </div>
                       </div>
                       <div className="grid grid-cols-3 gap-2 mb-2">

@@ -219,6 +219,7 @@ function UserList() {
   };
 
   const checkUsers = (user, checked) => {
+    console.log(selectedUsersId);
     if (checked) {
       // 체크박스가 선택된 경우, 아이템을 배열에 추가
       setSelectedUsers([
@@ -432,7 +433,14 @@ function UserList() {
               </div>
               <div className="grid grid-cols-1 xl:grid-cols-5 gap-2 mt-2 bg-white p-2 container mx-auto">
                 {users.map((user, idx) => (
-                  <div key={idx}>
+                  <div
+                    key={idx}
+                    className={`group bg-teal-50 hover:bg-teal-200 text-black rounded-lg border-2  ${
+                      selectedUsersId.some(item => item.userId === user.userId)
+                        ? " border-teal-500 hover:border-teal-500"
+                        : "border-teal-50 hover:border-teal-200"
+                    }`}
+                  >
                     <input
                       type="checkbox"
                       value={user.userId}
@@ -440,10 +448,7 @@ function UserList() {
                       id={user.userId}
                       onChange={e => checkUsers(user, e.target.checked)}
                     />
-                    <label
-                      htmlFor={user.userId}
-                      className="block p-2 bg-teal-50 hover:bg-teal-200 text-black rounded-lg border-2 border-teal-50 hover:border-teal-200 peer-checked:border-teal-500 peer-checked:hover:border-teal-500"
-                    >
+                    <label htmlFor={user.userId} className="block p-2 ">
                       <div className="grid grid-cols-3 gap-2 mb-2">
                         <div className="font-medium flex flex-col justify-center text-right font-neo">
                           아이디
@@ -501,6 +506,14 @@ function UserList() {
                         </div>
                       </div>
                     </label>
+                    <div className="text-center px-2 mb-3">
+                      <button
+                        className="bg-indigo-500 hover:bg-indigo-700 text-white p-2 rounded-lg w-full"
+                        onClick={e => console.log(user.userId)}
+                      >
+                        포인트 내역 확인
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>

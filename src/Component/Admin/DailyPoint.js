@@ -239,7 +239,10 @@ function DailyPoint() {
                       {doc.gubun === "B" || doc.gubun === "D" ? "-" : null}
                       {doc.point.toLocaleString()}p
                     </div>
-                    <div className="text-center p-1 flex flex-col justify-center truncate">
+                    <div
+                      className="text-center py-1 px-4 flex flex-col justify-center truncate"
+                      title={doc.logType === "CP" ? doc.goodsName : ""}
+                    >
                       {doc.logType === "CP"
                         ? doc.goodsName
                         : doc.logType === "PR"

@@ -130,7 +130,7 @@ function DailyPoint() {
                 프로모션 포인트
               </div>
               <div className="p-2 text-center bg-green-700 text-white text-sm">
-                게시판 신청 포인트
+                면접 포인트
               </div>
               <div className="p-2 text-center bg-green-700 text-white text-sm">
                 총 지급 포인트
@@ -246,7 +246,7 @@ function DailyPoint() {
                       {doc.logType === "CP"
                         ? doc.goodsName
                         : doc.logType === "PR"
-                        ? "가입 지급"
+                        ? "프로모션 지급"
                         : doc.logType === "EX"
                         ? "기간 만료"
                         : doc.logType === "AP"
@@ -255,8 +255,6 @@ function DailyPoint() {
                         ? "관리자 차감"
                         : doc.logType === "AB"
                         ? "면접 지급"
-                        : doc.logType === "PO"
-                        ? "포인트 이관"
                         : doc.logType === "TR"
                         ? "포인트 이관"
                         : "확인불가"}

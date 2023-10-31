@@ -248,7 +248,7 @@ function Main() {
                       프로모션 포인트
                     </td>
                     <td className="p-2 text-center border bg-green-700">
-                      게시판 신청 포인트
+                      면접 포인트
                     </td>
                     <td className="p-2 text-center border bg-green-700">
                       총 지급 포인트

@@ -15,6 +15,7 @@ import First from "../Main/First";
 function Footer() {
   const [modalOn, setModalOn] = useState(false);
   const [modalCount, setModalCount] = useState(0);
+  const [isAdmin, setIsAdmin] = useState(false);
   const thisLocation = useLocation();
   useEffect(() => {
     if (modalOn) {
@@ -25,6 +26,10 @@ function Footer() {
     // eslint-disable-next-line
   }, [thisLocation, modalOn]);
 
+  useEffect(() => {
+    setIsAdmin(/^\/admin(\/|$)/.test(thisLocation.pathname));
+  }, [thisLocation]);
+
   return (
     <>
       {thisLocation.pathname !== "/renew" ? (
@@ -32,7 +37,7 @@ function Footer() {
       ) : null}
 
       <>
-        <First />
+        {!isAdmin ? <First /> : null}
         <div className="bg-gray-200 py-2 border-y border-gray-300 w-full">
           <div className="lg:container mx-auto">
             <div className="flex justify-around text-sm">

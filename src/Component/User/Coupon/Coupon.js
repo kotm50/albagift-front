@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { clearUser, getNewToken } from "../../../Reducer/userSlice";
 
@@ -129,7 +129,18 @@ function Coupon() {
               ))}
             </div>
           ) : (
-            <Sorry message={loadList} />
+            <>
+              <Sorry message={loadList} />
+              <div className="container mx-auto text-center mt-3">
+                현재 보유중인 포인트로{" "}
+                <Link
+                  to="/list"
+                  className="text-green-500 hover:text-green-700 hover:font-neoextra"
+                >
+                  쇼핑하기
+                </Link>
+              </div>
+            </>
           )}
           <Pagenate
             pagenate={pagenate}

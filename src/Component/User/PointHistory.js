@@ -67,6 +67,7 @@ function PointHistory() {
           );
         }
         setLoaded(true);
+        console.log(res);
         if (res.data.code === "C000") {
           const totalP = res.data.totalPages;
           setTotalPage(res.data.totalPages);

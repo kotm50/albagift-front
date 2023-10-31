@@ -94,6 +94,7 @@ function UserList() {
         },
       })
       .then(res => {
+        console.log(res);
         if (res.headers.authorization) {
           dispatch(
             getNewToken({
@@ -475,7 +476,7 @@ function UserList() {
                           연락처
                         </div>
                         <div className="font-normal col-span-2 flex flex-col justify-center">
-                          {getPhone(user.phone)}
+                          {getPhone(user.phone || "00000000000")}
                         </div>
                       </div>
                       <div className="grid grid-cols-3 gap-2 mb-2">
@@ -506,7 +507,7 @@ function UserList() {
                         </div>
                       </div>
                     </label>
-                    <div className="text-center px-2 mb-3 hidden">
+                    <div className="text-center px-2 mb-3">
                       <button
                         className="bg-indigo-500 hover:bg-indigo-700 text-white p-2 rounded-lg w-full"
                         onClick={e =>

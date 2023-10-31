@@ -36,7 +36,7 @@ function PointList() {
   const select = parsed.select || "";
   const agree = parsed.agree || "";
   const sType = parsed.sType || "";
-  const [point, setPoint] = useState("");
+  const [point, setPoint] = useState(0);
   const [reason, setReason] = useState("");
   const [selectReason, setSelectReason] = useState("");
   const [totalPage, setTotalPage] = useState(1);
@@ -145,7 +145,7 @@ function PointList() {
   };
 
   const pointSubmit = async b => {
-    if (b && point === "") {
+    if (b && point === 0) {
       confirmAlert({
         customUI: ({ onClose }) => {
           return (
@@ -226,7 +226,7 @@ function PointList() {
           if (res.headers.authorization === user.accessToken) {
             loadList(page, keyword, startDate, endDate, select, agree, sType);
           }
-          setPoint("");
+          setPoint(0);
           setSelectedDocs([]);
           setSelectedDocsId([]);
         }

@@ -113,7 +113,7 @@ function DailyPoint() {
       {loaded ? (
         <div className="mt-2 container p-4 mx-auto bg-white rounded-lg">
           <div className="text-left">
-            <Link to={"/admin"}>{"< "}이전으로</Link>
+            <Link to={-1}>{"< "}이전으로</Link>
           </div>
           <h2 className="p-4 text-center font-neoheavy text-3xl">
             {startDate} 포인트 내역
@@ -243,21 +243,23 @@ function DailyPoint() {
                       className="text-center py-1 px-4 flex flex-col justify-center truncate"
                       title={doc.logType === "CP" ? doc.goodsName : ""}
                     >
-                      {doc.logType === "CP"
-                        ? doc.goodsName
-                        : doc.logType === "PR"
-                        ? "프로모션 지급"
-                        : doc.logType === "EX"
-                        ? "기간 만료"
-                        : doc.logType === "AP"
-                        ? "관리자 지급"
-                        : doc.logType === "AD"
-                        ? "관리자 차감"
-                        : doc.logType === "AB"
-                        ? "면접 지급"
-                        : doc.logType === "TR"
-                        ? "포인트 이관"
-                        : "확인불가"}
+                      <div className="w-full truncate">
+                        {doc.logType === "CP"
+                          ? doc.goodsName
+                          : doc.logType === "PR"
+                          ? "프로모션 지급"
+                          : doc.logType === "EX"
+                          ? "기간 만료"
+                          : doc.logType === "AP"
+                          ? "관리자 지급"
+                          : doc.logType === "AD"
+                          ? "관리자 차감"
+                          : doc.logType === "AB"
+                          ? "면접 지급"
+                          : doc.logType === "TR"
+                          ? "포인트 이관"
+                          : "확인불가"}
+                      </div>
                     </div>
                   </div>
                 ))}

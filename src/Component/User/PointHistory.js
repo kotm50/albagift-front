@@ -10,6 +10,10 @@ import { clearUser, getNewToken } from "../../Reducer/userSlice";
 import PointHistoryList from "./PointHistoryList";
 import Sorry from "../doc/Sorry";
 
+import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
+import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
+import PointHistoryModal from "./PointHistoryModal";
+
 function PointHistory() {
   const dispatch = useDispatch();
   const navi = useNavigate();
@@ -134,19 +138,59 @@ function PointHistory() {
     }
   };
 
+  const detailChk = doc => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <PointHistoryModal
+            onClose={onClose} // 닫기
+            title={"상세정보"} // 제목
+            message={`일시 : ${doc.regDate}\n구분 : ${
+              doc.gubun === "B"
+                ? "구매"
+                : doc.gubun === "P"
+                ? "지급"
+                : doc.gubun === "D"
+                ? "차감"
+                : "확인불가"
+            }\n변동포인트 : ${doc.point.toLocaleString()}\n잔여포인트 : ${doc.currPoint.toLocaleString()}\n설명 : ${
+              doc.logType === "CP"
+                ? doc.goodsName
+                : doc.logType === "PR"
+                ? "가입 지급"
+                : doc.logType === "EX"
+                ? "기간 만료"
+                : doc.logType === "AP"
+                ? "관리자 지급"
+                : doc.logType === "AD"
+                ? "관리자 차감"
+                : doc.logType === "AB"
+                ? "면접 지급"
+                : doc.logType === "PO"
+                ? "포인트 이관"
+                : "확인불가"
+            }`} // 내용
+            type={"alert"} // 타입 confirm, alert
+            yes={"확인"} // 확인버튼 제목
+          />
+        );
+      },
+    });
+    return false;
+  };
+
   return (
     <>
       {loaded ? (
         <>
           <div className="xl:text-2xl mt-2 font-neo">
             <span className="font-neoextra">{user.userId}</span>
-            님의 잔여포인트 :{" "}
+            님의 포인트 :{" "}
             <span className="font-neoextra text-rose-500">
               {user.point.toLocaleString()}
             </span>
             p
           </div>
-
           <div className="flex justify-between">
             {expire ? (
               <div className="text-xs xl:text-sm mb-2 font-neo leading-5">
@@ -154,8 +198,7 @@ function PointHistory() {
                   만료일 : {expire}
                 </span>{" "}
                 <br />
-                <span className="hidden xl:inline">(</span>면접포인트는
-                획득일로부터{" "}
+                <span className="hidden xl:inline">(</span>포인트는 획득일로부터{" "}
                 <span className="text-rose-500 font-neobold">
                   6개월 뒤 소멸됩니다
                 </span>
@@ -199,6 +242,12 @@ function PointHistory() {
             <option value="P">지급</option>
             <option value="D">차감</option>
           </select>
+
+          <div className="text-xs xl:text-sm container mx-auto xl:text-right text-sky-500 text-center items-center">
+            내역을 <span className="hidden xl:inline">클릭</span>
+            <span className="inline xl:hidden">탭</span>하면 수정/삭제가
+            가능합니다.
+          </div>
           {list.length > 0 ? (
             <>
               <div className="text-xs xl:text-base grid grid-cols-4 xl:grid-cols-5 py-2 bg-blue-50 divide-x">
@@ -214,11 +263,12 @@ function PointHistory() {
                 {list.map((doc, idx) => (
                   <div
                     key={idx}
-                    className={`text-xs xl:text-base grid grid-cols-4 xl:grid-cols-5 py-2 gap-y-3 ${
+                    className={`text-xs xl:text-base grid grid-cols-4 xl:grid-cols-5 py-2 gap-y-3 hover:text-orange-500 hover:cursor-pointer ${
                       idx % 2 === 1
                         ? "bg-gray-100 hover:bg-gray-200"
                         : "hover:bg-gray-200"
                     }`}
+                    onClick={e => detailChk(doc)}
                   >
                     <PointHistoryList doc={doc} page={page} user={user} />
                   </div>

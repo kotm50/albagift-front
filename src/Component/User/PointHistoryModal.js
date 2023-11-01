@@ -25,7 +25,10 @@ function PointHistoryModal(props) {
   }, [props]);
   const sanitizer = dompurify.sanitize;
   return (
-    <div id="alertmodal" className="max-w-screen p-4 bg-white border rounded">
+    <div
+      id="pointAlertmodal"
+      className="max-w-screen p-4 bg-white border rounded"
+    >
       <div
         className={`p-4 bg-white border grid grid-cols-1 gap-y-3 ${
           props.type === "alert" ? "border-gray-200" : "border-sky-200"

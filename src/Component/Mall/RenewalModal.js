@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { dayModal } from "../../Reducer/modalSlice";
-import renewal from "../../Asset/renew/renewal.png";
+import renewal from "../../Asset/renew/renewal_new.png";
 
 function RenewalModal() {
   const navi = useNavigate();

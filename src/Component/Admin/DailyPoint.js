@@ -9,6 +9,10 @@ import Sorry from "../doc/Sorry";
 import Loading from "../Layout/Loading";
 import { getNewToken } from "../../Reducer/userSlice";
 
+import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
+import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
+import PointHistoryModal from "../User/PointHistoryModal";
+
 function DailyPoint() {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -32,6 +36,49 @@ function DailyPoint() {
     getLog(page, startDate);
     //eslint-disable-next-line
   }, [location]);
+
+  const detailChk = doc => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <PointHistoryModal
+            onClose={onClose} // 닫기
+            title={"상세정보"} // 제목
+            message={`아이디 : ${doc.userId || "탈퇴회원"}\n일시 : ${
+              doc.regDate
+            }\n구분 : ${
+              doc.gubun === "B"
+                ? "구매"
+                : doc.gubun === "P"
+                ? "지급"
+                : doc.gubun === "D"
+                ? "차감"
+                : "확인불가"
+            }\n변동포인트 : ${doc.point.toLocaleString()}\n잔여포인트 : ${doc.currPoint.toLocaleString()}\n설명 : ${
+              doc.logType === "CP"
+                ? doc.goodsName
+                : doc.logType === "PR"
+                ? "가입 지급"
+                : doc.logType === "EX"
+                ? "기간 만료"
+                : doc.logType === "AP"
+                ? "관리자 지급"
+                : doc.logType === "AD"
+                ? "관리자 차감"
+                : doc.logType === "AB"
+                ? "면접 지급"
+                : doc.logType === "PO"
+                ? "포인트 이관"
+                : "확인불가"
+            }`} // 내용
+            type={"alert"} // 타입 confirm, alert
+            yes={"확인"} // 확인버튼 제목
+          />
+        );
+      },
+    });
+    return false;
+  };
 
   const getLog = async (p, s) => {
     setLoaded(false);
@@ -198,10 +245,11 @@ function DailyPoint() {
                 {dataList.map((doc, idx) => (
                   <div
                     key={idx}
-                    className="text-xs xl:text-base grid grid-cols-4 xl:grid-cols-5 py-2 gap-y-3 border-b hover:bg-gray-100"
+                    className="text-xs xl:text-base grid grid-cols-4 xl:grid-cols-5 py-2 gap-y-3 border-b hover:bg-gray-100 hover:text-orange-500 hover:cursor-pointer group"
+                    onClick={e => detailChk(doc)}
                   >
                     <div
-                      className={`text-center p-1 flex flex-col justify-center font-neoextra ${
+                      className={`text-center p-1 flex flex-col justify-center font-neoextra group-hover:text-orange-500 ${
                         doc.gubun === "B"
                           ? "text-rose-500"
                           : doc.gubun === "P"
@@ -226,7 +274,7 @@ function DailyPoint() {
                       {doc.userId || "탈퇴회원"}
                     </div>
                     <div
-                      className={`text-center p-1 flex flex-col justify-center font-neoextra ${
+                      className={`text-center p-1 flex flex-col justify-center font-neoextra group-hover:text-orange-500 ${
                         doc.gubun === "B"
                           ? "text-rose-500"
                           : doc.gubun === "P"

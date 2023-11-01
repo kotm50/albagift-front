@@ -325,6 +325,6 @@ div.footer-top {
 }
 
 #pointAlertmodal {
-  min-width:400px;
+  width:400px;
   max-width:100%;
 }

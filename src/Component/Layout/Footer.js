@@ -111,9 +111,7 @@ function Footer() {
                 </div>
               </div>
               <div className="flex flex-col justify-start gap-1 text-gray-700 pl-2 xl:pl-0 text-sm my-10">
-                <div className="text-left font-neoextra">
-                  취업상담 / 채용문의{" "}
-                </div>
+                <div className="text-left font-neoextra">문의전화</div>
                 <div className="text-2xl flex flex-row flex-nowrap gap-2">
                   <RiCustomerService2Fill size={32} />
                   <span className="text-indigo-500 font-neoextra">

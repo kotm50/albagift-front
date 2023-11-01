@@ -35,7 +35,7 @@ function Transfer() {
       const total = [];
 
       snapshot.forEach(doc => {
-        doc.data().docId = doc.id;
+        if (doc.data().orderN) doc.data().docId = doc.id;
         if (
           doc.data().uid !== null &&
           doc.data().uid !== undefined &&

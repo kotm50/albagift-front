@@ -67,7 +67,6 @@ function PointHistory() {
           );
         }
         setLoaded(true);
-        console.log(res);
         if (res.data.code === "C000") {
           const totalP = res.data.totalPages;
           setTotalPage(res.data.totalPages);
@@ -139,7 +138,7 @@ function PointHistory() {
     <>
       {loaded ? (
         <>
-          <div className="xl:text-2xl my-2 font-neo">
+          <div className="xl:text-2xl mt-2 font-neo">
             <span className="font-neoextra">{user.userId}</span>
             님의 잔여포인트 :{" "}
             <span className="font-neoextra text-rose-500">
@@ -150,15 +149,32 @@ function PointHistory() {
 
           <div className="flex justify-between">
             {expire ? (
-              <div className="text-sm xl:text-base mb-2 font-neo leading-6">
-                만료예정일 : {expire} <br className="xl:hidden" />
-                <span className="text-rose-500">
-                  (만료예정일이 경과되면 포인트가 소멸합니다)
+              <div className="text-xs xl:text-sm mb-2 font-neo leading-5">
+                <span className="text-sm xl:text-base font-neobold">
+                  만료일 : {expire}
+                </span>{" "}
+                <br />
+                <span className="hidden xl:inline">(</span>면접포인트는
+                획득일로부터{" "}
+                <span className="text-rose-500 font-neobold">
+                  6개월 뒤 소멸됩니다
                 </span>
+                . <br className="xl:hidden" />
+                <span className="text-xs xl:text-sm">
+                  단, 포인트 추가 획득시 소멸기한이 갱신됩니다.
+                </span>
+                <span className="hidden xl:inline">)</span>
               </div>
             ) : (
-              <div className="text-sm xl:text-base mb-2 font-neo text-rose-500">
-                (만료예정일이 경과되면 포인트가 소멸합니다)
+              <div className="text-xs xl:text-sm mb-2 font-neo leading-5">
+                <span className="hidden xl:inline">(</span>면접포인트는
+                획득일로부터{" "}
+                <span className="text-rose-500">6개월 뒤 소멸됩니다</span>.{" "}
+                <br className="xl:hidden" />
+                <span className="text-xs xl:text-sm">
+                  단, 포인트 추가 획득시 소멸기한이 갱신됩니다.
+                </span>
+                <span className="hidden xl:inline">)</span>
               </div>
             )}
 

@@ -160,7 +160,9 @@ function DailyPoint() {
       {loaded ? (
         <div className="mt-2 container p-4 mx-auto bg-white rounded-lg">
           <div className="text-left">
-            <Link to={-1}>{"< "}이전으로</Link>
+            <Link to={-1} className="hover:text-orange-500">
+              {"< "}이전으로
+            </Link>
           </div>
           <h2 className="p-4 text-center font-neoheavy text-3xl">
             {startDate} 포인트 내역

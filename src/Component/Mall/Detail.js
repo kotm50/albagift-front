@@ -154,11 +154,17 @@ function Detail() {
   };
 
   const doBuy = async () => {
+    const currentDomain = window.location.href;
     let data = {
       goodsCode: goodscode,
     };
+    let url = "/api/v1/shop/goods/send";
+    const isLocalhost = currentDomain.includes("albagift");
+    if (!isLocalhost) {
+      url = "/api/v1/shop/local/goods/send";
+    }
     await axios
-      .post("/api/v1/shop/goods/send", data, {
+      .post(url, data, {
         headers: { Authorization: user.accessToken },
       })
       .then(async res => {
@@ -180,20 +186,7 @@ function Detail() {
               point: res.data.point,
             })
           );
-          confirmAlert({
-            customUI: ({ onClose }) => {
-              return (
-                <AlertModal
-                  onClose={onClose} // 닫기
-                  title={"구매 완료"} // 제목
-                  message={"구매를 완료했습니다"} // 내용
-                  type={"alert"} // 타입 confirm, alert
-                  yes={"확인"} // 확인버튼 제목
-                  doIt={goResult} // 확인시 실행할 함수
-                />
-              );
-            },
-          });
+          goResult();
         } else {
           confirmAlert({
             customUI: ({ onClose }) => {

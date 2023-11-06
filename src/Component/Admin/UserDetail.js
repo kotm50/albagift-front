@@ -153,7 +153,9 @@ function UserDetail() {
       {loaded ? (
         <>
           <div className="container mx-auto text-left">
-            <Link to={-1}>{"< "}이전으로</Link>
+            <Link to={-1} className="hover:text-orange-500">
+              {"< "}이전으로
+            </Link>
           </div>
           <div className="container mx-auto xl:text-2xl my-2 font-neo text-center">
             <span className="font-neoextra">{userId}</span>

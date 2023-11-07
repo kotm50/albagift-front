@@ -268,7 +268,7 @@ function JoinBack() {
     setCorrectId(true);
     if (id.length < 17) {
       setDupId(true);
-      const regex = /^[a-z0-9]+$/;
+      const regex = /^[a-z]+([0-9]+[a-z]*)*$/;
       let correct = regex.test(id);
       if (correct) {
         await axios

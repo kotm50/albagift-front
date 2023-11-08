@@ -1,37 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-        <loc>https://albagift.shop/login</loc>
+        <loc>https://albagift.com/login</loc>
         <lastmod>2023-05-16</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://albagift.shop/error</loc>
+        <loc>https://albagift.com/complete</loc>
         <lastmod>2023-05-16</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://albagift.shop/complete</loc>
+        <loc>https://albagift.com/list/:category?/:brand?</loc>
         <lastmod>2023-05-16</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://albagift.shop/giftlist/:cateno?/:brandno?</loc>
+        <loc>https://albagift.com/detail/:goodscode?</loc>
         <lastmod>2023-05-16</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://albagift.shop/giftdetail/:gid?</loc>
-        <lastmod>2023-05-16</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    <url>
-        <loc>https://albagift.shop/</loc>
+        <loc>https://albagift.com/</loc>
         <lastmod>2023-05-16</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>

@@ -49,6 +49,8 @@ import RenewalModal from "./Component/Mall/RenewalModal";
 import Renew from "./Component/Mall/Renew";
 import AdminPwd from "./Component/Admin/AdminPwd";
 import UserDetail from "./Component/Admin/UserDetail";
+import CollectMain from "./Component/Collect/CollectMain";
+import Collect from "./Component/Collect/Collect";
 //import MyMain from "./Component/User/Mypage/MyMain";
 
 function App() {
@@ -127,6 +129,9 @@ function App() {
           </Route>
           <Route path="/certification" element={<Certification />} />
           <Route path="/cert" element={<Cert />} />
+          <Route path="/collect" element={<Collect />}>
+            <Route path="" element={<CollectMain />} />
+          </Route>
         </Routes>
       </div>
       <Footer />

@@ -31,6 +31,7 @@ function Login() {
   const [countOver, setCountOver] = useState(false);
 
   const [socialData, setSocialData] = useState("");
+  const [isTest, setIsTest] = useState(false);
 
   const [modal, setModal] = useState(false);
 
@@ -56,6 +57,13 @@ function Login() {
   }, []);
 
   useEffect(() => {
+    if (location.state) {
+      setIsTest(location.state.test === "yes" ? true : false);
+    }
+    //eslint-disable-next-line
+  }, [location]);
+
+  useEffect(() => {
     if (code !== "") {
       kakaoLoginCheck(code);
     }
@@ -67,7 +75,11 @@ function Login() {
   };
 
   const goAdmin = () => {
-    navi("/admin");
+    if (isTest) {
+      navi("/collect");
+    } else {
+      navi("/admin");
+    }
   };
   const login = async e => {
     e.preventDefault();

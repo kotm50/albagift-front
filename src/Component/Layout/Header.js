@@ -14,6 +14,7 @@ function Header() {
   useEffect(() => {
     const parts = thisLocation.pathname.split("/");
     parts[1] === "promo" ? setIsPromo(true) : setIsPromo(false);
+    parts[1] === "collect" ? setIsPromo(true) : setIsPromo(false);
     setCateNum(parts[2]);
     getUrl(parts[1], parts[2]);
     // eslint-disable-next-line

@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 
 import { AiOutlineArrowUp } from "react-icons/ai";
 
-function ToTop() {
+function ToTop(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [showButton, setShowButton] = useState(false);
   const thisLocation = useLocation();
@@ -40,7 +40,9 @@ function ToTop() {
         <>
           {showButton && (
             <button
-              className="animate-bounce fixed p-2 drop-shadow-lg bottom-5 right-5 bg-white hover:bg-indigo-500 hover:text-white border border-gray-200 hover:border-0 rounded-full"
+              className={`animate-bounce fixed p-2 drop-shadow-lg ${
+                props.isMobile ? "bottom-20" : "bottom-5"
+              } right-5 bg-white hover:bg-indigo-500 hover:text-white border border-gray-200 hover:border-0 rounded-full max-z-index`}
               onClick={scrollToTop}
             >
               <AiOutlineArrowUp />

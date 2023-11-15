@@ -12,7 +12,7 @@ import kakaotalk from "../../Asset/sns/kakaotalk.png";
 import Modal from "../doc/Modal";
 import First from "../Main/First";
 
-function Footer() {
+function Footer(props) {
   const [modalOn, setModalOn] = useState(false);
   const [modalCount, setModalCount] = useState(0);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -78,7 +78,12 @@ function Footer() {
             setModalCount={setModalCount}
           />
         ) : null}
-        <footer id="footer" className="bg-gray-200 w-full mb-3 xl:mb-0">
+        <footer
+          id="footer"
+          className={`bg-gray-200 w-full mb-3 md:mb-0 ${
+            props.isMobile && "pb-20"
+          }`}
+        >
           <div className="lg:container mx-auto footer-top">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 py-2">
               <div className="flex flex-col justify-center xl:my-auto mt-10">

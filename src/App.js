@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
@@ -49,15 +49,18 @@ import RenewalModal from "./Component/Mall/RenewalModal";
 import Renew from "./Component/Mall/Renew";
 import AdminPwd from "./Component/Admin/AdminPwd";
 import UserDetail from "./Component/Admin/UserDetail";
+import MobileFooter from "./Component/Layout/MobileFooter";
 //import MyMain from "./Component/User/Mypage/MyMain";
 
 function App() {
+  const [isMobile, setIsMobile] = useState(false);
   const thisLocation = useLocation();
   useEffect(() => {
     // location이 바뀔 때마다 스크롤을 맨 위로 이동
     window.scrollTo(0, 0);
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    setIsMobile(isMobile);
     if (thisLocation.pathname === "/login") {
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       if (isMobile) {
         window.scrollTo(0, 120);
       }
@@ -79,7 +82,7 @@ function App() {
       <div
         id="content"
         className={`w-full font-pretendard dark:text-white ${
-          thisLocation.pathname !== "/renew" ? "pb-3" : "pb-0"
+          thisLocation.pathname !== "/renew" ? "md:pb-3" : "pb-0"
         }`}
       >
         <Routes>
@@ -129,8 +132,9 @@ function App() {
           <Route path="/cert" element={<Cert />} />
         </Routes>
       </div>
-      <Footer />
-      <ToTop />
+      <MobileFooter />
+      <Footer isMobile={isMobile} />
+      <ToTop isMobile={isMobile} />
     </>
   );
 }

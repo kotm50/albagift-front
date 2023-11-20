@@ -18,9 +18,27 @@ function UserInformation() {
     if (user.userId !== "") {
       // const diffTime = Math.floor((now - user.lastLogin) / 1000 / 60);
       refreshPoints();
+      loginCompare(user.lastLogin);
     }
     //eslint-disable-next-line
   }, [location, user.accessToken]);
+
+  const loginCompare = lastLogin => {
+    const loginTime = new Date(lastLogin);
+    // 현재 시간을 가져옵니다.
+    const currentTime = new Date();
+
+    // lastLogin에서 현재 시간을 빼서 경과 시간을 계산합니다.
+    const elapsedMilliseconds = currentTime - loginTime;
+
+    // 2시간(밀리초 단위) 이상 경과되었는지 확인합니다.
+    const twoHoursInMilliseconds = 2 * 60 * 60 * 1000; // 2시간을 밀리초로 변환
+    const isLate = elapsedMilliseconds >= twoHoursInMilliseconds;
+
+    if (isLate) {
+      dispatch(clearUser());
+    }
+  };
 
   const refreshPoints = async () => {
     await axios

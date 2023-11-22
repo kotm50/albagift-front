@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
+import { useDispatch } from "react-redux";
+import { clearUser } from "./Reducer/userSlice";
+
 import dayjs from "dayjs";
 
 import Login from "./Component/User/Login";
@@ -53,6 +56,21 @@ import MobileFooter from "./Component/Layout/MobileFooter";
 //import MyMain from "./Component/User/Mypage/MyMain";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      // beforeunload 이벤트 발생 시 실행할 함수
+      dispatch(clearUser()); // Redux 상태 초기화
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [dispatch]);
+
   const [isMobile, setIsMobile] = useState(false);
   const thisLocation = useLocation();
   useEffect(() => {

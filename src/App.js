@@ -84,7 +84,6 @@ function App() {
         const retrievedUserData = JSON.parse(
           localStorage.getItem("userData") || "{}"
         );
-        console.log("다른탭에서 받은거", retrievedUserData.accessToken);
         dispatch(loginUser(retrievedUserData)); // 다른 탭에서 상태 초기화
       }
     };

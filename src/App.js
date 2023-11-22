@@ -3,7 +3,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
 import { useDispatch } from "react-redux";
-import { clearUser } from "./Reducer/userSlice";
+import { clearUser, loginUser } from "./Reducer/userSlice";
 
 import dayjs from "dayjs";
 
@@ -79,6 +79,13 @@ function App() {
     const handleStorageChange = event => {
       if (event.key === "userCleared") {
         dispatch(clearUser()); // 다른 탭에서 상태 초기화
+      }
+      if (event.key === "userData") {
+        const retrievedUserData = JSON.parse(
+          localStorage.getItem("userData") || "{}"
+        );
+        console.log("다른탭에서 받은거", retrievedUserData.accessToken);
+        dispatch(loginUser(retrievedUserData)); // 다른 탭에서 상태 초기화
       }
     };
 

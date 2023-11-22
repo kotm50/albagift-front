@@ -216,16 +216,16 @@ function Login() {
       })
       .then(res => {
         if (res.data.code === "A100") {
-          dispatch(
-            loginUser({
-              userId: id,
-              userName: user.userName,
-              accessToken: token,
-              lastLogin: new Date(),
-              point: user.point,
-              admin: true,
-            })
-          );
+          const userData = {
+            userId: id,
+            userName: user.userName,
+            accessToken: token,
+            lastLogin: new Date(),
+            point: user.point,
+            admin: true,
+          };
+          dispatch(loginUser(userData));
+          localStorage.setItem("userData", JSON.stringify(userData)); // 로컬 스토리지에 마킹
           confirmAlert({
             customUI: ({ onClose }) => {
               return (
@@ -241,16 +241,16 @@ function Login() {
             },
           });
         } else {
-          dispatch(
-            loginUser({
-              userId: id,
-              userName: user.userName,
-              accessToken: token,
-              lastLogin: new Date(),
-              point: user.point,
-              admin: false,
-            })
-          );
+          const userData = {
+            userId: id,
+            userName: user.userName,
+            accessToken: token,
+            lastLogin: new Date(),
+            point: user.point,
+            admin: false,
+          };
+          dispatch(loginUser(userData));
+          localStorage.setItem("userData", JSON.stringify(userData)); // 로컬 스토리지에 마킹
           chkProto(token, user);
         }
       })
@@ -330,16 +330,16 @@ function Login() {
           data.socialType = res.data.socialUser.socialType;
           setSocialData(data);
         } else {
-          dispatch(
-            loginUser({
-              userId: res.data.socialUser.userId,
-              userName: res.data.socialUser.userName,
-              accessToken: res.headers.authorization,
-              lastLogin: new Date(),
-              point: res.data.socialUser.point,
-              admin: false,
-            })
-          );
+          const userData = {
+            userId: res.data.socialUser.userId,
+            userName: res.data.socialUser.userName,
+            accessToken: res.headers.authorization,
+            lastLogin: new Date(),
+            point: res.data.socialUser.point,
+            admin: false,
+          };
+          dispatch(loginUser(userData));
+          localStorage.setItem("userData", JSON.stringify(userData)); // 로컬 스토리지에 마킹
           navi("/");
         }
       })

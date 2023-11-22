@@ -5,7 +5,7 @@ import axios from "axios";
 import queryString from "query-string";
 
 import { useSelector, useDispatch } from "react-redux";
-import { loginUser } from "../../Reducer/userSlice";
+import { loginUser, clearUser } from "../../Reducer/userSlice";
 
 import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
@@ -38,20 +38,7 @@ function Login() {
   useEffect(() => {
     inputIdRef.current.focus();
     if (user.accessToken !== "") {
-      confirmAlert({
-        customUI: ({ onClose }) => {
-          return (
-            <AlertModal
-              onClose={onClose} // 닫기
-              title={"오류"} // 제목
-              message={"이미 로그인 하셨습니다.\n메인으로 이동합니다"} // 내용
-              type={"alert"} // 타입 confirm, alert
-              yes={"확인"} // 확인버튼 제목
-              doIt={goMain} // 확인시 실행할 함수
-            />
-          );
-        },
-      });
+      dispatch(clearUser());
     }
     //eslint-disable-next-line
   }, []);

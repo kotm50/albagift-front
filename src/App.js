@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
-import { useDispatch } from "react-redux";
-import { clearUser } from "./Reducer/userSlice";
+//import { useDispatch } from "react-redux";
+//import { clearUser } from "./Reducer/userSlice";
 
 import dayjs from "dayjs";
 
@@ -56,6 +56,7 @@ import MobileFooter from "./Component/Layout/MobileFooter";
 //import MyMain from "./Component/User/Mypage/MyMain";
 
 function App() {
+  /*
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -70,10 +71,20 @@ function App() {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [dispatch]);
+  */
 
   const [isMobile, setIsMobile] = useState(false);
   const thisLocation = useLocation();
   useEffect(() => {
+    /*
+    const handleStorageChange = event => {
+      if (event.key === "userCleared") {
+        dispatch(clearUser()); // 다른 탭에서 상태 초기화
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    */
     // location이 바뀔 때마다 스크롤을 맨 위로 이동
     window.scrollTo(0, 0);
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);

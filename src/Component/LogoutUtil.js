@@ -45,6 +45,7 @@ export const forceLogout = async (dispatch, clearUser, navi, user) => {
     })
     .then(res => {
       dispatch(clearUser());
+      localStorage.setItem("userCleared", Date.now()); // 로컬 스토리지에 마킹
       navi("/login");
     })
     .catch(e => {
@@ -59,6 +60,7 @@ export const logout = async (dispatch, clearUser, navi, user) => {
     })
     .then(res => {
       dispatch(clearUser());
+      localStorage.setItem("userCleared", Date.now()); // 로컬 스토리지에 마킹
       navi("/");
     })
     .catch(e => {

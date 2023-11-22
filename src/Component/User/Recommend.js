@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { clearUser, getNewToken } from "../../Reducer/userSlice";
+import { logout } from "../LogoutUtil";
 
 function Recommend(props) {
   let navi = useNavigate();
@@ -40,7 +41,7 @@ function Recommend(props) {
           );
         }
         if (res.data.code === "E999") {
-          logout();
+          logout(dispatch, clearUser, navi, user);
           return false;
         }
         setLoadMsg(res.data.message);
@@ -53,21 +54,6 @@ function Recommend(props) {
         console.log(e, "에러");
       });
   };
-  const logout = async () => {
-    await axios
-      .post("/api/v1/user/logout", null, {
-        headers: { Authorization: user.accessToken },
-      })
-      .then(res => {
-        alert("세션이 만료되었습니다. 다시 로그인 해주세요");
-      })
-      .catch(e => {
-        console.log(e);
-      });
-    dispatch(clearUser());
-    navi("/login");
-  };
-
   return (
     <div className="p-2 bg-gray-100">
       <div className="xl:container mx-auto">

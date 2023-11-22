@@ -5,7 +5,7 @@ import axios from "axios";
 import queryString from "query-string";
 
 import { useSelector, useDispatch } from "react-redux";
-import { loginUser, clearUser } from "../../Reducer/userSlice";
+import { loginUser } from "../../Reducer/userSlice";
 
 import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
@@ -38,7 +38,7 @@ function Login() {
   useEffect(() => {
     inputIdRef.current.focus();
     if (user.accessToken !== "") {
-      dispatch(clearUser());
+      navi("/");
     }
     //eslint-disable-next-line
   }, []);

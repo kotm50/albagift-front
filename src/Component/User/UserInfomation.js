@@ -16,11 +16,11 @@ function UserInformation() {
   useEffect(() => {
     const lastLogin = new Date(user.lastLogin);
     const now = new Date(); // 현재 시간을 가져옴 // 조건 1: lastLogin이 현재 시간보다 10시간 이상 이전이면 true
-    const condition1 = now - lastLogin >= 10;
+    const condition1 = now - lastLogin >= 10 * 60 * 60 * 1000;
 
-    // 조건 2: lastLogin이 날짜 기준으로 하루 이상 지났고, 현재 시간이 오전 9시라면 true
+    // 조건 2: lastLogin이 날짜 기준으로 하루 이상 지났고, 현재 시간이 오전 9시 이후 라면 true
     const condition2 =
-      now.getDate() > lastLogin.getDate() && now.getHours() === 9;
+      now.getDate() > lastLogin.getDate() && now.getHours() >= 9;
 
     if (condition1 || condition2) {
       // 조건 1 또는 조건 2를 만족하면 true

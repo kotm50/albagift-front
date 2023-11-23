@@ -14,6 +14,26 @@ function UserInformation() {
   const [modal, setModal] = useState(false);
 
   useEffect(() => {
+    const lastLogin = new Date(user.lastLogin);
+    const now = new Date(); // 현재 시간을 가져옴 // 조건 1: lastLogin이 현재 시간보다 10시간 이상 이전이면 true
+    const condition1 = now - lastLogin >= 10;
+
+    // 조건 2: lastLogin이 날짜 기준으로 하루 이상 지났고, 현재 시간이 오전 9시라면 true
+    const condition2 =
+      now.getDate() > lastLogin.getDate() && now.getHours() === 9;
+
+    if (condition1 || condition2) {
+      // 조건 1 또는 조건 2를 만족하면 true
+      dispatch(clearUser());
+      console.log("안녕하세요 알바선물입니다!");
+    } else {
+      console.log("안녕하세요 알바선물입니다!");
+    }
+
+    //eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
     // const now = new Date();
     if (user.userId !== "") {
       // const diffTime = Math.floor((now - user.lastLogin) / 1000 / 60);

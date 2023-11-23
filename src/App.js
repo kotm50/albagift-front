@@ -101,6 +101,10 @@ function App() {
     // eslint-disable-next-line
   }, [thisLocation]);
   const now = dayjs().format("YYYY년MM월DD일");
+  useEffect(() => {
+    console.log("안녕하세요 알바선물입니다!");
+  }, []);
+
   return (
     <>
       <Helmet>

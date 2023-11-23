@@ -25,9 +25,6 @@ function UserInformation() {
     if (condition1 || condition2) {
       // 조건 1 또는 조건 2를 만족하면 true
       dispatch(clearUser());
-      console.log("안녕하세요 알바선물입니다!");
-    } else {
-      console.log("안녕하세요 알바선물입니다!");
     }
 
     //eslint-disable-next-line

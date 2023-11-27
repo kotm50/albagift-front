@@ -22,6 +22,7 @@ function CouponList(props) {
   const [statColor, setStatColor] = useState(
     "border border-sky-500 hover:border-sky-700 text-sky-500 hover:text-sky-700 hover:bg-sky-100"
   );
+  const [remainAmt, setRemainAmt] = useState("");
   const [statCode, setStatCode] = useState("");
   const [couponModal, setCouponModal] = useState(false);
   const user = useSelector(state => state.user);
@@ -53,6 +54,7 @@ function CouponList(props) {
         headers: { Authorization: user.accessToken },
       })
       .then(async res => {
+        console.log(res);
         if (res.headers.authorization) {
           await dispatch(
             getNewToken({
@@ -81,6 +83,7 @@ function CouponList(props) {
           );
           setStat("사용불가");
         }
+        setRemainAmt(res.data.couponDetail.remainAmt);
         setStatDetail(res.data.couponDetail.pinStatusNm);
         setStatCode(res.data.couponDetail.pinStatusCd);
         setChkStat(true);
@@ -215,7 +218,11 @@ function CouponList(props) {
           )}
         </div>
         {couponModal ? (
-          <CouponModal setCouponModal={setCouponModal} coupon={props.coupon} />
+          <CouponModal
+            setCouponModal={setCouponModal}
+            coupon={props.coupon}
+            remainAmt={remainAmt}
+          />
         ) : null}
       </div>
     </>

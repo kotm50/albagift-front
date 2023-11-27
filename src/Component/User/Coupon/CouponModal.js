@@ -24,10 +24,20 @@ function CouponModal(props) {
     <>
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
         <div className="relative lg:w-auto my-6 mx-auto w-11/12 lg:max-w-3xl">
-          <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none max-h-screen p-6">
-            <div className="relative p-2 lg:p-6 flex-auto overflow-y-auto">
+          <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none max-h-[98vh] p-6">
+            <div className="relative p-2 lg:p-6 flex-auto overflow-y-hidden">
               <img src={props.coupon.couponImgUrl} alt="쿠폰이미지" />
             </div>
+            {props.remainAmt !== "해당 없음" ? (
+              <div className="text-lg my-1 p-2 text-center bg-gray-100">
+                사용 가능한 금액 :{" "}
+                <span className="font-neoheavy text-rose-500">
+                  {Number(props.remainAmt).toLocaleString()}
+                </span>{" "}
+                원
+              </div>
+            ) : null}
+
             <div className="text-sm my-1 text-center xl:block hidden">
               쿠폰이미지를 우클릭 후{" "}
               <span className="font-neoextra text-sky-500">

@@ -73,10 +73,21 @@ function CouponList(props) {
 
           setStat("사용가능");
         } else if (res.data.couponDetail.pinStatusCd === "02") {
-          setStatColor(
-            "border border-indigo-500 hover:border-indigo-700 text-indigo-500 hover:text-indigo-700 hover:bg-indigo-100"
-          );
-          setStat("사용완료");
+          if (
+            res.data.couponDetail.remainAmt !== "해당 없음" &&
+            Number(res.data.couponDetail.remainAmt) > 0
+          ) {
+            setStatColor(
+              "border border-sky-500 hover:border-sky-700 text-sky-500 hover:text-sky-700 hover:bg-sky-100"
+            );
+
+            setStat("사용가능");
+          } else {
+            setStatColor(
+              "border border-indigo-500 hover:border-indigo-700 text-indigo-500 hover:text-indigo-700 hover:bg-indigo-100"
+            );
+            setStat("사용완료");
+          }
         } else {
           setStatColor(
             "border border-rose-500 hover:border-rose-700 text-rose-500 hover:text-rose-700 hover:bg-rose-100"
@@ -113,6 +124,25 @@ function CouponList(props) {
   const openDetail = () => {
     if (statCode === "01") {
       setCouponModal(true);
+    } else if (statCode === "02" && remainAmt !== "해당 없음") {
+      if (Number(remainAmt) > 0) {
+        setCouponModal(true);
+      } else {
+        confirmAlert({
+          customUI: ({ onClose }) => {
+            return (
+              <AlertModal
+                onClose={onClose} // 닫기
+                title={"쿠폰 확인"} // 제목
+                message={`사용이 불가능한 쿠폰입니다\n사용불가사유 : ${statDetail}`} // 내용
+                type={"alert"} // 타입 confirm, alert
+                yes={"확인"} // 확인버튼 제목
+              />
+            );
+          },
+        });
+        return false;
+      }
     } else if (statCode === "") {
       confirmAlert({
         customUI: ({ onClose }) => {

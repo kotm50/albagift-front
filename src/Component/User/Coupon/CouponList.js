@@ -206,6 +206,17 @@ function CouponList(props) {
           {props.coupon.goodsName || "이름없음"}
         </div>
       </div>
+      {remainAmt !== "" && remainAmt !== "해당 없음" && (
+        <>
+          {Number(remainAmt) > 0 ? (
+            <div className="p-2">
+              {Number(remainAmt).toLocaleString()}원 사용가능
+            </div>
+          ) : (
+            <div className="p-2">잔액 없음</div>
+          )}
+        </>
+      )}
       <div className="p-2 grid grid-cols-1 xl:grid-cols-5">
         <div className="font-medium">만료일</div>
         <div className="xl:col-span-4">

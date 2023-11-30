@@ -2,4 +2,4 @@
 User-agent: *
 Disallow:
 Allow: /$
-Sitemap: https://koreatm.cf/sitemap.xml
+Sitemap: https://albagift.com/sitemap.xml

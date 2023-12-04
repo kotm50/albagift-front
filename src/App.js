@@ -114,7 +114,7 @@ function App() {
       <RenewalModal />
       <div
         id="content"
-        className={`w-full font-pretendard dark:text-white ${
+        className={`w-full font-pretendard ${
           thisLocation.pathname !== "/renew" ? "md:pb-3" : "pb-0"
         }`}
       >

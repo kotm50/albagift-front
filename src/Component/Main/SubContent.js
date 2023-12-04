@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import coffee from "../../Asset/subContent/starbucks.png";
+//import coffee from "../../Asset/subContent/starbucks.png"; //여름
+import coffee from "../../Asset/subContent/coffee2.png"; //겨울
 import chicol from "../../Asset/subContent/chicol.png";
 import ticket from "../../Asset/subContent/ticket.png";
 
@@ -11,7 +12,7 @@ function SubContent() {
       <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-2 pt-4 rounded-lg flex flex-col justify-center overflow-hidden relative group">
         <Link to="/list/1" className="z-40">
           <div className="text-center xl:text-left xl:text-xl mb-1">
-            무더운 여름 시원하게 날려드릴
+            추운 겨울 따뜻하게 보내세요
           </div>
           <div className="text-center xl:text-left text-3xl xl:text-4xl mb-5 text-yellow-300 font-neoextra">
             커피 한 잔 어떠세요?

@@ -342,6 +342,7 @@ function Join() {
               <input
                 type="text"
                 id="inputId"
+                autocapitalize="none"
                 className={`border ${
                   !correctId || (!dupId ? "xl:border-red-500" : undefined)
                 } xl:border-0 p-2 w-full text-sm`}

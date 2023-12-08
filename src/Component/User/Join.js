@@ -353,7 +353,7 @@ function Join() {
                   setId(e.currentTarget.value);
                   if (id !== "") chkId();
                 }}
-                placeholder="영어와 숫자만 입력하세요"
+                placeholder="영문 소문자와 숫자만 사용 가능합니다."
                 autoComplete="off"
               />
             </div>

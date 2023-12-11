@@ -374,6 +374,7 @@ function Login() {
             <input
               type="text"
               id="inputId"
+              autocapitalize="none"
               className="border px-2 py-3 w-full rounded shadow-sm"
               value={id}
               onChange={e => setId(e.currentTarget.value)}

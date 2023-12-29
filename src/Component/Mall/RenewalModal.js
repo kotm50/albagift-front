@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { dayModal } from "../../Reducer/modalSlice";
-import renewal from "../../Asset/renew/renewal_new.png";
+//import renewal from "../../Asset/renew/renewal_new.png";
+import couponerr from "../../Asset/renew/couponerr.png";
 
 function RenewalModal() {
   const navi = useNavigate();
@@ -94,7 +95,7 @@ function RenewalModal() {
   return (
     <>
       {isOpen ? (
-        <div id="renewalmodal" className="hidden drop-shadow-lg rounded-lg">
+        <div id="renewalmodal" className="drop-shadow-lg rounded-lg">
           <div className="flex justify-between">
             <div className="flex items-center mb-2">
               <input
@@ -113,20 +114,19 @@ function RenewalModal() {
             </div>
           </div>
           <img
-            src={renewal}
+            src={couponerr}
             alt="리뉴얼 안내"
             className="max-w-full h-auto hover:cursor-pointer"
-            onClick={moveDetail}
           />
           <div className="grid grid-cols-2 gap-x-2 mt-2">
             <button
-              className="p-2 bg-green-500 hover:bg-green-700 text-white"
+              className="p-2 bg-green-500 hover:bg-green-700 text-white hidden"
               onClick={moveDetail}
             >
               자세히 보기
             </button>
             <button
-              className="p-2 bg-gray-100 hover:bg-gray-200 text-black"
+              className="p-2 bg-gray-100 hover:bg-gray-200 text-black col-span-2"
               onClick={closeIt}
             >
               창 닫기

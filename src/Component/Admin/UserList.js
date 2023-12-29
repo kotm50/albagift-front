@@ -87,6 +87,7 @@ function UserList() {
     if (b) {
       data.agreeYn = "Y";
     }
+    console.log(data);
     await axios
       .post("/api/v1/user/admin/userlst", data, {
         headers: {

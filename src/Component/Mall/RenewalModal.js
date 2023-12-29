@@ -15,7 +15,6 @@ function RenewalModal() {
   const [isOneDay, setIsOneDay] = useState(false);
 
   useEffect(() => {
-    console.log(modalState);
     if (user.admin) {
       setIsOpen(false);
     } else {

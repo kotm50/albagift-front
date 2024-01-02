@@ -87,7 +87,6 @@ function UserList() {
     if (b) {
       data.agreeYn = "Y";
     }
-    console.log(data);
     await axios
       .post("/api/v1/user/admin/userlst", data, {
         headers: {
@@ -95,7 +94,6 @@ function UserList() {
         },
       })
       .then(res => {
-        console.log(res);
         if (res.headers.authorization) {
           dispatch(
             getNewToken({

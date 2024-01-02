@@ -23,7 +23,8 @@ function RenewalModal() {
         dispatch(
           dayModal({
             oneDay: "N",
-            lastOpen: new Date(),
+            //lastOpen: new Date(),
+            lastOpen: "",
           })
         );
       } else {
@@ -51,7 +52,8 @@ function RenewalModal() {
         dispatch(
           dayModal({
             oneDay: "N",
-            lastOpen: new Date(),
+            //lastOpen: new Date(),
+            lastOpen: "",
           })
         );
       } else {
@@ -63,7 +65,8 @@ function RenewalModal() {
         dispatch(
           dayModal({
             oneDay: "N",
-            lastOpen: new Date(),
+            //lastOpen: new Date(),
+            lastOpen: "",
           })
         );
       } else {
@@ -77,7 +80,8 @@ function RenewalModal() {
     dispatch(
       dayModal({
         oneDay: modalState.oneDay,
-        lastOpen: new Date(),
+        //lastOpen: new Date(),
+        lastOpen: "",
       })
     );
     navi("/renew");
@@ -88,7 +92,8 @@ function RenewalModal() {
     dispatch(
       dayModal({
         oneDay: isOneDay ? "Y" : "N",
-        lastOpen: new Date(),
+        //lastOpen: new Date(),
+        lastOpen: "",
       })
     );
   };

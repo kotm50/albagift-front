@@ -34,7 +34,7 @@ function AgreeModal(props) {
             >
               <label
                 htmlFor="agree"
-                className={`text-sm font-neoextra text-left flex flex-col justify-center xl:pl-3 py-2 col-span-6 ${
+                className={`text-sm font-neoextra text-left flex flex-col justify-center lg:pl-3 py-2 col-span-6 ${
                   alert ? "text-rose-500" : ""
                 }`}
               >
@@ -58,8 +58,8 @@ function AgreeModal(props) {
                 개인정보 수집 이용에 동의하셔야 수정 가능합니다
               </div>
             ) : null}
-            <div className="grid grid-cols-1 xl:grid-cols-5 gap-2 text-sm">
-              <div className="xl:col-span-4">
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-2 text-sm">
+              <div className="lg:col-span-4">
                 <button
                   className="p-2 bg-green-500 text-white w-full border border-green-500 hover:bg-green-700 hover:border-green-700"
                   onClick={e => {

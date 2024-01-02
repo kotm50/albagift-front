@@ -86,7 +86,7 @@ function Footer(props) {
         >
           <div className="lg:container mx-auto footer-top">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 py-2">
-              <div className="flex flex-col justify-center xl:my-auto mt-10">
+              <div className="flex flex-col justify-center lg:my-auto mt-10">
                 <h1 className="w-1/2 mx-auto mb-5 lg:mb-0">
                   <Link to="/">
                     <img
@@ -97,7 +97,7 @@ function Footer(props) {
                   </Link>
                 </h1>
               </div>
-              <div className="flex flex-col justify-start gap-1 text-gray-700 pl-2 xl:pl-0 text-sm my-10">
+              <div className="flex flex-col justify-start gap-1 text-gray-700 pl-2 lg:pl-0 text-sm my-10">
                 <div className="text-left font-neoextra">
                   코리아밸리 유한회사
                 </div>
@@ -115,7 +115,7 @@ function Footer(props) {
                   Copyright ⓒ Albagift.com All rights reserved
                 </div>
               </div>
-              <div className="flex flex-col justify-start gap-1 text-gray-700 pl-2 xl:pl-0 text-sm my-10">
+              <div className="flex flex-col justify-start gap-1 text-gray-700 pl-2 lg:pl-0 text-sm my-10">
                 <div className="text-left font-neoextra">문의전화</div>
                 <div className="text-2xl flex flex-row flex-nowrap gap-2">
                   <RiCustomerService2Fill size={32} />
@@ -126,7 +126,7 @@ function Footer(props) {
                 <div className="font-neo text-sm">영업시간 : 09:00 ~ 18:00</div>
                 <div className="font-neo text-sm">점심시간 : 12:00 ~ 13:00</div>
               </div>
-              <div className="hidden flex-col justify-center gap-1 text-gray-700 pl-2 xl:pl-0">
+              <div className="hidden flex-col justify-center gap-1 text-gray-700 pl-2 lg:pl-0">
                 <div className="text-left pb-2 mb-2">
                   코리아밸리의 다양한 소식들을 만나보세요!
                 </div>

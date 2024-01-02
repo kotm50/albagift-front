@@ -131,7 +131,7 @@ function Cancel() {
     <form onSubmit={e => cancelConfirm(e)}>
       <div
         id="cancelArea"
-        className="my-2 mx-auto p-2 xl:p-10 border shadow-lg rounded-lg grid grid-cols-1 gap-3 bg-white w-full"
+        className="my-2 mx-auto p-2 lg:p-10 border shadow-lg rounded-lg grid grid-cols-1 gap-3 bg-white w-full"
       >
         <div className="text-base font-neobold text-left">
           <div className="font-neoextra text-xl">
@@ -139,10 +139,10 @@ function Cancel() {
             <br /> 탈퇴 전에 확인해 주세요
           </div>
           <div className="bg-gray-100 mt-2 p-3 text-base">
-            회원탈퇴를 진행하시면 <br className="xl:hidden" />
+            회원탈퇴를 진행하시면 <br className="lg:hidden" />
             <span className="text-blue-500 font-neoextra">30일의 유예기간</span>
             이 부여되며 <br />
-            유예기간 경과시 <br className="xl:hidden" />
+            유예기간 경과시 <br className="lg:hidden" />
             아래 항목이 삭제됩니다.
             <div className="p-4 bg-white rounded-lg my-2 text-sm">
               <ol className="flex flex-col gap-y-3 list-decimal pl-4">
@@ -151,10 +151,10 @@ function Cancel() {
                   <span className="text-red-500 font-neoextra">
                     즉시 소멸됩니다.
                   </span>
-                  <Link to="/list" className="text-xs hidden xl:inline">
+                  <Link to="/list" className="text-xs hidden lg:inline">
                     (사용하러 가기)
                   </Link>
-                  <div className="xl:w-1/2 mx-auto my-2 p-2 border border-sky-500 text-center">
+                  <div className="lg:w-1/2 mx-auto my-2 p-2 border border-sky-500 text-center">
                     잔여 포인트
                     <br />
                     <span
@@ -172,7 +172,7 @@ function Cancel() {
                     <br />
                     <Link
                       to="/list"
-                      className="text-xs xl:hidden inline-block p-2 bg-sky-50"
+                      className="text-xs lg:hidden inline-block p-2 bg-sky-50"
                     >
                       포인트 사용하기
                     </Link>
@@ -187,13 +187,13 @@ function Cancel() {
                   아래 버튼을 눌러 보유쿠폰을 확인하고 저장하세요.
                   <Link
                     to="/mypage/coupon"
-                    className="block xl:w-1/2 mx-auto my-2 p-2 border border-sky-500 hover:border-sky-700 hover:bg-sky-100 text-center"
+                    className="block lg:w-1/2 mx-auto my-2 p-2 border border-sky-500 hover:border-sky-700 hover:bg-sky-100 text-center"
                   >
                     <FaTicketAlt className="inline" size={20} /> 보유쿠폰확인
                   </Link>
                   *보유쿠폰을 저장하더라도
-                  <br className="xl:hidden" /> 유효기간이 경과되면{" "}
-                  <br className="xl:hidden" />{" "}
+                  <br className="lg:hidden" /> 유효기간이 경과되면{" "}
+                  <br className="lg:hidden" />{" "}
                   <span className="font-neoextra">사용이 불가능 합니다</span>
                 </li>
                 <li>
@@ -247,23 +247,23 @@ function Cancel() {
         )}
         <div
           id="pwd"
-          className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
+          className={`grid grid-cols-1 lg:grid-cols-5 lg:divide-x lg:border ${
             isErr ? "border-rose-500" : null
           }`}
         >
           <label
             htmlFor="inputPwd"
-            className={`text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100 ${
-              isErr ? "xl:bg-rose-100 text-rose-500 xl:text-black" : null
+            className={`text-sm text-left lg:text-right flex flex-col justify-center mb-2 lg:mb-0 lg:pr-2 lg:bg-gray-100 ${
+              isErr ? "lg:bg-rose-100 text-rose-500 lg:text-black" : null
             }`}
           >
             비밀번호
           </label>
-          <div className="xl:col-span-4">
+          <div className="lg:col-span-4">
             <input
               type="password"
               id="inputPwd"
-              className={`border xl:border-0 p-2 w-full text-sm ${
+              className={`border lg:border-0 p-2 w-full text-sm ${
                 isErr ? "border-rose-500" : null
               }`}
               value={pwd}

@@ -266,25 +266,25 @@ function Write() {
     return str;
   };
   return (
-    <div className="container xl:w-1/2 p-2 mx-auto bg-white my-2">
+    <div className="container lg:w-1/2 p-2 mx-auto bg-white my-2">
       {loaded ? (
         <>
           {boardId === "B02" ? (
             <>
-              <h2 className="text-lg xl:text-2xl font-neobold mb-3">
+              <h2 className="text-lg lg:text-2xl font-neobold mb-3">
                 면접포인트 신청하기
               </h2>
-              <div className="grid grid-cols-6 xl:grid-cols-10 gap-1 bg-gray-50 p-2 xl:mb-3">
+              <div className="grid grid-cols-6 lg:grid-cols-10 gap-1 bg-gray-50 p-2 lg:mb-3">
                 <div className="col-span-2 font-neobold text-right bg-indigo-50 p-2">
                   이름
                 </div>
-                <div className="col-span-4 xl:col-span-8 p-2 bg-white">
+                <div className="col-span-4 lg:col-span-8 p-2 bg-white">
                   {user.userName}
                 </div>
                 <div className="col-span-2 font-neobold text-right bg-indigo-50 p-2">
                   <label htmlFor="inputDate">면접날짜</label>
                 </div>
-                <div className="col-span-4 xl:col-span-8 p-2 bg-white">
+                <div className="col-span-4 lg:col-span-8 p-2 bg-white">
                   <input
                     id="inputDate"
                     type="date"
@@ -296,7 +296,7 @@ function Write() {
                 <div className="col-span-2 font-neobold text-right bg-indigo-50 p-2">
                   <label htmlFor="inputTime">면접시간</label>
                 </div>
-                <div className="col-span-4 xl:col-span-8 bg-white grid grid-cols-2 gap-2 px-1">
+                <div className="col-span-4 lg:col-span-8 bg-white grid grid-cols-2 gap-2 px-1">
                   <div className="grid grid-cols-4 gap-1 py-1">
                     {/* 시간 선택 */}
                     <select
@@ -332,13 +332,13 @@ function Write() {
                   </div>
                 </div>
 
-                <div className="col-span-2 font-neobold text-right p-2 hidden xl:block"></div>
-                <div className="col-span-4 xl:col-span-8 text-xs p-2 hidden xl:block">
+                <div className="col-span-2 font-neobold text-right p-2 hidden lg:block"></div>
+                <div className="col-span-4 lg:col-span-8 text-xs p-2 hidden lg:block">
                   24시간 단위로 선택해 주세요. 예시) 오후 3시 &gt;{" "}
                   <span className="font-neoextra text-rose-500">15</span>시
                 </div>
               </div>
-              <div className="px-2 pb-2 text-xs xl:hidden">
+              <div className="px-2 pb-2 text-xs lg:hidden">
                 24시간 단위로 선택해 주세요. 예시) 오후 3시 &gt;{" "}
                 <span className="font-neoextra text-rose-500">15</span>시
               </div>

@@ -157,14 +157,14 @@ function UserDetail() {
               {"< "}이전으로
             </Link>
           </div>
-          <div className="container mx-auto xl:text-2xl my-2 font-neo text-center">
+          <div className="container mx-auto lg:text-2xl my-2 font-neo text-center">
             <span className="font-neoextra">{userId}</span>
             님의 포인트내역
           </div>
           {list.length > 0 ? (
             <div className="container mx-auto">
-              <div className="text-xs xl:text-base grid grid-cols-4 xl:grid-cols-5 py-2 bg-blue-50 divide-x">
-                <div className="font-neoextra text-center hidden xl:block ">
+              <div className="text-xs lg:text-base grid grid-cols-4 lg:grid-cols-5 py-2 bg-blue-50 divide-x">
+                <div className="font-neoextra text-center hidden lg:block ">
                   일시
                 </div>
                 <div className="font-neoextra text-center">구분</div>
@@ -176,7 +176,7 @@ function UserDetail() {
                 {list.map((doc, idx) => (
                   <div
                     key={idx}
-                    className={`text-xs xl:text-base grid grid-cols-4 xl:grid-cols-5 py-2 gap-y-3 ${
+                    className={`text-xs lg:text-base grid grid-cols-4 lg:grid-cols-5 py-2 gap-y-3 ${
                       idx % 2 === 1
                         ? "bg-gray-100 hover:bg-gray-200"
                         : "hover:bg-gray-200"

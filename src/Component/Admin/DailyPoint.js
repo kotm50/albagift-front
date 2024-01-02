@@ -234,9 +234,9 @@ function DailyPoint() {
 
           {dataList.length > 0 ? (
             <>
-              <div className="text-xs xl:text-base grid grid-cols-4 xl:grid-cols-5 py-2 bg-green-50 divide-x">
+              <div className="text-xs lg:text-base grid grid-cols-4 lg:grid-cols-5 py-2 bg-green-50 divide-x">
                 <div className="font-neoextra text-center">구분</div>
-                <div className="font-neoextra text-center hidden xl:block ">
+                <div className="font-neoextra text-center hidden lg:block ">
                   일시
                 </div>
                 <div className="font-neoextra text-center">아이디</div>
@@ -247,7 +247,7 @@ function DailyPoint() {
                 {dataList.map((doc, idx) => (
                   <div
                     key={idx}
-                    className="text-xs xl:text-base grid grid-cols-4 xl:grid-cols-5 py-2 gap-y-3 border-b hover:bg-gray-100 hover:text-orange-500 hover:cursor-pointer group"
+                    className="text-xs lg:text-base grid grid-cols-4 lg:grid-cols-5 py-2 gap-y-3 border-b hover:bg-gray-100 hover:text-orange-500 hover:cursor-pointer group"
                     onClick={e => detailChk(doc)}
                   >
                     <div
@@ -269,7 +269,7 @@ function DailyPoint() {
                         ? "차감"
                         : "확인불가"}
                     </div>
-                    <div className="text-center p-1 hidden xl:block truncate">
+                    <div className="text-center p-1 hidden lg:block truncate">
                       {doc.regDate}
                     </div>
                     <div className="text-center p-1 flex flex-col justify-center">

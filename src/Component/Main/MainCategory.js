@@ -7,10 +7,10 @@ import MainCategoryImg from "./MainCategoryImg";
 function MainCategory() {
   return (
     <div className="p-2">
-      <div className="xl:w-5/6 mx-auto">
+      <div className="lg:w-5/6 mx-auto">
         <div
           id="touch-target"
-          className="container mx-auto flex flex-row flex-nowrap overflow-x-auto giftCategoryMenu gap-3 xl:grid xl:grid-cols-10"
+          className="container mx-auto flex flex-row flex-nowrap overflow-x-auto giftCategoryMenu gap-3 lg:grid lg:grid-cols-10"
         >
           <Link to={`/list`} className="text-center text-xs giftcategory p-2">
             <div className="mainCategory group">

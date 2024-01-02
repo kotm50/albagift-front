@@ -11,31 +11,31 @@ import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 function Jumbotron() {
   const user = useSelector(state => state.user);
   return (
-    <div className="w-full bg-gradient-to-b from-teal-100 to-blue-100 pt-5 xl:pt-0 xl:px-20 jumbotron">
-      <div className="xl:container mx-auto grid grid-cols-1 xl:grid-cols-4">
+    <div className="w-full bg-gradient-to-b from-teal-100 to-blue-100 pt-5 lg:pt-0 lg:px-20 jumbotron">
+      <div className="lg:container mx-auto grid grid-cols-1 lg:grid-cols-4">
         <div className="flex flex-col justify-center gap-3">
-          <div className="text-lg xl:text-2xl font-neobold text-center xl:text-left">
+          <div className="text-lg lg:text-2xl font-neobold text-center lg:text-left">
             구직활동으로 포인트가 쌓이는
           </div>
-          <div className="text-5xl xl:text-6xl font-neoheavy text-center xl:text-left">
+          <div className="text-5xl lg:text-6xl font-neoheavy text-center lg:text-left">
             알바선물
           </div>
-          <div className="text-sm xl:text-lg text-center font-neo xl:text-left">
+          <div className="text-sm lg:text-lg text-center font-neo lg:text-left">
             취업하기 어려운 요즘 시대 <br />
             당신의 구직활동을 응원하겠습니다.
           </div>
 
-          <div className="flex flex-row justify-center xl:justify-start gap-3 my-2">
+          <div className="flex flex-row justify-center lg:justify-start gap-3 my-2">
             {user.accessToken === "" ? (
               <Link
                 to="/promo"
-                className="block bg-teal-500 hover:bg-teal-700 text-white p-2 rounded-lg text-sm xl:text-base"
+                className="block bg-teal-500 hover:bg-teal-700 text-white p-2 rounded-lg text-sm lg:text-base"
               >
                 가입하고 1000p 받기
               </Link>
             ) : (
               <button
-                className="block bg-teal-500 hover:bg-teal-700 text-white p-2 rounded-lg text-sm xl:text-base"
+                className="block bg-teal-500 hover:bg-teal-700 text-white p-2 rounded-lg text-sm lg:text-base"
                 onClick={e => {
                   confirmAlert({
                     customUI: ({ onClose }) => {
@@ -59,14 +59,14 @@ function Jumbotron() {
 
             <Link
               to="/giftinfo"
-              className="block border border-gray-500 hover:border-gray-700 text-gray-500 hover:text-gray-700 p-2 rounded-lg text-sm xl:text-base hover:bg-gray-300"
+              className="block border border-gray-500 hover:border-gray-700 text-gray-500 hover:text-gray-700 p-2 rounded-lg text-sm lg:text-base hover:bg-gray-300"
             >
               이용안내
             </Link>
           </div>
         </div>
         <div></div>
-        <div className="py-3 px-2 xl:px-0 xl:col-span-2">
+        <div className="py-3 px-2 lg:px-0 lg:col-span-2">
           <img src={bg} alt="알바선물" className="w-full h-fit" />
         </div>
       </div>

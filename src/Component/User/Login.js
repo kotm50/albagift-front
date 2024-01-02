@@ -414,7 +414,7 @@ function Login() {
                 setModal(true);
               }}
             >
-              처음이신가요? 여기를 눌러 <br className="block xl:hidden" />
+              처음이신가요? 여기를 눌러 <br className="block lg:hidden" />
               <span className="text-blue-500 border-b">회원가입</span>을 진행해
               주세요
             </Link>
@@ -437,8 +437,8 @@ function Login() {
               간편로그인
             </button>
           </div>
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-y-2 pb-2">
-            <div className="text-sm text-center xl:text-left xl:pl-3">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-2 pb-2">
+            <div className="text-sm text-center lg:text-left lg:pl-3">
               로그인 정보가 기억나지 않으세요?
             </div>
             <div className="grid grid-cols-2 divide-x pb-2">

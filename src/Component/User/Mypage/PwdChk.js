@@ -56,24 +56,24 @@ function PwdChk() {
           className="my-10 mx-auto p-2 grid grid-cols-1 gap-3 bg-white w-full"
         >
           <div className="text-sm font-normal text-left">
-            개인정보 보호를 위해 <br className="xl:hidden" />
+            개인정보 보호를 위해 <br className="lg:hidden" />
             비밀번호를 한번 더 입력 해 주세요
           </div>
           <div
             id="id"
-            className="grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border"
+            className="grid grid-cols-1 lg:grid-cols-5 lg:divide-x lg:border"
           >
             <label
               htmlFor="inputId"
-              className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100"
+              className="text-sm text-left lg:text-right flex flex-col justify-center mb-2 lg:mb-0 lg:pr-2 lg:bg-gray-100"
             >
               아이디
             </label>
-            <div className="xl:col-span-4">
+            <div className="lg:col-span-4">
               <input
                 type="text"
                 id="inputId"
-                className="border xl:border-0 p-2 w-full text-sm"
+                className="border lg:border-0 p-2 w-full text-sm"
                 value={id}
                 onChange={e => setId(e.currentTarget.value)}
                 onBlur={e => setId(e.currentTarget.value)}
@@ -84,19 +84,19 @@ function PwdChk() {
           </div>
           <div
             id="pwd"
-            className="grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border"
+            className="grid grid-cols-1 lg:grid-cols-5 lg:divide-x lg:border"
           >
             <label
               htmlFor="inputPwd"
-              className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100"
+              className="text-sm text-left lg:text-right flex flex-col justify-center mb-2 lg:mb-0 lg:pr-2 lg:bg-gray-100"
             >
               비밀번호
             </label>
-            <div className="xl:col-span-4">
+            <div className="lg:col-span-4">
               <input
                 type="password"
                 id="inputPwd"
-                className="border xl:border-0 p-2 w-full text-sm"
+                className="border lg:border-0 p-2 w-full text-sm"
                 value={pwd}
                 onChange={e => {
                   setPwd(e.currentTarget.value);

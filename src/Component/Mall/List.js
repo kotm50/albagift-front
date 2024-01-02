@@ -165,15 +165,15 @@ function List() {
       <Helmet>
         <title>{catName} | 알바선물 | 면접보고 선물받자!</title>
       </Helmet>
-      <div className="xl:container mx-auto">
+      <div className="lg:container mx-auto">
         <UserSection />
-        <h2 className="text-xl xl:text-2xl font-neoextra">
+        <h2 className="text-xl lg:text-2xl font-neoextra">
           <span className="inline-block py-2 px-6 bg-blue-500 text-white rounded-full">
             {catName}
           </span>
         </h2>
         {loaded ? (
-          <div className="my-2 grid grid-cols-2 xl:grid-cols-5 gap-2 gap-y-10">
+          <div className="my-2 grid grid-cols-2 lg:grid-cols-5 gap-2 gap-y-10">
             {goods.map((good, idx) => (
               <Link
                 key={idx}
@@ -181,17 +181,17 @@ function List() {
                 className="pb-0 min-h-0 h-fit"
               >
                 <div className="group p-2 rounded">
-                  <div className="w-32 h-32 xl:w-60 xl:h-60 mx-auto rounded overflow-hidden max-w-full bg-white drop-shadow hover:drop-shadow-xl">
+                  <div className="w-32 h-32 lg:w-60 lg:h-60 mx-auto rounded overflow-hidden max-w-full bg-white drop-shadow hover:drop-shadow-xl">
                     <ImgLoad good={good} />
                   </div>
-                  <div className="w-32 xl:w-60 mx-auto grid grid-cols-1 pt-1 border-t border-gray-100 max-w-full mt-3">
-                    <p className="xl:text-base group-hover:font-neobold keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left font-neobold text-blue-500">
+                  <div className="w-32 lg:w-60 mx-auto grid grid-cols-1 pt-1 border-t border-gray-100 max-w-full mt-3">
+                    <p className="lg:text-base group-hover:font-neobold keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left font-neobold text-blue-500">
                       {good.brandName}
                     </p>
-                    <p className="xl:text-lg group-hover:font-neobold keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left">
+                    <p className="lg:text-lg group-hover:font-neobold keep-all overflow-hidden text-ellipsis whitespace-nowrap text-left">
                       {good.goodsName}
                     </p>
-                    <p className="xl:text-lg text-left mt-3">
+                    <p className="lg:text-lg text-left mt-3">
                       <span className="text-xl text-rose-500">
                         {Number(good.realPrice).toLocaleString()}
                       </span>{" "}

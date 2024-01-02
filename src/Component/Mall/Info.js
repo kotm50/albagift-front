@@ -49,14 +49,14 @@ function Info() {
   }, []);
   return (
     <div className="container mx-auto">
-      <div className="hidden xl:block w-full pb-0 bg-blue-500">
+      <div className="hidden lg:block w-full pb-0 bg-blue-500">
         <img
           src={bgpc}
           alt="면접샵"
           className="max-w-full mx-auto bg-blue-500"
         />
       </div>
-      <div className="block xl:hidden w-full pb-0 bg-blue-500">
+      <div className="block lg:hidden w-full pb-0 bg-blue-500">
         <img
           src={bgmo}
           alt="면접샵"
@@ -64,14 +64,14 @@ function Info() {
         />
       </div>
       <div className="bg-gray-700 p-2 text-white">
-        <h2 className="text-left text-xl xl:text-2xl font-medium mb-2">
+        <h2 className="text-left text-xl lg:text-2xl font-medium mb-2">
           면접페이 이용안내
         </h2>
         {process.length > 0 && (
-          <ol className="grid grid-cols-1 xl:grid-cols-3 text-black gap-2">
+          <ol className="grid grid-cols-1 lg:grid-cols-3 text-black gap-2">
             {process.map((p, idx) => (
               <li className="bg-white p-2 rounded-lg" key={idx}>
-                <h3 className="text-sm xl:text-lg font-medium mb-2">
+                <h3 className="text-sm lg:text-lg font-medium mb-2">
                   {p.id}. {p.title}
                 </h3>
                 <div className="w-full p-2 border">
@@ -89,7 +89,7 @@ function Info() {
                         1644-4223
                       </strong>
                     </a>
-                    으로 <br className="xl:hidden" />
+                    으로 <br className="lg:hidden" />
                     문의해 주세요
                   </div>
                 )}
@@ -105,11 +105,11 @@ function Info() {
                 )}
                 {p.id === 4 && (
                   <div className="mt-2 p-2 text-center">
-                    면접포인트는 획득일로부터 <br className="xl:hidden" />
+                    면접포인트는 획득일로부터 <br className="lg:hidden" />
                     <span className="text-rose-500">6개월 뒤 소멸됩니다</span>
                     <br />
-                    <br className="xl:hidden" />
-                    <span className="text-sm xl:text-base">
+                    <br className="lg:hidden" />
+                    <span className="text-sm lg:text-base">
                       단, 포인트 획득시 소멸기한이 갱신됩니다
                     </span>
                   </div>
@@ -118,7 +118,7 @@ function Info() {
                   <div className="text-center mt-2 p-2 flex flex-col justify-center">
                     <Link
                       to={`/mypage/coupon`}
-                      className="block p-2 bg-blue-500 hover:bg-blue-700 text-white hover:font-medium text-sm xl:text-base"
+                      className="block p-2 bg-blue-500 hover:bg-blue-700 text-white hover:font-medium text-sm lg:text-base"
                     >
                       쿠폰 보관함 페이지 바로가기
                     </Link>

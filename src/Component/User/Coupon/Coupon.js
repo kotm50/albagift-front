@@ -117,11 +117,11 @@ function Coupon() {
   }
 
   return (
-    <div className="xl:container xl:mx-auto">
+    <div className="lg:container lg:mx-auto">
       {loaded ? (
         <>
           {couponList.length > 0 ? (
-            <div className="grid grid-cols-2 xl:grid-cols-5 gap-2">
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-2">
               {couponList.map((coupon, idx) => (
                 <div className="border p-2" key={idx}>
                   <CouponList coupon={coupon} />

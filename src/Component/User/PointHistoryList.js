@@ -3,7 +3,7 @@ import React from "react";
 function PointHistoryList(props) {
   return (
     <>
-      <div className="text-center p-1 hidden xl:block truncate">
+      <div className="text-center p-1 hidden lg:block truncate">
         {props.doc.regDate}
       </div>
       <div

@@ -183,7 +183,7 @@ function PointHistory() {
     <>
       {loaded ? (
         <>
-          <div className="xl:text-2xl mt-2 font-neo">
+          <div className="lg:text-2xl mt-2 font-neo">
             <span className="font-neoextra">{user.userId}</span>
             님의 포인트 :{" "}
             <span className="font-neoextra text-rose-500">
@@ -193,36 +193,36 @@ function PointHistory() {
           </div>
           <div className="flex justify-between">
             {expire ? (
-              <div className="text-xs xl:text-sm mb-2 font-neo leading-5">
-                <span className="text-sm xl:text-base font-neobold">
+              <div className="text-xs lg:text-sm mb-2 font-neo leading-5">
+                <span className="text-sm lg:text-base font-neobold">
                   만료일 : {expire}
                 </span>{" "}
                 <br />
-                <span className="hidden xl:inline">(</span>포인트는 획득일로부터{" "}
+                <span className="hidden lg:inline">(</span>포인트는 획득일로부터{" "}
                 <span className="text-rose-500 font-neobold">
                   6개월 뒤 소멸됩니다
                 </span>
-                . <br className="xl:hidden" />
-                <span className="text-xs xl:text-sm">
+                . <br className="lg:hidden" />
+                <span className="text-xs lg:text-sm">
                   단, 포인트 추가 획득시 소멸기한이 갱신됩니다.
                 </span>
-                <span className="hidden xl:inline">)</span>
+                <span className="hidden lg:inline">)</span>
               </div>
             ) : (
-              <div className="text-xs xl:text-sm mb-2 font-neo leading-5">
-                <span className="hidden xl:inline">(</span>면접포인트는
+              <div className="text-xs lg:text-sm mb-2 font-neo leading-5">
+                <span className="hidden lg:inline">(</span>면접포인트는
                 획득일로부터{" "}
                 <span className="text-rose-500">6개월 뒤 소멸됩니다</span>.{" "}
-                <br className="xl:hidden" />
-                <span className="text-xs xl:text-sm">
+                <br className="lg:hidden" />
+                <span className="text-xs lg:text-sm">
                   단, 포인트 추가 획득시 소멸기한이 갱신됩니다.
                 </span>
-                <span className="hidden xl:inline">)</span>
+                <span className="hidden lg:inline">)</span>
               </div>
             )}
 
             <select
-              className="p-2 bg-white border font-medium text-sm hidden xl:block mb-2"
+              className="p-2 bg-white border font-medium text-sm hidden lg:block mb-2"
               onChange={handleChangeSelect}
               value={selectReason}
             >
@@ -233,7 +233,7 @@ function PointHistory() {
             </select>
           </div>
           <select
-            className="p-2 bg-white border font-medium text-sm block xl:hidden mb-2"
+            className="p-2 bg-white border font-medium text-sm block lg:hidden mb-2"
             onChange={handleChangeSelect}
             value={selectReason}
           >
@@ -243,15 +243,15 @@ function PointHistory() {
             <option value="D">차감</option>
           </select>
 
-          <div className="text-xs xl:text-sm container mx-auto xl:text-right text-sky-500 text-center items-center">
-            내역을 <span className="hidden xl:inline">클릭</span>
-            <span className="inline xl:hidden">탭</span>하면 수정/삭제가
+          <div className="text-xs lg:text-sm container mx-auto lg:text-right text-sky-500 text-center items-center">
+            내역을 <span className="hidden lg:inline">클릭</span>
+            <span className="inline lg:hidden">탭</span>하면 수정/삭제가
             가능합니다.
           </div>
           {list.length > 0 ? (
             <>
-              <div className="text-xs xl:text-base grid grid-cols-4 xl:grid-cols-5 py-2 bg-blue-50 divide-x">
-                <div className="font-neoextra text-center hidden xl:block ">
+              <div className="text-xs lg:text-base grid grid-cols-4 lg:grid-cols-5 py-2 bg-blue-50 divide-x">
+                <div className="font-neoextra text-center hidden lg:block ">
                   일시
                 </div>
                 <div className="font-neoextra text-center">구분</div>
@@ -263,7 +263,7 @@ function PointHistory() {
                 {list.map((doc, idx) => (
                   <div
                     key={idx}
-                    className={`text-xs xl:text-base grid grid-cols-4 xl:grid-cols-5 py-2 gap-y-3 hover:text-orange-500 hover:cursor-pointer ${
+                    className={`text-xs lg:text-base grid grid-cols-4 lg:grid-cols-5 py-2 gap-y-3 hover:text-orange-500 hover:cursor-pointer ${
                       idx % 2 === 1
                         ? "bg-gray-100 hover:bg-gray-200"
                         : "hover:bg-gray-200"

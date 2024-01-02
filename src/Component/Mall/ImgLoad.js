@@ -18,7 +18,7 @@ function ImgLoad(props) {
             className="fixed top-0 left-0 opacity-0"
             onLoad={e => setImgLoaded(true)}
           />
-          <div className="bg-slate-200 animate-pulse w-32 h-32 xl:w-60 xl:h-60"></div>
+          <div className="bg-slate-200 animate-pulse w-32 h-32 lg:w-60 lg:h-60"></div>
         </>
       )}
     </div>

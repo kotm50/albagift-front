@@ -401,27 +401,27 @@ function JoinBack() {
         </div>
         <div
           id="id"
-          className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
-            !correctId || (!dupId ? "xl:border-red-500" : "")
+          className={`grid grid-cols-1 lg:grid-cols-5 lg:divide-x lg:border ${
+            !correctId || (!dupId ? "lg:border-red-500" : "")
           }`}
         >
           <label
             htmlFor="inputId"
-            className={`text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 ${
-              correctId || !dupId ? "xl:bg-gray-100" : "xl:bg-red-100"
+            className={`text-sm text-left lg:text-right flex flex-col justify-center mb-2 lg:mb-0 lg:pr-2 ${
+              correctId || !dupId ? "lg:bg-gray-100" : "lg:bg-red-100"
             } `}
           >
             <div>
               <span className="text-red-500">*</span>아이디
             </div>
           </label>
-          <div className="xl:col-span-4">
+          <div className="lg:col-span-4">
             <input
               type="text"
               id="inputId"
               className={`border ${
-                !correctId || (!dupId ? "xl:border-red-500" : "")
-              } xl:border-0 p-2 w-full text-sm`}
+                !correctId || (!dupId ? "lg:border-red-500" : "")
+              } lg:border-0 p-2 w-full text-sm`}
               value={id}
               onChange={e => {
                 setId(e.currentTarget.value);
@@ -437,13 +437,13 @@ function JoinBack() {
         </div>
         {!correctId && (
           <div className="text-sm text-rose-500">
-            아이디 양식이 잘못되었습니다. <br className="block xl:hidden" />
+            아이디 양식이 잘못되었습니다. <br className="block lg:hidden" />
             확인 후 다시 입력해 주세요
           </div>
         )}
         {!dupId && (
           <div className="text-sm text-rose-500">
-            사용중인 아이디 입니다. <br className="block xl:hidden" />
+            사용중인 아이디 입니다. <br className="block lg:hidden" />
             확인 후 다시 입력해 주세요
           </div>
         )}
@@ -460,28 +460,28 @@ function JoinBack() {
         </button>
         <div
           id="pwd"
-          className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
-            !correctPwd ? "xl:border-red-500" : null
+          className={`grid grid-cols-1 lg:grid-cols-5 lg:divide-x lg:border ${
+            !correctPwd ? "lg:border-red-500" : null
           }`}
         >
           <label
             htmlFor="inputPwd"
-            className={`text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 ${
-              correctPwd ? "xl:bg-gray-100" : "xl:bg-red-100"
+            className={`text-sm text-left lg:text-right flex flex-col justify-center mb-2 lg:mb-0 lg:pr-2 ${
+              correctPwd ? "lg:bg-gray-100" : "lg:bg-red-100"
             } `}
           >
             <div>
               <span className="text-red-500">*</span>비밀번호
             </div>
           </label>
-          <div className="xl:col-span-4">
+          <div className="lg:col-span-4">
             <input
               type="password"
               id="inputPwd"
               length="21"
               className={`border ${
                 !correctPwd ? "border-red-500" : ""
-              } xl:border-0 p-2 w-full text-sm`}
+              } lg:border-0 p-2 w-full text-sm`}
               value={pwd}
               onChange={handlePasswordChange}
               onBlur={e => {
@@ -495,26 +495,26 @@ function JoinBack() {
         {!correctPwd && <div className="text-sm text-rose-500">{pwdMsg}</div>}
         <div
           id="pwdChk"
-          className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
-            !correctPwdChk ? "xl:border-red-500" : ""
+          className={`grid grid-cols-1 lg:grid-cols-5 lg:divide-x lg:border ${
+            !correctPwdChk ? "lg:border-red-500" : ""
           }`}
         >
           <label
             htmlFor="inputPwdChk"
-            className={`text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 ${
-              correctPwdChk ? "xl:bg-gray-100" : "xl:bg-red-100"
+            className={`text-sm text-left lg:text-right flex flex-col justify-center mb-2 lg:mb-0 lg:pr-2 ${
+              correctPwdChk ? "lg:bg-gray-100" : "lg:bg-red-100"
             } `}
           >
             비밀번호확인
           </label>
-          <div className="xl:col-span-4">
+          <div className="lg:col-span-4">
             <input
               type="password"
               id="inputPwdChk"
               length="21"
               className={`border ${
                 !correctPwdChk ? "border-red-500" : ""
-              } xl:border-0 p-2 w-full text-sm`}
+              } lg:border-0 p-2 w-full text-sm`}
               value={pwdChk}
               onChange={handlePasswordCheckChange}
               onBlur={e => {
@@ -527,25 +527,25 @@ function JoinBack() {
         </div>
         {!correctPwdChk && (
           <div className="text-sm text-rose-500">
-            비밀번호가 일치하지 않습니다 <br className="block xl:hidden" />
+            비밀번호가 일치하지 않습니다 <br className="block lg:hidden" />
             확인 후 다시 입력해 주세요
           </div>
         )}
         <div
           id="name"
-          className="grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border"
+          className="grid grid-cols-1 lg:grid-cols-5 lg:divide-x lg:border"
         >
           <label
             htmlFor="inputName"
-            className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100"
+            className="text-sm text-left lg:text-right flex flex-col justify-center mb-2 lg:mb-0 lg:pr-2 lg:bg-gray-100"
           >
             이름
           </label>
-          <div className="xl:col-span-4">
+          <div className="lg:col-span-4">
             <input
               type="text"
               id="inputName"
-              className="border xl:border-0 p-2 w-full text-sm"
+              className="border lg:border-0 p-2 w-full text-sm"
               value={name}
               onChange={e => setName(e.currentTarget.value)}
               onBlur={e => setName(e.currentTarget.value)}
@@ -555,19 +555,19 @@ function JoinBack() {
         </div>
         <div
           id="phone"
-          className="grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border"
+          className="grid grid-cols-1 lg:grid-cols-5 lg:divide-x lg:border"
         >
           <label
             htmlFor="inputPhone"
-            className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100"
+            className="text-sm text-left lg:text-right flex flex-col justify-center mb-2 lg:mb-0 lg:pr-2 lg:bg-gray-100"
           >
             휴대폰번호
           </label>
-          <div className="xl:col-span-4">
+          <div className="lg:col-span-4">
             <input
               type="text"
               id="inputPhone"
-              className="border xl:border-0 p-2 w-full text-sm"
+              className="border lg:border-0 p-2 w-full text-sm"
               value={displayPhone}
               onChange={handlePhone}
               onBlur={handlePhone}
@@ -577,19 +577,19 @@ function JoinBack() {
         </div>
         <div
           id="birth"
-          className="grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border"
+          className="grid grid-cols-1 lg:grid-cols-5 lg:divide-x lg:border"
         >
           <label
             htmlFor="inputBirth"
-            className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100"
+            className="text-sm text-left lg:text-right flex flex-col justify-center mb-2 lg:mb-0 lg:pr-2 lg:bg-gray-100"
           >
             생년월일
           </label>
-          <div className="xl:col-span-4">
+          <div className="lg:col-span-4">
             <input
               type="text"
               id="inputBirth"
-              className="border xl:border-0 p-2 w-full text-sm"
+              className="border lg:border-0 p-2 w-full text-sm"
               value={displayBirth || ""}
               onChange={handleBirth}
               onBlur={handleBirth}
@@ -599,20 +599,20 @@ function JoinBack() {
         </div>
         <div
           id="mainAddr"
-          className="grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border"
+          className="grid grid-cols-1 lg:grid-cols-5 lg:divide-x lg:border"
         >
           <label
             htmlFor="inputMainAddr"
-            className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100"
+            className="text-sm text-left lg:text-right flex flex-col justify-center mb-2 lg:mb-0 lg:pr-2 lg:bg-gray-100"
           >
             주소
           </label>
-          <div className="xl:col-span-4 grid grid-cols-3 gap-1">
+          <div className="lg:col-span-4 grid grid-cols-3 gap-1">
             <div className="col-span-2" title={mainAddr}>
               <input
                 type="text"
                 id="inputMainAddr"
-                className={`border xl:border-0 p-2 w-full text-sm ${
+                className={`border lg:border-0 p-2 w-full text-sm ${
                   mainAddr === "주소찾기를 눌러주세요" ? "text-stone-500" : ""
                 }`}
                 value={mainAddr}
@@ -636,12 +636,12 @@ function JoinBack() {
         </div>
         <div
           id="gender"
-          className="grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border"
+          className="grid grid-cols-1 lg:grid-cols-5 lg:divide-x lg:border"
         >
-          <div className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100">
+          <div className="text-sm text-left lg:text-right flex flex-col justify-center mb-2 lg:mb-0 lg:pr-2 lg:bg-gray-100">
             성별
           </div>
-          <div className="xl:col-span-4 grid grid-cols-2 divide-x border xl:border-0">
+          <div className="lg:col-span-4 grid grid-cols-2 divide-x border lg:border-0">
             <div className="flex items-center pl-4 border-gray-200 rounded dark:border-gray-700">
               <input
                 id="bordered-radio-1"
@@ -680,19 +680,19 @@ function JoinBack() {
         </div>
         <div
           id="email"
-          className="grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border"
+          className="grid grid-cols-1 lg:grid-cols-5 lg:divide-x lg:border"
         >
           <label
             htmlFor="inputEmail"
-            className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100"
+            className="text-sm text-left lg:text-right flex flex-col justify-center mb-2 lg:mb-0 lg:pr-2 lg:bg-gray-100"
           >
             이메일
           </label>
-          <div className="xl:col-span-4">
+          <div className="lg:col-span-4">
             <input
               type="text"
               id="inputEmail"
-              className="border xl:border-0 p-2 w-full text-sm"
+              className="border lg:border-0 p-2 w-full text-sm"
               value={email}
               onChange={e => setEmail(e.currentTarget.value)}
               onBlur={e => {
@@ -801,7 +801,7 @@ function JoinBack() {
               to="/login"
               className="transition duration-100 hover:scale-105"
             >
-              이미 가입하셨다면? 여기를 눌러 <br className="block xl:hidden" />
+              이미 가입하셨다면? 여기를 눌러 <br className="block lg:hidden" />
               <span className="text-emerald-500 border-b">로그인</span>을 진행해
               주세요
             </Link>

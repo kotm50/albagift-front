@@ -73,7 +73,7 @@ function Pagenate(props) {
                 isUserId ? `&userId=${props.userId}` : ""
               }`}
               state={{ log: props.log }}
-              className="transition duration-300 ease-in-out pageButton hover:scale-110 hidden xl:block"
+              className="transition duration-300 ease-in-out pageButton hover:scale-110 hidden lg:block"
             >
               <FaAngleDoubleLeft size={20} />
             </Link>
@@ -147,7 +147,7 @@ function Pagenate(props) {
                 isUserId ? `&userId=${props.userId}` : ""
               }`}
               state={{ log: props.log }}
-              className="transition duration-300 ease-in-out pageButton hover:scale-110 hidden xl:block"
+              className="transition duration-300 ease-in-out pageButton hover:scale-110 hidden lg:block"
             >
               <FaAngleDoubleRight size={20} />
             </Link>

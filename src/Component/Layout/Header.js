@@ -38,7 +38,7 @@ function Header() {
         <>
           <HeaderTop />
           <div className="w-full border-b border-teal-500 bg-white">
-            <div className="xl:container mx-auto">
+            <div className="lg:container mx-auto">
               <GiftCategory cateno={cateNum} path={thisLocation.pathname} />
             </div>
           </div>

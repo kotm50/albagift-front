@@ -58,7 +58,7 @@ function EmailModal(props) {
           id="editArea"
           className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 outline-none focus:outline-none shadow-lg"
         >
-          <div className="xl:p-2">
+          <div className="lg:p-2">
             <div className="my-2 mx-auto p-2 border rounded-lg grid grid-cols-1 gap-3 bg-gray-50 w-full">
               <h2 className="my-3 text-2xl font-neoextra text-center">
                 이메일 변경하기
@@ -70,7 +70,7 @@ function EmailModal(props) {
                 >
                   새 이메일주소
                 </label>
-                <div className="xl:col-span-4">
+                <div className="lg:col-span-4">
                   <input
                     type="text"
                     id="inputEmail"

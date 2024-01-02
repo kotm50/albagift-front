@@ -252,13 +252,13 @@ function Payhistory() {
       {loaded ? (
         <>
           <div className="flex justify-between my-2">
-            <div className="text-xs xl:text-sm container mx-auto xl:text-left text-sky-500 text-center items-center">
-              내역을 <span className="hidden xl:inline">클릭</span>
-              <span className="inline xl:hidden">탭</span>하면 수정/삭제가
+            <div className="text-xs lg:text-sm container mx-auto lg:text-left text-sky-500 text-center items-center">
+              내역을 <span className="hidden lg:inline">클릭</span>
+              <span className="inline lg:hidden">탭</span>하면 수정/삭제가
               가능합니다.
             </div>
             <select
-              className="p-2 bg-white border font-medium text-sm hidden xl:block"
+              className="p-2 bg-white border font-medium text-sm hidden lg:block"
               onChange={handleChangeSelect}
               value={selectReason}
             >
@@ -269,7 +269,7 @@ function Payhistory() {
             </select>
           </div>
           <select
-            className="p-2 bg-white border font-medium text-sm  xl:hidden block mb-2"
+            className="p-2 bg-white border font-medium text-sm  lg:hidden block mb-2"
             onChange={handleChangeSelect}
             value={selectReason}
           >
@@ -280,15 +280,15 @@ function Payhistory() {
           </select>
           {list.length > 0 ? (
             <>
-              <div className="text-sm xl:text-base grid grid-cols-3 xl:grid-cols-4 py-2 bg-blue-50 divide-x">
-                <div className="font-neoextra text-center hidden xl:block">
+              <div className="text-sm lg:text-base grid grid-cols-3 lg:grid-cols-4 py-2 bg-blue-50 divide-x">
+                <div className="font-neoextra text-center hidden lg:block">
                   입력일
                 </div>
                 <div className="font-neoextra text-center">면접날짜</div>
                 <div className="font-neoextra text-center">처리결과</div>
                 <div className="font-neoextra text-center">
                   지급액/사유
-                  <span className="text-sm font-neo hidden xl:inline">
+                  <span className="text-sm font-neo hidden lg:inline">
                     (불가시)
                   </span>
                 </div>
@@ -297,7 +297,7 @@ function Payhistory() {
                 {list.map((doc, idx) => (
                   <div
                     key={idx}
-                    className={`hover:cursor-pointer hover:text-orange-500 text-sm xl:text-base grid grid-cols-3 xl:grid-cols-4 py-2 gap-y-3 ${
+                    className={`hover:cursor-pointer hover:text-orange-500 text-sm lg:text-base grid grid-cols-3 lg:grid-cols-4 py-2 gap-y-3 ${
                       idx % 2 === 1
                         ? "bg-gray-100 hover:bg-gray-200"
                         : "hover:bg-gray-200"
@@ -322,7 +322,7 @@ function Payhistory() {
         <Loading />
       )}
       <div
-        className={`xl:pr-0 container mx-auto flex ${
+        className={`lg:pr-0 container mx-auto flex ${
           list.length > 0 ? "justify-end my-2" : "justify-center mt-5"
         }`}
       >

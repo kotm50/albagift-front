@@ -139,9 +139,9 @@ function Admin() {
           <div className="container mx-auto text-center text-lg md:hidden">
             관리자 페이지 모바일은 개발중입니다.
           </div>
-          <div className="bg-white p-2 container mx-auto hidden xl:block">
+          <div className="bg-white p-2 container mx-auto hidden lg:block">
             <div className="flex justify-between mb-3 p-2">
-              <div className="mb-2 text-xl xl:text-3xl">
+              <div className="mb-2 text-xl lg:text-3xl">
                 안녕하세요 면접샵 관리자 페이지 입니다
               </div>
               <div className="grid grid-cols-2 gap-2">

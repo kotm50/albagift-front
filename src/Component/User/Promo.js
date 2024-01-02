@@ -47,11 +47,11 @@ function Promo() {
         id="promo_1"
         className="relative w-full min-h-screen bg-gradient-to-r from-blue-500 to-blue-600 overflow-hidden"
       >
-        <div className="absolute hidden xl:block top-5 w-fit left-1/2 -translate-x-1/2 z-20">
+        <div className="absolute hidden lg:block top-5 w-fit left-1/2 -translate-x-1/2 z-20">
           <img src={title1} alt="면접만 봐도" data-aos="fade-up" />
           <img src={title2} alt="100% 선물증정" data-aos="fade-up" />
         </div>
-        <div className="absolute block xl:hidden top-5 w-10/12 px-2 left-1/2 -translate-x-1/2 z-20">
+        <div className="absolute block lg:hidden top-5 w-10/12 px-2 left-1/2 -translate-x-1/2 z-20">
           <img src={title1m} alt="면접만 봐도" data-aos="fade-up" />
           <img src={title2m} alt="100%" data-aos="fade-up" />
           <img src={title3m} alt="선물증정" data-aos="fade-up" />
@@ -63,7 +63,7 @@ function Promo() {
             size={32}
           />
         </div>
-        <div className="w-full xl:w-fit h-fit left-1/2 -translate-x-1/2 text-center z-20 promoStarbucks">
+        <div className="w-full lg:w-fit h-fit left-1/2 -translate-x-1/2 text-center z-20 promoStarbucks">
           <img src={starbucks} alt="스타벅스" />
         </div>
         <img src={chicken} alt="교촌치킨" className="z-20 promoChicken img" />
@@ -75,11 +75,11 @@ function Promo() {
         <img src={lotte} alt="롯데리아" className="z-20 promoLotte img" />
 
         <img src={br} alt="배스킨라빈스" className="z-20 promoBr img" />
-        <div className="absolute hidden xl:block -bottom-1/2 xl:-bottom-36 whiteCircle bg-white rounded-full z-0"></div>
-        <div className="absolute xl:hidden bottom-0 w-full h-32 bg-white rounded-t-full z-0"></div>
+        <div className="absolute hidden lg:block -bottom-1/2 lg:-bottom-36 whiteCircle bg-white rounded-full z-0"></div>
+        <div className="absolute lg:hidden bottom-0 w-full h-32 bg-white rounded-t-full z-0"></div>
       </div>
       <div id="promo_2" className="bg-gray-700 p-2">
-        <div className="hidden container mx-auto xl:grid grid-cols-2 py-10">
+        <div className="hidden container mx-auto lg:grid grid-cols-2 py-10">
           <div className="flex flex-col justify-center h-full gap-5">
             <div
               className="text-5xl font-normal text-white text-right"
@@ -123,7 +123,7 @@ function Promo() {
             </div>
           </div>
         </div>
-        <div className="xl:hidden container mx-auto grid grid-cols-1 py-10">
+        <div className="lg:hidden container mx-auto grid grid-cols-1 py-10">
           <div className="flex flex-col justify-center h-full gap-2 mb-2">
             <div
               className="text-2xl font-normal text-white text-center"
@@ -164,22 +164,22 @@ function Promo() {
         </div>
       </div>
       <div id="promo_3" className="bg-gray-700 p-2">
-        <div className="w-11/12 xl:container mx-auto p-2 rounded-full text-center text-white text-xl xl:text-3xl font-neoextra bg-gradient-to-r from-blue-500 to-blue-600">
+        <div className="w-11/12 lg:container mx-auto p-2 rounded-full text-center text-white text-xl lg:text-3xl font-neoextra bg-gradient-to-r from-blue-500 to-blue-600">
           면접샵 이용방법
         </div>
-        <div className="w-11/12 container mx-auto grid grid-cols-1 xl:grid-cols-4 mb-10 xl:mb-16 mt-5 gap-2">
+        <div className="w-11/12 container mx-auto grid grid-cols-1 lg:grid-cols-4 mb-10 lg:mb-16 mt-5 gap-2">
           <div
             className="bg-white drop-shadow-lg p-2 rounded"
             data-aos="flip-down"
             data-aos-duration="300"
           >
-            <div className="text-base xl:text-xl">
+            <div className="text-base lg:text-xl">
               1. 로그인 후 프로필 입력(1회 한정)
             </div>
             <div className="w-full p-1 bg-indigo-50 my-2">
               <img src={explain1} alt="1번 설명" className="w-full" />
             </div>
-            <div className="text-sm xl:text-base">
+            <div className="text-sm lg:text-base">
               이미 입력하셨다면 다시 입력하지 않으셔도 됩니다
             </div>
           </div>
@@ -188,13 +188,13 @@ function Promo() {
             data-aos="flip-down"
             data-aos-duration="300"
           >
-            <div className="text-base xl:text-xl">
+            <div className="text-base lg:text-xl">
               2. 구직활동을 통해 포인트 적립
             </div>
             <div className="w-full p-1 bg-indigo-50 my-2">
               <img src={explain2} alt="2번 설명" className="w-full" />
             </div>
-            <div className="text-sm xl:text-base">
+            <div className="text-sm lg:text-base">
               적립되는 포인트는 제휴사별로 다를 수 있습니다.
             </div>
           </div>
@@ -203,13 +203,13 @@ function Promo() {
             data-aos="flip-down"
             data-aos-duration="300"
           >
-            <div className="text-base xl:text-xl">
+            <div className="text-base lg:text-xl">
               3. 포인트를 이용해 원하는 상품 구매
             </div>
             <div className="w-full p-1 bg-indigo-50 my-2">
               <img src={explain3} alt="3번 설명" className="w-full" />
             </div>
-            <div className="text-sm xl:text-base">
+            <div className="text-sm lg:text-base">
               상품은 기프티콘 형태로 제공됩니다.
             </div>
           </div>
@@ -218,13 +218,13 @@ function Promo() {
             data-aos="flip-down"
             data-aos-duration="300"
           >
-            <div className="text-base xl:text-xl">
+            <div className="text-base lg:text-xl">
               4. 구매한 기프티콘을 매장에서 사용
             </div>
             <div className="w-full p-1 bg-indigo-50 my-2">
               <img src={explain4} alt="4번 설명" className="w-full" />
             </div>
-            <div className="text-sm xl:text-base">
+            <div className="text-sm lg:text-base">
               쿠폰함에서 쿠폰을 바로 사용할 수 있습니다
             </div>
           </div>
@@ -234,9 +234,9 @@ function Promo() {
         id="promo_4"
         className="relative bg-gradient-to-r from-blue-500 to-blue-600 p-2"
       >
-        <div className="container mx-auto xl:grid grid-cols-1 py-5">
-          <div className="text-2xl xl:text-3xl text-center text-white mb-2">
-            포인트를 모아 <br className="block xl:hidden" />
+        <div className="container mx-auto lg:grid grid-cols-1 py-5">
+          <div className="text-2xl lg:text-3xl text-center text-white mb-2">
+            포인트를 모아 <br className="block lg:hidden" />
             아래의 상품들을 받아보세요
           </div>
         </div>

@@ -193,25 +193,25 @@ function CouponList(props) {
   };
   return (
     <>
-      <div className="max-w-full w-32 h-32 xl:w-64 xl:h-64 overflow-hidden mx-auto">
+      <div className="max-w-full w-32 h-32 lg:w-64 lg:h-64 overflow-hidden mx-auto">
         <img
           src={props.coupon.goodsImgB}
           alt="쿠폰이미지"
           className="max-w-full"
         />
       </div>
-      <div className="p-2 grid grid-cols-1 xl:grid-cols-5">
+      <div className="p-2 grid grid-cols-1 lg:grid-cols-5">
         <div className="font-medium">상품명</div>
-        <div className="xl:col-span-4 truncate">
+        <div className="lg:col-span-4 truncate">
           {props.coupon.goodsName || "이름없음"}
         </div>
       </div>
       {statCode === "02" && remainAmt !== "" && remainAmt !== "해당 없음" && (
         <>
           {Number(remainAmt) > 0 ? (
-            <div className="p-2 grid grid-cols-1 xl:grid-cols-5">
+            <div className="p-2 grid grid-cols-1 lg:grid-cols-5">
               <div className="font-medium">잔액</div>
-              <div className="xl:col-span-4 truncate">
+              <div className="lg:col-span-4 truncate">
                 {Number(remainAmt).toLocaleString()} 원
               </div>
             </div>
@@ -220,9 +220,9 @@ function CouponList(props) {
           )}
         </>
       )}
-      <div className="p-2 grid grid-cols-1 xl:grid-cols-5">
+      <div className="p-2 grid grid-cols-1 lg:grid-cols-5">
         <div className="font-medium">만료일</div>
-        <div className="xl:col-span-4">
+        <div className="lg:col-span-4">
           {props.coupon.limitDate
             ? dayjs(props.coupon.limitDate).format("YY년 MM월 DD일")
             : "불명"}
@@ -234,7 +234,7 @@ function CouponList(props) {
         </div>
       </div>
       <div
-        className="grid grid-cols-1 xl:grid-cols-2 gap-1"
+        className="grid grid-cols-1 lg:grid-cols-2 gap-1"
         data={props.coupon.trId}
       >
         <div>

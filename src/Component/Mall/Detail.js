@@ -255,7 +255,7 @@ function Detail() {
           <meta name="description" content="상세페이지  | 알바선물" />
         </Helmet>
       )}
-      <div className="xl:container mx-auto">
+      <div className="lg:container mx-auto">
         <UserSection />
         {goods !== undefined && (
           <img
@@ -268,51 +268,51 @@ function Detail() {
 
         {imgLoaded ? (
           <>
-            <div className="xl:container w-11/12 mx-auto bg-white p-2 flex flex-col xl:flex-row xl:justify-center gap-3">
-              <div className="xl:basis-4/12 p-1">
+            <div className="lg:container w-11/12 mx-auto bg-white p-2 flex flex-col lg:flex-row lg:justify-center gap-3">
+              <div className="lg:basis-4/12 p-1">
                 <img
                   src={goods.goodsImgB}
                   alt={goods.goodsName}
                   className="border bg-gray-100 mx-auto w-3/4"
                 />
               </div>
-              <div className="xl:basis-6/12 p-1 flex flex-col justify-start">
-                <div className="xl:text-lg">{goods.brandName}</div>
-                <h2 className="text-lg xl:text-2xl font-bold">
+              <div className="lg:basis-6/12 p-1 flex flex-col justify-start">
+                <div className="lg:text-lg">{goods.brandName}</div>
+                <h2 className="text-lg lg:text-2xl font-bold">
                   {goods.goodsName}
                 </h2>
                 <div className="mt-5">
-                  <span className="text-2xl xl:text-4xl font-bold text-indigo-500">
+                  <span className="text-2xl lg:text-4xl font-bold text-indigo-500">
                     {Number(goods.realPrice).toLocaleString()}
                   </span>
-                  <span className="text-xl xl:text-2xl ml-1">Point</span>
+                  <span className="text-xl lg:text-2xl ml-1">Point</span>
                 </div>
                 <div className="mt-5 flex flex-row gap-3">
-                  <span className="xl:text-lg font-bold basis-1/4 xl:basis-1/6">
+                  <span className="lg:text-lg font-bold basis-1/4 lg:basis-1/6">
                     교환처
                   </span>
-                  <span className="xl:text-lg basis-3/4 xl:basis-5/6">
+                  <span className="lg:text-lg basis-3/4 lg:basis-5/6">
                     {goods.affiliate}
                   </span>
                 </div>
                 <div className="mt-5 flex flex-row gap-3">
-                  <span className="xl:text-lg font-bold basis-1/4 xl:basis-1/6">
+                  <span className="lg:text-lg font-bold basis-1/4 lg:basis-1/6">
                     유효기간
                   </span>
-                  <span className="xl:text-lg basis-3/4 xl:basis-5/6">
+                  <span className="lg:text-lg basis-3/4 lg:basis-5/6">
                     {goods.limitDay}일/유효기간 만료 후 연장 및 환불 불가
                   </span>
                 </div>
                 <div className="mt-5 flex flex-row gap-3">
-                  <span className="xl:text-lg font-bold basis-1/4 xl:basis-1/6">
+                  <span className="lg:text-lg font-bold basis-1/4 lg:basis-1/6">
                     구매방식
                   </span>
-                  <span className="xl:text-lg basis-3/4 xl:basis-5/6">
+                  <span className="lg:text-lg basis-3/4 lg:basis-5/6">
                     모바일 쿠폰 발송
                   </span>
                 </div>
                 <div className="mt-5 flex flex-col lg:flex-row justify-start gap-3 relative">
-                  <div className="grid grid-cols-3 gap-2 xl:w-2/3">
+                  <div className="grid grid-cols-3 gap-2 lg:w-2/3">
                     <button
                       className="col-span-2 block text-center w-full transition-all duration-150 ease-in-out bg-indigo-500 text-white py-2 px-5 rounded hover:bg-indigo-700"
                       onClick={buyIt}
@@ -325,11 +325,11 @@ function Detail() {
                         setIsShare(!isShare);
                       }}
                     >
-                      공유<span className="hidden xl:inline">하기</span>
+                      공유<span className="hidden lg:inline">하기</span>
                     </button>
                   </div>
                   {isShare && (
-                    <div className="absolute top-12 right-0 xl:right-1/3 min-w-1/2 py-3 px-2 border shadow-md bg-white z-10">
+                    <div className="absolute top-12 right-0 lg:right-1/3 min-w-1/2 py-3 px-2 border shadow-md bg-white z-10">
                       <h3 className="text-center mb-3 text-sm p-2 bg-gray-200 rounded">
                         공유하기
                       </h3>
@@ -350,12 +350,12 @@ function Detail() {
               </div>
             </div>
 
-            <div className="xl:container w-11/12 mx-auto bg-white mt-3 p-2">
-              <h3 className="xl:pl-32 p-3 xl:text-2xl font-bold mb-3 pb-3 border-y">
+            <div className="lg:container w-11/12 mx-auto bg-white mt-3 p-2">
+              <h3 className="lg:pl-32 p-3 lg:text-2xl font-bold mb-3 pb-3 border-y">
                 상품 상세정보 및 유의사항
               </h3>
               <div
-                className="xl:w-5/6 mx-auto leading-7"
+                className="lg:w-5/6 mx-auto leading-7"
                 dangerouslySetInnerHTML={{
                   __html: sanitizer(content).replace(
                     /href/g,
@@ -368,19 +368,19 @@ function Detail() {
           </>
         ) : (
           <>
-            <div className="xl:container w-11/12 mx-auto bg-white p-2 flex flex-col xl:grid xl:grid-cols-12 gap-3">
-              <div className="hidden xl:block col-span-2"></div>
-              <div className="xl:col-span-4 p-1 w-96 h-96 animate-pulse bg-slate-200"></div>
-              <div className="xl:col-span-4 p-1 flex flex-col justify-start">
-                <div className="xl:text-lg bg-slate-200 animate-pulse h-10"></div>
-                <div className="text-lg xl:text-2xl font-bold bg-slate-200 animate-pulse h-10"></div>
+            <div className="lg:container w-11/12 mx-auto bg-white p-2 flex flex-col lg:grid lg:grid-cols-12 gap-3">
+              <div className="hidden lg:block col-span-2"></div>
+              <div className="lg:col-span-4 p-1 w-96 h-96 animate-pulse bg-slate-200"></div>
+              <div className="lg:col-span-4 p-1 flex flex-col justify-start">
+                <div className="lg:text-lg bg-slate-200 animate-pulse h-10"></div>
+                <div className="text-lg lg:text-2xl font-bold bg-slate-200 animate-pulse h-10"></div>
                 <div className="mt-5 bg-slate-200 animate-pulse h-10"></div>
                 <div className="mt-5 bg-slate-200 animate-pulse h-10"></div>
                 <div className="mt-5 bg-slate-200 animate-pulse h-10"></div>
                 <div className="mt-5 bg-slate-200 animate-pulse h-10"></div>
               </div>
-              <div className="hidden xl:block col-span-2"></div>
-              <div className="xl:container w-11/12 mx-auto bg-slate-200 animate-pulse h-10 mt-3 p-2 col-span-12"></div>
+              <div className="hidden lg:block col-span-2"></div>
+              <div className="lg:container w-11/12 mx-auto bg-slate-200 animate-pulse h-10 mt-3 p-2 col-span-12"></div>
             </div>
           </>
         )}

@@ -24,7 +24,7 @@ function CouponModal(props) {
     <>
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
         <div className="relative lg:w-auto my-6 mx-auto w-11/12 lg:max-w-3xl">
-          <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none max-h-[98vh] px-2 py-4 xl:p-6">
+          <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none max-h-[98vh] px-2 py-4 lg:p-6">
             <div className="relative p-2 lg:p-6 flex-auto overflow-y-hidden">
               <img src={props.coupon.couponImgUrl} alt="쿠폰이미지" />
             </div>
@@ -38,7 +38,7 @@ function CouponModal(props) {
               </div>
             ) : null}
 
-            <div className="text-sm my-1 text-center xl:block hidden">
+            <div className="text-sm my-1 text-center lg:block hidden">
               쿠폰이미지를 우클릭 후{" "}
               <span className="font-neoextra text-sky-500">
                 '이미지를 다른 이름으로 저장'
@@ -46,7 +46,7 @@ function CouponModal(props) {
               <br />
               하시면 저장해서 쓰실 수 있습니다
             </div>
-            <div className="text-sm my-1 text-center xl:hidden">
+            <div className="text-sm my-1 text-center lg:hidden">
               쿠폰이미지를 꾹 누르시고
               <br />
               <span className="font-neoextra text-sky-500">
@@ -63,8 +63,8 @@ function CouponModal(props) {
             <div className="p-2 grid grid-cols-2 gap-3">
               <CopyToClipboard text={props.coupon.pinNo} onCopy={handleCopy}>
                 <button className="bg-teal-500 hover:bg-teal-700 p-2 text-white">
-                  <span className="hidden xl:inline">쿠폰번호 복사하기</span>
-                  <span className="inline xl:hidden">번호복사</span>
+                  <span className="hidden lg:inline">쿠폰번호 복사하기</span>
+                  <span className="inline lg:hidden">번호복사</span>
                 </button>
               </CopyToClipboard>
               <button

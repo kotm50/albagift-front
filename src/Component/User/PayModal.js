@@ -23,7 +23,7 @@ function PayModal(props) {
   return (
     <div
       id="paymodal"
-      className="max-w-screen p-5 bg-white border text-sm xl:text-base rounded-lg drop-shadow relative"
+      className="max-w-screen p-5 bg-white border text-sm lg:text-base rounded-lg drop-shadow relative"
     >
       <button
         className="bg-white hover:bg-gray-50 p-2 rounded text-center absolute top-2 right-2 w-10 h-10"
@@ -41,7 +41,7 @@ function PayModal(props) {
           <div className="text-sm mb-2 text-center">
             수정하려면 날짜와 시간을 선택하세요
           </div>
-          <div className="xl:w-4/5 mx-auto">
+          <div className="lg:w-4/5 mx-auto">
             <div className="flex flex-row justify-start gap-1">
               <div className="px-2 py-3">면접날짜</div>
               <div className="p-2 text-center bg-white hover:bg-gray-50">

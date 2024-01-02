@@ -324,28 +324,28 @@ function Join() {
           </div>
           <div
             id="id"
-            className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
-              !correctId || (!dupId && "xl:border-red-500")
+            className={`grid grid-cols-1 lg:grid-cols-5 lg:divide-x lg:border ${
+              !correctId || (!dupId && "lg:border-red-500")
             }`}
           >
             <label
               htmlFor="inputId"
-              className={`text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 ${
-                correctId || !dupId ? "xl:bg-gray-100" : "xl:bg-red-100"
+              className={`text-sm text-left lg:text-right flex flex-col justify-center mb-2 lg:mb-0 lg:pr-2 ${
+                correctId || !dupId ? "lg:bg-gray-100" : "lg:bg-red-100"
               } `}
             >
               <div>
                 <span className="text-red-500">*</span>아이디
               </div>
             </label>
-            <div className="xl:col-span-4">
+            <div className="lg:col-span-4">
               <input
                 type="text"
                 id="inputId"
                 autocapitalize="none"
                 className={`border ${
-                  !correctId || (!dupId ? "xl:border-red-500" : undefined)
-                } xl:border-0 p-2 w-full text-sm`}
+                  !correctId || (!dupId ? "lg:border-red-500" : undefined)
+                } lg:border-0 p-2 w-full text-sm`}
                 value={id}
                 onChange={e => {
                   setId(e.currentTarget.value);
@@ -361,40 +361,40 @@ function Join() {
           </div>
           {!correctId && (
             <div className="text-sm text-rose-500">
-              아이디 양식이 잘못되었습니다. <br className="block xl:hidden" />
+              아이디 양식이 잘못되었습니다. <br className="block lg:hidden" />
               확인 후 다시 입력해 주세요
             </div>
           )}
           {!dupId && (
             <div className="text-sm text-rose-500">
-              사용중인 아이디 입니다. <br className="block xl:hidden" />
+              사용중인 아이디 입니다. <br className="block lg:hidden" />
               확인 후 다시 입력해 주세요
             </div>
           )}
           <div
             id="pwd"
-            className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
-              !correctPwd ? "xl:border-red-500" : null
+            className={`grid grid-cols-1 lg:grid-cols-5 lg:divide-x lg:border ${
+              !correctPwd ? "lg:border-red-500" : null
             }`}
           >
             <label
               htmlFor="inputPwd"
-              className={`text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 ${
-                correctPwd ? "xl:bg-gray-100" : "xl:bg-red-100"
+              className={`text-sm text-left lg:text-right flex flex-col justify-center mb-2 lg:mb-0 lg:pr-2 ${
+                correctPwd ? "lg:bg-gray-100" : "lg:bg-red-100"
               } `}
             >
               <div>
                 <span className="text-red-500">*</span>비밀번호
               </div>
             </label>
-            <div className="xl:col-span-4">
+            <div className="lg:col-span-4">
               <input
                 type="password"
                 id="inputPwd"
                 length="21"
                 className={`border ${
                   !correctPwd ? "border-red-500" : undefined
-                } xl:border-0 p-2 w-full text-sm`}
+                } lg:border-0 p-2 w-full text-sm`}
                 value={pwd}
                 onChange={e => {
                   if (e.currentTarget.value.length > 20) {
@@ -421,26 +421,26 @@ function Join() {
           {!correctPwd && <div className="text-sm text-rose-500">{pwdMsg}</div>}
           <div
             id="pwdChk"
-            className={`grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border ${
-              !correctPwdChk ? "xl:border-red-500" : undefined
+            className={`grid grid-cols-1 lg:grid-cols-5 lg:divide-x lg:border ${
+              !correctPwdChk ? "lg:border-red-500" : undefined
             }`}
           >
             <label
               htmlFor="inputPwdChk"
-              className={`text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 ${
-                correctPwdChk ? "xl:bg-gray-100" : "xl:bg-red-100"
+              className={`text-sm text-left lg:text-right flex flex-col justify-center mb-2 lg:mb-0 lg:pr-2 ${
+                correctPwdChk ? "lg:bg-gray-100" : "lg:bg-red-100"
               } `}
             >
               비밀번호확인
             </label>
-            <div className="xl:col-span-4">
+            <div className="lg:col-span-4">
               <input
                 type="password"
                 id="inputPwdChk"
                 length="21"
                 className={`border ${
                   !correctPwdChk ? "border-red-500" : undefined
-                } xl:border-0 p-2 w-full text-sm`}
+                } lg:border-0 p-2 w-full text-sm`}
                 value={pwdChk}
                 onChange={e => {
                   if (e.currentTarget.value.length > 20) {
@@ -466,28 +466,28 @@ function Join() {
           </div>
           {!correctPwdChk && (
             <div className="text-sm text-rose-500">
-              비밀번호가 일치하지 않습니다 <br className="block xl:hidden" />
+              비밀번호가 일치하지 않습니다 <br className="block lg:hidden" />
               확인 후 다시 입력해 주세요
             </div>
           )}
           <div
             id="mainAddr"
-            className="grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border"
+            className="grid grid-cols-1 lg:grid-cols-5 lg:divide-x lg:border"
           >
             <label
               htmlFor="inputMainAddr"
-              className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100"
+              className="text-sm text-left lg:text-right flex flex-col justify-center mb-2 lg:mb-0 lg:pr-2 lg:bg-gray-100"
             >
               <div>
                 <span className="text-red-500">*</span>주소
               </div>
             </label>
-            <div className="xl:col-span-4 grid grid-cols-3 gap-1">
+            <div className="lg:col-span-4 grid grid-cols-3 gap-1">
               <div className="col-span-2" title={mainAddr}>
                 <input
                   type="text"
                   id="inputMainAddr"
-                  className={`border xl:border-0 p-2 w-full text-sm ${
+                  className={`border lg:border-0 p-2 w-full text-sm ${
                     mainAddr === "주소찾기를 눌러주세요"
                       ? "text-stone-500"
                       : undefined
@@ -513,19 +513,19 @@ function Join() {
           </div>
           <div
             id="email"
-            className="grid grid-cols-1 xl:grid-cols-5 xl:divide-x xl:border"
+            className="grid grid-cols-1 lg:grid-cols-5 lg:divide-x lg:border"
           >
             <label
               htmlFor="inputEmail"
-              className="text-sm text-left xl:text-right flex flex-col justify-center mb-2 xl:mb-0 xl:pr-2 xl:bg-gray-100"
+              className="text-sm text-left lg:text-right flex flex-col justify-center mb-2 lg:mb-0 lg:pr-2 lg:bg-gray-100"
             >
               이메일
             </label>
-            <div className="xl:col-span-4">
+            <div className="lg:col-span-4">
               <input
                 type="text"
                 id="inputEmail"
-                className="border xl:border-0 p-2 w-full text-sm"
+                className="border lg:border-0 p-2 w-full text-sm"
                 value={email}
                 onChange={e => {
                   setEmail(e.currentTarget.value);
@@ -544,14 +544,14 @@ function Join() {
 
           {!correctEmail && (
             <div className="text-sm text-rose-500">
-              이메일 양식이 잘못되었습니다. <br className="block xl:hidden" />
+              이메일 양식이 잘못되었습니다. <br className="block lg:hidden" />
               확인 후 다시 입력해 주세요
             </div>
           )}
 
           {!dupEmail && (
             <div className="text-sm text-rose-500">
-              사용중인 이메일 입니다. <br className="block xl:hidden" />
+              사용중인 이메일 입니다. <br className="block lg:hidden" />
               확인 후 다시 입력해 주세요
             </div>
           )}
@@ -654,7 +654,7 @@ function Join() {
                 className="transition duration-100 hover:scale-105"
               >
                 이미 가입하셨다면? 여기를 눌러{" "}
-                <br className="block xl:hidden" />
+                <br className="block lg:hidden" />
                 <span className="text-emerald-500 border-b">로그인</span>을
                 진행해 주세요
               </Link>

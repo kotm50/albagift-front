@@ -469,7 +469,7 @@ function PointList() {
                 </div>
               </div>
               <select
-                className="p-2 bg-white border font-medium text-sm hidden xl:block font-neobold xl:w-60"
+                className="p-2 bg-white border font-medium text-sm hidden lg:block font-neobold lg:w-60"
                 onChange={handleReasonSelect}
                 value={selectReason}
               >
@@ -545,7 +545,7 @@ function PointList() {
             </div>
           </div>
           {list.length > 0 ? (
-            <div className="grid grid-cols-1 xl:grid-cols-4 gap-2 mt-2 bg-white p-2 container mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-2 mt-2 bg-white p-2 container mx-auto">
               {list.map((doc, idx) => (
                 <div key={idx}>
                   <input
@@ -648,7 +648,7 @@ function PointList() {
           {selectedDocs.length > 0 && (
             <>
               <div className="fixed container bottom-0 left-1/2 -translate-x-1/2 bg-white p-3 rounded-t-xl drop-shadow-xl">
-                <div className="test-xl xl:text-2xl font-medium text-left">
+                <div className="test-xl lg:text-2xl font-medium text-left">
                   포인트 지급(차감)대상
                 </div>
                 <div className="mt-2 flex flex-row flex-wrap gap-2">
@@ -662,7 +662,7 @@ function PointList() {
                     </div>
                   ))}
                 </div>
-                <div className="mt-2 grid grid-cols-1 xl:grid-cols-3 gap-2">
+                <div className="mt-2 grid grid-cols-1 lg:grid-cols-3 gap-2">
                   <div className="grid grid-cols-1 gap-2 bg-blue-50 p-2">
                     <div className="text-lg font-neoextra">포인트 지급처리</div>
                     <input

@@ -2,11 +2,11 @@ import React from "react";
 function PayList(props) {
   return (
     <>
-      <div className="text-center p-1 hidden xl:block">
+      <div className="text-center p-1 hidden lg:block">
         {props.doc.regDate.substring(2, 10)}
       </div>
       <div className="text-center p-1 flex flex-col justify-center">
-        {props.doc.intvDate.substring(2, 10)} <br className="xl:hidden" />
+        {props.doc.intvDate.substring(2, 10)} <br className="lg:hidden" />
         {props.doc.intvTime}:{props.doc.intvMin}
       </div>
       <div

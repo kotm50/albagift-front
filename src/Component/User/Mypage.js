@@ -78,7 +78,7 @@ function Mypage() {
           <div className="container mx-auto grid grid-cols-1 h-full">
             <div
               id="touch-target"
-              className="container mx-auto flex flex-row flex-nowrap overflow-x-auto giftCategoryMenu gap-3 xl:justify-center"
+              className="container mx-auto flex flex-row flex-nowrap overflow-x-auto giftCategoryMenu gap-3 lg:justify-center"
             >
               <Link
                 to="/mypage/pwdchk"

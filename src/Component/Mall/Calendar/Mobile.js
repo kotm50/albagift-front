@@ -3,7 +3,7 @@ import React from "react";
 function Mobile(props) {
   return (
     <>
-      <div className="xl:hidden grid grid-cols-7 border-y gap-y-1 gap-x-0 text-sm bg-white">
+      <div className="lg:hidden grid grid-cols-7 border-y gap-y-1 gap-x-0 text-sm bg-white">
         {props.dates.map((date, idx) => (
           <div
             className={`text-center py-2 border-b  ${
@@ -19,7 +19,7 @@ function Mobile(props) {
           </div>
         ))}
       </div>
-      <div className="xl:hidden grid grid-cols-7 gap-y-1 gap-x-0 pt-1 text-sm">
+      <div className="lg:hidden grid grid-cols-7 gap-y-1 gap-x-0 pt-1 text-sm">
         {props.before.length > 0 && (
           <>
             {props.before.map((date, idx) => (

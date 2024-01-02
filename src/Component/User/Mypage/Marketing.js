@@ -12,14 +12,14 @@ function Marketing(props) {
         id="editArea"
         className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 outline-none focus:outline-none shadow-lg"
       >
-        <div className="xl:p-2">
+        <div className="lg:p-2">
           <div className="my-2 mx-auto p-2 border rounded-lg grid grid-cols-1 gap-3 bg-gray-50 w-full">
             <h2 className="my-3 text-xl font-neoextra text-center">
               광고성 정보수신 동의
             </h2>
             <div className="relative px-2 lg:px-3 flex-auto overflow-y-auto font-neo bg-gray-50">
               알바선물 신규 이벤트, 신규 콘텐츠
-              <span className="hidden xl:inline">, 신규 혜택</span> 등 <br />
+              <span className="hidden lg:inline">, 신규 혜택</span> 등 <br />
               다양한 정보를 제공하여 드립니다.
             </div>
             <div className="p-2 flex justify-center gap-x-2">

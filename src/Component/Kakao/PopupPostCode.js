@@ -30,7 +30,7 @@ const PopupPostCode = props => {
     <>
       <div
         id="addrAPI"
-        className="fixed top-0 botton-0 w-full h-full bg-white border drop-shadow-md rounded z-50 xl:top-1/2 xl:left-1/2 xl:-translate-x-1/2 xl:-translate-y-1/2"
+        className="fixed top-0 botton-0 w-full h-full bg-white border drop-shadow-md rounded z-50 lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2"
       >
         <DaumPostcode className="addrAPIInput" onComplete={handlePostCode} />
         <button

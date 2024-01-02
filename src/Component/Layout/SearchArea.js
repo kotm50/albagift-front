@@ -37,7 +37,7 @@ function SearchArea(props) {
 
   return (
     <>
-      <div className="xl:w-96 w-full pr-2 flex flex-col justify-center">
+      <div className="lg:w-96 w-full pr-2 flex flex-col justify-center">
         <form onSubmit={searchIt}>
           <label
             htmlFor="default-search"

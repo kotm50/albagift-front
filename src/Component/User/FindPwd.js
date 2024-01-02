@@ -152,12 +152,12 @@ function FindPwd() {
 
   return (
     <div className="mx-auto bg-white certArea pb-5 pt-20">
-      <h2 className="text-xl xl:text-2xl font-neoextra mb-3">
+      <h2 className="text-xl lg:text-2xl font-neoextra mb-3">
         알바선물 비밀번호 찾기
       </h2>
       {!chked ? (
         <>
-          <div className="text-sm xl:text-base font-neo mb-3">
+          <div className="text-sm lg:text-base font-neo mb-3">
             가입하신 아이디를 입력해 주세요 <br />
             아이디가 기억나지 않으시면 '아이디 찾기'를 진행해 주세요
           </div>
@@ -174,7 +174,7 @@ function FindPwd() {
               onBlur={e => setId(e.currentTarget.value)}
             />
           </div>
-          <div className="absolute z-20 w-64 xl:w-96 bottom-20 left-1/2 -translate-x-1/2 grid grid-cols-1 gap-y-2">
+          <div className="absolute z-20 w-64 lg:w-96 bottom-20 left-1/2 -translate-x-1/2 grid grid-cols-1 gap-y-2">
             <button
               className="py-3 bg-blue-500 hover:bg-blue-700 text-white w-full rounded-full"
               onClick={e => chkId()}
@@ -192,7 +192,7 @@ function FindPwd() {
         </>
       ) : (
         <>
-          <div className="text-sm xl:text-base font-neo mb-3">
+          <div className="text-sm lg:text-base font-neo mb-3">
             새로운 비밀번호를 입력해 주세요.
           </div>
           <div className="grid grid-cols-1 pt-3 border-t">
@@ -217,7 +217,7 @@ function FindPwd() {
 
           {!correctPwd && (
             <div className="text-sm text-rose-500">
-              비밀번호 양식이 틀렸습니다 <br className="block xl:hidden" />
+              비밀번호 양식이 틀렸습니다 <br className="block lg:hidden" />
               확인 후 다시 입력해 주세요
             </div>
           )}
@@ -242,11 +242,11 @@ function FindPwd() {
           </div>
           {!correctPwdChk && (
             <div className="text-sm text-rose-500">
-              비밀번호가 일치하지 않습니다 <br className="block xl:hidden" />
+              비밀번호가 일치하지 않습니다 <br className="block lg:hidden" />
               확인 후 다시 입력해 주세요
             </div>
           )}
-          <div className="absolute z-20 w-64 xl:w-96 bottom-20 left-1/2 -translate-x-1/2 grid grid-cols-1">
+          <div className="absolute z-20 w-64 lg:w-96 bottom-20 left-1/2 -translate-x-1/2 grid grid-cols-1">
             <button
               className="py-3 bg-blue-500 hover:bg-blue-700 text-white w-full rounded-full"
               onClick={e => editPwd(e)}

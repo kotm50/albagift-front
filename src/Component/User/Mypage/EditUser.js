@@ -582,7 +582,7 @@ function EditUser() {
         <div className="grid grid-cols-1 divide-y">
           <div
             id="id"
-            className="grid grid-cols-7 gap-x-2 text-sm xl:text-base"
+            className="grid grid-cols-7 gap-x-2 text-sm lg:text-base"
           >
             <div className="col-span-5 flex flex-col justify-center gap-y-2 py-4">
               <div className="text-xl font-neoheavy text-left pl-2">
@@ -603,7 +603,7 @@ function EditUser() {
           </div>
           <div
             id="pwd"
-            className="grid grid-cols-7 gap-x-2 text-sm xl:text-base"
+            className="grid grid-cols-7 gap-x-2 text-sm lg:text-base"
           >
             <div className="col-span-5 px-2 py-4">
               <FaLock className="inline" /> 비밀번호
@@ -619,7 +619,7 @@ function EditUser() {
           </div>
           <div
             id="mainAddr"
-            className="grid grid-cols-7 gap-x-2 text-sm xl:text-base"
+            className="grid grid-cols-7 gap-x-2 text-sm lg:text-base"
           >
             <div className="col-span-5 px-2 py-4">
               <FaMapMarkerAlt className="inline" /> {mainAddr}
@@ -635,7 +635,7 @@ function EditUser() {
           </div>
           <div
             id="email"
-            className="grid grid-cols-7 gap-x-2 text-sm xl:text-base"
+            className="grid grid-cols-7 gap-x-2 text-sm lg:text-base"
           >
             <div className="col-span-5 px-2 py-4">
               <MdEmail className="inline" /> {email}
@@ -652,7 +652,7 @@ function EditUser() {
 
           <div
             id="kakao"
-            className="grid grid-cols-7 gap-x-2 text-sm xl:text-base"
+            className="grid grid-cols-7 gap-x-2 text-sm lg:text-base"
           >
             <div className="col-span-5 px-2 py-4">
               <RiKakaoTalkFill className="inline" />{" "}
@@ -680,7 +680,7 @@ function EditUser() {
           </div>
           <div
             id="marketing"
-            className="grid grid-cols-7 gap-x-2 text-sm xl:text-base"
+            className="grid grid-cols-7 gap-x-2 text-sm lg:text-base"
           >
             {userInfo.agreeYn === "Y" ? (
               <>
@@ -701,13 +701,13 @@ function EditUser() {
             ) : (
               <>
                 <div
-                  className="col-span-7 xl:col-span-5 px-2 py-4 hover:text-orange-500 hover:cursor-pointer"
+                  className="col-span-7 lg:col-span-5 px-2 py-4 hover:text-orange-500 hover:cursor-pointer"
                   onClick={e => setMarketingModal(true)}
                 >
                   <FaBellSlash className="inline" /> 알바선물의 다양한 정보를
                   받아보세요!
                 </div>
-                <div className="flex-col justify-center col-span-2 hidden xl:flex">
+                <div className="flex-col justify-center col-span-2 hidden lg:flex">
                   <button
                     className="p-2 bg-gray-100 hover:bg-gray-200 text-sm rounded"
                     onClick={e => setMarketingModal(true)}

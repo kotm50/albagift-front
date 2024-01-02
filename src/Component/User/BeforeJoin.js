@@ -72,8 +72,8 @@ function BeforeJoin(props) {
         >
           X
         </div>
-        <h2 className="text-xl p-2 xl:text-center">
-          환영합니다! <br className="xl:hidden" />
+        <h2 className="text-xl p-2 lg:text-center">
+          환영합니다! <br className="lg:hidden" />
           회원가입을 진행합니다
         </h2>
         <div className="w-full">

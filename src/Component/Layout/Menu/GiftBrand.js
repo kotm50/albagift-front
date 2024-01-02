@@ -43,14 +43,14 @@ function GiftBrand(props) {
   return (
     <div>
       {load ? (
-        <div className="container mx-auto text-lg flex flex-row flex-nowrap xl:flex-wrap gap-3 p-2 xl:max-h-72 overflow-auto giftCategoryMenu bg-indigo-100">
+        <div className="container mx-auto text-lg flex flex-row flex-nowrap lg:flex-wrap gap-3 p-2 lg:max-h-72 overflow-auto giftCategoryMenu bg-indigo-100">
           {brandList.map((brand, idx) => (
             <Link
               to={`/list/${props.cateNum}/${brand.brandCode}`}
               className={
                 String(brand.brandSeq) === props.brandNum
-                  ? "bg-blue-500 py-2 px-4 text-white giftcategory text-sm rounded-lg border xl:w-1/12"
-                  : "text-black bg-white py-2 px-4 hover:bg-blue-500 hover:text-white hover:drop-shadow-lg giftcategory text-sm rounded-lg border xl:w-1/12"
+                  ? "bg-blue-500 py-2 px-4 text-white giftcategory text-sm rounded-lg border lg:w-1/12"
+                  : "text-black bg-white py-2 px-4 hover:bg-blue-500 hover:text-white hover:drop-shadow-lg giftcategory text-sm rounded-lg border lg:w-1/12"
               }
               key={idx}
             >
@@ -68,8 +68,8 @@ function GiftBrand(props) {
           ))}
         </div>
       ) : (
-        <div className="container mx-auto text-lg flex flex-row flex-nowrap xl:flex-wrap gap-3 p-2 xl:max-h-72 overflow-auto giftCategoryMenu bg-indigo-100">
-          <div className="aniamte-pulse  bg-white py-2 px-4 giftcategory text-sm rounded-lg border xl:w-1/12">
+        <div className="container mx-auto text-lg flex flex-row flex-nowrap lg:flex-wrap gap-3 p-2 lg:max-h-72 overflow-auto giftCategoryMenu bg-indigo-100">
+          <div className="aniamte-pulse  bg-white py-2 px-4 giftcategory text-sm rounded-lg border lg:w-1/12">
             <div className="w-16 h-16 mx-auto p-1 rounded bg-slate-200 overflow-hidden"></div>
             <div className="w-full bg-slate-200 h-2 mt-1"></div>
           </div>

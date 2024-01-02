@@ -36,7 +36,7 @@ function MyMain() {
       <div className="border p-2 bg-white drop-shadow-lg mb-3">
         안녕하세요! <span className="font-neoextra">{user.userName}</span> 님
       </div>
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
         <div className="border p-2 bg-white drop-shadow-lg">
           <div>면접 본 횟수</div>
           <div>{meeting}회</div>

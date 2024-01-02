@@ -86,36 +86,36 @@ function Cert() {
         <div className="mx-auto bg-white certArea py-5">
           {gubun === "join" ? (
             <>
-              <h2 className="text-xl xl:text-2xl font-neoextra mb-3">
-                알바선물에 오신 것을 <br className="xl:hidden" />
+              <h2 className="text-xl lg:text-2xl font-neoextra mb-3">
+                알바선물에 오신 것을 <br className="lg:hidden" />
                 환영합니다!
               </h2>
-              <div className="text-sm xl:text-base font-neo mb-3">
-                원활한 이용을 위해 본인인증 후 <br className="xl:hidden" />
+              <div className="text-sm lg:text-base font-neo mb-3">
+                원활한 이용을 위해 본인인증 후 <br className="lg:hidden" />
                 회원가입을 진행합니다
               </div>
             </>
           ) : gubun === "find" ? (
             <>
-              <h2 className="text-xl xl:text-2xl font-neoextra mb-3">
+              <h2 className="text-xl lg:text-2xl font-neoextra mb-3">
                 알바선물 아이디 찾기
               </h2>
-              <div className="text-sm xl:text-base font-neo mb-3">
+              <div className="text-sm lg:text-base font-neo mb-3">
                 원활한 이용을 위해 본인인증을 해주세요
               </div>
             </>
           ) : gubun === "reco" ? (
             <>
-              <h2 className="text-xl xl:text-2xl font-neoextra mb-3">
+              <h2 className="text-xl lg:text-2xl font-neoextra mb-3">
                 알바선물 비밀번호 재설정
               </h2>
-              <div className="text-sm xl:text-base font-neo mb-3">
+              <div className="text-sm lg:text-base font-neo mb-3">
                 본인인증 후 비밀번호 재설정을 진행합니다
               </div>
             </>
           ) : null}
           {socialUser !== "" ? (
-            <div className="text-sm xl:text-base font-neo mb-3">
+            <div className="text-sm lg:text-base font-neo mb-3">
               최초 1회 진행 후 카카오톡 계정으로
               <br className="xl-hidden" /> 간편하게 로그인 가능합니다
             </div>
@@ -127,7 +127,7 @@ function Cert() {
               className="w-full drop-shadow-lg"
             />
           </div>
-          <div className="absolute z-20 w-64 xl:w-96 bottom-20 left-1/2 -translate-x-1/2 grid grid-cols-1 gap-y-3">
+          <div className="absolute z-20 w-64 lg:w-96 bottom-20 left-1/2 -translate-x-1/2 grid grid-cols-1 gap-y-3">
             <button
               className="py-3 bg-black hover:bg-stone-800 text-white w-full rounded-full"
               onClick={doCert}
@@ -153,16 +153,16 @@ function Cert() {
         <div className="mx-auto bg-white certArea py-5">
           {gubun === "join" ? (
             <>
-              <h2 className="text-xl xl:text-2xl font-neoextra mb-3">
-                알바선물에 오신 것을 <br className="xl:hidden" />
+              <h2 className="text-xl lg:text-2xl font-neoextra mb-3">
+                알바선물에 오신 것을 <br className="lg:hidden" />
                 환영합니다!
               </h2>
-              <div className="text-sm xl:text-base font-neo mb-3">
+              <div className="text-sm lg:text-base font-neo mb-3">
                 고객님께서는 이미 아래 계정으로 가입하셨습니다. <br />
                 비밀번호가 기억나지 않으시면 '비밀번호 찾기'를 진행해 주세요.
               </div>
               {socialUser !== "" ? (
-                <div className="text-sm xl:text-base font-neo mb-3">
+                <div className="text-sm lg:text-base font-neo mb-3">
                   간편로그인을 추가하시려면 로그인 후 정보수정에서
                   <br />
                   소셜계정을 등록해 주세요.
@@ -171,10 +171,10 @@ function Cert() {
             </>
           ) : gubun === "find" ? (
             <>
-              <h2 className="text-xl xl:text-2xl font-neoextra mb-3">
+              <h2 className="text-xl lg:text-2xl font-neoextra mb-3">
                 알바선물 아이디 찾기
               </h2>
-              <div className="text-sm xl:text-base font-neo mb-3">
+              <div className="text-sm lg:text-base font-neo mb-3">
                 고객님의 아이디 입니다. <br /> 로그인 또는 비밀번호 찾기를
                 진행해 주세요
               </div>
@@ -187,7 +187,7 @@ function Cert() {
               <span className="text-lg font-neoextra">{tid}</span>
             </div>
           </div>
-          <div className="absolute z-20 w-64 xl:w-96 bottom-20 left-1/2 -translate-x-1/2 grid grid-cols-1 gap-y-2">
+          <div className="absolute z-20 w-64 lg:w-96 bottom-20 left-1/2 -translate-x-1/2 grid grid-cols-1 gap-y-2">
             <button
               className="py-3 bg-blue-500 hover:bg-blue-700 text-white w-full rounded-full"
               onClick={e => navi("/login")}

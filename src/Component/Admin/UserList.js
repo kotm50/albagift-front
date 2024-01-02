@@ -431,7 +431,7 @@ function UserList() {
                   </div>
                 </div>
               </div>
-              <div className="grid grid-cols-1 xl:grid-cols-5 gap-2 mt-2 bg-white p-2 container mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-5 gap-2 mt-2 bg-white p-2 container mx-auto">
                 {users.map((user, idx) => (
                   <div
                     key={idx}
@@ -538,7 +538,7 @@ function UserList() {
       {selectedUsers.length > 0 && (
         <>
           <div className="fixed container bottom-0 left-1/2 -translate-x-1/2 bg-white p-3 rounded-t-xl drop-shadow-xl">
-            <div className="test-xl xl:text-2xl font-medium text-left">
+            <div className="test-xl lg:text-2xl font-medium text-left">
               포인트 지급(차감)대상
             </div>
             <div className="mt-2 flex flex-row flex-wrap gap-2">
@@ -552,7 +552,7 @@ function UserList() {
                 </div>
               ))}
             </div>
-            <div className="mt-2 bg-rose-50 p-2 grid grid-cols-1 xl:grid-cols-2 gap-2">
+            <div className="mt-2 bg-rose-50 p-2 grid grid-cols-1 lg:grid-cols-2 gap-2">
               <div className="grid grid-cols-3 gap-2">
                 <button
                   className="transition duration-150 ease-out p-2 bg-green-700 hover:bg-green-900 text-white"

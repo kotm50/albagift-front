@@ -135,6 +135,7 @@ function UserList() {
         setUsers(users);
       })
       .catch(e => {
+        console.log(e);
         setLoaded(true);
         confirmAlert({
           customUI: ({ onClose }) => {
@@ -219,7 +220,6 @@ function UserList() {
   };
 
   const checkUsers = (user, checked) => {
-    console.log(selectedUsersId);
     if (checked) {
       // 체크박스가 선택된 경우, 아이템을 배열에 추가
       setSelectedUsers([

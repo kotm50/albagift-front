@@ -158,7 +158,7 @@ function PointRequest() {
                 <AlertModal
                   onClose={onClose} // 닫기
                   title={"완료"} // 제목
-                  message={"등록했습니다"} // 내용
+                  message={res.data.message} // 내용
                   type={"alert"} // 타입 confirm, alert
                   yes={"확인"} // 확인버튼 제목
                   doIt={goHistory} // 확인시 실행할 함수

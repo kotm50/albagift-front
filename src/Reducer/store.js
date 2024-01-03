@@ -6,10 +6,12 @@ import { persistReducer } from "redux-persist";
 import thunk from "redux-thunk";
 import userSlice from "./userSlice";
 import modalSlice from "./modalSlice";
+import loginSlice from "./loginSlice";
 
 const reducers = combineReducers({
   user: userSlice,
   modal: modalSlice,
+  login: loginSlice,
 });
 
 const persistConfig = {

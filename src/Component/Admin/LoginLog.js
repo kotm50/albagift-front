@@ -89,7 +89,10 @@ function LoginLog() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        if (res.headers.authorization) {
+        if (
+          res.headers.authorization &&
+          user.accessToken !== res.headers.authorization
+        ) {
           dispatch(
             getNewToken({
               accessToken: res.headers.authorization,

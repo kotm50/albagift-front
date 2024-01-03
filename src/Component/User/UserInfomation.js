@@ -62,7 +62,7 @@ function UserInformation() {
       .post("/api/v1/user/get/point", null, {
         headers: { Authorization: user.accessToken },
       })
-      .then(res => {
+      .then(async res => {
         if (res.data.code === "E999") {
           logoutAlert(
             null,

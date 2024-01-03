@@ -1,24 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 
 import axios from "axios";
 import AlertModal from "../Layout/AlertModal";
+import { getNewToken } from "../../Reducer/userSlice";
 
 function Admin() {
+  const dispatch = useDispatch();
   const location = useLocation();
   const [loaded, setLoaded] = useState(false);
   let navi = useNavigate();
   const user = useSelector(state => state.user);
   useEffect(() => {
-    if (
-      user.accessToken === "" ||
-      user.accessToken === undefined ||
-      user.accessToken === null
-    ) {
+    if (!user.admin) {
       confirmAlert({
         customUI: ({ onClose }) => {
           return (
@@ -34,48 +32,12 @@ function Admin() {
         },
       });
     } else {
-      chkAdmin(user);
+      setLoaded(true);
     }
     //eslint-disable-next-line
   }, [location]);
 
   const goLogin = () => [navi("/login")];
-
-  const chkAdmin = async user => {
-    await axios
-      .post("/api/v1/user/rolechk", null, {
-        headers: { Authorization: user.accessToken },
-      })
-      .then(res => {
-        if (res.data.code !== "A100") {
-          confirmAlert({
-            customUI: ({ onClose }) => {
-              return (
-                <AlertModal
-                  onClose={onClose} // 닫기
-                  title={"오류"} // 제목
-                  message={
-                    "관리자 전용 페이지입니다, 메인으로 이동합니다\n관리자 계정으로 로그인 하세요"
-                  } // 내용
-                  type={"alert"} // 타입 confirm, alert
-                  yes={"확인"} // 확인버튼 제목
-                  doIt={goMain} // 확인시 실행할 함수
-                />
-              );
-            },
-          });
-        } else {
-          setLoaded(true);
-        }
-      })
-      .catch(e => {
-        console.log(e);
-      });
-  };
-
-  const goMain = () => {
-    navi("/");
-  };
 
   const resetGoods = async () => {
     await axios
@@ -83,6 +45,16 @@ function Admin() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
+        if (
+          res.headers.authorization &&
+          user.accessToken !== res.headers.authorization
+        ) {
+          dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
+        }
         if (res.data.code === "C000") {
           confirmAlert({
             customUI: ({ onClose }) => {

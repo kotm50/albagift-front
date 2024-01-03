@@ -6,6 +6,7 @@ import queryString from "query-string";
 
 import { useSelector, useDispatch } from "react-redux";
 import { clearUser, loginUser } from "../../Reducer/userSlice";
+import { saveId } from "../../Reducer/loginSlice";
 
 import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
@@ -20,6 +21,7 @@ function Login() {
   const inputPwdRef = useRef();
   let navi = useNavigate();
   const user = useSelector(state => state.user);
+  const loginId = useSelector(state => state.login);
   const dispatch = useDispatch();
   const [id, setId] = useState("");
   const [pwd, setPwd] = useState("");
@@ -34,9 +36,15 @@ function Login() {
   const [isTest, setIsTest] = useState(false);
 
   const [modal, setModal] = useState(false);
+  const [isSave, setIsSave] = useState(false);
 
   useEffect(() => {
     inputIdRef.current.focus();
+    console.log(loginId);
+    if (loginId.saveId !== "") {
+      setId(loginId.saveId);
+      setIsSave(true);
+    }
     if (user.accessToken !== "") {
       dispatch(clearUser());
     }
@@ -70,6 +78,11 @@ function Login() {
   };
   const login = async e => {
     e.preventDefault();
+    if (isSave) {
+      dispatch(saveId({ saveId: id }));
+    } else {
+      dispatch(saveId({ saveId: "" }));
+    }
     if (countOver) {
       confirmAlert({
         customUI: ({ onClose }) => {
@@ -374,7 +387,7 @@ function Login() {
             <input
               type="text"
               id="inputId"
-              autocapitalize="none"
+              autoCapitalize="none"
               className="border px-2 py-3 w-full rounded shadow-sm"
               value={id}
               onChange={e => setId(e.currentTarget.value)}
@@ -406,6 +419,21 @@ function Login() {
               {errMessage}
             </div>
           )}
+          <div className="text-left text-sm text-gray-500 pb-2 flex items-center">
+            <input
+              id="saveId"
+              type="checkbox"
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              checked={isSave}
+              onChange={e => setIsSave(!isSave)}
+            />
+            <label
+              htmlFor="saveId"
+              className="ml-1 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              아이디 저장
+            </label>
+          </div>
           <div className="text-center text-sm text-gray-500 border-b pb-2">
             <Link
               to="/beforejoin"

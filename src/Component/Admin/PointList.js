@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { getNewToken } from "../../Reducer/userSlice";
+import { clearUser, getNewToken } from "../../Reducer/userSlice";
 
 import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
@@ -16,6 +16,7 @@ import Loading from "../Layout/Loading";
 import Pagenate from "../Layout/Pagenate";
 import AlertModal from "../Layout/AlertModal";
 import Sorry from "../doc/Sorry";
+import { logoutAlert } from "../LogoutUtil";
 
 function PointList() {
   const companyRef = useRef();
@@ -202,13 +203,6 @@ function PointList() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        if (res.headers.authorization) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         if (res.data.code === "C000") {
           confirmAlert({
             customUI: ({ onClose }) => {
@@ -223,13 +217,19 @@ function PointList() {
               );
             },
           });
-          if (res.headers.authorization === user.accessToken) {
-            loadList(page, keyword, startDate, endDate, select, agree, sType);
-          }
-          setPoint(0);
-          setSelectedDocs([]);
-          setSelectedDocsId([]);
         }
+        if (res.headers.authorization === user.accessToken) {
+          loadList(page, keyword, startDate, endDate, select, agree, sType);
+        } else {
+          dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
+        }
+        setPoint(0);
+        setSelectedDocs([]);
+        setSelectedDocsId([]);
       })
       .catch(e => {
         console.log(e);
@@ -269,12 +269,28 @@ function PointList() {
         },
       })
       .then(res => {
-        if (res.headers.authorization) {
+        if (
+          res.headers.authorization &&
+          user.accessToken !== res.headers.authorization
+        ) {
           dispatch(
             getNewToken({
               accessToken: res.headers.authorization,
             })
           );
+        }
+
+        if (res.data.code === "E999") {
+          logoutAlert(
+            null,
+            null,
+            dispatch,
+            clearUser,
+            navi,
+            user,
+            res.data.message
+          );
+          return false;
         }
         setLoaded(true);
         if (res.data.code === "C000") {
@@ -283,12 +299,10 @@ function PointList() {
           const pagenate = generatePaginationArray(p, totalP);
           setPagenate(pagenate);
         }
-        if (res.data.postList.length === 0) {
-          return false;
-        }
         setList(res.data.postList ?? [{ postId: "없음" }]);
       })
       .catch(e => {
+        console.log(e);
         setLoaded(true);
         confirmAlert({
           customUI: ({ onClose }) => {

@@ -39,11 +39,12 @@ function Login() {
   const [isSave, setIsSave] = useState(false);
 
   useEffect(() => {
-    inputIdRef.current.focus();
-    console.log(loginId);
     if (loginId.saveId !== "") {
       setId(loginId.saveId);
       setIsSave(true);
+      inputPwdRef.current.focus();
+    } else {
+      inputIdRef.current.focus();
     }
     if (user.accessToken !== "") {
       dispatch(clearUser());

@@ -225,8 +225,8 @@ function Detail() {
         description: goods.srchKeyword,
         imageUrl: goods.goodsImgS,
         link: {
-          mobileWebUrl: `https://albagift.shop/detail/${goods.goodsCode}`,
-          webUrl: `https://albagift.shop/detail/${goods.goodsCode}`,
+          mobileWebUrl: `https://albagift.com/detail/${goods.goodsCode}`,
+          webUrl: `https://albagift.com/detail/${goods.goodsCode}`,
         },
       },
       buttons: [

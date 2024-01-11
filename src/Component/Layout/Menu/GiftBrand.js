@@ -11,7 +11,11 @@ function GiftBrand(props) {
 
   useEffect(() => {
     if (props.category === "") {
+      setLoad(false);
       setBrandList([]);
+      setTimeout(() => {
+        setLoad(true);
+      }, 100);
     } else {
       getBrandList(props.category);
     }
@@ -65,7 +69,9 @@ function GiftBrand(props) {
               ))}
             </div>
           ) : (
-            <div className="text-center">브랜드가 없습니다.</div>
+            <div className="text-center">
+              브랜드가 없습니다. 카테고리를 선택해 주세요
+            </div>
           )}
         </>
       ) : (

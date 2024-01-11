@@ -1,51 +1,37 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
-export default function KakaoTest() {
-  const [tabCount, setTabCount] = useState(0);
+function KakaoTest() {
+  const user = useSelector(state => state.user);
+  const [selectedFile, setSelectedFile] = useState(null);
 
-  useEffect(() => {
-    // 탭 카운트 초기화
-    const updateTabCount = () => {
-      const currentCount = parseInt(localStorage.getItem("tabCount") || "0");
-      setTabCount(currentCount);
-    };
+  const handleFileSelect = event => {
+    setSelectedFile(event.target.files[0]);
+  };
 
-    updateTabCount();
+  const handleUpload = async () => {
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+    await axios
+      .post("/api/v1/board/image/test", formData, {
+        headers: { Authorization: user.accessToken },
+      })
+      .then(res => console.log("성공?", res))
+      .catch(e => console.log("실패", e));
+  };
 
-    // 탭이 추가될 때 카운터 증가
-    const incrementTabCount = () => {
-      const newCount = parseInt(localStorage.getItem("tabCount") || "0") + 1;
-      localStorage.setItem("tabCount", newCount);
-    };
-
-    incrementTabCount();
-
-    // 탭이 닫힐 때 카운터 감소
-    const decrementTabCount = () => {
-      const newCount = Math.max(
-        parseInt(localStorage.getItem("tabCount") || "0") - 1,
-        0
-      );
-      localStorage.setItem("tabCount", newCount);
-    };
-
-    // unload 이벤트 리스너 추가
-    window.addEventListener("beforeunload", decrementTabCount);
-
-    // storage 이벤트 리스너 추가
-    const handleStorageChange = event => {
-      if (event.key === "tabCount") {
-        updateTabCount();
-      }
-    };
-    window.addEventListener("storage", handleStorageChange);
-
-    // 이벤트 리스너 제거
-    return () => {
-      window.removeEventListener("beforeunload", decrementTabCount);
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []);
-
-  return <div>현재 열린 탭 수: {tabCount}</div>;
+  return (
+    <div className="mx-auto container">
+      <input type="file" accept="image/*" onChange={handleFileSelect} />
+      <button onClick={handleUpload} className="bg-indigo-500 text-white p-2">
+        업로드
+      </button>
+    </div>
+  );
 }
+
+export default KakaoTest;

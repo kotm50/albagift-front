@@ -1,55 +1,84 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 import { category } from "../../Data/Category";
-import { AiFillHome } from "react-icons/ai";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { MdClose } from "react-icons/md";
+
 import CategoryIcons from "./CategoryIcons";
+import GiftBrand from "./GiftBrand";
 
 function GiftCategory(props) {
+  const thisLocation = useLocation();
+  const [menuOn, setMenuOn] = useState(false);
+  const [hover, setHover] = useState("");
+  useEffect(() => {
+    if (thisLocation.pathname.split("/")[2] !== "etc") {
+      setHover(
+        thisLocation.pathname.split("/")[2]
+          ? Number(thisLocation.pathname.split("/")[2])
+          : ""
+      );
+    } else {
+      setHover("etc");
+    }
+    setMenuOn(false);
+  }, [thisLocation]);
+
+  useEffect(() => {
+    if (thisLocation.pathname.split("/")[2] !== "etc") {
+      setHover(
+        thisLocation.pathname.split("/")[2]
+          ? Number(thisLocation.pathname.split("/")[2])
+          : ""
+      );
+    } else {
+      setHover("etc");
+    }
+    //eslint-disable-next-line
+  }, [menuOn]);
   return (
     <>
-      <div className="flex flex-row flex-nowrap">
-        <Link
-          to="/"
-          className="bg-teal-500 text-white  p-2 hover:bg-teal-100 hover:text-black giftcategory"
+      <div className="flex flex-row flex-nowrap relative gap-x-5">
+        <button
+          className="bg-skybluehover text-white lg:w-48 px-4 py-2 flex flex-row justify-start gap-x-2 rounded-t-lg"
+          onClick={() => setMenuOn(!menuOn)}
         >
-          <div>
-            <AiFillHome size={24} />
-          </div>
+          {menuOn ? <MdClose size={24} /> : <GiHamburgerMenu size={24} />} 선물
+          카테고리
+        </button>
+        <Link to="/employ" className="p-2 text-center text-redorange">
+          채용게시판
         </Link>
-        <div
-          id="touch-target"
-          className="container mx-auto flex flex-row flex-nowrap overflow-x-auto giftCategoryMenu"
-        >
-          <Link
-            to="/list"
-            className={
-              props.path === "/list"
-                ? props.cateno
-                  ? "bg-white text-gray-500 p-2 hover:bg-teal-100 hover:text-black giftcategory"
-                  : "bg-teal-50 text-gray-500 border-b-2 border-teal-500 p-2 hover:bg-teal-100 hover:text-black giftcategory"
-                : "bg-white text-gray-500 p-2 hover:bg-teal-100 hover:text-black giftcategory"
-            }
+        {menuOn ? (
+          <div
+            className="absolute top-10 left-0 w-full h-fit z-50 bg-blue-100 border-t border-skybluehover flex flex-row justify-start"
+            onMouseLeave={() => setHover(0)}
           >
-            <div>전체상품</div>
-          </Link>
-          {category.map(cat => (
-            <Link
-              to={`/list/${cat.category1Seq}`}
-              className={
-                Number(props.cateno) === cat.category1Seq
-                  ? "bg-teal-50 text-gray-500 p-2 border-b-2 border-teal-500 hover:bg-teal-100 hover:text-black giftcategory"
-                  : "bg-white text-gray-500 p-2 hover:bg-teal-100 hover:text-black giftcategory"
-              }
-              key={cat.category1Seq}
-            >
-              <div className="flex flex-row flex-nowrap gap-1">
-                <CategoryIcons num={cat.category1Seq} />
-                {cat.category1Name}
-              </div>
-            </Link>
-          ))}
-        </div>
+            <div className="w-full lg:w-48 grid grid-cols-1 divide-y divide-skyblue bg-skybluehover text-white border-t border-skyblue">
+              {category.map(cat => (
+                <Link
+                  to={`/list/${cat.category1Seq}`}
+                  className={`${
+                    hover === cat.category1Seq
+                      ? "bg-blue-100 text-skybluehover"
+                      : ""
+                  } py-3 px-4`}
+                  key={cat.category1Seq}
+                  onMouseOver={() => setHover(cat.category1Seq)}
+                >
+                  <div className="flex flex-row flex-nowrap gap-x-2">
+                    <CategoryIcons num={cat.category1Seq} />
+                    {cat.category1Name}
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <div className="p-4 flex-1 h-full bg-blue-100 hidden lg:block">
+              <GiftBrand category={hover} />
+            </div>
+          </div>
+        ) : null}
       </div>
     </>
   );

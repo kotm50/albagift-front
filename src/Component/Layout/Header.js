@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import GiftCategory from "./Menu/GiftCategory";
-import GiftBrand from "./Menu/GiftBrand";
 
 import HeaderTop from "./HeaderTop";
+import GiftBrandTop from "./Menu/GiftBrandTop";
 
 function Header() {
   const [cateNum, setCateNum] = useState("");
@@ -37,18 +37,18 @@ function Header() {
       {!isPromo ? (
         <>
           <HeaderTop />
-          <div className="w-full border-b border-teal-500 bg-white">
+          <div className="w-full border-b border-blue-500 bg-white">
             <div className="lg:container mx-auto">
               <GiftCategory cateno={cateNum} path={thisLocation.pathname} />
             </div>
           </div>
           {loadBrand && (
-            <div className="bg-indigo-100 w-full">
+            <div className="bg-blue-100 w-full block lg:hidden">
               <div className="container mx-auto">
-                <GiftBrand cateNum={cateNum} />
+                <GiftBrandTop cateNum={cateNum} />
               </div>
             </div>
-          )}{" "}
+          )}
         </>
       ) : null}
     </>

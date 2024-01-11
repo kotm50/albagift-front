@@ -52,6 +52,16 @@ pre {
   height:150px!important;
 }
 
+
+.employment .ql-container {
+  height:480px!important;
+  background-color:white;
+}
+
+.employment .ql-editor {
+  height:480px!important;
+}
+
 .blurred-editor .ql-toolbar{
   display: none;
 }

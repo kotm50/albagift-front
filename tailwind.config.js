@@ -3,6 +3,11 @@ module.exports = {
   content: ["./src/**/*.{html,js}"],
   theme: {
     extend: {
+      colors: {
+        skyblue: "#3b82f6",
+        skybluehover: "#0070ff",
+        redorange: "#ff7139",
+      },
       keyframes: {
         wiggle: {
           "0%, 100%": { transform: "rotate(-1deg)" },

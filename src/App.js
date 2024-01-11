@@ -54,6 +54,9 @@ import Renew from "./Component/Mall/Renew";
 import AdminPwd from "./Component/Admin/AdminPwd";
 import UserDetail from "./Component/Admin/UserDetail";
 import MobileFooter from "./Component/Layout/MobileFooter";
+import NewMain from "./Component/NewMain";
+import Employment from "./Component/Employ/Employment";
+import AddEmploy from "./Component/Employ/AddEmploy";
 //import MyMain from "./Component/User/Mypage/MyMain";
 
 function App() {
@@ -123,6 +126,7 @@ function App() {
       >
         <Routes>
           <Route path="/" element={<Main />} />
+          <Route path="/new" element={<NewMain />} />
           <Route path="/attendance" element={<Attendance />} />
           <Route path="/renew" element={<Renew />} />
           <Route path="/promo" element={<Promo />} />
@@ -166,6 +170,8 @@ function App() {
           </Route>
           <Route path="/certification" element={<Certification />} />
           <Route path="/cert" element={<Cert />} />
+          <Route path="/employ" element={<Employment />} />
+          <Route path="/addemploy" element={<AddEmploy />} />
         </Routes>
       </div>
       <MobileFooter />

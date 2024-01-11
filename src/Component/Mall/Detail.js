@@ -67,13 +67,15 @@ function Detail() {
   };
 
   const contentForm = c => {
+    // URL을 찾기 위한 수정된 정규식
     const regexLink =
-      /(^|[^\w/])(https?:\/\/[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi;
+      /(\bhttps?:\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gi;
+
     const regexParentheses = /([({[])(.*?)([)}\]])/g;
 
     let contentText = c;
 
-    // Process parentheses first
+    // 괄호 처리
     contentText = contentText.replace(
       regexParentheses,
       (match, open, content, close) => {
@@ -83,10 +85,10 @@ function Detail() {
 
     let contentWB = contentText.replace(/(?:\r\n|\r|\n)/g, " <br />");
 
-    // Replace links
+    // 링크 대체
     let replacedText = contentWB.replace(
       regexLink,
-      '<a href="$2" rel="noopener noreferrer" class="text-indigo-500 hover:cursor-pointer hover:text-indigo-700 hover:border-b-2 border-indigo-700">$2</a>'
+      '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-indigo-500 hover:cursor-pointer hover:text-indigo-700 hover:border-b-2 border-indigo-700">$1</a>'
     );
 
     setContent(replacedText);
@@ -357,10 +359,7 @@ function Detail() {
               <div
                 className="lg:w-5/6 mx-auto leading-7"
                 dangerouslySetInnerHTML={{
-                  __html: sanitizer(content).replace(
-                    /href/g,
-                    "target='_blank' href"
-                  ),
+                  __html: sanitizer(content, { ADD_ATTR: ["target"] }),
                 }}
               />
             </div>

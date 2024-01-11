@@ -16,7 +16,7 @@ function UserSection() {
         </Link>
         <img
           src={coin}
-          className="w-20 h-auto lg:w-36 absolute -right-3 lg:right-2 top-1/2 -translate-y-1/2 z-50 drop-shadow-lg hover:scale-110 transition-all duration-150"
+          className="w-20 h-auto lg:w-36 absolute -right-3 lg:right-2 top-1/2 -translate-y-1/2 z-40 drop-shadow-lg hover:scale-110 transition-all duration-150"
           alt="코인"
         />
         <div className="absolute hidden lg:block top-1/2 -translate-y-1/2 right-0 translate-x-1/3 w-40 h-40 lg:h-48 lg:w-48 bg-violet-500 rounded-full z-0"></div>
@@ -30,7 +30,7 @@ function UserSection() {
         </Link>
         <img
           src={calendar}
-          className="w-20 h-auto lg:w-36 absolute -right-0 lg:right-2 top-1/2 -translate-y-1/2 z-50 drop-shadow-lg hover:scale-110 transition-all duration-150"
+          className="w-20 h-auto lg:w-36 absolute -right-0 lg:right-2 top-1/2 -translate-y-1/2 z-40 drop-shadow-lg hover:scale-110 transition-all duration-150"
           alt="출석체크"
         />
         <div className="absolute hidden lg:block top-1/2 -translate-y-1/2 right-0 translate-x-1/3 w-40 h-40 lg:h-48 lg:w-48 bg-white rounded-full z-0"></div>
@@ -47,7 +47,7 @@ function UserSection() {
         </Link>
         <img
           src={coin}
-          className="w-20 h-auto lg:w-36 absolute -right-3 lg:right-2 top-1/2 -translate-y-1/2 z-50 drop-shadow-lg hover:scale-110 transition-all duration-150"
+          className="w-20 h-auto lg:w-36 absolute -right-3 lg:right-2 top-1/2 -translate-y-1/2 z-40 drop-shadow-lg hover:scale-110 transition-all duration-150"
           alt="코인"
         />
         <div className="absolute hidden lg:block top-1/2 -translate-y-1/2 right-0 translate-x-1/3 w-40 h-40 lg:h-48 lg:w-48 bg-violet-500 rounded-full z-0"></div>
@@ -61,7 +61,7 @@ function UserSection() {
         </Link>
         <img
           src={calendar}
-          className="w-20 h-auto lg:w-36 absolute -right-0 lg:right-2 top-1/2 -translate-y-1/2 z-50 drop-shadow-lg hover:scale-110 transition-all duration-150"
+          className="w-20 h-auto lg:w-36 absolute -right-0 lg:right-2 top-1/2 -translate-y-1/2 z-40 drop-shadow-lg hover:scale-110 transition-all duration-150"
           alt="출석체크"
         />
         <div className="absolute hidden lg:block top-1/2 -translate-y-1/2 right-0 translate-x-1/3 w-40 h-40 lg:h-48 lg:w-48 bg-white rounded-full z-0"></div>

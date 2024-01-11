@@ -233,8 +233,8 @@ function Detail() {
         {
           title: "상품보러가기",
           link: {
-            mobileWebUrl: `https://albagift.shop/detail/${goods.goodsCode}`,
-            webUrl: `https://albagift.shop/detail/${goods.goodsCode}`,
+            mobileWebUrl: `https://albagift.com/detail/${goods.goodsCode}`,
+            webUrl: `https://albagift.com/detail/${goods.goodsCode}`,
           },
         },
       ],

@@ -781,10 +781,23 @@ function JoinBack() {
           <div id="marketing" className="grid grid-cols-7 gap-1">
             <label
               htmlFor="agreeMarketing"
-              className="text-sm text-left flex flex-col justify-center pl-2 py-2 col-span-6 text-stone-700"
+              className="text-sm text-left flex flex-col justify-center pl-2 py-2 col-span-5 text-stone-700"
             >
-              광고성 정보수신에 동의합니다 (선택)
+              마케팅 및 이벤트 정보수신에 동의합니다 (선택)
             </label>
+
+            <div>
+              <button
+                className="text-blue-500 hover:text-violet-700 p-2 text-xs w-full"
+                onClick={e => {
+                  e.preventDefault();
+                  setModalCount(5);
+                  setModalOn(true);
+                }}
+              >
+                상세보기
+              </button>
+            </div>
             <div className="flex flex-col justify-center">
               <input
                 type="checkbox"

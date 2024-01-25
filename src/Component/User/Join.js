@@ -71,6 +71,7 @@ function Join() {
           );
         },
       });
+      navi("/");
     }
     //eslint-disable-next-line
   }, []);
@@ -144,6 +145,21 @@ function Join() {
                   type={"alert"} // 타입 confirm, alert
                   yes={"확인"} // 확인버튼 제목
                   doIt={goLogin} // 확인시 실행할 함수
+                />
+              );
+            },
+          });
+        } else {
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"가입실패"} // 제목
+                  message={res.data.message} // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                  doIt={goMain} // 확인시 실행할 함수
                 />
               );
             },
@@ -342,7 +358,7 @@ function Join() {
               <input
                 type="text"
                 id="inputId"
-                autocapitalize="none"
+                autoCapitalize="none"
                 className={`border ${
                   !correctId || (!dupId ? "lg:border-red-500" : undefined)
                 } lg:border-0 p-2 w-full text-sm`}
@@ -635,7 +651,7 @@ function Join() {
                 htmlFor="agreeMarketing"
                 className="text-sm text-left flex flex-col justify-center pl-2 py-2 col-span-6 text-stone-700"
               >
-                광고성 정보수신에 동의합니다 (선택)
+                마케팅 및 이벤트 정보수신에 동의합니다 (선택)
               </label>
               <div className="flex flex-col justify-center">
                 <input

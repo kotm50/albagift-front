@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+import { useSelector } from "react-redux";
 
 import ReactQuill from "react-quill";
 import { modulesB } from "../Layout/QuillModule";
@@ -6,20 +7,25 @@ import "react-quill/dist/quill.snow.css";
 
 import PopupDom from "../Kakao/PopupDom";
 import PopupPostCode from "../Kakao/PopupPostCode";
+import axios from "axios";
 
 function AddEmploy() {
+  const user = useSelector(state => state.user);
   const [title, setTitle] = useState(""); //제목
+  const [hireEnd, setHireEnd] = useState(""); // 채용종료일
+  const [totalApply, setTotalApply] = useState(""); // 채용종료일
   const [mainAddr, setMainAddr] = useState(""); // 근무지주소
   const [day, setDay] = useState(""); // 근무요일
-  const [start, setStart] = useState(""); // 근무시작
-  const [end, setEnd] = useState(""); //근무종료
+  const [workTime, setWorkTime] = useState(""); // 근무시간
   const [point1, setPoint1] = useState(""); //지원시 포인트
   const [point2, setPoint2] = useState(""); //면접시 포인트
   const [content, setContent] = useState(""); //업무상세내용
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [preview, setPreview] = useState(null);
+
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [previews, setPreviews] = useState([]);
   // 팝업창 상태 관리
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const fileInputRef = useRef(null);
 
   // 팝업창 열기
   const openPostCode = () => {
@@ -31,59 +37,86 @@ function AddEmploy() {
     setIsPopupOpen(false);
   };
 
-  const timeChk = (event, type) => {
-    const inputText = event.target.value;
-
-    // 입력창의 글자 수가 4글자 이상인지 확인
-    if (inputText.length >= 4) {
-      // 입력 내용이 정확히 4글자이고 모두 숫자인 경우
-      if (inputText.length === 4 && /^\d{4}$/.test(inputText)) {
-        // ":"을 중간에 넣어 반환
-        if (type === 0) {
-          setStart(inputText.substring(0, 2) + ":" + inputText.substring(2));
-        } else if (type === 1) {
-          setEnd(inputText.substring(0, 2) + ":" + inputText.substring(2));
-        }
-      }
-      // 입력 내용이 5글자이고, 3번째 글자가 ":"이 아닌 경우
-      else if (inputText.length === 5 && inputText.charAt(2) !== ":") {
-        // 경고창을 띄우고 입력창 초기화
-        alert("양식이 잘못되었습니다 다시 입력하세요");
-        if (type === 0) {
-          setStart("");
-        } else if (type === 1) {
-          setEnd("");
-        }
-      }
-    }
-  };
-
   const handleFileSelect = event => {
-    console.log(event.target.files[0]);
-    if (event.target.files[0] === undefined) {
-      setSelectedFile(null);
-      setPreview(null);
-      return false;
+    const files = event.target.files;
+
+    // 파일 선택 취소 처리
+    if (!files || files.length === 0) {
+      setSelectedFiles([]);
+      setPreviews([]);
+      return;
     }
-    const file = event.target.files[0];
-    setSelectedFile(file);
-    if (file) {
+
+    // 파일 수 제한 검사
+    if (files.length > 5) {
+      alert("최대 5장까지만 등록 가능합니다\n확인 후 다시 시도해 주세요");
+      return;
+    }
+
+    // FileList 객체를 배열로 변환
+    const filesArray = Array.from(files);
+    setSelectedFiles(filesArray);
+
+    // 미리보기 생성
+    const updatedPreviews = [];
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
       const reader = new FileReader();
       reader.onload = e => {
-        setPreview(e.target.result); // 이미지를 Base64 문자열로 변환
+        updatedPreviews.push(e.target.result);
+        // 모든 파일에 대한 미리보기가 준비되면 상태 업데이트
+        if (updatedPreviews.length === files.length) {
+          setPreviews(updatedPreviews);
+        }
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const saveIt = () => {
-    console.log(title);
-    const formData = new FormData();
-    formData.append("file", selectedFile);
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
+  const saveIt = async () => {
+    try {
+      const data = {
+        title: title,
+        compAddr: mainAddr,
+        workDay: day,
+        workTime: workTime,
+        applyPoint: point1,
+        intvPoint: point2,
+        content: content,
+        totalApplicants: totalApply,
+        postingEndDate: hireEnd,
+      };
+      const formData = new FormData();
+      selectedFiles.forEach((file, idx) => {
+        formData.append(`files`, file);
+      });
+
+      formData.append(
+        "job",
+        new Blob([JSON.stringify(data)], { type: "application/json" })
+      );
+
+      const response = await axios.post(
+        "/api/v1/board/add/job/post",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: user.accessToken,
+          },
+        }
+      );
+      console.log(response);
+      if (response.data.code === "C000") {
+        setSelectedFiles([]);
+        setPreviews([]);
+        fileInputRef.current.value = "";
+      }
+    } catch (error) {
+      console.error("에러", error);
     }
   };
+
   return (
     <div className="container mx-auto my-10 p-2">
       <h2 className="text-2xl lg:text-4xl text-center mb-2 font-neoextra">
@@ -105,6 +138,40 @@ function AddEmploy() {
                 placeholder="공고제목을 입력하세요"
                 value={title}
                 onChange={e => setTitle(e.currentTarget.value)}
+              />
+            </div>
+          </div>
+          <div
+            id="hireEnd"
+            className="flex justify-start flex-wrap border-x lg:border-x-0"
+          >
+            <div className="w-full lg:w-[20%] px-4 lg:py-6 py-2 font-neoextra truncate break-keep text-xs lg:text-lg lg:text-right bg-gray-100">
+              채용종료일
+            </div>
+            <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-lg font-neo lg:p-4">
+              <input
+                type="date"
+                className="focus:bg-blue-100 py-2 px-4 border-b w-full"
+                placeholder="채용 종료일을 입력하세요"
+                value={hireEnd}
+                onChange={e => setHireEnd(e.currentTarget.value)}
+              />
+            </div>
+          </div>
+          <div
+            id="hireCount"
+            className="flex justify-start flex-wrap border-x lg:border-x-0"
+          >
+            <div className="w-full lg:w-[20%] px-4 lg:py-6 py-2 font-neoextra truncate break-keep text-xs lg:text-lg lg:text-right bg-gray-100">
+              채용 인원
+            </div>
+            <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-lg font-neo lg:p-4">
+              <input
+                type="text"
+                className="focus:bg-blue-100 py-2 px-4 border-b w-full"
+                placeholder="채용인원을 입력하세요"
+                value={totalApply}
+                onChange={e => setTotalApply(e.currentTarget.value)}
               />
             </div>
           </div>
@@ -168,23 +235,9 @@ function AddEmploy() {
               <input
                 type="text"
                 className="focus:bg-blue-100 py-2 px-4 border-b w-full"
-                placeholder="시작시간(09:00, 10:00 등)"
-                value={start}
-                onChange={e => setStart(e.currentTarget.value)}
-                onBlur={e => timeChk(e, 0)}
-                maxLength="5"
-              />
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                ~
-              </div>
-              <input
-                type="text"
-                className="focus:bg-blue-100 py-2 px-4 border-b w-full"
-                placeholder="종료시간(14:00, 18:00 등)"
-                value={end}
-                onChange={e => setEnd(e.currentTarget.value)}
-                onBlur={e => timeChk(e, 1)}
-                maxLength="5"
+                placeholder="예시) 9시 ~ 18시, 5시간 근무 등"
+                value={workTime}
+                onChange={e => setWorkTime(e.currentTarget.value)}
               />
             </div>
           </div>
@@ -227,34 +280,58 @@ function AddEmploy() {
             className="flex justify-start flex-wrap border-x lg:border-x-0"
           >
             <div className="w-full lg:w-[20%] px-4 lg:py-6 py-2 font-neoextra truncate break-keep text-xs lg:text-lg lg:text-right bg-gray-100">
-              내부사진
+              사진 올리기
             </div>
             <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-lg font-neo lg:px-4 lg:py-6">
-              <input type="file" accept="image/*" onChange={handleFileSelect} />
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleFileSelect}
+              />
+              최대 3장까지 등록 가능합니다
             </div>
           </div>
-          {preview && (
-            <div
-              id="photopreview"
-              className="flex justify-start flex-wrap border-x lg:border-x-0"
-            >
-              <div className="w-full lg:w-[20%] px-4 lg:py-6 py-2 font-neoextra truncate break-keep text-xs lg:text-lg lg:text-right bg-gray-100">
-                미리보기
-              </div>
-              <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-sm font-neo lg:px-4 lg:py-6">
-                마우스 우클릭 후{" "}
-                <span className="font-neoextra text-rose-500">
-                  '새 탭에서 이미지 열기'
-                </span>
-                를 선택하시면 원본 크기로 확인 가능합니다
-                <img
-                  src={preview}
-                  alt="Preview"
-                  style={{ width: "auto", height: "120px" }}
-                />
-              </div>
+          <div
+            id="photopreview"
+            className="flex justify-start flex-wrap border-x lg:border-x-0"
+          >
+            <div className="w-full lg:w-[20%] px-4 lg:py-6 py-2 font-neoextra truncate break-keep text-xs lg:text-lg lg:text-right bg-gray-100">
+              미리보기
             </div>
-          )}
+            <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-lg font-neo lg:px-4 lg:py-6">
+              {previews.length > 0 ? (
+                <>
+                  <div className="hidden lg:block text-sm mb-2">
+                    마우스 오른쪽 버튼을 누르고{" "}
+                    <span className="text-rose-500">'새 탭으로 열기'</span>를
+                    선택하시면 원본 이미지를 확인 하실 수 있습니다
+                  </div>
+                  <div className="lg:hidden text-sm mb-2">
+                    이미지를 꾹 누르고
+                    <span className="text-rose-500">'새 탭으로 열기'</span>를
+                    선택하시면 원본 이미지를 확인 하실 수 있습니다
+                  </div>
+                  <div className="flex flex-row justify-start gap-x-2 w-full flex-wrap">
+                    {previews.map((preview, index) => (
+                      <img
+                        key={index}
+                        src={preview}
+                        alt="Preview"
+                        style={{
+                          width: "auto",
+                          height: "120px",
+                          maxWidth: "240px",
+                          minWidth: "120px",
+                        }}
+                      />
+                    ))}
+                  </div>
+                </>
+              ) : null}
+            </div>
+          </div>
           <div
             id="workcontent"
             className="flex justify-start flex-wrap border-x lg:border-x-0"

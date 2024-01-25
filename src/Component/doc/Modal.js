@@ -4,6 +4,7 @@ import Privacy from "./Privacy";
 import Terms from "./Terms";
 import RefusalEmail from "./RefusalEmail";
 import Privacy2 from "./Privacy2";
+import Marketing from "./Marketing";
 
 function Modal(props) {
   let domain = window.location.hostname;
@@ -30,6 +31,8 @@ function Modal(props) {
                 ? "E-Mail 무단수집 거부"
                 : props.modalCount === 4
                 ? "개인정보 수집 이용 동의"
+                : props.modalCount === 5
+                ? "마케팅 정보 수신 동의"
                 : null}
             </h3>
             <div className="relative p-2 lg:p-6 flex-auto overflow-y-auto">
@@ -50,6 +53,11 @@ function Modal(props) {
                 />
               ) : props.modalCount === 4 ? (
                 <Privacy2
+                  domainName={domainName}
+                  domainExtension={domainExtension}
+                />
+              ) : props.modalCount === 5 ? (
+                <Marketing
                   domainName={domainName}
                   domainExtension={domainExtension}
                 />

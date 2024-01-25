@@ -45,6 +45,12 @@ function Detail() {
     getGoods();
     //eslint-disable-next-line
   }, [location]);
+  const isMobileDevice = () => {
+    return (
+      typeof window.orientation !== "undefined" ||
+      navigator.userAgent.indexOf("IEMobile") !== -1
+    );
+  };
 
   const getGoods = async () => {
     setImgLoaded(false);
@@ -60,6 +66,9 @@ function Detail() {
         }
         setGoods(res.data.goods);
         contentForm(res.data.goods.content);
+        if (isMobileDevice()) {
+          window.scrollTo(0, 560);
+        }
       })
       .catch(e => {
         console.log(e);

@@ -1,33 +1,33 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React from "react";
 import axios from "axios";
 
 function KakaoTest() {
-  const user = useSelector(state => state.user);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const doCert = () => {
+    window.open(
+      "/certification",
+      "본인인증팝업",
+      "toolbar=no, width=480, height=900, directories=no, status=no, scrollorbars=no, resizable=no"
+    );
 
-  const handleFileSelect = event => {
-    setSelectedFile(event.target.files[0]);
+    window.parentCallback = d => {
+      certToBack(d);
+    };
   };
 
-  const handleUpload = async () => {
-    const formData = new FormData();
-    formData.append("file", selectedFile);
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
+  const certToBack = async d => {
+    let data = d;
+    //data = {token, enc, int, gubun, id, email}
     await axios
-      .post("/api/v1/board/image/test", formData, {
-        headers: { Authorization: user.accessToken },
+      .post("/api/v1/user/nice/dec/result", data)
+      .then(res => {
+        console.log(res);
       })
-      .then(res => console.log("성공?", res))
-      .catch(e => console.log("실패", e));
+      .catch(e => console.log(e));
   };
 
   return (
     <div className="mx-auto container">
-      <input type="file" accept="image/*" onChange={handleFileSelect} />
-      <button onClick={handleUpload} className="bg-indigo-500 text-white p-2">
+      <button onClick={doCert} className="bg-indigo-500 text-white p-2">
         업로드
       </button>
     </div>

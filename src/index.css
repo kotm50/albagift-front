@@ -3,6 +3,29 @@
 @tailwind utilities;
 
 @import url('https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css');
+@font-face {
+  font-family: 'PyeongChangPeace';
+  font-weight: 300;
+  font-style: normal;
+  src: url('https://cdn.jsdelivr.net/gh/webfontworld/PyeongChang/PyeongChangPeace-Light.eot');
+  src: url('https://cdn.jsdelivr.net/gh/webfontworld/PyeongChang/PyeongChangPeace-Light.eot?#iefix') format('embedded-opentype'),
+      url('https://cdn.jsdelivr.net/gh/webfontworld/PyeongChang/PyeongChangPeace-Light.woff2') format('woff2'),
+      url('https://cdn.jsdelivr.net/gh/webfontworld/PyeongChang/PyeongChangPeace-Light.woff') format('woff'),
+      url('https://cdn.jsdelivr.net/gh/webfontworld/PyeongChang/PyeongChangPeace-Light.ttf') format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PyeongChangPeace';
+  font-weight: 700;
+  font-style: normal;
+  src: url('https://cdn.jsdelivr.net/gh/webfontworld/PyeongChang/PyeongChangPeace-Bold.eot');
+  src: url('https://cdn.jsdelivr.net/gh/webfontworld/PyeongChang/PyeongChangPeace-Bold.eot?#iefix') format('embedded-opentype'),
+      url('https://cdn.jsdelivr.net/gh/webfontworld/PyeongChang/PyeongChangPeace-Bold.woff2') format('woff2'),
+      url('https://cdn.jsdelivr.net/gh/webfontworld/PyeongChang/PyeongChangPeace-Bold.woff') format('woff'),
+      url('https://cdn.jsdelivr.net/gh/webfontworld/PyeongChang/PyeongChangPeace-Bold.ttf') format("truetype");
+  font-display: swap;
+}
+
 :root {
   color-scheme: light only;
 }
@@ -14,6 +37,17 @@ label:hover {
 
 .memolock {
   height:calc(100vh - 100px);
+}
+
+.pplight {
+  font-family: 'PyeongChangPeace';
+  font-weight:400;
+}
+
+
+.ppbold {
+  font-family: 'PyeongChangPeace';
+  font-weight:700;
 }
 
 body {

@@ -13,8 +13,14 @@ function Header() {
   const thisLocation = useLocation();
   useEffect(() => {
     const parts = thisLocation.pathname.split("/");
-    parts[1] === "promo" ? setIsPromo(true) : setIsPromo(false);
-    parts[1] === "collect" ? setIsPromo(true) : setIsPromo(false);
+    parts[1] === "promo"
+      ? setIsPromo(true)
+      : parts[1] === "collect"
+      ? setIsPromo(true)
+      : parts[1] === "sns"
+      ? setIsPromo(true)
+      : setIsPromo(false);
+
     setCateNum(parts[2]);
     getUrl(parts[1], parts[2]);
     // eslint-disable-next-line
@@ -36,8 +42,12 @@ function Header() {
     <>
       {!isPromo ? (
         <>
-          <HeaderTop />
-          <div className="w-full border-b border-blue-500 bg-white">
+          <HeaderTop isPromo={isPromo} />
+          <div
+            className={`w-full border-b border-blue-500 bg-white ${
+              isPromo ? "hidden" : ""
+            }`}
+          >
             <div className="lg:container mx-auto">
               <GiftCategory cateno={cateNum} path={thisLocation.pathname} />
             </div>

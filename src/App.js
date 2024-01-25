@@ -57,6 +57,8 @@ import MobileFooter from "./Component/Layout/MobileFooter";
 import NewMain from "./Component/NewMain";
 import Employment from "./Component/Employ/Employment";
 import AddEmploy from "./Component/Employ/AddEmploy";
+import Agree from "./Component/Marketing/Agree";
+import Sns from "./Component/SNS/Sns";
 //import MyMain from "./Component/User/Mypage/MyMain";
 
 function App() {
@@ -168,10 +170,12 @@ function App() {
             <Route path="write/:pid?" element={<BoardWrite />} />
             <Route path="detail/:pid?" element={<BoardDetail />} />
           </Route>
+          <Route path="/sns/:id?" element={<Sns />} />
           <Route path="/certification" element={<Certification />} />
           <Route path="/cert" element={<Cert />} />
           <Route path="/employ" element={<Employment />} />
           <Route path="/addemploy" element={<AddEmploy />} />
+          <Route path="/marketing" element={<Agree />} />
         </Routes>
       </div>
       <MobileFooter />

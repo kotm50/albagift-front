@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 
 function KakaoTest() {
+  const gubun = "join";
   const doCert = () => {
     window.open(
       "/certification",
@@ -16,6 +17,8 @@ function KakaoTest() {
 
   const certToBack = async d => {
     let data = d;
+    console.log(data);
+    data.gubun = gubun;
     //data = {token, enc, int, gubun, id, email}
     await axios
       .post("/api/v1/user/nice/dec/result", data)

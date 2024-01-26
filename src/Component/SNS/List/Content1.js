@@ -99,7 +99,7 @@ function Content1() {
       tempId: t,
       address: mainAddr,
     };
-
+    console.log("DB입력할 데이터", data);
     await axios
       .post("/api/v1/user/add/applicants", data)
       .then(res => {

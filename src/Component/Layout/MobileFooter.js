@@ -20,6 +20,8 @@ function MobileFooter() {
   useEffect(() => {
     const parts = thisLocation.pathname.split("/");
     parts[1] === "sns" ? setIsPromo(true) : setIsPromo(false);
+    parts[1] === "cert" ? setIsPromo(true) : setIsPromo(false);
+    parts[1] === "certification" ? setIsPromo(true) : setIsPromo(false);
     // eslint-disable-next-line
   }, [thisLocation]);
   return (

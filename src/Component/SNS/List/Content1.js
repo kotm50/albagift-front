@@ -83,11 +83,12 @@ function Content1() {
 
   const certToBack = async d => {
     let data = d;
+    console.log("인증하고 받은", data);
     data.gubun = "event";
     await axios
       .post("/api/v1/user/nice/dec/result", data)
       .then(res => {
-        console.log(res);
+        console.log("인증 후 결과", res);
         inputData(res.data.tempId);
       })
       .catch(e => console.log(e));
@@ -102,7 +103,7 @@ function Content1() {
     await axios
       .post("/api/v1/user/add/applicants", data)
       .then(res => {
-        console.log(res);
+        console.log("DB입력 결과", res);
         setComplete(true);
       })
       .catch(e => console.log(e));

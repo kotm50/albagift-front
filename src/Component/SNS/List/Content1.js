@@ -83,12 +83,10 @@ function Content1() {
 
   const certToBack = async d => {
     let data = d;
-    console.log("인증하고 받은", data);
     data.gubun = "event";
     await axios
       .post("/api/v1/user/nice/dec/result", data)
       .then(res => {
-        console.log("인증 후 결과", res);
         inputData(res.data.tempId);
       })
       .catch(e => console.log(e));
@@ -101,7 +99,7 @@ function Content1() {
     };
     console.log("DB입력할 데이터", data);
     await axios
-      .post("/api/v1/user/add/applicants", data)
+      .post("/api/v1/user/applicants/add", data)
       .then(res => {
         console.log("DB입력 결과", res);
         setComplete(true);

@@ -88,7 +88,12 @@ function Content1() {
     await axios
       .post("/api/v1/user/nice/dec/result", data)
       .then(res => {
-        inputData(res.data.tempId);
+        if (res.data.code === "C000") {
+          inputData(res.data.tempId);
+        } else {
+          setResult(res.data.message);
+          setComplete(true);
+        }
       })
       .catch(e => console.log(e));
   };
@@ -101,7 +106,6 @@ function Content1() {
     await axios
       .post("/api/v1/user/applicants/add", data)
       .then(res => {
-        console.log(res);
         setResult(res.data.message);
         setComplete(true);
       })

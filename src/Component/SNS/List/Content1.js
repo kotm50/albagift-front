@@ -101,7 +101,7 @@ function Content1() {
     await axios
       .post("/api/v1/user/applicants/add", data)
       .then(res => {
-        console.log("DB입력 결과", res);
+        console.log("/api/v1/user/applicants/add", res);
         setComplete(true);
       })
       .catch(e => console.log(e));
@@ -112,18 +112,20 @@ function Content1() {
       <div className="fixed w-full max-w-[1000px] h-screen overflow-x-hidden overflow-y-auto top-0 left-1/2 -translate-x-1/2 bg-white z-10 border">
         <>
           {complete ? (
-            <>
+            <div className="relative w-full h-full bg-[#1a60fe] text-white">
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center w-[90%]">
-                <h3 className="ppbold text-2xl lg:text-4xl mb-10">
+                <h3 className="ppbold text-2xl lg:text-4xl mb-5">
                   이용해 주셔서 감사합니다
                 </h3>
-                <div className="text-lg lg:text-3xl mb-10">
-                  커피쿠폰은 영업일 기준 2일 안으로{" "}
-                  <br className="hidden lg:block" />
+                <div className="text-xl lg:text-3xl mb-5 ppbold text-[#ff0]">
+                  쿠폰 지급 신청이 완료되었습니다
+                </div>
+                <div className="text-lg lg:text-3xl mb-10 pplight">
+                  커피쿠폰은 영업일 기준 2일 안으로 <br />
                   발송하여 드리겠습니다.
                 </div>
                 <button
-                  className="bg-yellow-300 text-black px-10 py-2 flex flex-center gap-x-2 text-sm lg:text-2xl mx-auto"
+                  className="bg-yellow-300 text-black px-10 py-2 flex-center gap-x-2 text-sm lg:text-2xl mx-auto hidden"
                   onClick={() => shareKakao()}
                 >
                   <RiKakaoTalkFill size={48} className="hidden lg:block" />
@@ -133,7 +135,7 @@ function Content1() {
                   </div>
                 </button>
               </div>
-            </>
+            </div>
           ) : (
             <>
               {!isResult ? (
@@ -148,6 +150,7 @@ function Content1() {
                     <div className="ppbold text-3xl lg:text-7xl relative z-10">
                       커피 쿠폰 받아가기
                     </div>
+
                     <div className="absolute right-0 botom-0 w-fit h-fit translate-x-[10px] lg:translate-x-[20px] translate-y-[100px] lg:translate-y-[200px]">
                       <img
                         src={starbucks}
@@ -158,6 +161,7 @@ function Content1() {
                     <div className="absolute w-8 h-8 lg:w-16 lg:h-16 bg-[#1a60fe] bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 rotate-45 z-0"></div>
                   </div>
                   <div className="px-4 lg:px-10 relative w-full pt-10 lg:pt-16">
+                    <button onClick={() => setComplete(true)}>테스트</button>
                     <div className="text-xl lg:text-3xl mb-4">
                       당신은 일을 할 때 <br className="lg:hidden" />
                       어떤 스타일이신가요?

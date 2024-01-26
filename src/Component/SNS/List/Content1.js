@@ -10,6 +10,7 @@ import PopupDom from "../../Kakao/PopupDom";
 import PopupPostCode from "../../Kakao/PopupPostCode";
 import Modal from "../../doc/Modal";
 import axios from "axios";
+import { Helmet } from "react-helmet";
 // kakao 기능 동작을 위해 넣어준다.
 const { Kakao } = window;
 
@@ -114,6 +115,13 @@ function Content1() {
 
   return (
     <>
+      <Helmet>
+        <title>내게 맞는 추천직업 찾기 || 커피쿠폰 증정!</title>
+        <meta
+          name="Description"
+          content="내게 맞는 추천직업도 찾고 커피쿠폰도 받아가세요!"
+        />
+      </Helmet>
       <div className="fixed w-full max-w-[1000px] h-screen overflow-x-hidden overflow-y-auto top-0 left-1/2 -translate-x-1/2 bg-white z-10 border">
         <>
           {complete ? (

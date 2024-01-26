@@ -26,6 +26,7 @@ function Content1() {
   const [modalCount, setModalCount] = useState(0);
 
   const [complete, setComplete] = useState(false);
+  const [result, setResult] = useState("");
   // 재랜더링시에 실행되게 해준다.
   useEffect(() => {
     // init 해주기 전에 clean up 을 해준다.
@@ -97,11 +98,11 @@ function Content1() {
       tempId: t,
       address: mainAddr,
     };
-    console.log("DB입력할 데이터", data);
     await axios
       .post("/api/v1/user/applicants/add", data)
       .then(res => {
-        console.log("/api/v1/user/applicants/add", res);
+        console.log(res);
+        setResult(res.data.message);
         setComplete(true);
       })
       .catch(e => console.log(e));
@@ -118,7 +119,7 @@ function Content1() {
                   이용해 주셔서 감사합니다
                 </h3>
                 <div className="text-xl lg:text-3xl mb-5 ppbold text-[#ff0]">
-                  쿠폰 지급 신청이 완료되었습니다
+                  {result}
                 </div>
                 <div className="text-lg lg:text-3xl mb-10 pplight">
                   커피쿠폰은 영업일 기준 2일 안으로 <br />

@@ -5,6 +5,7 @@ import Terms from "./Terms";
 import RefusalEmail from "./RefusalEmail";
 import Privacy2 from "./Privacy2";
 import Marketing from "./Marketing";
+import JobRec from "./JobRec";
 
 function Modal(props) {
   let domain = window.location.hostname;
@@ -21,7 +22,7 @@ function Modal(props) {
         }}
       >
         <div className="relative lg:w-auto my-6 mx-auto w-11/12 lg:max-w-3xl">
-          <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none max-h-96 p-6">
+          <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none max-h-108 p-6">
             <h3 className="text-lg font-neoextra mb-3">
               {props.modalCount === 1
                 ? "개인정보 처리방침"
@@ -33,6 +34,8 @@ function Modal(props) {
                 ? "개인정보 수집 이용 동의"
                 : props.modalCount === 5
                 ? "마케팅 정보 수신 동의"
+                : props.modalCount === 6
+                ? "추천 채용정보 안내를 위한 개인정보 처리"
                 : null}
             </h3>
             <div className="relative p-2 lg:p-6 flex-auto overflow-y-auto">
@@ -58,6 +61,11 @@ function Modal(props) {
                 />
               ) : props.modalCount === 5 ? (
                 <Marketing
+                  domainName={domainName}
+                  domainExtension={domainExtension}
+                />
+              ) : props.modalCount === 6 ? (
+                <JobRec
                   domainName={domainName}
                   domainExtension={domainExtension}
                 />

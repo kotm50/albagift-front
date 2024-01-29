@@ -137,7 +137,7 @@ function Admin() {
                 알바선물 메인으로
               </button>
             </div>
-            <div className="grid grid-cols-5 divide-x-2 bg-indigo-50 mb-2 border">
+            <div className="grid grid-cols-6 divide-x-2 bg-indigo-50 mb-2 border">
               <Link
                 to="/admin/"
                 className="hover:bg-indigo-100 p-2 text-center"
@@ -167,6 +167,12 @@ function Admin() {
                 className="hover:bg-indigo-100 p-2 text-center"
               >
                 관리자 암호변경
+              </Link>
+              <Link
+                to="/admin/eventdb"
+                className="hover:bg-indigo-100 p-2 text-center"
+              >
+                이벤트 DB
               </Link>
             </div>
           </div>

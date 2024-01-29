@@ -59,6 +59,7 @@ import Employment from "./Component/Employ/Employment";
 import AddEmploy from "./Component/Employ/AddEmploy";
 import Agree from "./Component/Marketing/Agree";
 import Sns from "./Component/SNS/Sns";
+import EventDBList from "./Component/Admin/EventDBList";
 //import MyMain from "./Component/User/Mypage/MyMain";
 
 function App() {
@@ -162,6 +163,7 @@ function App() {
             <Route path="transfer" element={<Transfer />} />
             <Route path="adminpwd" element={<AdminPwd />} />
             <Route path="userdetail" element={<UserDetail />} />
+            <Route path="eventdb" element={<EventDBList />} />
           </Route>
           <Route path="/test" element={<KakaoTest />} />
           <Route path="/popup" element={<PopupTest />} />

@@ -174,7 +174,6 @@ function Content1() {
                     <div className="absolute w-8 h-8 lg:w-16 lg:h-16 bg-[#1a60fe] bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 rotate-45 z-0"></div>
                   </div>
                   <div className="px-4 lg:px-10 relative w-full pt-10 lg:pt-16">
-                    <button onClick={() => setComplete(true)}>테스트</button>
                     <div className="text-xl lg:text-3xl mb-4">
                       당신은 일을 할 때 <br className="lg:hidden" />
                       어떤 스타일이신가요?

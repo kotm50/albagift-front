@@ -66,7 +66,6 @@ function Content2() {
     answerList.push(answer3);
     answerList.push(answer4);
     answerList.push(answer5);
-    console.log(answerList);
     const result = await chkList(answerList);
     setResult(result);
     setTimeout(() => {
@@ -120,15 +119,13 @@ function Content2() {
     let data = d;
     data.gubun = "event";
     data.jobType = 2;
-    console.log("인증 후 검사", data);
     await axios
       .post("/api/v1/user/nice/dec/result", data)
       .then(res => {
-        console.log("인증 후 검사 후", res);
         if (res.data.code === "C000") {
           inputData(res.data.tempId);
         } else {
-          setResult(res.data.message);
+          setResultMsg(res.data.message);
           setComplete(true);
         }
       })
@@ -141,11 +138,9 @@ function Content2() {
       address: mainAddr,
       jobType: 2,
     };
-    console.log("입력 전", data);
     await axios
       .post("/api/v1/user/applicants/add", data)
       .then(res => {
-        console.log("입력 후", res);
         setResultMsg(res.data.message);
         setComplete(true);
       })

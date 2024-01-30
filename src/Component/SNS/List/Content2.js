@@ -119,6 +119,7 @@ function Content2() {
   const certToBack = async d => {
     let data = d;
     data.gubun = "event";
+    data.jobType = 2;
     await axios
       .post("/api/v1/user/nice/dec/result", data)
       .then(res => {
@@ -136,7 +137,7 @@ function Content2() {
     const data = {
       tempId: t,
       address: mainAddr,
-      jobType2: 2,
+      jobType: 2,
     };
     await axios
       .post("/api/v1/user/applicants/add", data)
@@ -175,7 +176,7 @@ function Content2() {
           <>
             {!start ? (
               <div
-                className="w-fit bg-[#ecff6f] hover:cursor-pointer"
+                className="w-fit bg-[#ecff6f] lg:bg-white hover:cursor-pointer"
                 onMouseEnter={() => setButtonOn(true)}
                 onMouseLeave={() => setButtonOn(false)}
                 onClick={() => setStart(true)}
@@ -580,6 +581,9 @@ function Content2() {
                         <li className="text-sm lg:text-base list-disc">
                           경품은 당사의 사정에 의해 예고 없이 변경될 수
                           있습니다.
+                        </li>
+                        <li className="text-sm lg:text-base list-disc">
+                          쿠폰은 상담 후 지급됩니다
                         </li>
                       </ul>
                     </div>

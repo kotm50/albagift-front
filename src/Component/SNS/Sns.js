@@ -1,10 +1,10 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import Content1 from "./List/Content1";
+import Content2 from "./List/Content2";
 
 function Sns() {
   const { id } = useParams();
-  console.log(id);
   return (
     <>
       {!id && (
@@ -13,6 +13,7 @@ function Sns() {
         </div>
       )}
       {id === "jobrecommend" && <Content1 />}
+      {id === "jobdna" && <Content2 />}
       <div className="fixed w-screen h-screen top-0 left-0 z-0 bg-rose-100" />
     </>
   );

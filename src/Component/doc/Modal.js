@@ -35,7 +35,7 @@ function Modal(props) {
                 : props.modalCount === 5
                 ? "마케팅 정보 수신 동의"
                 : props.modalCount === 6
-                ? "추천 채용정보 안내를 위한 개인정보 처리"
+                ? "추천 채용안내를 위한 개인정보 처리"
                 : null}
             </h3>
             <div className="relative p-2 lg:p-6 flex-auto overflow-y-auto">

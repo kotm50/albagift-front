@@ -175,10 +175,11 @@ function Content2() {
           <>
             {!start ? (
               <div
-                className="w-fit h-[99vh] bg-[#ecff6f] hover:cursor-pointer"
+                className="w-fit bg-[#ecff6f] hover:cursor-pointer"
                 onMouseEnter={() => setButtonOn(true)}
                 onMouseLeave={() => setButtonOn(false)}
                 onClick={() => setStart(true)}
+                style={{ height: "calc(100vh - 10px)" }}
               >
                 {buttonOn ? (
                   <img src={start2} alt="내 직업 DNA 찾기" />
@@ -199,7 +200,10 @@ function Content2() {
                       />
                     </div>
                     {grade === 0 ? (
-                      <div className="w-fit h-[99vh] relative flex flex-col justify-between lg:justify-start">
+                      <div
+                        className="w-fit relative flex flex-col justify-between lg:justify-start"
+                        style={{ height: "calc(100vh - 10px)" }}
+                      >
                         <img src={q1} alt="당신이 선호하는 일의 환경은?" />
                         <div className="flex flex-col justify-start gap-y-3 px-5 lg:px-10 pb-20 lg:pb-0">
                           <button
@@ -241,7 +245,10 @@ function Content2() {
                         </div>
                       </div>
                     ) : grade === 1 ? (
-                      <div className="w-fit h-[99vh] relative flex flex-col justify-between lg:justify-start">
+                      <div
+                        className="w-fit relative flex flex-col justify-between lg:justify-start"
+                        style={{ height: "calc(100vh - 10px)" }}
+                      >
                         <img
                           src={q2}
                           alt="스트레스 상황에서 당신의 대처 방식은?"
@@ -286,7 +293,10 @@ function Content2() {
                         </div>
                       </div>
                     ) : grade === 2 ? (
-                      <div className="w-fit h-[99vh] relative flex flex-col  justify-between lg:justify-start">
+                      <div
+                        className="w-fit relative flex flex-col  justify-between lg:justify-start"
+                        style={{ height: "calc(100vh - 10px)" }}
+                      >
                         <img src={q3} alt="가장 중요하게 생각하는 가치는?" />
                         <div className="flex flex-col justify-start gap-y-3 px-5 lg:px-10 pb-20 lg:pb-0">
                           <button
@@ -328,7 +338,10 @@ function Content2() {
                         </div>
                       </div>
                     ) : grade === 3 ? (
-                      <div className="w-fit h-[99vh] relative flex flex-col justify-between lg:justify-start">
+                      <div
+                        className="w-fit relative flex flex-col justify-between lg:justify-start"
+                        style={{ height: "calc(100vh - 10px)" }}
+                      >
                         <img src={q4} alt="당신이 흥미를 가지는 분야는?" />
                         <div className="flex flex-col justify-start gap-y-3 px-5 lg:px-10 pb-20 lg:pb-0">
                           <button
@@ -370,7 +383,10 @@ function Content2() {
                         </div>
                       </div>
                     ) : grade === 4 ? (
-                      <div className="w-fit h-[99vh] relative flex flex-col justify-between lg:justify-start">
+                      <div
+                        className="w-fit relative flex flex-col justify-between lg:justify-start"
+                        style={{ height: "calc(100vh - 10px)" }}
+                      >
                         <img
                           src={q5}
                           alt="미래에 대한 비전 중 어떤 것이 당신에게 더 부합하다고 생각하나요?"
@@ -417,7 +433,7 @@ function Content2() {
                     ) : (
                       <div
                         className="relative"
-                        style={{ height: "calc(100% - 10px)" }}
+                        style={{ height: "calc(100vh - 10px)" }}
                       >
                         <div className="absolute text-center w-full h-auto top-20 left-0 text-2xl lg:text-4xl pplight text-[#5d55ff]">
                           결과를 확인하고 있습니다.
@@ -550,20 +566,18 @@ function Content2() {
                         </div>
                       </div>
                     </div>
-                    <div className="w-full bg-white px-4 lg:px-8 py-8 flex flex-col lg:flex-row justify-start gap-y-3 lg:gap-x-6">
-                      <h4 className="text-lg lg:text-xl font-neoheavy">
-                        유의사항
-                      </h4>
+                    <div className="w-full bg-white px-4 lg:px-8 py-8 flex flex-col justify-start gap-y-3">
+                      <h4 className="text-lg font-neoheavy">유의사항</h4>
                       <ul className="flex flex-col justify-start gap-y-3 font-neo pl-4">
-                        <li className="text-sm lg:text-lg list-disc">
+                        <li className="text-sm lg:text-base list-disc">
                           중복 응모는 무효 처리될 수 있으며, 하나의 핸드폰
                           번호로 한 번만 참여 가능합니다.
                         </li>
-                        <li className="text-sm lg:text-lg list-disc">
+                        <li className="text-sm lg:text-base list-disc">
                           본 이벤트는 당사 사정에 따라 예고없이 중단 또는 변경될
                           수 있습니다
                         </li>
-                        <li className="text-sm lg:text-lg list-disc">
+                        <li className="text-sm lg:text-base list-disc">
                           경품은 당사의 사정에 의해 예고 없이 변경될 수
                           있습니다.
                         </li>

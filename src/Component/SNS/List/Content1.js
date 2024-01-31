@@ -388,7 +388,7 @@ function Content1() {
                       <li className="text-sm lg:text-lg list-disc">
                         경품은 당사의 사정에 의해 예고 없이 변경될 수 있습니다.
                       </li>
-                      <li className="text-sm lg:text-base list-disc">
+                      <li className="text-sm lg:text-lg list-disc">
                         쿠폰은 상담 후 지급됩니다
                       </li>
                     </ul>

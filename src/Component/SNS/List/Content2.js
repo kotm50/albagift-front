@@ -179,7 +179,7 @@ function Content2() {
                 onMouseEnter={() => setButtonOn(true)}
                 onMouseLeave={() => setButtonOn(false)}
                 onClick={() => setStart(true)}
-                style={{ height: "calc(100vh - 10px)" }}
+                style={{ height: "calc( 100vh - 20px )" }}
               >
                 {buttonOn ? (
                   <img src={start2} alt="내 직업 DNA 찾기" />
@@ -202,7 +202,7 @@ function Content2() {
                     {grade === 0 ? (
                       <div
                         className="w-fit relative flex flex-col justify-between lg:justify-start"
-                        style={{ height: "calc(100vh - 10px)" }}
+                        style={{ height: "calc( 100vh - 20px )" }}
                       >
                         <img src={q1} alt="당신이 선호하는 일의 환경은?" />
                         <div className="flex flex-col justify-start gap-y-3 px-5 lg:px-10 pb-20 lg:pb-0">
@@ -247,7 +247,7 @@ function Content2() {
                     ) : grade === 1 ? (
                       <div
                         className="w-fit relative flex flex-col justify-between lg:justify-start"
-                        style={{ height: "calc(100vh - 10px)" }}
+                        style={{ height: "calc( 100vh - 20px )" }}
                       >
                         <img
                           src={q2}
@@ -295,7 +295,7 @@ function Content2() {
                     ) : grade === 2 ? (
                       <div
                         className="w-fit relative flex flex-col  justify-between lg:justify-start"
-                        style={{ height: "calc(100vh - 10px)" }}
+                        style={{ height: "calc( 100vh - 20px )" }}
                       >
                         <img src={q3} alt="가장 중요하게 생각하는 가치는?" />
                         <div className="flex flex-col justify-start gap-y-3 px-5 lg:px-10 pb-20 lg:pb-0">
@@ -340,7 +340,7 @@ function Content2() {
                     ) : grade === 3 ? (
                       <div
                         className="w-fit relative flex flex-col justify-between lg:justify-start"
-                        style={{ height: "calc(100vh - 10px)" }}
+                        style={{ height: "calc( 100vh - 20px )" }}
                       >
                         <img src={q4} alt="당신이 흥미를 가지는 분야는?" />
                         <div className="flex flex-col justify-start gap-y-3 px-5 lg:px-10 pb-20 lg:pb-0">
@@ -385,7 +385,7 @@ function Content2() {
                     ) : grade === 4 ? (
                       <div
                         className="w-fit relative flex flex-col justify-between lg:justify-start"
-                        style={{ height: "calc(100vh - 10px)" }}
+                        style={{ height: "calc( 100vh - 20px )" }}
                       >
                         <img
                           src={q5}
@@ -433,7 +433,7 @@ function Content2() {
                     ) : (
                       <div
                         className="relative"
-                        style={{ height: "calc(100vh - 10px)" }}
+                        style={{ height: "calc( 100vh - 20px )" }}
                       >
                         <div className="absolute text-center w-full h-auto top-20 left-0 text-2xl lg:text-4xl pplight text-[#5d55ff]">
                           결과를 확인하고 있습니다.

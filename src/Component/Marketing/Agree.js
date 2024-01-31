@@ -63,7 +63,7 @@ function Agree() {
         />
         <div className="w-[480px] h-[480px] lg:w-[1000px] lg:h-[1000px] rounded-full bg-white bg-opacity-60 absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-[75%] z-10"></div>
       </div>
-      <div className="py-10 lg:container mx-auto w-full bg-teal-700">
+      <div className="py-10 lg:container mx-auto w-full bg-teal-600">
         <button
           className={`${
             user.userId === ""
@@ -108,6 +108,9 @@ function Agree() {
           이미 포인트를 지급받으셨다면 철회 후 재동의를 하셔도 포인트 지급이
           불가능합니다.
         </div>
+        <div className="text-white lg:text-2xl">
+          본 행사는 기타행사와 중복 적용이 불가합니다
+        </div>
       </div>
       <div className="py-10 px-4 container mx-auto w-full bg-black flex flex-col justify-start gap-y-4 lg:hidden font-neolight">
         <div className="font-neoheavy lg:text-3xl text-white">유의사항</div>
@@ -132,6 +135,9 @@ function Agree() {
         <div className="text-white lg:text-2xl">
           이미 포인트를 지급받으셨다면 철회 후 재동의를 하셔도 포인트 지급이
           불가능합니다.
+        </div>
+        <div className="text-white lg:text-2xl">
+          본 행사는 기타행사와 중복 적용이 불가합니다
         </div>
       </div>
     </>

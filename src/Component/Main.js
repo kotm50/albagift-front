@@ -8,6 +8,7 @@ import SubContent from "./Main/SubContent";
 import Loading from "./Layout/Loading";
 import UserSection from "./User/UserSection";
 import { Helmet } from "react-helmet";
+import MarketingSection from "./Layout/MarketingSection";
 
 function Main() {
   const location = useLocation();
@@ -55,6 +56,7 @@ function Main() {
       {loading ? <Loading /> : null}
 
       <div className="mx-auto container">
+        <MarketingSection />
         <UserSection />
         <Jumbotron />
       </div>

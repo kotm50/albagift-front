@@ -391,6 +391,9 @@ function Content1() {
                       <li className="text-sm lg:text-lg list-disc">
                         쿠폰은 상담 후 지급됩니다
                       </li>
+                      <li className="text-sm lg:text-lg list-disc">
+                        본 행사는 기타행사와 중복 적용이 불가합니다
+                      </li>
                     </ul>
                   </div>
                 </>

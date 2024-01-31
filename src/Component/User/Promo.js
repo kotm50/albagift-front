@@ -22,7 +22,7 @@ import lotte from "../../Asset/Promo/lotte.png";
 import happycon from "../../Asset/Promo/happycon.png";
 import br from "../../Asset/Promo/br.png";
 import coupon from "../../Asset/Promo/1000p.png";
-import couponM from "../../Asset/Promo/1000pM.png";
+//import couponM from "../../Asset/Promo/1000pM.png";
 
 import explain1 from "../../Asset/Promo/explain1.png";
 import explain2 from "../../Asset/Promo/explain2.png";
@@ -51,7 +51,7 @@ function Promo() {
           <img src={title1} alt="면접만 봐도" data-aos="fade-up" />
           <img src={title2} alt="100% 선물증정" data-aos="fade-up" />
         </div>
-        <div className="absolute block lg:hidden top-5 w-10/12 px-2 left-1/2 -translate-x-1/2 z-20">
+        <div className="absolute block lg:hidden top-12 w-10/12 px-2 left-1/2 -translate-x-1/2 z-20">
           <img src={title1m} alt="면접만 봐도" data-aos="fade-up" />
           <img src={title2m} alt="100%" data-aos="fade-up" />
           <img src={title3m} alt="선물증정" data-aos="fade-up" />
@@ -109,8 +109,8 @@ function Promo() {
                 data-aos="fade-up"
               />
               <div className="w-full text-center text-xl font-neoextra">
-                지금 가입하면{" "}
-                <span className="text-rose-500 font-bold">1000p</span> 무료지급!
+                가입시 최대{" "}
+                <span className="text-rose-500 font-bold">5000p</span> 지급!
               </div>
               <div className="w-full mt-2">
                 <button
@@ -145,11 +145,11 @@ function Promo() {
             </div>
           </div>
           <div className="flex flex-col justify-center h-full">
-            <img src={couponM} alt="" className="img" data-aos="fade-up" />
+            <img src={coupon} alt="" className="img" data-aos="fade-up" />
             <div className="bg-white p-2 mt-2 rounded">
               <div className="w-full text-center text-xl font-neoextra bg-white p-2">
-                지금 가입하면{" "}
-                <span className="text-rose-500 font-bold">1000p</span> 무료지급!
+                가입시 최대{" "}
+                <span className="text-rose-500 font-bold">5000p</span> 무료지급!
               </div>
               <div className="w-full my-2">
                 <button
@@ -242,7 +242,45 @@ function Promo() {
         </div>
       </div>
       <Recommend category={1} />
-      <div className="fixed top-0 right-20 z-40 min-w-fit min-h-fit p-2 bg-black text-white rounded-b-lg drop-shadow-md text-lg font-neoextra">
+      <div id="promo_5" className="bg-gray-700 p-2">
+        <div className="py-20 container mx-auto w-full  flex-col justify-start gap-y-4 hidden lg:flex font-neolight">
+          <div className="font-neoheavy lg:text-3xl text-white">유의사항</div>
+          <div className="text-white lg:text-2xl">
+            본 이벤트는 당사 사정에 따라 예고없이 중단 또는 변경될 수 있습니다
+          </div>
+          <div className="text-white lg:text-2xl">
+            경품은 당사의 사정에 의해 예고없이 변경될 수 있습니다
+          </div>
+          <div className="text-white lg:text-2xl">
+            포인트는 알바선물 내에서만 사용할 수 있습니다
+          </div>
+          <div className="text-white lg:text-2xl">
+            회원가입 후 마케팅 수신동의 이벤트에 참여하시면 포인트가 지급됩니다.
+          </div>
+          <div className="text-white lg:text-2xl">
+            본 행사는 일부 행사와 중복 적용이 불가능합니다
+          </div>
+        </div>
+        <div className="py-10 px-4 container mx-auto w-full  flex flex-col justify-start gap-y-4 lg:hidden font-neolight">
+          <div className="font-neoheavy lg:text-3xl text-white">유의사항</div>
+          <div className="text-white lg:text-2xl">
+            본 이벤트는 당사 사정에 따라 예고없이 중단 또는 변경될 수 있습니다
+          </div>
+          <div className="text-white lg:text-2xl">
+            경품은 당사의 사정에 의해 예고없이 변경될 수 있습니다
+          </div>
+          <div className="text-white lg:text-2xl">
+            포인트는 알바선물 내에서만 사용할 수 있습니다
+          </div>
+          <div className="text-white lg:text-2xl">
+            회원가입 후 마케팅 수신동의 이벤트에 참여하시면 포인트가 지급됩니다.
+          </div>
+          <div className="text-white lg:text-2xl">
+            본 행사는 일부 행사와 중복 적용이 불가능합니다
+          </div>
+        </div>
+      </div>
+      <div className="fixed top-0 right-1 lg:right-20 z-40 min-w-fit min-h-fit p-2 bg-black text-white rounded-b-lg drop-shadow-md text-lg font-neoextra">
         <Link to="/">
           <FaHouseUser size={28} className="inline-block mr-3" />
           메인으로 이동

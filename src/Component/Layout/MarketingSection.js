@@ -43,7 +43,6 @@ function MarketingSection() {
               />
             </div>
           </Link>
-
           <Link to="/marketing" className="lg:hidden block">
             <div className="w-full lg:container mx-auto lg:rounded-lg bg-teal-500 hover:cursor-pointer h-[100px] lg:h-[180px] relative overflow-hidden z-0">
               <div className="text-white pplight absolute left-5 top-1/2 w-full h-fit -translate-y-1/2 text-xl z-50 flex flex-col justify-center gap-y-1">

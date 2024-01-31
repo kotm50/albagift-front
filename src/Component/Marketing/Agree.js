@@ -10,6 +10,10 @@ import coffee from "../../Asset/subContent/coffeebig.webp"; //겨울
 import { Link } from "react-router-dom";
 import AlertModal from "../Layout/AlertModal";
 
+import phone from "../../Asset/marketing/phone.png";
+import speech from "../../Asset/marketing/speech.png";
+import object from "../../Asset/marketing/object.png";
+
 function Agree() {
   const user = useSelector(state => state.user);
   const agreeIt = async () => {
@@ -39,19 +43,19 @@ function Agree() {
   return (
     <>
       <div className="lg:container mx-auto w-full h-[720px] bg-teal-500 relative overflow-hidden">
-        <h3 className="absolute top-5 lg:top-20 left-0 right-0 text-center flex flex-col lg:flex-row justify-center gap-4 text-6xl lg:text-8xl w-full text-white pt-10 ppbold">
+        <h3 className="absolute z-40 top-5 lg:top-20 left-0 right-0 text-center flex flex-col lg:flex-row justify-center gap-4 text-6xl lg:text-8xl w-full text-white pt-10 ppbold">
           <span>마케팅</span>
           <span>수신동의</span>
           <span>이벤트</span>
         </h3>
-        <div className="w-11/12 lg:hidden text-center text-xl lg:text-2xl text-white font-neo absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pplight">
+        <div className="w-11/12 lg:hidden text-center text-xl lg:text-2xl text-white font-neo absolute z-40 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pplight">
           알바선물의 다양한 정보를
           <br />
           실시간으로 받아보시고
           <br />
           포인트로 커피 한잔 하세요!
         </div>
-        <div className="hidden w-1/2 lg:block text-center text-4xl text-white font-neo absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[100%] leading-snug pplight">
+        <div className="hidden w-1/2 lg:block text-center text-4xl text-white font-neo absolute z-40 top-1/2 left-1/2 -translate-x-1/2 -translate-y-[100%] leading-snug pplight">
           알바선물의 다양한 정보를 실시간으로 받아보시고
           <br />
           포인트로 커피 한잔 하세요!
@@ -60,6 +64,21 @@ function Agree() {
           src={coffee}
           alt="스타벅스커피"
           className="w-[240px] lg:w-[320px] h-auto bottom-0 left-1/2 -translate-x-1/2 absolute z-20"
+        />
+        <img
+          src={phone}
+          alt=""
+          className="absolute right-10 top-1/2 -translate-x-[100px] -translate-y-[160px] h-[500px] w-auto z-10 hidden lg:block"
+        />
+        <img
+          src={speech}
+          alt=""
+          className="absolute right-0 top-1/2 -translate-y-[80px] h-[160px] w-auto z-10 hidden lg:block"
+        />
+        <img
+          src={object}
+          alt=""
+          className="absolute left-10 top-1/2 -translate-y-[120px] h-[400px] w-auto z-10 hidden lg:block"
         />
         <div className="w-[480px] h-[480px] lg:w-[1000px] lg:h-[1000px] rounded-full bg-white bg-opacity-60 absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-[75%] z-10"></div>
       </div>

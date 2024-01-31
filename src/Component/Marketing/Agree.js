@@ -2,9 +2,13 @@ import React from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
+import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
+import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
+
 //import coffee from "../../Asset/subContent/starbucks.png"; //여름
 import coffee from "../../Asset/subContent/coffeebig.webp"; //겨울
 import { Link } from "react-router-dom";
+import AlertModal from "../Layout/AlertModal";
 
 function Agree() {
   const user = useSelector(state => state.user);
@@ -16,7 +20,19 @@ function Agree() {
         },
       })
       .then(res => {
-        alert(res.data.message);
+        confirmAlert({
+          customUI: ({ onClose }) => {
+            return (
+              <AlertModal
+                onClose={onClose} // 닫기
+                title={"완료"} // 제목
+                message={res.data.message} // 내용
+                type={"alert"} // 타입 confirm, alert
+                yes={"확인"} // 확인버튼 제목
+              />
+            );
+          },
+        });
       })
       .catch(e => console.log(e));
   };

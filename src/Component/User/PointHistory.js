@@ -157,7 +157,7 @@ function PointHistory() {
               doc.logType === "CP"
                 ? doc.goodsName
                 : doc.logType === "PR"
-                ? "가입 지급"
+                ? "이벤트 지급"
                 : doc.logType === "EX"
                 ? "기간 만료"
                 : doc.logType === "AP"

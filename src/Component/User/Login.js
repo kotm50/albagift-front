@@ -70,6 +70,10 @@ function Login() {
     navi("/");
   };
 
+  const goBack = () => {
+    navi(-1);
+  };
+
   const goAdmin = () => {
     if (isTest) {
       navi("/collect");
@@ -295,7 +299,7 @@ function Login() {
             },
           });
         } else {
-          goMain();
+          goBack();
         }
       })
       .catch(e => {

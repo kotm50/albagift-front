@@ -8,9 +8,7 @@ import { Link } from "react-router-dom";
 
 function Agree() {
   const user = useSelector(state => state.user);
-  console.log(user);
   const agreeIt = async () => {
-    console.log(user);
     await axios
       .patch("/api/v1/user/upt/agree/y", null, {
         headers: {
@@ -18,7 +16,6 @@ function Agree() {
         },
       })
       .then(res => {
-        console.log(res);
         alert(res.data.message);
       })
       .catch(e => console.log(e));
@@ -26,19 +23,19 @@ function Agree() {
   return (
     <>
       <div className="lg:container mx-auto w-full h-[720px] bg-teal-500 relative overflow-hidden">
-        <h3 className="absolute top-5 lg:top-20 left-0 right-0 text-center flex flex-col lg:flex-row justify-center gap-4 text-6xl lg:text-8xl w-full text-white pt-10">
+        <h3 className="absolute top-5 lg:top-20 left-0 right-0 text-center flex flex-col lg:flex-row justify-center gap-4 text-6xl lg:text-8xl w-full text-white pt-10 ppbold">
           <span>마케팅</span>
           <span>수신동의</span>
           <span>이벤트</span>
         </h3>
-        <div className="w-11/12 lg:hidden text-center text-xl lg:text-2xl text-white font-neo absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div className="w-11/12 lg:hidden text-center text-xl lg:text-2xl text-white font-neo absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pplight">
           알바선물의 다양한 정보를
           <br />
           실시간으로 받아보시고
           <br />
           포인트로 커피 한잔 하세요!
         </div>
-        <div className="hidden w-1/2 lg:block text-center text-4xl text-white font-neo absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[100%] leading-snug">
+        <div className="hidden w-1/2 lg:block text-center text-4xl text-white font-neo absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[100%] leading-snug pplight">
           알바선물의 다양한 정보를 실시간으로 받아보시고
           <br />
           포인트로 커피 한잔 하세요!

@@ -168,6 +168,7 @@ function EditUser() {
     window.location.href = mypageURL;
   };
   const getUserInfo = async () => {
+    setUserInfo({});
     await axios
       .post("/api/v1/user/myinfo", null, {
         headers: { Authorization: user.accessToken },
@@ -396,9 +397,7 @@ function EditUser() {
     }
 
     if (type === "agree") {
-      data = {
-        agreeYn: value,
-      };
+      data = null;
       bValue.agreeYn = agreeYn;
     }
     axios
@@ -408,6 +407,7 @@ function EditUser() {
         },
       })
       .then(res => {
+        console.log(res);
         if (res.headers.authorization) {
           dispatch(
             getNewToken({
@@ -461,6 +461,20 @@ function EditUser() {
             }
             setBeforeValue(bValue);
           }
+        } else {
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"오류"} // 제목
+                  message={res.data.message} // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                />
+              );
+            },
+          });
         }
       })
       .catch(e => {

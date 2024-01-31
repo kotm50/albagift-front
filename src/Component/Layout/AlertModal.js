@@ -26,9 +26,13 @@ function AlertModal(props) {
   const sanitizer = dompurify.sanitize;
   const modalClose = () => {
     if (props.type === "alert") {
-      props.doIt();
+      if (typeof props.doIt === "function") {
+        props.doIt();
+      }
     } else {
-      props.doNot();
+      if (typeof props.doNot === "function") {
+        props.doNot();
+      }
     }
     props.onClose(); // props.onClose()를 실행하여 부모 컴포넌트의 onClose 함수를 호출합니다.
   };

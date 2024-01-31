@@ -1,9 +1,7 @@
 function Marketing(props) {
   const agreeConfirm = b => {
     props.setMarketingModal(false);
-    if (b === "Y") {
-      props.editIt("/api/v1/user/myinfo/editagree", "agree", b);
-    }
+    props.editIt("/api/v1/user/myinfo/editagree", "agree", b);
   };
 
   return (

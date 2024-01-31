@@ -134,8 +134,8 @@ function Content1() {
                   {result}
                 </div>
                 <div className="text-lg lg:text-3xl mb-10 pplight">
-                  커피쿠폰은 영업일 기준 2일 안으로 <br />
-                  발송하여 드리겠습니다.
+                  빠른 시일내로 알맞은 채용정보를 <br />
+                  전해드리겠습니다
                 </div>
                 <button
                   className="bg-yellow-300 text-black px-10 py-2 flex-center gap-x-2 text-sm lg:text-2xl mx-auto hidden"
@@ -317,7 +317,6 @@ function Content1() {
                         onBlur={e => setMainAddr(e.currentTarget.value)}
                         disabled
                       />
-
                       <button
                         className="w-full h-full p-2 text-white bg-[#1a60fe] hover:bg-blue-700 text-sm lg:text-xl"
                         onClick={e => {
@@ -342,7 +341,7 @@ function Content1() {
                         }
                       }}
                     >
-                      본인인증 하고 커피쿠폰 받기
+                      본인인증 하고 추천직업 확인
                     </button>
                     <div className="flex justify-start gap-x-2 hover:cursor-pointer">
                       <div
@@ -373,7 +372,6 @@ function Content1() {
                       </div>
                     </div>
                   </div>
-
                   <div className="absolute bottom-0 left-0 w-full bg-[#1a60fe] text-white px-4 lg:px-8 py-8 flex flex-col lg:flex-row justify-start gap-y-3 lg:gap-x-6">
                     <h4 className="text-lg lg:text-xl font-neoheavy">
                       유의사항
@@ -384,14 +382,14 @@ function Content1() {
                         한 번만 참여 가능합니다.
                       </li>
                       <li className="text-sm lg:text-lg list-disc">
-                        쿠폰은 영업일 기준(월~금) 2일 이내로 발송됩니다.
-                      </li>
-                      <li className="text-sm lg:text-lg list-disc">
                         본 이벤트는 당사 사정에 따라 예고없이 중단 또는 변경될
                         수 있습니다
                       </li>
                       <li className="text-sm lg:text-lg list-disc">
                         경품은 당사의 사정에 의해 예고 없이 변경될 수 있습니다.
+                      </li>
+                      <li className="text-sm lg:text-base list-disc">
+                        쿠폰은 상담 후 지급됩니다
                       </li>
                     </ul>
                   </div>

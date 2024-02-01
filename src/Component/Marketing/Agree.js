@@ -120,8 +120,8 @@ function Agree() {
           미리 만나보실 수 있습니다.
         </div>
         <div className="text-white lg:text-2xl">
-          정보수신에 동의하여 포인트를 지급받으시면 최소 1개월간은 동의 철회가
-          불가능합니다
+          정보수신에 동의하여 포인트를 지급받으시면 최소 1개월간은 동의 철회 및
+          회원 탈퇴가 불가능합니다
         </div>
         <div className="text-white lg:text-2xl">
           이미 포인트를 지급받으셨다면 철회 후 재동의를 하셔도 포인트 지급이

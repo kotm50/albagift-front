@@ -131,7 +131,7 @@ function Join() {
       email: email,
       tempId: tempId,
       agreeYn: "N",
-      promo: isPromo ? "Y" : "N",
+      promoYn: isPromo ? "Y" : "N",
     };
     if (marketingAgree) {
       data.agreeYn = "Y";

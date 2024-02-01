@@ -92,7 +92,7 @@ function Agree() {
           onClick={agreeIt}
           disabled={user.userId === ""}
         >
-          마케팅 수신정보 동의하기
+          마케팅 정보수신 동의하기
         </button>
         {user.userId === "" && (
           <div className="text-center text-white text-xs lg:text-base mt-3">

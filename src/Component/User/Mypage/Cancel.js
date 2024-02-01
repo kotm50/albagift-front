@@ -10,7 +10,10 @@ import { clearUser } from "../../../Reducer/userSlice";
 import { FaTicketAlt } from "react-icons/fa";
 import AlertModal from "../../Layout/AlertModal";
 
+import dompurify from "dompurify";
+
 function Cancel() {
+  const sanitizer = dompurify.sanitize;
   const navi = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -89,7 +92,7 @@ function Cancel() {
       .patch("/api/v1/user/myinfo/delete", null, {
         headers: { Authorization: user.accessToken },
       })
-      .then(res => {
+      .then(async res => {
         if (res.data.code === "C000") {
           confirmAlert({
             customUI: ({ onClose }) => {
@@ -274,9 +277,12 @@ function Cancel() {
           </div>
         </div>
         {isErr && (
-          <div className="text-center text-sm pb-2 text-rose-500">
-            {errMessage}
-          </div>
+          <p
+            className="text-center text-sm pb-2 text-rose-500"
+            dangerouslySetInnerHTML={{
+              __html: sanitizer(errMessage).replace(/\n/g, "<br>"),
+            }}
+          />
         )}
         <div className="w-full flex flex-row justify-center gap-1">
           <Link

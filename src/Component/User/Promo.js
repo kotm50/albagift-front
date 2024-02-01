@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useParams } from "react-router-dom";
 
 import { useSelector } from "react-redux";
 
@@ -32,6 +32,7 @@ import explain4 from "../../Asset/Promo/explain4.png";
 import Recommend from "../Main/Recommend";
 
 function Promo() {
+  const { id } = useParams();
   const user = useSelector(state => state.user);
   const navi = useNavigate();
   useEffect(() => {
@@ -115,7 +116,13 @@ function Promo() {
               <div className="w-full mt-2">
                 <button
                   className="block py-2 mx-auto bg-indigo-500 text-white hover:animate-bounce rounded-full px-4"
-                  onClick={e => navi("/cert")}
+                  onClick={e =>
+                    navi("/cert", {
+                      state: {
+                        promo: id ? id : null,
+                      },
+                    })
+                  }
                 >
                   가입하기
                 </button>

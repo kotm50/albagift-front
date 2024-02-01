@@ -44,6 +44,8 @@ function Join() {
   const [isSocialLogin, setIsSocialLogin] = useState(false);
   const [tempId, setTempId] = useState("");
 
+  const [isPromo, setIsPromo] = useState(false);
+
   // 팝업창 상태 관리
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
@@ -53,6 +55,9 @@ function Join() {
       if (location.state.email) {
         setEmail(location.state.email);
         setIsSocialLogin(true);
+      }
+      if (location.state.promo !== null) {
+        setIsPromo(true);
       }
     }
 
@@ -126,6 +131,7 @@ function Join() {
       email: email,
       tempId: tempId,
       agreeYn: "N",
+      promo: isPromo ? "Y" : "N",
     };
     if (marketingAgree) {
       data.agreeYn = "Y";

@@ -15,10 +15,12 @@ function Cert() {
   const [socialUser, setSocialUser] = useState("");
   const [getTid, setGetTid] = useState(false);
   const [tid, setTid] = useState("");
+  const [promo, setPromo] = useState("");
 
   useEffect(() => {
     if (location.state) {
       setSocialUser(location.state.socialUser);
+      setPromo(location.state.promo);
     }
     //eslint-disable-next-line
   }, [location]);
@@ -46,6 +48,7 @@ function Cert() {
     if (userId !== "") {
       data.userId = userId;
     }
+
     //data = {token, enc, int, gubun, id, email}
     await axios
       .post("/api/v1/user/nice/dec/result", data)
@@ -53,7 +56,11 @@ function Cert() {
         if (gubun === "join") {
           if (res.data.code === "C000") {
             navi("/join", {
-              state: { tempId: res.data.tempId, email: socialUser.email },
+              state: {
+                tempId: res.data.tempId,
+                email: socialUser.email,
+                promo: promo === "" ? null : promo,
+              },
             });
           } else {
             setGetTid(true);

@@ -132,7 +132,7 @@ function App() {
           <Route path="/new" element={<NewMain />} />
           <Route path="/attendance" element={<Attendance />} />
           <Route path="/renew" element={<Renew />} />
-          <Route path="/promo" element={<Promo />} />
+          <Route path="/promo/:id?" element={<Promo />} />
           <Route path="/giftinfo" element={<Info />} />
           <Route path="/list/:category?/:brand?" element={<List />} />
           <Route path="/detail/:goodscode?" element={<Detail />} />

@@ -12,8 +12,9 @@ import axios from "axios";
 function AddEmploy() {
   const user = useSelector(state => state.user);
   const [title, setTitle] = useState(""); //제목
+  const [hireStart, setHireStart] = useState(""); // 채용종료일
   const [hireEnd, setHireEnd] = useState(""); // 채용종료일
-  const [totalApply, setTotalApply] = useState(""); // 채용종료일
+  const [totalApply, setTotalApply] = useState(""); // 채용인원
   const [mainAddr, setMainAddr] = useState(""); // 근무지주소
   const [day, setDay] = useState(""); // 근무요일
   const [workTime, setWorkTime] = useState(""); // 근무시간
@@ -84,6 +85,7 @@ function AddEmploy() {
         intvPoint: point2,
         content: content,
         totalApplicants: totalApply,
+        postingStartDate: hireStart,
         postingEndDate: hireEnd,
       };
       const formData = new FormData();
@@ -138,6 +140,23 @@ function AddEmploy() {
                 placeholder="공고제목을 입력하세요"
                 value={title}
                 onChange={e => setTitle(e.currentTarget.value)}
+              />
+            </div>
+          </div>
+          <div
+            id="hireStart"
+            className="flex justify-start flex-wrap border-x lg:border-x-0"
+          >
+            <div className="w-full lg:w-[20%] px-4 lg:py-6 py-2 font-neoextra truncate break-keep text-xs lg:text-lg lg:text-right bg-gray-100">
+              채용시작일
+            </div>
+            <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-lg font-neo lg:p-4">
+              <input
+                type="date"
+                className="focus:bg-blue-100 py-2 px-4 border-b w-full"
+                placeholder="채용 시작일을 입력하세요"
+                value={hireEnd}
+                onChange={e => setHireStart(e.currentTarget.value)}
               />
             </div>
           </div>

@@ -56,7 +56,6 @@ function Main() {
       {loading ? <Loading /> : null}
 
       <div className="mx-auto container">
-        <MarketingSection />
         <UserSection />
         <Jumbotron />
       </div>
@@ -68,6 +67,9 @@ function Main() {
           <Recommend category={cateNums[1]} first={false} />
         </>
       )}
+      <div className="mx-auto container">
+        <MarketingSection />
+      </div>
     </>
   );
 }

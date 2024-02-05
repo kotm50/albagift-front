@@ -1,7 +1,14 @@
 import React from "react";
+import { Outlet } from "react-router-dom";
 
 function Employment() {
-  return <div>채용게시판</div>;
+  return (
+    <>
+      <div className="container mx-auto">
+        <Outlet />
+      </div>
+    </>
+  );
 }
 
 export default Employment;

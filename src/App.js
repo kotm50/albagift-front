@@ -60,6 +60,7 @@ import AddEmploy from "./Component/Employ/AddEmploy";
 import Agree from "./Component/Marketing/Agree";
 import Sns from "./Component/SNS/Sns";
 import EventDBList from "./Component/Admin/EventDBList";
+import EmployList from "./Component/Employ/EmployList";
 //import MyMain from "./Component/User/Mypage/MyMain";
 
 function App() {
@@ -175,8 +176,10 @@ function App() {
           <Route path="/sns/:id?" element={<Sns />} />
           <Route path="/certification" element={<Certification />} />
           <Route path="/cert" element={<Cert />} />
-          <Route path="/employ" element={<Employment />} />
-          <Route path="/addemploy" element={<AddEmploy />} />
+          <Route path="/employ" element={<Employment />}>
+            <Route path="add" element={<AddEmploy />} />
+            <Route path="list" element={<EmployList />} />
+          </Route>
           <Route path="/marketing" element={<Agree />} />
         </Routes>
       </div>

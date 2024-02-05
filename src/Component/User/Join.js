@@ -59,13 +59,13 @@ function Join() {
       }
       console.log(location.state.promo ? "프로모션" : "프로모아님");
       if (
-        location.state.promo !== null ||
-        location.state.promo !== undefined ||
-        location.state.promo !== ""
+        location.state.promo === null ||
+        location.state.promo === undefined ||
+        location.state.promo === ""
       ) {
-        setIsPromo(true);
-      } else {
         setIsPromo(false);
+      } else {
+        setIsPromo(true);
       }
     }
 

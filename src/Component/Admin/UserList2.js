@@ -568,6 +568,16 @@ function UserList2() {
                         포인트 내역 확인
                       </Link>
                     </div>
+                    <div className="text-center px-2 mb-3 hidden">
+                      <a
+                        href={`http://milliniensms.cafe24.com/formMail/applyList/applyDataInsert.html?name=${user.userName}&alias=SNS&`}
+                        className="bg-green-500 hover:bg-green-700 text-white p-2 rounded-lg w-full block"
+                        target="_blank"
+                        rel="noreferrer noopener"
+                      >
+                        폼메일 입력 테스트
+                      </a>
+                    </div>
                   </div>
                 ))}
               </div>

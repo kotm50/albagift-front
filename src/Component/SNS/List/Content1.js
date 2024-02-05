@@ -5,16 +5,19 @@ import { RiKakaoTalkFill } from "react-icons/ri";
 
 import starbucks from "../../../Asset/Event/starbucks_big.png";
 import banner from "../../../Asset/Event/banner.jpg";
+import resultBanner from "../../../Asset/Event/banner2.png";
 
 import PopupDom from "../../Kakao/PopupDom";
 import PopupPostCode from "../../Kakao/PopupPostCode";
 import Modal from "../../doc/Modal";
 import axios from "axios";
 import { Helmet } from "react-helmet";
+import { useNavigate } from "react-router-dom";
 // kakao 기능 동작을 위해 넣어준다.
 const { Kakao } = window;
 
 function Content1() {
+  const navi = useNavigate();
   const [answer, setAnswer] = useState(0);
   const [isResult, setIsResult] = useState(false);
   const [mainAddr, setMainAddr] = useState("주소찾기를 눌러주세요");
@@ -28,6 +31,8 @@ function Content1() {
 
   const [complete, setComplete] = useState(false);
   const [result, setResult] = useState("");
+
+  const [tid, setTid] = useState("");
   // 재랜더링시에 실행되게 해준다.
   useEffect(() => {
     // init 해주기 전에 clean up 을 해준다.
@@ -91,6 +96,7 @@ function Content1() {
       .then(res => {
         if (res.data.code === "C000") {
           inputData(res.data.tempId);
+          setTid(res.data.tempId);
         } else {
           setResult(res.data.message);
           setComplete(true);
@@ -127,17 +133,34 @@ function Content1() {
         <>
           {complete ? (
             <div className="relative w-full h-full bg-[#1a60fe] text-white">
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center w-[90%]">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center w-full">
                 <h3 className="ppbold text-2xl lg:text-4xl mb-5">
                   이용해 주셔서 감사합니다
                 </h3>
                 <div className="text-xl lg:text-3xl mb-5 ppbold text-[#ff0]">
                   {result}
                 </div>
-                <div className="text-lg lg:text-3xl mb-10 pplight">
+                <div className="text-lg lg:text-3xl mb-5 pplight">
                   빠른 시일내로 알맞은 채용정보를 <br />
                   전해드리겠습니다
                 </div>
+                <button
+                  className="w-full h-fit mx-auto bg-white"
+                  onClick={() => {
+                    navi("/join", {
+                      state: {
+                        tempId: tid,
+                        promo: "sns",
+                      },
+                    });
+                  }}
+                >
+                  <img
+                    src={resultBanner}
+                    className="w-[90%] lg:w-[500px] h-auto mx-auto"
+                    alt="구직활동으로 포인트가 되는 알바선물 회원가입"
+                  />
+                </button>
                 <button
                   className="bg-yellow-300 text-black px-10 py-2 flex-center gap-x-2 text-sm lg:text-2xl mx-auto hidden"
                   onClick={() => shareKakao()}
@@ -155,9 +178,7 @@ function Content1() {
               {!isResult ? (
                 <>
                   <div className="w-full px-4 py-8 lg:px-10 lg:py-20 bg-[#1a60fe] text-white flex flex-col justify-center gap-y-2 lg:gap-y-5 relative">
-                    <div className="pplight text-xl lg:text-6xl">
-                      나한테 딱 맞는
-                    </div>
+                    <div>나한테 딱 맞는</div>
                     <div className="ppbold text-3xl lg:text-7xl">
                       추천 직업 확인하고
                     </div>

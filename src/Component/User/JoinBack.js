@@ -54,6 +54,7 @@ function JoinBack() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
+    console.log(location.state);
     if (location.state) {
       setSocialId(location.state.id);
       setEmail(location.state.email);

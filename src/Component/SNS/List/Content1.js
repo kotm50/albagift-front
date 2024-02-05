@@ -103,6 +103,7 @@ function Content1() {
     const data = {
       tempId: t,
       address: mainAddr,
+      jobType: 1,
     };
     await axios
       .post("/api/v1/user/applicants/add", data)

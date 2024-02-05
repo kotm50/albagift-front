@@ -280,6 +280,22 @@ function UserList() {
     return transformedString;
   };
 
+  //휴대폰변환
+  const getAgreePhone = str => {
+    if (str.length !== 11) {
+      // 문자열이 11자리가 아닌 경우에 대한 예외 처리
+      return "Invalid input";
+    }
+
+    const firstPart = str.substring(0, 3); // 1, 2, 3번째 문자열
+    const secondPart = str.substring(3, 7); // 4, 5, 6, 7번째 문자열은 '*'로 대체
+    const thirdPart = str.substring(7, 11); // 8, 9, 10, 11번째 문자열
+
+    // 조합하여 원하는 형식의 문자열을 만듭니다.
+    const transformedString = `${firstPart}-${secondPart}-${thirdPart}`;
+    return transformedString;
+  };
+
   const incPoint = async () => {
     setLoaded(false);
     const request = {
@@ -494,7 +510,7 @@ function UserList() {
                         </div>
                         <div className="font-normal col-span-2 flex flex-col justify-center">
                           {isAgree
-                            ? `${user.phone || "00000000000"}`
+                            ? getAgreePhone(user.phone || "00000000000")
                             : getPhone(user.phone || "00000000000")}
                         </div>
                       </div>

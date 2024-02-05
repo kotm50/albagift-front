@@ -453,6 +453,14 @@ function UserList() {
                     <label htmlFor={user.userId} className="block p-2 ">
                       <div className="grid grid-cols-3 gap-2 mb-2">
                         <div className="font-medium flex flex-col justify-center text-right font-neo">
+                          인스타프로모션
+                        </div>
+                        <div className="font-normal col-span-2 flex flex-col justify-center">
+                          {user.promoYn === "Y" ? "프로모션 가입" : "일반 가입"}
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-3 gap-2 mb-2">
+                        <div className="font-medium flex flex-col justify-center text-right font-neo">
                           가입일
                         </div>
                         <div className="font-normal col-span-2 flex flex-col justify-center">

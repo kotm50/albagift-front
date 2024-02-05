@@ -56,7 +56,11 @@ function Join() {
         setEmail(location.state.email);
         setIsSocialLogin(true);
       }
-      if (location.state.promo !== null) {
+      if (
+        location.state.promo !== null ||
+        location.state.promo !== undefined ||
+        location.state.promo !== ""
+      ) {
         setIsPromo(true);
       }
     }

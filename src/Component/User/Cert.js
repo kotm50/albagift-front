@@ -101,6 +101,13 @@ function Cert() {
                 원활한 이용을 위해 본인인증 후 <br className="lg:hidden" />
                 회원가입을 진행합니다
               </div>
+              <div className="text-sm text-rose-600 font-neo mb-3">
+                *알바선물은{" "}
+                <span className="font-neobold text-rose-500">
+                  19세 이상 성인
+                </span>
+                만 가입 가능합니다.
+              </div>
             </>
           ) : gubun === "find" ? (
             <>

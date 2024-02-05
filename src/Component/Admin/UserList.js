@@ -493,7 +493,9 @@ function UserList() {
                           연락처
                         </div>
                         <div className="font-normal col-span-2 flex flex-col justify-center">
-                          {getPhone(user.phone || "00000000000")}
+                          {isAgree
+                            ? `${user.phone || "00000000000"}`
+                            : getPhone(user.phone || "00000000000")}
                         </div>
                       </div>
                       <div className="grid grid-cols-3 gap-2 mb-2">

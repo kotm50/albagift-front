@@ -54,13 +54,13 @@ function JoinBack() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
-    console.log(location.state || "없음");
     if (location.state) {
-      if (location.state.email) {
-        setEmail(location.state.email);
-        setIsSocialLogin(true);
-      }
-      console.log(location.state.promo !== null ? "프로모션" : "프로모아님");
+      setSocialId(location.state.id);
+      setEmail(location.state.email);
+      setSocialType(location.state.socialType);
+      setIsSocialLogin(true);
+    } else {
+      setIsSocialLogin(false);
     }
 
     if (user.accessToken !== "") {

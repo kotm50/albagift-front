@@ -19,7 +19,6 @@ function Cert() {
 
   useEffect(() => {
     if (location.state) {
-      console.log(location.state.promo);
       setSocialUser(location.state.socialUser);
       setPromo(location.state.promo);
     }
@@ -129,7 +128,7 @@ function Cert() {
               </div>
             </>
           ) : null}
-          {socialUser !== "" ? (
+          {socialUser ? (
             <div className="text-sm lg:text-base font-neo mb-3">
               최초 1회 진행 후 카카오톡 계정으로
               <br className="xl-hidden" /> 간편하게 로그인 가능합니다

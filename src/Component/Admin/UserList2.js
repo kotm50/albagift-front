@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
 import { getNewToken } from "../../Reducer/userSlice";
@@ -562,15 +562,13 @@ function UserList2() {
                         </button>
                       </div>
                     </div>
-                    <div className="text-center px-2 mb-3 hidden">
-                      <button
-                        className="bg-indigo-500 hover:bg-indigo-700 text-white p-2 rounded-lg w-full"
-                        onClick={e =>
-                          navi(`/admin/userdetail?userId=${user.userId}`)
-                        }
+                    <div className="text-center px-2 mb-3">
+                      <Link
+                        to={`/admin/userdetail?userId=${user.userId}`}
+                        className="bg-indigo-500 hover:bg-indigo-700 text-white p-2 rounded-lg w-full block"
                       >
                         포인트 내역 확인
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 ))}

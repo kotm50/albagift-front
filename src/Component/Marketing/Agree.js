@@ -116,12 +116,12 @@ function Agree() {
           </span>
         </div>
         <div className="text-white lg:text-xl">
-          정보수신에 동의해 주시면 알바선국의 이벤트와 컨텐츠 등 다양한 정보를
-          미리 만나보실 수 있습니다.
+          본 페이지에서 정보수신에 동의해 주시면 알바선국의 이벤트와 컨텐츠 등
+          다양한 정보를 미리 만나보실 수 있습니다.
         </div>
         <div className="text-white lg:text-xl">
-          정보수신에 동의하시면 최소 1개월간은 동의 철회 및 회원 탈퇴가
-          불가능합니다
+          본 페이지에서 정보수신에 동의하시면 최소 1개월간은 동의 철회 및 회원
+          탈퇴가 불가능합니다
         </div>
         <div className="text-white lg:text-xl">
           이미 포인트를 지급받으셨다면 철회 후 재동의를 하셔도 포인트 지급이

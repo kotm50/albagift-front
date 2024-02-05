@@ -19,6 +19,7 @@ import Mypage from "./Component/User/Mypage";
 import Admin from "./Component/Admin/Admin";
 import AdminMain from "./Component/Admin/Main";
 import UserList from "./Component/Admin/UserList";
+import UserList2 from "./Component/Admin/UserList2";
 import List from "./Component/Mall/List";
 import Detail from "./Component/Mall/Detail";
 import Result from "./Component/Mall/Result";
@@ -157,6 +158,7 @@ function App() {
           <Route path="/admin" element={<Admin />}>
             <Route path="" element={<AdminMain />} />
             <Route path="user" element={<UserList />} />
+            <Route path="user2" element={<UserList2 />} />
             <Route path="reset" element={<GiftReset />} />
             <Route path="loginlog" element={<LoginLog />} />
             <Route path="pointlist" element={<PointList />} />

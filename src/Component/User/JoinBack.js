@@ -34,7 +34,7 @@ function JoinBack() {
   const [inputPhone, setInputPhone] = useState("");
   const [displayPhone, setDisplayPhone] = useState("");
   const [inputBirth, setInputBirth] = useState("");
-  const [displayBirth, setDisplayBirth] = useState("");
+  //const [displayBirth, setDisplayBirth] = useState("");
   const [mainAddr, setMainAddr] = useState("주소찾기를 눌러주세요");
   const [gender, setGender] = useState("");
   const [email, setEmail] = useState("");
@@ -347,6 +347,7 @@ function JoinBack() {
   };
 
   //생일 중간에 '년월일' 표시하기.
+  /*
   const handleBirth = e => {
     if (e !== undefined) {
       const rawValue = e.target.value.replace(/-/g, ""); // remove all dashes
@@ -369,6 +370,7 @@ function JoinBack() {
       }
     }
   };
+  */
 
   const handleAgreeAll = () => {
     if (agreeAll) {
@@ -590,9 +592,9 @@ function JoinBack() {
               type="text"
               id="inputBirth"
               className="border lg:border-0 p-2 w-full text-sm"
-              value={displayBirth || ""}
-              onChange={handleBirth}
-              onBlur={handleBirth}
+              value={inputBirth}
+              onChange={e => setInputBirth(e.currentTarget.value)}
+              onBlur={e => setInputBirth(e.currentTarget.value)}
               placeholder="6자리 숫자로 입력하세요 - 990101"
             />
           </div>

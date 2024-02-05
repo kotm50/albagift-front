@@ -397,9 +397,7 @@ function UserList2() {
 
   const handleCopyClipBoard = async txt => {
     try {
-      await navigator.clipboard.writeText(txt);
-
-      alert("복사 성공!");
+      navigator.clipboard.writeText(txt);
     } catch (error) {
       alert("복사 실패!");
     }

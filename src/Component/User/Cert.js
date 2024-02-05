@@ -19,6 +19,7 @@ function Cert() {
 
   useEffect(() => {
     if (location.state) {
+      console.log(location.state.promo);
       setSocialUser(location.state.socialUser);
       setPromo(location.state.promo);
     }

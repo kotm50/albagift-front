@@ -67,7 +67,7 @@ function Main() {
           <Recommend category={cateNums[1]} first={false} />
         </>
       )}
-      <div className="mx-auto container">
+      <div className="mx-auto container hidden">
         <MarketingSection />
       </div>
     </>

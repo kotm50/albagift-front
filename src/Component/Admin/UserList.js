@@ -13,6 +13,7 @@ import queryString from "query-string";
 import Pagenate from "../Layout/Pagenate";
 import Sorry from "../doc/Sorry";
 import Loading from "../Layout/Loading";
+import dayjs from "dayjs";
 
 //import { dummyUser } from "./dummy";
 
@@ -94,6 +95,7 @@ function UserList() {
         },
       })
       .then(res => {
+        //console.log(res);
         if (res.headers.authorization) {
           dispatch(
             getNewToken({
@@ -454,7 +456,7 @@ function UserList() {
                           가입일
                         </div>
                         <div className="font-normal col-span-2 flex flex-col justify-center">
-                          {user.regDate}
+                          {dayjs(user.regDate).format("YYYY-MM-DD")}
                         </div>
                       </div>
                       <div className="grid grid-cols-3 gap-2 mb-2">

@@ -161,7 +161,7 @@ function Promo() {
               <div className="w-full my-2">
                 <button
                   className="block py-2 mx-auto bg-indigo-500 text-white hover:animate-bounce rounded-full px-4"
-                  onClick={e => navi("/join/promo")}
+                  onClick={e => navi("/cert")}
                 >
                   가입하기
                 </button>

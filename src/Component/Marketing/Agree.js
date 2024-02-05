@@ -48,7 +48,7 @@ function Agree() {
           <span>수신동의</span>
           <span>이벤트</span>
         </h3>
-        <div className="w-11/12 lg:hidden text-center text-xl lg:text-2xl text-white font-neo absolute z-40 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pplight">
+        <div className="w-11/12 lg:hidden text-center text-xl lg:text-xl text-white font-neo absolute z-40 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pplight">
           알바선물의 다양한 정보를
           <br />
           실시간으로 받아보시고
@@ -105,50 +105,50 @@ function Agree() {
       </div>
       <div className="py-20 px-40 container mx-auto w-full bg-black flex-col justify-start gap-y-4 hidden lg:flex font-neolight">
         <div className="font-neoheavy lg:text-3xl text-white">유의사항</div>
-        <div className="text-white lg:text-2xl flex flex-col justify-start gap-x-2">
+        <div className="text-white lg:text-xl flex flex-col justify-start gap-x-2">
           <span>
-            마케팅 정보수신에 동의해 주시면 최초 1회에 한하여 면접포인트 4000P를
-            지급해드립니다
+            마케팅 정보수신에 동의해 주시면 전화상담을 통해 포인트를 지급해
+            드립니다.
           </span>
           <span className="text-xs lg:text-sm text-[#ff0]">
             (이미 동의하신 회원님도 아래 버튼을 누르면 1회에 한해 면접포인트를
             지급해 드립니다)
           </span>
         </div>
-        <div className="text-white lg:text-2xl">
+        <div className="text-white lg:text-xl">
           정보수신에 동의해 주시면 알바선국의 이벤트와 컨텐츠 등 다양한 정보를
           미리 만나보실 수 있습니다.
         </div>
-        <div className="text-white lg:text-2xl">
-          정보수신에 동의하여 포인트를 지급받으시면 최소 1개월간은 동의 철회 및
-          회원 탈퇴가 불가능합니다
+        <div className="text-white lg:text-xl">
+          정보수신에 동의하시면 최소 1개월간은 동의 철회 및 회원 탈퇴가
+          불가능합니다
         </div>
-        <div className="text-white lg:text-2xl">
+        <div className="text-white lg:text-xl">
           이미 포인트를 지급받으셨다면 철회 후 재동의를 하셔도 포인트 지급이
           불가능합니다.
         </div>
       </div>
       <div className="py-10 px-4 container mx-auto w-full bg-black flex flex-col justify-start gap-y-4 lg:hidden font-neolight">
         <div className="font-neoheavy lg:text-3xl text-white">유의사항</div>
-        <div className="text-white lg:text-2xl flex flex-col justify-start gap-x-2">
+        <div className="text-white lg:text-xl flex flex-col justify-start gap-x-2">
           <span>
-            마케팅 정보수신에 동의해 주시면 최초 1회에 한하여 면접포인트 4000P를
-            지급해드립니다
+            마케팅 정보수신에 동의해 주시면 전화상담을 통해 포인트를 지급해
+            드립니다.
           </span>
           <span className="text-xs lg:text-sm text-[#ff0]">
             (이미 동의하신 회원님도 아래 버튼을 누르면 1회에 한해 면접포인트를
             지급해 드립니다)
           </span>
         </div>
-        <div className="text-white lg:text-2xl">
+        <div className="text-white lg:text-xl">
           정보수신에 동의해 주시면 알바선국의 이벤트와 컨텐츠 등 다양한 정보를
           미리 만나보실 수 있습니다.
         </div>
-        <div className="text-white lg:text-2xl">
+        <div className="text-white lg:text-xl">
           정보수신에 동의하여 포인트를 지급받으시면 최소 1개월간은 동의 철회가
           불가능합니다
         </div>
-        <div className="text-white lg:text-2xl">
+        <div className="text-white lg:text-xl">
           이미 포인트를 지급받으셨다면 철회 후 재동의를 하셔도 포인트 지급이
           불가능합니다.
         </div>

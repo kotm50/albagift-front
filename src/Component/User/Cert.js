@@ -109,7 +109,7 @@ function Cert() {
               <div className="text-sm text-rose-600 font-neo mb-3">
                 *알바선물은{" "}
                 <span className="font-neobold text-rose-500">
-                  19세 이상 성인
+                  만 19세 이상 성인
                 </span>
                 만 가입 가능합니다.
               </div>

@@ -21,8 +21,8 @@ import chicken from "../../Asset/Promo/chicken.png";
 import lotte from "../../Asset/Promo/lotte.png";
 import happycon from "../../Asset/Promo/happycon.png";
 import br from "../../Asset/Promo/br.png";
-import coupon from "../../Asset/Promo/1000p.png";
-//import couponM from "../../Asset/Promo/1000pM.png";
+//import coupon from "../../Asset/Promo/1000p.png";
+import couponM from "../../Asset/Promo/1000pM.png";
 
 import explain1 from "../../Asset/Promo/explain1.png";
 import explain2 from "../../Asset/Promo/explain2.png";
@@ -104,14 +104,14 @@ function Promo() {
           <div className="flex flex-col justify-center h-full">
             <div className="bg-white w-96 h-96 max-w-full rounded-full mx-auto translate-x-1/6 flex flex-col justify-start">
               <img
-                src={coupon}
+                src={couponM}
                 alt=""
                 className="img max-w-full -translate-x-3"
                 data-aos="fade-up"
               />
               <div className="w-full text-center text-xl font-neoextra">
-                가입시 최대{" "}
-                <span className="text-rose-500 font-bold">5000p</span> 지급!
+                가입시 <span className="text-rose-500 font-bold">1000p</span>{" "}
+                지급!
               </div>
               <div className="w-full mt-2">
                 <button
@@ -152,11 +152,11 @@ function Promo() {
             </div>
           </div>
           <div className="flex flex-col justify-center h-full">
-            <img src={coupon} alt="" className="img" data-aos="fade-up" />
+            <img src={couponM} alt="" className="img" data-aos="fade-up" />
             <div className="bg-white p-2 mt-2 rounded">
               <div className="w-full text-center text-xl font-neoextra bg-white p-2">
-                가입시 최대{" "}
-                <span className="text-rose-500 font-bold">5000p</span> 무료지급!
+                가입시 <span className="text-rose-500 font-bold">1000p</span>{" "}
+                무료지급!
               </div>
               <div className="w-full my-2">
                 <button

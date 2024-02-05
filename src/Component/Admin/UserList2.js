@@ -504,26 +504,6 @@ function UserList2() {
                       </div>
                       <div className="grid grid-cols-4 gap-2 mb-2">
                         <div className="font-medium flex flex-col justify-center text-right font-neo">
-                          연락처
-                        </div>
-                        <div className="font-normal col-span-2 flex flex-col justify-center truncate">
-                          {isAgree
-                            ? getAgreePhone(user.phone || "00000000000")
-                            : getPhone(user.phone || "00000000000")}
-                        </div>
-                        <button
-                          className="p-1 bg-rose-500 text-white"
-                          onClick={() =>
-                            handleCopyClipBoard(
-                              user.phone ? getAgreePhone(user.phone) : "미입력"
-                            )
-                          }
-                        >
-                          복사
-                        </button>
-                      </div>
-                      <div className="grid grid-cols-4 gap-2 mb-2">
-                        <div className="font-medium flex flex-col justify-center text-right font-neo">
                           성별
                         </div>
                         <div className="font-normal col-span-2 flex flex-col justify-center">
@@ -554,6 +534,26 @@ function UserList2() {
                           className="p-1 bg-rose-500 text-white"
                           onClick={() =>
                             handleCopyClipBoard(user.mainAddr || "미입력")
+                          }
+                        >
+                          복사
+                        </button>
+                      </div>
+                      <div className="grid grid-cols-4 gap-2 mb-2">
+                        <div className="font-medium flex flex-col justify-center text-right font-neo">
+                          연락처
+                        </div>
+                        <div className="font-normal col-span-2 flex flex-col justify-center truncate">
+                          {isAgree
+                            ? getAgreePhone(user.phone || "00000000000")
+                            : getPhone(user.phone || "00000000000")}
+                        </div>
+                        <button
+                          className="p-1 bg-rose-500 text-white"
+                          onClick={() =>
+                            handleCopyClipBoard(
+                              user.phone ? getAgreePhone(user.phone) : "미입력"
+                            )
                           }
                         >
                           복사

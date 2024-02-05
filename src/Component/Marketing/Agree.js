@@ -107,12 +107,16 @@ function Agree() {
         <div className="font-neoheavy lg:text-3xl text-white">유의사항</div>
         <div className="text-white lg:text-xl flex flex-col justify-start gap-x-2">
           <span>
-            마케팅 정보수신에 동의해 주시면 전화상담을 통해 포인트를 지급해
-            드립니다.
+            마케팅 정보수신에 동의해 주시면 4000 포인트를 지급해 드립니다.
           </span>
-          <span className="text-xs lg:text-sm text-[#ff0]">
+          <span className="text-xs lg:text-sm">
             (이미 동의하신 회원님도 아래 버튼을 누르면 1회에 한해 면접포인트를
             지급해 드립니다)
+          </span>
+        </div>
+        <div className="text-white lg:text-xl flex flex-col justify-start gap-x-2">
+          <span>
+            포인트 지급 전에 본인확인을 위해 전화연락이 갈 수 있습니다.
           </span>
         </div>
         <div className="text-white lg:text-xl">
@@ -132,8 +136,7 @@ function Agree() {
         <div className="font-neoheavy lg:text-3xl text-white">유의사항</div>
         <div className="text-white lg:text-xl flex flex-col justify-start gap-x-2">
           <span>
-            마케팅 정보수신에 동의해 주시면 전화상담을 통해 포인트를 지급해
-            드립니다.
+            마케팅 정보수신에 동의해 주시면 4000 포인트를 지급해 드립니다.
           </span>
           <span className="text-xs lg:text-sm text-[#ff0]">
             (이미 동의하신 회원님도 아래 버튼을 누르면 1회에 한해 면접포인트를

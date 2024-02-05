@@ -50,18 +50,22 @@ function Join() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
+    console.log(location.state || "없음");
     if (location.state) {
       setTempId(location.state.tempId);
       if (location.state.email) {
         setEmail(location.state.email);
         setIsSocialLogin(true);
       }
+      console.log(location.state.promo ? "프로모션" : "프로모아님");
       if (
         location.state.promo !== null ||
         location.state.promo !== undefined ||
         location.state.promo !== ""
       ) {
         setIsPromo(true);
+      } else {
+        setIsPromo(false);
       }
     }
 

@@ -49,7 +49,7 @@ function GiftCategory(props) {
         </button>
         <Link
           to="/employ/list"
-          className="py-2 px-5 text-center text-redorange font-neoextra hover:bg-gray-100 rounded-t-lg"
+          className="py-2 px-5 text-center text-redorange font-neoextra hover:bg-gray-100 rounded-t-lg hidden"
         >
           채용게시판
         </Link>

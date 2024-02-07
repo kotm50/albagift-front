@@ -38,7 +38,6 @@ function AlertModal(props) {
   };
   useEffect(() => {
     const handleKeyDown = event => {
-      console.log(event.key);
       if (event.key === "Escape") {
         modalClose();
       }

@@ -39,7 +39,7 @@ function GiftCategory(props) {
   }, [menuOn]);
   return (
     <>
-      <div className="flex flex-row flex-nowrap relative gap-x-5">
+      <div className="flex flex-row flex-nowrap relative gap-x-2">
         <button
           className="bg-skybluehover text-white lg:w-48 px-4 py-2 flex flex-row justify-start gap-x-2 rounded-t-lg"
           onClick={() => setMenuOn(!menuOn)}
@@ -47,7 +47,10 @@ function GiftCategory(props) {
           {menuOn ? <MdClose size={24} /> : <GiHamburgerMenu size={24} />} 선물
           카테고리
         </button>
-        <Link to="/employ" className="p-2 text-center text-redorange hidden">
+        <Link
+          to="/employ/list"
+          className="py-2 px-5 text-center text-redorange font-neoextra hover:bg-gray-100 rounded-t-lg"
+        >
           채용게시판
         </Link>
         {menuOn ? (

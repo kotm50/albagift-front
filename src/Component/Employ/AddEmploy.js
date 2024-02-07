@@ -11,13 +11,15 @@ import axios from "axios";
 
 function AddEmploy() {
   const user = useSelector(state => state.user);
+  const [compNum, setCompNum] = useState(""); //고객사번호
   const [title, setTitle] = useState(""); //제목
   const [hireStart, setHireStart] = useState(""); // 채용종료일
   const [hireEnd, setHireEnd] = useState(""); // 채용종료일
-  const [totalApply, setTotalApply] = useState(""); // 채용인원
   const [mainAddr, setMainAddr] = useState(""); // 근무지주소
+  const [detailAddr, setDetailAddr] = useState(""); // 근무지주소
   const [day, setDay] = useState(""); // 근무요일
   const [workTime, setWorkTime] = useState(""); // 근무시간
+  const [salary, setSalary] = useState(""); //지원시 포인트
   const [point1, setPoint1] = useState(""); //지원시 포인트
   const [point2, setPoint2] = useState(""); //면접시 포인트
   const [content, setContent] = useState(""); //업무상세내용
@@ -77,16 +79,19 @@ function AddEmploy() {
   const saveIt = async () => {
     try {
       const data = {
-        title: title,
-        compAddr: mainAddr,
-        workDay: day,
-        workTime: workTime,
-        applyPoint: point1,
-        intvPoint: point2,
-        content: content,
-        totalApplicants: totalApply,
-        postingStartDate: hireStart,
-        postingEndDate: hireEnd,
+        boardId: "B05", //게시판 아이디
+        compNum: compNum, // 고객사 번호
+        title: title, // 제목
+        compAddr: mainAddr, // 근무지
+        detailAddr: detailAddr, //근무지 상세
+        workDay: day, // 근무요일
+        workTime: workTime, // 근무시간
+        //applyPoint: point1,
+        salary: salary,
+        intvPoint: point2, // 면접포인트
+        content: escapeHTML(content), // 상세내용
+        postingStartDate: hireStart, // 채용 시작일
+        postingEndDate: hireEnd, // 채용 종료일
       };
       const formData = new FormData();
       selectedFiles.forEach((file, idx) => {
@@ -119,6 +124,37 @@ function AddEmploy() {
     }
   };
 
+  // HTML 암호화
+  const escapeHTML = text => {
+    return text
+      .replace(/</g, "＜")
+      .replace(/>/g, "＞")
+      .replace(/=/g, "＝")
+      .replace(/\(/g, "（")
+      .replace(/\)/g, "）")
+      .replace(/,/g, "，")
+      .replace(/"/g, "＂")
+      .replace(/:/g, "：")
+      .replace(/;/g, "；")
+      .replace(/\//g, "／");
+  };
+  // HTML복호화
+  /*
+  const unescapeHTML = text => {
+    return text
+      .replace(/＜/g, "<")
+      .replace(/＞/g, ">")
+      .replace(/＝/g, "=")
+      .replace(/（/g, "(")
+      .replace(/）/g, ")")
+      .replace(/，/g, ",")
+      .replace(/＂/g, '"')
+      .replace(/：/g, ":")
+      .replace(/；/g, ";")
+      .replace(/／/g, "/");
+  };
+  */
+
   return (
     <div className="container mx-auto my-10 p-2">
       <h2 className="text-2xl lg:text-4xl text-center mb-2 font-neoextra">
@@ -126,6 +162,23 @@ function AddEmploy() {
       </h2>
       <div className="mx-2 lg:mx-0 p-4 bg-white drop-shadow">
         <div className="grid grid-cols-1 divide-y divide-gray-300 border-y border-gray-500">
+          <div
+            id="adNum"
+            className="flex justify-start flex-wrap border-x lg:border-x-0"
+          >
+            <div className="w-full lg:w-[20%] px-4 lg:py-6 py-2 font-neoextra truncate break-keep text-xs lg:text-lg lg:text-right bg-gray-100">
+              고객사 번호
+            </div>
+            <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-lg font-neo lg:p-4">
+              <input
+                type="text"
+                className="focus:bg-blue-100 py-2 px-4 border-b w-full"
+                placeholder="폼메일 고객사 번호 4자리 입력"
+                value={compNum}
+                onChange={e => setCompNum(e.currentTarget.value)}
+              />
+            </div>
+          </div>
           <div
             id="title"
             className="flex justify-start flex-wrap border-x lg:border-x-0"
@@ -155,7 +208,7 @@ function AddEmploy() {
                 type="date"
                 className="focus:bg-blue-100 py-2 px-4 border-b w-full"
                 placeholder="채용 시작일을 입력하세요"
-                value={hireEnd}
+                value={hireStart}
                 onChange={e => setHireStart(e.currentTarget.value)}
               />
             </div>
@@ -174,23 +227,6 @@ function AddEmploy() {
                 placeholder="채용 종료일을 입력하세요"
                 value={hireEnd}
                 onChange={e => setHireEnd(e.currentTarget.value)}
-              />
-            </div>
-          </div>
-          <div
-            id="hireCount"
-            className="flex justify-start flex-wrap border-x lg:border-x-0"
-          >
-            <div className="w-full lg:w-[20%] px-4 lg:py-6 py-2 font-neoextra truncate break-keep text-xs lg:text-lg lg:text-right bg-gray-100">
-              채용 인원
-            </div>
-            <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-lg font-neo lg:p-4">
-              <input
-                type="text"
-                className="focus:bg-blue-100 py-2 px-4 border-b w-full"
-                placeholder="채용인원을 입력하세요"
-                value={totalApply}
-                onChange={e => setTotalApply(e.currentTarget.value)}
               />
             </div>
           </div>
@@ -224,6 +260,23 @@ function AddEmploy() {
               >
                 주소찾기
               </button>
+            </div>
+          </div>
+          <div
+            id="areaDetail"
+            className="flex justify-start flex-wrap border-x lg:border-x-0"
+          >
+            <div className="w-full lg:w-[20%] px-4 lg:py-6 py-2 font-neoextra truncate break-keep text-xs lg:text-lg lg:text-right bg-gray-100">
+              근무지 상세
+            </div>
+            <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-lg font-neo lg:p-4">
+              <input
+                type="text"
+                className="focus:bg-blue-100 py-2 px-4 border-b w-full"
+                placeholder="예시)신당동 3번출구 도보 8분/7212번 버스 동화동 하차 도보 3분"
+                value={detailAddr}
+                onChange={e => setDetailAddr(e.currentTarget.value)}
+              />
             </div>
           </div>
           <div
@@ -261,8 +314,25 @@ function AddEmploy() {
             </div>
           </div>
           <div
+            id="salary"
+            className="justify-start flex-wrap border-x lg:border-x-0 flex"
+          >
+            <div className="w-full lg:w-[20%] px-4 lg:py-6 py-2 font-neoextra truncate break-keep text-xs lg:text-lg lg:text-right bg-gray-100">
+              월 급여
+            </div>
+            <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-lg font-neo lg:p-4">
+              <input
+                type="number"
+                className="focus:bg-blue-100 py-2 px-4 border-b w-full"
+                placeholder="급여를 숫자만 입력하세요"
+                value={salary}
+                onChange={e => setSalary(e.currentTarget.value)}
+              />
+            </div>
+          </div>
+          <div
             id="point1"
-            className="flex justify-start flex-wrap border-x lg:border-x-0"
+            className="justify-start flex-wrap border-x lg:border-x-0 hidden"
           >
             <div className="w-full lg:w-[20%] px-4 lg:py-6 py-2 font-neoextra truncate break-keep text-xs lg:text-lg lg:text-right bg-gray-100">
               지원포인트

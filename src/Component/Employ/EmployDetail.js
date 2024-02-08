@@ -28,6 +28,8 @@ function EmployDetail() {
   const [qualification, setQualification] = useState(null); //지원자격
   const [welfare, setWelfare] = useState(null); //복지혜택
 
+  const [imgLoaded, setImgLoaded] = useState(false);
+
   useEffect(() => {
     getJob(jid);
     //eslint-disable-next-line
@@ -206,73 +208,77 @@ function EmployDetail() {
         <>
           <div className="mt-3 lg:mt-10 flex justify-between w-full">
             <div className="w-full lg:w-[75%]">
-              <h2 className="p-2 lg:p-0 text-lg lg:text-3xl font-neoextra">
-                {jobInfo.title}
-              </h2>
-              <div className="py-2 px-5 grid grid-cols-2 bg-gray-100 gap-x-2 gap-y-2 lg:hidden">
-                <div className="flex justify-start gap-x-2 lg:text-lg font-neoextra">
-                  <span className="font-neobold">💰</span>
-                  <span>
-                    <span className="text-orange-600">월</span>{" "}
-                    {jobInfo.salary.toLocaleString()}원
-                  </span>
-                </div>
-                <div className="flex justify-start gap-x-2 lg:text-xl font-neoextra">
-                  <span className="font-neobold">🚩</span>
-                  <span>{jobInfo.compArea || "지원 후 안내"}</span>
-                </div>
-                <div className="flex justify-start gap-x-2 lg:text-xl font-neoextra">
-                  <span className="font-neobold">📆</span>
-                  <span>{jobInfo.workDay}</span>
-                </div>
-                <div className="flex justify-start gap-x-2 lg:text-xl font-neoextra">
-                  <span className="font-neobold">⏰</span>
-                  <span>{jobInfo.workTime}</span>
-                </div>
-              </div>
-              <div className="p-5 py-10 hidden grid-cols-4 mt-10 bg-gray-200 lg:grid">
-                <div className="flex justify-start gap-x-3 lg:text-lg font-neoextra">
-                  <div className="font-neobold flex flex-col justify-center text-5xl">
-                    💰
-                  </div>
-                  <div className="flex flex-col justify-center">
-                    <span className="text-orange-600 text-sm">월급</span>
-                    <span className="text-xl">
+              <div className="border border-gray-300 py-2 px-5">
+                <h2 className="lg:p-0 text-lg lg:text-3xl font-neoextra py-2 lg:py-10 border-b border-gray-200">
+                  {jobInfo.title}
+                </h2>
+                <div className="py-2 px-0 lg:px-3 grid grid-cols-2 gap-x-2 gap-y-2 lg:hidden">
+                  <div className="flex justify-start gap-x-2 text-sm lg:text-lg font-neoextra">
+                    <span className="font-neobold">💰</span>
+                    <span>
+                      <span className="text-orange-600">월</span>{" "}
                       {jobInfo.salary.toLocaleString()}원
                     </span>
                   </div>
-                </div>
-                <div className="flex justify-start gap-x-3 lg:text-lg font-neoextra">
-                  <div className="font-neobold flex flex-col justify-center text-5xl">
-                    🚩
+                  <div className="flex justify-start gap-x-2 text-sm lg:text-xl font-neoextra">
+                    <span className="font-neobold">🚩</span>
+                    <span>{jobInfo.compArea || "지원 후 안내"}</span>
                   </div>
-                  <div className="flex flex-col justify-center">
-                    <span className="text-orange-600 text-sm">지역</span>
-                    <span className="text-xl">
-                      {jobInfo.compArea || "지원 후 안내"}
-                    </span>
+                  <div className="flex justify-start gap-x-2 text-sm lg:text-xl font-neoextra">
+                    <span className="font-neobold">📆</span>
+                    <span>{jobInfo.workDay}</span>
                   </div>
-                </div>
-                <div className="flex justify-start gap-x-3 lg:text-lg font-neoextra">
-                  <div className="font-neobold flex flex-col justify-center text-5xl">
-                    📆
-                  </div>
-                  <div className="flex flex-col justify-center">
-                    <span className="text-orange-600 text-sm">근무요일</span>
-                    <span className="text-xl">
-                      {jobInfo.workDay
-                        ? `${jobInfo.workDay} 근무`
-                        : "지원 후 안내"}
-                    </span>
+                  <div className="flex justify-start gap-x-2 text-sm lg:text-xl font-neoextra">
+                    <span className="font-neobold">⏰</span>
+                    <span>{jobInfo.workTime}</span>
                   </div>
                 </div>
-                <div className="flex justify-start gap-x-3 lg:text-lg font-neoextra">
-                  <div className="font-neobold flex flex-col justify-center text-5xl">
-                    ⏰
+                <div className="px-5 py-5 hidden grid-cols-4 mt-10 lg:grid">
+                  <div className="flex justify-start gap-x-3 lg:text-lg font-neoextra">
+                    <div className="font-neobold flex flex-col justify-center text-5xl">
+                      💰
+                    </div>
+                    <div className="flex flex-col justify-center">
+                      <span className="text-orange-600 text-sm">월급</span>
+                      <span className="text-xl">
+                        {jobInfo.salary.toLocaleString()}원
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex flex-col justify-center">
-                    <span className="text-orange-600 text-sm">근무시간</span>
-                    <span className="text-xl">{jobInfo.workTime}</span>
+                  <div className="flex justify-start gap-x-3 lg:text-lg font-neoextra">
+                    <div className="font-neobold flex flex-col justify-center text-5xl">
+                      🚩
+                    </div>
+                    <div className="flex flex-col justify-center">
+                      <span className="text-orange-600 text-sm">지역</span>
+                      <span className="text-xl">
+                        {jobInfo.compArea || "지원 후 안내"}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex justify-start gap-x-3 lg:text-lg font-neoextra">
+                    <div className="font-neobold flex flex-col justify-center text-5xl">
+                      📆
+                    </div>
+                    <div className="flex flex-col justify-center">
+                      <span className="text-orange-600 text-sm">근무요일</span>
+                      <span className="text-xl">
+                        {jobInfo.workDay
+                          ? `${jobInfo.workDay} ${
+                              jobInfo.workDay.length < 4 ? "근무" : ""
+                            }`
+                          : "지원 후 안내"}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex justify-start gap-x-3 lg:text-lg font-neoextra">
+                    <div className="font-neobold flex flex-col justify-center text-5xl">
+                      ⏰
+                    </div>
+                    <div className="flex flex-col justify-center">
+                      <span className="text-orange-600 text-sm">근무시간</span>
+                      <span className="text-xl">{jobInfo.workTime}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -281,59 +287,66 @@ function EmployDetail() {
                   src="https://source.unsplash.com/random/1920x1080/?building"
                   alt=""
                   className="w-full h-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                  onLoad={() => setImgLoaded(true)}
                 />
               </div>
-              {imgList && imgList.length > 0 ? (
-                <div className="my-5 grid grid-cols-1 gap-y-2">
-                  <h3 className="hidden font-neoextra text-xl p-2 bg-gradient-to-r from-blue-100 to-white">
-                    상세내용
-                  </h3>
-                  <img
-                    src={imgList[0].fileUrl}
-                    alt=""
-                    className="h-auto w-fit max-w-full"
-                  />
-                </div>
-              ) : null}
-              {content ? (
-                <div className="my-5 grid grid-cols-1 gap-y-2">
-                  <h3 className="font-neoextra text-xl p-2 bg-gradient-to-r from-blue-100 to-white">
-                    업무내용
-                  </h3>
-                  <div
-                    className="text-left lg:text-lg px-2"
-                    dangerouslySetInnerHTML={{
-                      __html: sanitizer(content),
-                    }}
-                  />
-                </div>
-              ) : null}
-              {qualification ? (
-                <div className="my-5 grid grid-cols-1 gap-y-2">
-                  <h3 className="font-neoextra text-xl p-2 bg-gradient-to-r from-blue-100 to-white">
-                    지원자격
-                  </h3>
-                  <div
-                    className="text-left lg:text-lg px-2"
-                    dangerouslySetInnerHTML={{
-                      __html: sanitizer(qualification),
-                    }}
-                  />
-                </div>
-              ) : null}
-              {welfare ? (
-                <div className="my-5 grid grid-cols-1 gap-y-2">
-                  <h3 className="font-neoextra text-xl p-2 bg-gradient-to-r from-blue-100 to-white">
-                    복지혜택
-                  </h3>
-                  <div
-                    className="text-left lg:text-lg px-2"
-                    dangerouslySetInnerHTML={{
-                      __html: sanitizer(welfare),
-                    }}
-                  />
-                </div>
-              ) : null}
+              {imgLoaded ? (
+                <>
+                  {imgList && imgList.length > 0 ? (
+                    <div className="my-5 grid grid-cols-1 gap-y-2">
+                      <h3 className="font-neoextra text-xl p-2 bg-gradient-to-r from-blue-100 to-white">
+                        채용요강
+                      </h3>
+                      <img
+                        src={imgList[0].fileUrl}
+                        alt=""
+                        className="h-auto w-fit max-w-full"
+                      />
+                    </div>
+                  ) : null}
+                  {content ? (
+                    <div className="my-5 grid grid-cols-1 gap-y-2">
+                      <h3 className="font-neoextra text-xl p-2 bg-gradient-to-r from-blue-100 to-white">
+                        업무내용
+                      </h3>
+                      <div
+                        className="text-left lg:text-lg px-2"
+                        dangerouslySetInnerHTML={{
+                          __html: sanitizer(content),
+                        }}
+                      />
+                    </div>
+                  ) : null}
+                  {qualification ? (
+                    <div className="my-5 grid grid-cols-1 gap-y-2">
+                      <h3 className="font-neoextra text-xl p-2 bg-gradient-to-r from-blue-100 to-white">
+                        지원자격
+                      </h3>
+                      <div
+                        className="text-left lg:text-lg px-2"
+                        dangerouslySetInnerHTML={{
+                          __html: sanitizer(qualification),
+                        }}
+                      />
+                    </div>
+                  ) : null}
+                  {welfare ? (
+                    <div className="my-5 grid grid-cols-1 gap-y-2">
+                      <h3 className="font-neoextra text-xl p-2 bg-gradient-to-r from-blue-100 to-white">
+                        복지혜택
+                      </h3>
+                      <div
+                        className="text-left lg:text-lg px-2"
+                        dangerouslySetInnerHTML={{
+                          __html: sanitizer(welfare),
+                        }}
+                      />
+                    </div>
+                  ) : null}
+                </>
+              ) : (
+                <Loading />
+              )}
             </div>
             <div className="hidden lg:block w-[24%] min-h-screen">
               <div className="sticky top-10 right-0 w-full h-fit border border-gray-300 p-4">
@@ -399,9 +412,7 @@ function EmployDetail() {
             </button>
           </div>
         </>
-      ) : (
-        <Loading />
-      )}
+      ) : null}
     </>
   );
 }

@@ -206,15 +206,19 @@ function AddEmploy() {
         phone: phone, //담당자연락처
       };
       const formData = new FormData();
-      selectedFiles.forEach((file, idx) => {
-        formData.append(`files`, file);
-      });
+      if (selectedFiles.length > 0) {
+        selectedFiles.forEach((file, idx) => {
+          formData.append(`files`, file);
+        });
+      } else {
+        formData.append(`files`, "");
+      }
 
       formData.append(
         "job",
         new Blob([JSON.stringify(data)], { type: "application/json" })
       );
-
+      console.log(Array.from(formData.entries()));
       const response = await axios.post(
         "/api/v1/board/add/job/post",
         formData,

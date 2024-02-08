@@ -1,25 +1,20 @@
-import axios from "axios";
-import queryString from "query-string";
 import React, { useEffect, useState } from "react";
-import { logoutAlert } from "../LogoutUtil";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { getNewToken, clearUser } from "../../Reducer/userSlice";
+
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
-import AlertModal from "../Layout/AlertModal";
-
-import { FaMapMarkerAlt } from "react-icons/fa";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import queryString from "query-string";
+import { clearUser, getNewToken } from "../../../Reducer/userSlice";
+import { logoutAlert } from "../../LogoutUtil";
+import AlertModal from "../../Layout/AlertModal";
+import { useDispatch, useSelector } from "react-redux";
+import Pagenate from "../../Layout/Pagenate";
+import Loading from "../../Layout/Loading";
 import dayjs from "dayjs";
+import { FaMapMarkerAlt } from "react-icons/fa";
 
-import Pagenate from "../Layout/Pagenate";
-import ShopRecommend from "./ShopRecommend";
-
-import coinleft from "../../Asset/employ/coinleft.png";
-import coinright from "../../Asset/employ/coinright.png";
-import giftbox from "../../Asset/employ/giftbox.png";
-
-function EmployList() {
+function Job() {
   const navi = useNavigate();
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
@@ -27,29 +22,21 @@ function EmployList() {
   const pathName = thisLocation.pathname;
   const parsed = queryString.parse(thisLocation.search);
   const page = parsed.page || 1;
-  const searchKeyword = parsed.keyword || "";
-  const [list, setList] = useState([]);
-  const [keyword, setKeyword] = useState("");
   const [totalPage, setTotalPage] = useState(1);
   const [pagenate, setPagenate] = useState([]);
-
+  const [list, setList] = useState([]);
   useEffect(() => {
-    setKeyword(searchKeyword);
-    getEmployList(page, searchKeyword);
+    getJobs(page);
     //eslint-disable-next-line
   }, [thisLocation]);
 
-  const getEmployList = async (p, k) => {
+  const getJobs = async p => {
     let data = {
       page: p,
       size: 20,
     };
-
-    if (k !== "") {
-      data.searchKeyword = k;
-    }
     await axios
-      .post("/api/v1/board/get/job/postlist", data, {
+      .post("/api/v1/board/get/mypage/applylist", data, {
         headers: { Authorization: user.accessToken },
       })
       .then(async res => {
@@ -98,6 +85,7 @@ function EmployList() {
         setList([]);
       });
   };
+
   function generatePaginationArray(currentPage, totalPage) {
     let paginationArray = [];
 
@@ -134,27 +122,8 @@ function EmployList() {
       Number(currentPage) + 2,
     ];
   }
-
   return (
     <>
-      <div className="bg-[#0078ff] h-[200px] relative overflow-hidden">
-        <div className="absolute w-fit h-fit top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[2.5rem] lg:text-[48pt] ppresponse text-white leading-none">
-          면접보고<span className="hidden lg:inline"> </span>
-          <br className="lg:hidden" />
-          선물받자<span className="hidden lg:inline"> </span>
-          <img
-            src={giftbox}
-            className="hidden lg:inline-block h-[72px] mb-4 rotate-12"
-            alt=""
-          />
-        </div>
-        <div className="absolute w-fit h-fit top-1/2 right-0 -translate-y-1/2 lg:-translate-x-2 translate-x-16">
-          <img src={coinright} alt="" className="h-[160px] lg:h-[240px]" />
-        </div>
-        <div className="absolute w-fit h-fit top-1/2 left-0 -translate-y-1/2 lg:translate-x-2 -translate-x-10">
-          <img src={coinleft} alt="" className="h-[160px] lg:h-[240px]" />
-        </div>
-      </div>
       {list && list.length > 0 ? (
         <>
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-x-4 gap-y-4 mt-4 px-4 lg:px-0 lg:hidden">
@@ -250,18 +219,18 @@ function EmployList() {
             </tbody>
           </table>
         </>
-      ) : null}
+      ) : (
+        <Loading />
+      )}
 
       <Pagenate
         pagenate={pagenate}
         page={Number(page)}
         totalPage={Number(totalPage)}
         pathName={pathName}
-        keyword={keyword}
       />
-      <ShopRecommend />
     </>
   );
 }
 
-export default EmployList;
+export default Job;

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
 import ReactQuill from "react-quill";
@@ -9,10 +9,16 @@ import PopupDom from "../Kakao/PopupDom";
 import PopupPostCode from "../Kakao/PopupPostCode";
 import axios from "axios";
 
+import { timeList } from "./Timer";
+import { useNavigate } from "react-router-dom";
+
 function AddEmploy() {
+  const navi = useNavigate();
   const user = useSelector(state => state.user);
   const [compNum, setCompNum] = useState(""); //고객사번호
   const [title, setTitle] = useState(""); //제목
+  const [phone, setPhone] = useState(""); //제목
+  const [manager, setManager] = useState(""); //채용담당자
   const [hireStart, setHireStart] = useState(""); // 채용종료일
   const [hireEnd, setHireEnd] = useState(""); // 채용종료일
   const [mainAddr, setMainAddr] = useState(""); // 근무지주소
@@ -23,6 +29,103 @@ function AddEmploy() {
   const [point1, setPoint1] = useState(""); //지원시 포인트
   const [point2, setPoint2] = useState(""); //면접시 포인트
   const [content, setContent] = useState(""); //업무상세내용
+  const [qualification, setQualification] = useState(""); //지원자격
+  const [welfare, setWelfare] = useState(""); //복지혜택
+  const [sido, setSido] = useState(null);
+  const [sigungu, setSigungu] = useState(null);
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  //근무요일
+  const [mon, setMon] = useState(false);
+  const [tue, setTue] = useState(false);
+  const [wed, setWed] = useState(false);
+  const [thu, setThu] = useState(false);
+  const [fri, setFri] = useState(false);
+  const [sat, setSat] = useState(false);
+  const [sun, setSun] = useState(false);
+
+  const [weekday, setWeekday] = useState(false);
+  const [weekend, setWeekend] = useState(false);
+
+  useEffect(() => {
+    if (startTime !== "" && endTime !== "") {
+      setWorkTime(`${startTime} ~ ${endTime}`);
+    } else {
+      setWorkTime("");
+    }
+  }, [startTime, endTime]);
+
+  useEffect(() => {
+    let list = [];
+    if (mon) {
+      list.push("월");
+      setWeekday(false);
+      setWeekend(false);
+    }
+    if (tue) {
+      list.push("화");
+      setWeekday(false);
+      setWeekend(false);
+    }
+    if (wed) {
+      list.push("수");
+      setWeekday(false);
+      setWeekend(false);
+    }
+    if (thu) {
+      list.push("목");
+      setWeekday(false);
+      setWeekend(false);
+    }
+    if (fri) {
+      list.push("금");
+      setWeekday(false);
+      setWeekend(false);
+    }
+    if (sat) {
+      list.push("토");
+      setWeekday(false);
+      setWeekend(false);
+    }
+    if (sun) {
+      list.push("일");
+      setWeekday(false);
+      setWeekend(false);
+    }
+    setDay(list.join(", "));
+  }, [mon, tue, wed, thu, fri, sat, sun]);
+
+  useEffect(() => {
+    if (weekday) {
+      setMon(false);
+      setTue(false);
+      setWed(false);
+      setThu(false);
+      setFri(false);
+      setSat(false);
+      setSun(false);
+      setWeekend(false);
+      setDay("평일");
+    } else {
+      setDay("");
+    }
+  }, [weekday]);
+
+  useEffect(() => {
+    if (weekend) {
+      setMon(false);
+      setTue(false);
+      setWed(false);
+      setThu(false);
+      setFri(false);
+      setSat(false);
+      setSun(false);
+      setWeekday(false);
+      setDay("주 5일");
+    } else {
+      setDay("");
+    }
+  }, [weekend]);
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [previews, setPreviews] = useState([]);
@@ -77,12 +180,17 @@ function AddEmploy() {
   };
 
   const saveIt = async () => {
+    const result = await test();
+    if (result !== "완료") {
+      return alert(result);
+    }
     try {
       const data = {
         boardId: "B05", //게시판 아이디
         compNum: compNum, // 고객사 번호
         title: title, // 제목
-        compAddr: mainAddr, // 근무지
+        mainAddr: mainAddr, // 근무지
+        compArea: `${sido || "지원 후"} ${sigungu || "확인"}`, //근무지 지역(시/군/구까지)
         detailAddr: detailAddr, //근무지 상세
         workDay: day, // 근무요일
         workTime: workTime, // 근무시간
@@ -90,8 +198,12 @@ function AddEmploy() {
         salary: salary,
         intvPoint: point2, // 면접포인트
         content: escapeHTML(content), // 상세내용
+        qualification: escapeHTML(qualification), // 지원자격
+        welfare: escapeHTML(welfare), // 복지혜택
         postingStartDate: hireStart, // 채용 시작일
         postingEndDate: hireEnd, // 채용 종료일
+        manager: manager, //채용담당자
+        phone: phone, //담당자연락처
       };
       const formData = new FormData();
       selectedFiles.forEach((file, idx) => {
@@ -118,10 +230,62 @@ function AddEmploy() {
         setSelectedFiles([]);
         setPreviews([]);
         fileInputRef.current.value = "";
+
+        const confirm = window.confirm(
+          "입력 완료, 목록으로 이동할까요?\n추가로 등록하시려면 '취소'를 눌러주세요"
+        );
+        if (confirm) {
+          navi("/employ/list");
+        } else {
+          return true;
+        }
       }
     } catch (error) {
       console.error("에러", error);
     }
+  };
+
+  const test = () => {
+    if (compNum === "") {
+      return "고객사 번호를 입력하세요";
+    }
+    if (title === "") {
+      return "공고 제목을 입력하세요";
+    }
+    if (hireStart === "") {
+      return "채용시작일을 입력하세요";
+    }
+    if (hireEnd === "") {
+      return "채용종료일을 입력하세요";
+    }
+    /*
+    if (mainAddr === "") {
+      return "주소찾기를 눌러 근무지 주소를 입력하세요";
+    }
+    if (detailAddr === "") {
+      return "근무지 근처 역 또는 정류장을 알려주세요";
+    }
+    */
+    if (day === "") {
+      return "근무요일을 입력하세요";
+    }
+    if (workTime === "") {
+      return "근무시간을 입력하세요";
+    }
+    if (startTime === endTime) {
+      return "시작시간과 입력시간이 동일합니다\n확인 후 다시 시도해주세요";
+    }
+    if (salary === "") {
+      return "급여를 숫자만 입력해 주세요";
+    }
+    if (point2 === "") {
+      return "면접포인트를 입력하세요, 없으면 0을 입력해 주세요";
+    }
+    if (content === "") {
+      return "업무내용을 입력하세요";
+    }
+
+    return "완료";
   };
 
   // HTML 암호화
@@ -154,7 +318,16 @@ function AddEmploy() {
       .replace(/／/g, "/");
   };
   */
+  const handlePhone = event => {
+    const value = event.target.value;
+    // 입력 값이 숫자만 포함되어 있는지 확인하는 정규 표현식
+    const regex = /^[0-9]*$/;
 
+    // 입력 값이 숫자만 포함되어 있다면 상태 업데이트
+    if (regex.test(value)) {
+      setPhone(value);
+    }
+  };
   return (
     <div className="container mx-auto my-10 p-2">
       <h2 className="text-2xl lg:text-4xl text-center mb-2 font-neoextra">
@@ -176,6 +349,40 @@ function AddEmploy() {
                 placeholder="폼메일 고객사 번호 4자리 입력"
                 value={compNum}
                 onChange={e => setCompNum(e.currentTarget.value)}
+              />
+            </div>
+          </div>
+          <div
+            id="manager"
+            className="flex justify-start flex-wrap border-x lg:border-x-0"
+          >
+            <div className="w-full lg:w-[20%] px-4 lg:py-6 py-2 font-neoextra truncate break-keep text-xs lg:text-lg lg:text-right bg-gray-100">
+              채용담당자
+            </div>
+            <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-lg font-neo lg:p-4">
+              <input
+                type="text"
+                className="focus:bg-blue-100 py-2 px-4 border-b w-full"
+                placeholder="채용담당자 이름 직책 입력"
+                value={manager}
+                onChange={e => setManager(e.currentTarget.value)}
+              />
+            </div>
+          </div>
+          <div
+            id="phone"
+            className="flex justify-start flex-wrap border-x lg:border-x-0"
+          >
+            <div className="w-full lg:w-[20%] px-4 lg:py-6 py-2 font-neoextra truncate break-keep text-xs lg:text-lg lg:text-right bg-gray-100">
+              담당자연락처
+            </div>
+            <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-lg font-neo lg:p-4">
+              <input
+                type="text"
+                className="focus:bg-blue-100 py-2 px-4 border-b w-full"
+                placeholder="담당자 연락처 숫자만 입력"
+                value={phone}
+                onChange={handlePhone}
               />
             </div>
           </div>
@@ -286,14 +493,79 @@ function AddEmploy() {
             <div className="w-full lg:w-[20%] px-4 lg:py-6 py-2 font-neoextra truncate break-keep text-xs lg:text-lg lg:text-right bg-gray-100">
               근무요일
             </div>
-            <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-lg font-neo lg:p-4">
-              <input
-                type="text"
-                className="focus:bg-blue-100 py-2 px-4 border-b w-full"
-                placeholder="근무요일을 입력하세요(주 5일, 주말, 등)"
-                value={day}
-                onChange={e => setDay(e.currentTarget.value)}
-              />
+            <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-lg font-neo lg:p-2 grid grid-cols-7 gap-x-1 gap-y-1">
+              <button
+                className={`p-2 ${
+                  !mon ? "bg-gray-500" : "bg-green-500"
+                } text-white`}
+                onClick={() => setMon(!mon)}
+              >
+                월
+              </button>
+              <button
+                className={`p-2 ${
+                  !tue ? "bg-gray-500" : "bg-green-500"
+                } text-white`}
+                onClick={() => setTue(!tue)}
+              >
+                화
+              </button>
+              <button
+                className={`p-2 ${
+                  !wed ? "bg-gray-500" : "bg-green-500"
+                } text-white`}
+                onClick={() => setWed(!wed)}
+              >
+                수
+              </button>
+              <button
+                className={`p-2 ${
+                  !thu ? "bg-gray-500" : "bg-green-500"
+                } text-white`}
+                onClick={() => setThu(!thu)}
+              >
+                목
+              </button>
+              <button
+                className={`p-2 ${
+                  !fri ? "bg-gray-500" : "bg-green-500"
+                } text-white`}
+                onClick={() => setFri(!fri)}
+              >
+                금
+              </button>
+              <button
+                className={`p-2 ${
+                  !sat ? "bg-gray-500" : "bg-green-500"
+                } text-white`}
+                onClick={() => setSat(!sat)}
+              >
+                토
+              </button>
+              <button
+                className={`p-2 ${
+                  !sun ? "bg-gray-500" : "bg-green-500"
+                } text-white`}
+                onClick={() => setSun(!sun)}
+              >
+                일
+              </button>
+              <button
+                className={`p-2 ${
+                  !weekday ? "bg-gray-500" : "bg-green-500"
+                } text-white`}
+                onClick={() => setWeekday(!weekday)}
+              >
+                월~금
+              </button>
+              <button
+                className={`p-2 ${
+                  !weekend ? "bg-gray-500" : "bg-green-500"
+                } text-white`}
+                onClick={() => setWeekend(!weekend)}
+              >
+                주말
+              </button>
             </div>
           </div>
           <div
@@ -303,14 +575,30 @@ function AddEmploy() {
             <div className="w-full lg:w-[20%] px-4 lg:py-6 py-2 font-neoextra truncate break-keep text-xs lg:text-lg lg:text-right bg-gray-100">
               근무시간
             </div>
-            <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-lg font-neo lg:p-4 grid grid-cols-2 gap-x-4 relative">
-              <input
-                type="text"
+            <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-lg font-neo lg:p-4 flex justify-start gap-x-4">
+              <select
                 className="focus:bg-blue-100 py-2 px-4 border-b w-full"
-                placeholder="예시) 9시 ~ 18시, 5시간 근무 등"
-                value={workTime}
-                onChange={e => setWorkTime(e.currentTarget.value)}
-              />
+                onChange={e => setStartTime(e.currentTarget.value)}
+              >
+                <option value="">시작 시간</option>
+                {timeList.map((time, idx) => (
+                  <option value={time} key={idx}>
+                    {time}
+                  </option>
+                ))}
+              </select>
+              <span className="flex flex-col justify-center">~</span>
+              <select
+                className="focus:bg-blue-100 py-2 px-4 border-b w-full"
+                onChange={e => setEndTime(e.currentTarget.value)}
+              >
+                <option value="">종료 시간</option>
+                {timeList.map((time, idx) => (
+                  <option value={time} key={idx}>
+                    {time}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
           <div
@@ -439,6 +727,42 @@ function AddEmploy() {
               />
             </div>
           </div>
+          <div
+            id="workcontent"
+            className="flex justify-start flex-wrap border-x lg:border-x-0"
+          >
+            <div className="w-full lg:w-[20%] px-4 lg:py-6 py-2 font-neoextra truncate break-keep text-xs lg:text-lg lg:text-right bg-gray-100">
+              지원자격
+            </div>
+            <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-lg font-neo lg:p-4">
+              <ReactQuill
+                modules={modulesB}
+                theme="snow"
+                value={qualification}
+                onChange={setQualification}
+                className={`p-0 border w-full bg-white h-full employment`}
+                placeholder="기타 메모할 내용을 입력하세요"
+              />
+            </div>
+          </div>
+          <div
+            id="workcontent"
+            className="flex justify-start flex-wrap border-x lg:border-x-0"
+          >
+            <div className="w-full lg:w-[20%] px-4 lg:py-6 py-2 font-neoextra truncate break-keep text-xs lg:text-lg lg:text-right bg-gray-100">
+              복지혜택
+            </div>
+            <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-lg font-neo lg:p-4">
+              <ReactQuill
+                modules={modulesB}
+                theme="snow"
+                value={welfare}
+                onChange={setWelfare}
+                className={`p-0 border w-full bg-white h-full employment`}
+                placeholder="기타 메모할 내용을 입력하세요"
+              />
+            </div>
+          </div>
         </div>
         <div className="flex justify-center my-4">
           <button
@@ -455,6 +779,9 @@ function AddEmploy() {
             <PopupPostCode
               onClose={closePostCode}
               setMainAddr={setMainAddr}
+              setSi={setSido}
+              setSigungu={setSigungu}
+              isEmploy={"true"}
               modify={false}
             />
           </PopupDom>

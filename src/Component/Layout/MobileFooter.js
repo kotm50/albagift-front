@@ -25,6 +25,8 @@ function MobileFooter() {
       ? setIsPromo(true)
       : parts[1] === "certification"
       ? setIsPromo(true)
+      : parts[1] === "employ"
+      ? setIsPromo(true)
       : setIsPromo(false);
     // eslint-disable-next-line
   }, [thisLocation]);

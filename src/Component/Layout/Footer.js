@@ -17,6 +17,7 @@ function Footer(props) {
   const [modalCount, setModalCount] = useState(0);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isPromo, setIsPromo] = useState(true);
+  const [isEmploy, setIsEmploy] = useState(false);
   const thisLocation = useLocation();
   useEffect(() => {
     if (modalOn) {
@@ -37,13 +38,22 @@ function Footer(props) {
     setIsAdmin(/^\/admin(\/|$)/.test(thisLocation.pathname));
   }, [thisLocation]);
 
+  useEffect(() => {
+    const parts = thisLocation.pathname.split("/");
+
+    parts[1] === "employ"
+      ? setIsEmploy(true)
+      : parts[1] === "renew"
+      ? setIsPromo(true)
+      : setIsEmploy(false);
+    // eslint-disable-next-line
+  }, [thisLocation]);
+
   return (
     <>
       {!isPromo ? (
         <>
-          {thisLocation.pathname !== "/renew" ? (
-            <div className="container mx-auto h-10"></div>
-          ) : null}
+          {!isEmploy ? <div className="container mx-auto h-10"></div> : null}
 
           <>
             {!isAdmin ? <First /> : null}
@@ -143,7 +153,7 @@ function Footer(props) {
                     <div className="text-left pb-2 mb-2">
                       코리아밸리의 다양한 소식들을 만나보세요!
                     </div>
-                    <div className="flex justify-start gap-2   mb-5 lg:mb-0">
+                    <div className="flex justify-start gap-2 mb-5 lg:mb-0">
                       <a
                         href="http://코리아밸리.kr"
                         target="_blank"

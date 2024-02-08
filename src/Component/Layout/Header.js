@@ -10,7 +10,9 @@ function Header() {
   const [cateNum, setCateNum] = useState("");
   const [loadBrand, setLoadBrand] = useState(false);
   const [isPromo, setIsPromo] = useState(true);
+  const [isEmploy, setIsEmploy] = useState(true);
   const thisLocation = useLocation();
+
   useEffect(() => {
     const parts = thisLocation.pathname.split("/");
     parts[1] === "promo"
@@ -21,6 +23,11 @@ function Header() {
       ? setIsPromo(true)
       : setIsPromo(false);
 
+    if (parts[1] === "employ" && parts[2] === "detail") {
+      setIsEmploy(true);
+    } else {
+      setIsEmploy(false);
+    }
     setCateNum(parts[2]);
     getUrl(parts[1], parts[2]);
     // eslint-disable-next-line
@@ -40,6 +47,7 @@ function Header() {
   };
   return (
     <>
+      {isEmploy ? <div className="h-[54px]" /> : null}
       {!isPromo ? (
         <>
           <HeaderTop isPromo={isPromo} />

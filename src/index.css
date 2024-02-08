@@ -50,6 +50,17 @@ label:hover {
   font-weight:700;
 }
 
+.ppresponse {
+  font-family: 'PyeongChangPeace';
+  font-weight:400;
+}
+
+@media (min-width:1024px) {
+  .ppresponse {
+    font-weight:700;
+  }
+}
+
 body {
   margin: 0;
   font-family: 'NanumSquareNeoBold', sans-serif;
@@ -88,12 +99,12 @@ pre {
 
 
 .employment .ql-container {
-  height:480px!important;
+  height:150px!important;
   background-color:white;
 }
 
 .employment .ql-editor {
-  height:480px!important;
+  height:150px!important;
 }
 
 .blurred-editor .ql-toolbar{

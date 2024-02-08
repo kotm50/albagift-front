@@ -11,6 +11,7 @@ import interview from "../../Asset/mypage/interview.png";
 import user from "../../Asset/mypage/user.png";
 import coupon from "../../Asset/mypage/coupon.png";
 import diamond from "../../Asset/mypage/diamond.png";
+import jobs from "../../Asset/mypage/jobs.png";
 import UserInformation from "./UserInfomation";
 import AlertModal from "../Layout/AlertModal";
 
@@ -57,6 +58,8 @@ function Mypage() {
       ? setTitle("면접포인트 지급신청")
       : location.pathname.split("/")[2] === "cancel"
       ? setTitle("회원탈퇴")
+      : location.pathname.split("/")[2] === "joblist"
+      ? setTitle("입사지원내역")
       : setTitle("개인정보수정");
 
     //eslint-disable-next-line
@@ -144,6 +147,19 @@ function Mypage() {
                   />
                 </div>
                 <span className="text-sm">지급신청내역</span>
+              </Link>
+              <Link
+                to="/mypage/joblist"
+                className="p-4 text-center bg-blue-50 hover:bg-blue-200 rounded-lg flex flex-col justify-center gap-2 group"
+              >
+                <div className="w-20 h-20 mx-auto rounded-full bg-white flex flex-col justify-center text-gray-500 group-hover:bg-indigo-500 group-hover:text-white">
+                  <img
+                    src={jobs}
+                    alt="입사지원내역"
+                    className="mx-auto w-10 drop-shadow-lg"
+                  />
+                </div>
+                <span className="text-sm">입사지원내역</span>
               </Link>
             </div>
             {title !== "회원탈퇴" ? (

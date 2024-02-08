@@ -154,8 +154,8 @@ function AddEmploy() {
     }
 
     // 파일 수 제한 검사
-    if (files.length > 5) {
-      alert("최대 5장까지만 등록 가능합니다\n확인 후 다시 시도해 주세요");
+    if (files.length > 1) {
+      alert("이미지는 한 장만 올릴 수 있습니다");
       return;
     }
 
@@ -225,7 +225,6 @@ function AddEmploy() {
           },
         }
       );
-      console.log(response);
       if (response.data.code === "C000") {
         setSelectedFiles([]);
         setPreviews([]);

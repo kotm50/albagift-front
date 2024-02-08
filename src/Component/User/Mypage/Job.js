@@ -39,7 +39,6 @@ function Job() {
         headers: { Authorization: user.accessToken },
       })
       .then(async res => {
-        console.log(res.data.jobList);
         if (res.headers.authorization) {
           await dispatch(
             getNewToken({

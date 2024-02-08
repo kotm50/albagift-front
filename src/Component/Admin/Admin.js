@@ -169,10 +169,10 @@ function Admin() {
                 관리자 암호변경
               </Link>
               <Link
-                to="/admin/eventdb"
+                to="/admin/addemploy"
                 className="hover:bg-indigo-100 p-2 text-center"
               >
-                이벤트 DB
+                채용게시판 신규등록
               </Link>
             </div>
           </div>

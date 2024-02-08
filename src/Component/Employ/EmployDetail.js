@@ -60,13 +60,11 @@ function EmployDetail() {
       return false;
     }
     const data = { jobCode: jid };
-    console.log(data);
     await axios
       .post("/api/v1/board/add/job/apply", data, {
         headers: { Authorization: user.accessToken },
       })
       .then(async res => {
-        console.log(res.data);
         if (res.headers.authorization) {
           await dispatch(
             getNewToken({
@@ -121,13 +119,11 @@ function EmployDetail() {
 
   const getJob = async () => {
     const data = { jobCode: jid };
-    console.log(data);
     await axios
       .post("/api/v1/board/get/job/detail", data, {
         headers: { Authorization: user.accessToken },
       })
       .then(async res => {
-        console.log(res.data);
         if (res.headers.authorization) {
           await dispatch(
             getNewToken({
@@ -287,6 +283,18 @@ function EmployDetail() {
                   className="w-full h-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
                 />
               </div>
+              {imgList && imgList.length > 0 ? (
+                <div className="my-5 grid grid-cols-1 gap-y-2">
+                  <h3 className="hidden font-neoextra text-xl p-2 bg-gradient-to-r from-blue-100 to-white">
+                    상세내용
+                  </h3>
+                  <img
+                    src={imgList[0].fileUrl}
+                    alt=""
+                    className="h-auto w-fit max-w-full"
+                  />
+                </div>
+              ) : null}
               {content ? (
                 <div className="my-5 grid grid-cols-1 gap-y-2">
                   <h3 className="font-neoextra text-xl p-2 bg-gradient-to-r from-blue-100 to-white">
@@ -323,18 +331,6 @@ function EmployDetail() {
                     dangerouslySetInnerHTML={{
                       __html: sanitizer(welfare),
                     }}
-                  />
-                </div>
-              ) : null}
-              {imgList && imgList.length > 0 ? (
-                <div className="my-5 grid grid-cols-1 gap-y-2">
-                  <h3 className="font-neoextra text-xl p-2 bg-gradient-to-r from-blue-100 to-white">
-                    상세내용
-                  </h3>
-                  <img
-                    src={imgList[0].fileUrl}
-                    alt=""
-                    className="h-auto w-fit max-w-full"
                   />
                 </div>
               ) : null}

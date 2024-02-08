@@ -4,7 +4,7 @@ import DaumPostcode from "react-daum-postcode";
 const PopupPostCode = props => {
   // 우편번호 검색 후 주소 클릭 시 실행될 함수, data callback 용
   const handlePostCode = data => {
-    console.log(data);
+    console.log(props.isEmploy);
     let fullAddress = data.address;
     let extraAddress = "";
 
@@ -27,6 +27,10 @@ const PopupPostCode = props => {
       }
     } else {
       props.setMainAddr(fullAddress);
+      if (props.isEmploy === "true") {
+        props.setSido(data.sido);
+        props.setSigungu(data.sigungu);
+      }
     }
     props.onClose();
   };

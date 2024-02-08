@@ -64,6 +64,7 @@ function Job() {
         const pagenate = generatePaginationArray(p, totalP);
         setPagenate(pagenate);
         setList(res.data.jobList);
+        console.log(res.data);
       })
       .catch(e => {
         console.log(e);

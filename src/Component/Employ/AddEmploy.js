@@ -190,7 +190,7 @@ function AddEmploy() {
         compNum: compNum, // 고객사 번호
         title: title, // 제목
         mainAddr: mainAddr, // 근무지
-        compArea: `${sido || "지원 후"} ${sigungu || "확인"}`, //근무지 지역(시/군/구까지)
+        compArea: `${sido || "지원 후"} ${sigungu || "안내"}`, //근무지 지역(시/군/구까지)
         detailAddr: detailAddr, //근무지 상세
         workDay: day, // 근무요일
         workTime: workTime, // 근무시간
@@ -763,7 +763,7 @@ function AddEmploy() {
             </div>
           </div>
         </div>
-        <div className="flex justify-center my-4">
+        <div className="flex justify-center my-4 gap-x-5">
           <button
             className="bg-teal-500 hover:bg-teal-700 text-white p-2 lg:text-lg"
             onClick={() => saveIt()}
@@ -778,7 +778,7 @@ function AddEmploy() {
             <PopupPostCode
               onClose={closePostCode}
               setMainAddr={setMainAddr}
-              setSi={setSido}
+              setSido={setSido}
               setSigungu={setSigungu}
               isEmploy={"true"}
               modify={false}

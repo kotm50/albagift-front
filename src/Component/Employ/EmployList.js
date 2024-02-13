@@ -18,6 +18,7 @@ import ShopRecommend from "./ShopRecommend";
 import coinleft from "../../Asset/employ/coinleft.png";
 import coinright from "../../Asset/employ/coinright.png";
 import giftbox from "../../Asset/employ/giftbox.png";
+import { Helmet } from "react-helmet";
 
 function EmployList() {
   const navi = useNavigate();
@@ -137,6 +138,9 @@ function EmployList() {
 
   return (
     <>
+      <Helmet>
+        <title>알바선물 채용게시판 | 면접보고 포인트 받아가세요!</title>
+      </Helmet>
       <div className="bg-[#0078ff] h-[200px] relative overflow-hidden">
         <div className="absolute w-fit h-fit top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[2.5rem] lg:text-[48pt] ppresponse text-white leading-none">
           면접보고<span className="hidden lg:inline"> </span>

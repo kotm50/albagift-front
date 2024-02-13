@@ -200,8 +200,8 @@ function AddEmploy() {
         content: escapeHTML(content), // 상세내용
         qualification: escapeHTML(qualification), // 지원자격
         welfare: escapeHTML(welfare), // 복지혜택
-        postingStartDate: hireStart, // 채용 시작일
-        postingEndDate: hireEnd, // 채용 종료일
+        postingStartDate: hireStart === "" ? null : hireStart, // 채용 시작일
+        postingEndDate: hireEnd === "" ? null : hireEnd, // 채용 종료일
         manager: manager, //채용담당자
         phone: phone, //담당자연락처
       };
@@ -229,6 +229,7 @@ function AddEmploy() {
           },
         }
       );
+      console.log(response);
       if (response.data.code === "C000") {
         setSelectedFiles([]);
         setPreviews([]);
@@ -255,20 +256,26 @@ function AddEmploy() {
     if (title === "") {
       return "공고 제목을 입력하세요";
     }
+
+    if (manager === "") {
+      return "채용담당자를 입력하세요.\n비공개시 '채용담당자'라고 입력하세요";
+    }
+
+    if (phone === "") {
+      return "연락처를 입력하세요";
+    }
     if (hireStart === "") {
       return "채용시작일을 입력하세요";
     }
     if (hireEnd === "") {
       return "채용종료일을 입력하세요";
     }
-    /*
     if (mainAddr === "") {
       return "주소찾기를 눌러 근무지 주소를 입력하세요";
     }
     if (detailAddr === "") {
       return "근무지 근처 역 또는 정류장을 알려주세요";
     }
-    */
     if (day === "") {
       return "근무요일을 입력하세요";
     }
@@ -670,7 +677,7 @@ function AddEmploy() {
                 multiple
                 onChange={handleFileSelect}
               />
-              최대 3장까지 등록 가능합니다
+              1장만 등록 가능합니다
             </div>
           </div>
           <div

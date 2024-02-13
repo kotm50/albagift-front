@@ -76,10 +76,10 @@ function ShopRecommend(props) {
   };
 
   return (
-    <div className="p-2 mt-10">
+    <div className="p-2 bg-gray-100">
       <div className="lg:container mx-auto">
         <div className="overflow-x-auto w-full mx-auto my-2">
-          <h3 className="text lg lg:text-3xl font-lineseed py-2">
+          <h3 className="text-lg lg:text-xl font-lineseed py-2 px-2">
             면접 포인트로 상품을 구입해 보세요!
           </h3>
           {loaded ? (

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import AlertModal from "../Layout/AlertModal";
@@ -13,6 +13,9 @@ import ShopRecommend from "./ShopRecommend";
 import dayjs from "dayjs";
 
 import { AiOutlineArrowLeft } from "react-icons/ai";
+import { FaMapMarkerAlt } from "react-icons/fa";
+
+import { Helmet } from "react-helmet";
 
 function EmployDetail() {
   const sanitizer = dompurify.sanitize;
@@ -204,12 +207,21 @@ function EmployDetail() {
   };
   return (
     <>
+      <Helmet>
+        <title>채용공고 | 알바선물 채용게시판</title>
+      </Helmet>
       {jobInfo !== null ? (
         <>
+          <Helmet>
+            <title>{jobInfo.title} | 알바선물 채용게시판</title>
+          </Helmet>
           <div className="mt-3 lg:mt-10 flex justify-between w-full">
-            <div className="w-full lg:w-[75%]">
+            <div className="w-full lg:w-[70%]">
               <div className="border border-gray-300 py-2 px-5">
                 <h2 className="lg:p-0 text-lg lg:text-3xl font-neoextra py-2 lg:py-10 border-b border-gray-200">
+                  <div className="text-gray-800 hidden lg:block text-base font-neobold mb-2">
+                    {jobInfo.compArea || "전국 채용"}
+                  </div>
                   {jobInfo.title}
                 </h2>
                 <div className="py-2 px-0 lg:px-3 grid grid-cols-2 gap-x-2 gap-y-2 lg:hidden">
@@ -233,7 +245,7 @@ function EmployDetail() {
                     <span>{jobInfo.workTime}</span>
                   </div>
                 </div>
-                <div className="px-5 py-5 hidden grid-cols-4 mt-10 lg:grid">
+                <div className="px-5 py-5 hidden grid-cols-3 mt-10 lg:grid">
                   <div className="flex justify-start gap-x-3 lg:text-lg font-neoextra">
                     <div className="font-neobold flex flex-col justify-center text-5xl">
                       💰
@@ -245,7 +257,7 @@ function EmployDetail() {
                       </span>
                     </div>
                   </div>
-                  <div className="flex justify-start gap-x-3 lg:text-lg font-neoextra">
+                  <div className="hidden justify-start gap-x-3 lg:text-lg font-neoextra">
                     <div className="font-neobold flex flex-col justify-center text-5xl">
                       🚩
                     </div>
@@ -290,10 +302,64 @@ function EmployDetail() {
                   onLoad={() => setImgLoaded(true)}
                 />
               </div>
+              <div className="my-5 w-full grid grid-cols-1 lg:grid-cols-2 p-4 bg-gray-100 rounded-lg">
+                <div className="text-stone-800 mb-4">
+                  <strong className="font-neoextra">면접비</strong> :{" "}
+                  <strong className="font-neoextra text-rose-500">
+                    {jobInfo.intvPoint.toLocaleString()}P
+                  </strong>{" "}
+                  지급
+                </div>
+                <div className="text-stone-800 mb-4">
+                  <strong className="font-neoextra">문의</strong> :{" "}
+                  {!user.accessToken ? (
+                    <>
+                      <Link to="/login" className="hover:text-blue-500">
+                        로그인 후 확인
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <a
+                        href={`tel:${Number(jobInfo.phone)}`}
+                        className="hover:text-blue-500"
+                      >
+                        {getPhone(jobInfo.phone)}
+                      </a>
+                    </>
+                  )}
+                </div>
+                <div className="text-stone-800 mb-4">
+                  <strong className="font-neoextra">마감일</strong> :{" "}
+                  {dayjs(jobInfo.postingEndDate).format("YYYY-MM-DD")} 까지
+                </div>
+                <div className="text-stone-800">
+                  <strong className="font-neoextra">근무지</strong> :{" "}
+                  {jobInfo.mainAddr} <br className="lg:hidden" />
+                  <a
+                    href={`//map.kakao.com/?q=${jobInfo.mainAddr}`}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="hover:text-blue-700 items-center text-blue-500 hidden lg:inline"
+                  >
+                    <FaMapMarkerAlt className="inline" size={15} />
+                    지도보기
+                  </a>
+                </div>
+                <a
+                  href={`//map.kakao.com/?q=${jobInfo.mainAddr}`}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="hover:text-blue-700 items-center text-blue-500 lg:hidden"
+                >
+                  <FaMapMarkerAlt className="inline" size={15} />
+                  지도보기
+                </a>
+              </div>
               {imgLoaded ? (
-                <>
+                <div className="mt-10">
                   {imgList && imgList.length > 0 ? (
-                    <div className="my-5 grid grid-cols-1 gap-y-2">
+                    <div className="mb-20 grid grid-cols-1 gap-y-2">
                       <h3 className="font-neoextra text-xl p-2 bg-gradient-to-r from-blue-100 to-white">
                         채용요강
                       </h3>
@@ -305,12 +371,12 @@ function EmployDetail() {
                     </div>
                   ) : null}
                   {content ? (
-                    <div className="my-5 grid grid-cols-1 gap-y-2">
+                    <div className="mb-20 grid grid-cols-1 gap-y-2">
                       <h3 className="font-neoextra text-xl p-2 bg-gradient-to-r from-blue-100 to-white">
                         업무내용
                       </h3>
                       <div
-                        className="text-left lg:text-lg px-2"
+                        className="employQuill text-left lg:text-lg px-2"
                         dangerouslySetInnerHTML={{
                           __html: sanitizer(content),
                         }}
@@ -318,12 +384,12 @@ function EmployDetail() {
                     </div>
                   ) : null}
                   {qualification ? (
-                    <div className="my-5 grid grid-cols-1 gap-y-2">
+                    <div className="my-20 grid grid-cols-1 gap-y-2">
                       <h3 className="font-neoextra text-xl p-2 bg-gradient-to-r from-blue-100 to-white">
                         지원자격
                       </h3>
                       <div
-                        className="text-left lg:text-lg px-2"
+                        className="employQuill text-left lg:text-lg px-2"
                         dangerouslySetInnerHTML={{
                           __html: sanitizer(qualification),
                         }}
@@ -331,24 +397,24 @@ function EmployDetail() {
                     </div>
                   ) : null}
                   {welfare ? (
-                    <div className="my-5 grid grid-cols-1 gap-y-2">
+                    <div className="my-20 grid grid-cols-1 gap-y-2">
                       <h3 className="font-neoextra text-xl p-2 bg-gradient-to-r from-blue-100 to-white">
                         복지혜택
                       </h3>
                       <div
-                        className="text-left lg:text-lg px-2"
+                        className="employQuill text-left lg:text-lg px-2"
                         dangerouslySetInnerHTML={{
                           __html: sanitizer(welfare),
                         }}
                       />
                     </div>
                   ) : null}
-                </>
+                </div>
               ) : (
                 <Loading />
               )}
             </div>
-            <div className="hidden lg:block w-[24%] min-h-screen">
+            <div className="hidden lg:block w-[29%] min-h-screen">
               <div className="sticky top-10 right-0 w-full h-fit border border-gray-300 p-4">
                 <div className="text-center mb-2 text-lg font-neoextra truncate">
                   {jobInfo.title}
@@ -363,7 +429,22 @@ function EmployDetail() {
                   </div>
                   <div>
                     <span className="font-neoextra">📞</span> :{" "}
-                    {jobInfo.phone ? getPhone(jobInfo.phone) : "지원 후 안내"}
+                    {!user.accessToken ? (
+                      <>
+                        <Link to="/login" className="hover:text-blue-500">
+                          로그인 후 확인
+                        </Link>
+                      </>
+                    ) : (
+                      <>
+                        <a
+                          href={`tel:${Number(jobInfo.phone)}`}
+                          className="hover:text-blue-500"
+                        >
+                          {getPhone(jobInfo.phone)}
+                        </a>
+                      </>
+                    )}
                   </div>
 
                   <div>

@@ -399,3 +399,12 @@ img.employThumbnail {
   width:auto!important;
   max-width:10000px!important;
 }
+
+.employQuill > p > strong {
+  font-family:"NanumSquareNeoHeavy";
+}
+
+.employQuill > ul > li:before {
+  display:inline;
+  content:"ㆍ"
+}

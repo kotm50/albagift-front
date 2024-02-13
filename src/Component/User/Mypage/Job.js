@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Pagenate from "../../Layout/Pagenate";
 import Loading from "../../Layout/Loading";
 import dayjs from "dayjs";
+import Sorry from "../../doc/Sorry";
 
 function Job() {
   const navi = useNavigate();
@@ -24,6 +25,8 @@ function Job() {
   const [totalPage, setTotalPage] = useState(1);
   const [pagenate, setPagenate] = useState([]);
   const [list, setList] = useState([]);
+  const [loaded, setLoaded] = useState(false);
+
   useEffect(() => {
     getJobs(page);
     //eslint-disable-next-line
@@ -64,7 +67,7 @@ function Job() {
         const pagenate = generatePaginationArray(p, totalP);
         setPagenate(pagenate);
         setList(res.data.jobList);
-        console.log(res.data);
+        setLoaded(true);
       })
       .catch(e => {
         console.log(e);
@@ -82,6 +85,7 @@ function Job() {
           },
         });
         setList([]);
+        setLoaded(true);
       });
   };
 
@@ -121,113 +125,267 @@ function Job() {
       Number(currentPage) + 2,
     ];
   }
+
+  const doNot = () => {
+    return false;
+  };
+
+  const cancelConfirm = code => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <AlertModal
+            onClose={onClose} // 닫기
+            title={"지원취소"} // 제목
+            message={"취소하면 면접비를 받을 수 없게 됩니다\n정말 취소할까요?"} // 내용
+            type={"confirm"} // 타입 confirm, alert
+            yes={"취소하기"} // 확인버튼 제목
+            no={"창 닫기"}
+            doIt={cancelIt} // 확인시 실행할 함수
+            doNot={doNot} // 취소시 실행할 함수
+            data={code}
+          />
+        );
+      },
+    });
+  };
+
+  const cancelIt = async code => {
+    const data = {
+      applyCode: code,
+    };
+
+    await axios
+      .delete("/api/v1/board/apply/cancel", {
+        data,
+        headers: { Authorization: user.accessToken },
+      })
+      .then(async res => {
+        console.log(res);
+        if (res.headers.authorization) {
+          await dispatch(
+            getNewToken({
+              accessToken: res.headers.authorization,
+            })
+          );
+        }
+        if (res.data.code === "E999") {
+          logoutAlert(
+            null,
+            null,
+            dispatch,
+            clearUser,
+            navi,
+            user,
+            res.data.message
+          );
+          return false;
+        }
+
+        if (res.data.code === "C000") {
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"지원취소"} // 제목
+                  message={res.data.message} // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                  doIt={reloadJobs}
+                />
+              );
+            },
+          });
+        }
+      })
+      .catch(e => {
+        console.log(e);
+        confirmAlert({
+          customUI: ({ onClose }) => {
+            return (
+              <AlertModal
+                onClose={onClose} // 닫기
+                title={"오류"} // 제목
+                message={"오류가 발생했습니다. 관리자에게 문의하세요"} // 내용
+                type={"alert"} // 타입 confirm, alert
+                yes={"확인"} // 확인버튼 제목
+                doIt={reloadJobs}
+              />
+            );
+          },
+        });
+      });
+  };
+
+  const reloadJobs = () => {
+    getJobs(page);
+  };
   return (
     <>
-      {list && list.length > 0 ? (
+      {loaded ? (
         <>
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-x-4 gap-y-4 mt-4 px-4 lg:px-0 lg:hidden">
-            {list.map((job, idx) => (
-              <div
-                key={idx}
-                className="overflow-y-hidden flex flex-col justify-start bg-white rounded-lg drop-shadow hover:bg-blue-50 hover:drop-shadow-lg"
-              >
-                <Link to={`/employ/detail/${job.jobCode}`}>
-                  <div className="p-4 grid grid-cols-1 gap-y-2 relative">
-                    <div className="text-rose-500 font-neobold text-sm">
-                      면접시{" "}
-                      <span className="font-neoheavy">
-                        {job.intvPoint.toLocaleString()}P
-                      </span>{" "}
-                      지급
-                    </div>
-                    <div className="w-full overflow-x-hidden font-neoextra truncate text-lg pb-1">
-                      {job.title || "테스트"}
-                    </div>
-                    <div className="text-sm flex flex-row justify-start gap-x-1 font-neoextra">
-                      <div className="flex flex-col justify-center text-orange-600">
-                        월
+          {list && list.length > 0 ? (
+            <>
+              <div className="grid grid-cols-1 lg:grid-cols-4 gap-x-4 gap-y-4 mt-4 px-4 lg:px-0 lg:hidden">
+                {list.map((job, idx) => (
+                  <div
+                    key={idx}
+                    className="overflow-y-hidden flex flex-col justify-start bg-white rounded-lg drop-shadow hover:bg-blue-50 hover:drop-shadow-lg"
+                  >
+                    <div className="p-4 grid grid-cols-1 gap-y-2 relative">
+                      <div
+                        className="text-rose-500 font-neobold text-sm"
+                        onClick={() => navi(`/employ/detail/${job.jobCode}`)}
+                      >
+                        면접시{" "}
+                        <span className="font-neoheavy">
+                          {job.intvPoint.toLocaleString()}P
+                        </span>{" "}
+                        지급
                       </div>
-                      <div className="flex flex-col justify-center">
-                        <span className="items-center">
-                          {job.salary.toLocaleString()} 원
-                        </span>
+                      <div
+                        className="w-full overflow-x-hidden font-neoextra truncate text-lg pb-1"
+                        onClick={() => navi(`/employ/detail/${job.jobCode}`)}
+                      >
+                        {job.title || "테스트"}
                       </div>
-                    </div>
-                    <div
-                      className={`flex flex-row justify-start gap-x-1 ${
-                        job.adminChkYn === "Y"
-                          ? "text-green-600"
-                          : "text-blue-600"
-                      }`}
-                    >
-                      {job.adminChkYn === "Y" ? "관리자 확인" : "지원완료"}
+                      <div
+                        className="text-sm flex flex-row justify-start gap-x-1 font-neoextra"
+                        onClick={() => navi(`/employ/detail/${job.jobCode}`)}
+                      >
+                        <div className="flex flex-col justify-center text-orange-600">
+                          월
+                        </div>
+                        <div className="flex flex-col justify-center">
+                          <span className="items-center">
+                            {job.salary.toLocaleString()} 원
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex justify-between">
+                        <div
+                          className={`flex flex-row justify-start gap-x-1 py-1 ${
+                            job.adminChkYn === "Y"
+                              ? "text-green-600"
+                              : "text-blue-600"
+                          }`}
+                        >
+                          {job.adminChkYn === "Y" ? "관리자 확인" : "지원완료"}
+                        </div>
+                        <div className="flex flex-col justify-center">
+                          <button
+                            className="py-1 px-2 bg-green-500 hover:bg-green-600 text-white rounded-lg"
+                            onClick={() => cancelConfirm(job.applyCode)}
+                          >
+                            지원취소
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
+                ))}
+              </div>
+              <table className="hidden lg:table w-full mt-4">
+                <thead>
+                  <tr className="">
+                    <td className="border-y border-t-2 border-stone-500 text-center p-2 w-[200px]">
+                      지역
+                    </td>
+                    <td className="border-y border-t-2 border-stone-500 text-center p-2">
+                      제목
+                    </td>
+                    <td className="border-y border-t-2 border-stone-500 text-center p-2 w-[200px]">
+                      급여
+                    </td>
+                    <td className="border-y border-t-2 border-stone-500 text-center p-2 w-[200px]">
+                      면접포인트
+                    </td>
+                    <td className="border-y border-t-2 border-stone-500 text-center p-2 w-[200px]">
+                      종료일
+                    </td>
+                    <td className="border-y border-t-2 border-stone-500 text-center p-2 w-[200px]">
+                      지원현황
+                    </td>
+                    <td className="border-y border-t-2 border-stone-500 text-center p-2 w-[200px]">
+                      지원취소
+                    </td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {list.map((job, idx) => (
+                    <tr key={idx} className="text-sm hover:cursor-pointer">
+                      <td
+                        className="border-b border-gray-300 text-center px-2 py-4"
+                        onClick={() => navi(`/employ/detail/${job.jobCode}`)}
+                      >
+                        {job.compArea || "문의 후 확인"}
+                      </td>
+                      <td
+                        className="border-b border-gray-300 text-lg px-2 py-4 truncate font-neoextra"
+                        onClick={() => navi(`/employ/detail/${job.jobCode}`)}
+                      >
+                        {job.title}
+                      </td>
+                      <td
+                        className="border-b border-gray-300 text-center px-2 py-4"
+                        onClick={() => navi(`/employ/detail/${job.jobCode}`)}
+                      >
+                        <span className="text-orange-600 font-neoextra">
+                          월
+                        </span>{" "}
+                        {job.salary.toLocaleString()} 원
+                      </td>
+                      <td
+                        className="border-b border-gray-300 text-center px-2 py-4"
+                        onClick={() => navi(`/employ/detail/${job.jobCode}`)}
+                      >
+                        <span className="text-rose-500 font-neoextra">
+                          {job.intvPoint.toLocaleString()}P 지급
+                        </span>
+                      </td>
+                      <td
+                        className="border-b border-gray-300 text-center px-2 py-4"
+                        onClick={() => navi(`/employ/detail/${job.jobCode}`)}
+                      >
+                        {dayjs(job.postingEndDate).format("YYYY-MM-DD")}
+                      </td>
+                      <td
+                        className={`border-b border-gray-300 text-center px-2 py-4 ${
+                          job.adminChkYn === "Y"
+                            ? "text-green-600"
+                            : "text-blue-600"
+                        }`}
+                        onClick={() => navi(`/employ/detail/${job.jobCode}`)}
+                      >
+                        {job.adminChkYn === "Y" ? "관리자 확인" : "지원완료"}
+                      </td>
+                      <td className="border-b border-gray-300 text-center px-2 py-2">
+                        <button
+                          className="p-2 bg-green-500 hover:bg-green-600 text-white"
+                          onClick={() => cancelConfirm(job.applyCode)}
+                        >
+                          지원취소
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          ) : (
+            <>
+              <Sorry message="지원한 공고가 없습니다" />
+              <div className="w-fit mx-auto">
+                <Link
+                  to="/employ/list"
+                  className="font-neoextra text-blue-500 hover:text-blue-700 border-b border-blue-500 hover:border-blue-700"
+                >
+                  지원하러 가기
                 </Link>
               </div>
-            ))}
-          </div>
-          <table className="hidden lg:table w-full mt-4">
-            <thead>
-              <tr className="">
-                <td className="border-y border-t-2 border-stone-500 text-center p-2 w-[200px]">
-                  지역
-                </td>
-                <td className="border-y border-t-2 border-stone-500 text-center p-2">
-                  제목
-                </td>
-                <td className="border-y border-t-2 border-stone-500 text-center p-2 w-[200px]">
-                  급여
-                </td>
-                <td className="border-y border-t-2 border-stone-500 text-center p-2 w-[200px]">
-                  면접포인트
-                </td>
-                <td className="border-y border-t-2 border-stone-500 text-center p-2 w-[200px]">
-                  종료일
-                </td>
-                <td className="border-y border-t-2 border-stone-500 text-center p-2 w-[200px]">
-                  지원현황
-                </td>
-              </tr>
-            </thead>
-            <tbody>
-              {list.map((job, idx) => (
-                <tr
-                  key={idx}
-                  className="text-sm hover:cursor-pointer"
-                  onClick={() => navi(`/employ/detail/${job.jobCode}`)}
-                >
-                  <td className="border-b border-gray-300 text-center px-2 py-4">
-                    {job.compArea || "문의 후 확인"}
-                  </td>
-                  <td className="border-b border-gray-300 text-lg px-2 py-4 truncate font-neoextra">
-                    {job.title}
-                  </td>
-                  <td className="border-b border-gray-300 text-center px-2 py-4">
-                    <span className="text-orange-600 font-neoextra">월</span>{" "}
-                    {job.salary.toLocaleString()} 원
-                  </td>
-                  <td className="border-b border-gray-300 text-center px-2 py-4">
-                    <span className="text-rose-500 font-neoextra">
-                      {job.intvPoint.toLocaleString()}P 지급
-                    </span>
-                  </td>
-                  <td className="border-b border-gray-300 text-center px-2 py-4">
-                    {dayjs(job.postingEndDate).format("YYYY-MM-DD")}
-                  </td>
-                  <td
-                    className={`border-b border-gray-300 text-center px-2 py-4 ${
-                      job.adminChkYn === "Y"
-                        ? "text-green-600"
-                        : "text-blue-600"
-                    }`}
-                  >
-                    {job.adminChkYn === "Y" ? "관리자 확인" : "지원완료"}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+            </>
+          )}
         </>
       ) : (
         <Loading />

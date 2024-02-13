@@ -47,7 +47,7 @@ function Header() {
   };
   return (
     <>
-      {isEmploy ? <div className="h-[54px]" /> : null}
+      {isEmploy ? <div className="h-[54px] lg:hidden" /> : null}
       {!isPromo ? (
         <>
           <HeaderTop isPromo={isPromo} />

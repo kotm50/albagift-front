@@ -82,7 +82,7 @@ function AlertModal(props) {
               <button
                 ref={confirmRef}
                 onClick={() => {
-                  if (props.doIt) props.doIt();
+                  if (props.doIt) props.doIt(props.data || null);
                   props.onClose();
                 }}
                 className="border border-sky-500 bg-sky-500 text-white px-4 py-2"
@@ -104,7 +104,7 @@ function AlertModal(props) {
               <button
                 ref={alertRef}
                 onClick={() => {
-                  if (props.doIt) props.doIt(props.data);
+                  if (props.doIt) props.doIt(props.data || null);
                   props.onClose();
                 }}
                 className="border border-sky-500 bg-sky-500 text-white px-4 py-2"

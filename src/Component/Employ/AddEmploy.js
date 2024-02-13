@@ -46,6 +46,9 @@ function AddEmploy() {
 
   const [weekday, setWeekday] = useState(false);
   const [weekend, setWeekend] = useState(false);
+  const [week5, setWeek5] = useState(false);
+  const [week4, setWeek4] = useState(false);
+  const [week3, setWeek3] = useState(false);
 
   useEffect(() => {
     if (startTime !== "" && endTime !== "") {
@@ -61,36 +64,57 @@ function AddEmploy() {
       list.push("월");
       setWeekday(false);
       setWeekend(false);
+      setWeek3(false);
+      setWeek4(false);
+      setWeek5(false);
     }
     if (tue) {
       list.push("화");
       setWeekday(false);
       setWeekend(false);
+      setWeek3(false);
+      setWeek4(false);
+      setWeek5(false);
     }
     if (wed) {
       list.push("수");
       setWeekday(false);
       setWeekend(false);
+      setWeek3(false);
+      setWeek4(false);
+      setWeek5(false);
     }
     if (thu) {
       list.push("목");
       setWeekday(false);
       setWeekend(false);
+      setWeek3(false);
+      setWeek4(false);
+      setWeek5(false);
     }
     if (fri) {
       list.push("금");
       setWeekday(false);
       setWeekend(false);
+      setWeek3(false);
+      setWeek4(false);
+      setWeek5(false);
     }
     if (sat) {
       list.push("토");
       setWeekday(false);
       setWeekend(false);
+      setWeek3(false);
+      setWeek4(false);
+      setWeek5(false);
     }
     if (sun) {
       list.push("일");
       setWeekday(false);
       setWeekend(false);
+      setWeek3(false);
+      setWeek4(false);
+      setWeek5(false);
     }
     setDay(list.join(", "));
   }, [mon, tue, wed, thu, fri, sat, sun]);
@@ -105,6 +129,9 @@ function AddEmploy() {
       setSat(false);
       setSun(false);
       setWeekend(false);
+      setWeek3(false);
+      setWeek4(false);
+      setWeek5(false);
       setDay("평일");
     } else {
       setDay("");
@@ -121,11 +148,71 @@ function AddEmploy() {
       setSat(false);
       setSun(false);
       setWeekday(false);
-      setDay("주 5일");
+      setWeek3(false);
+      setWeek4(false);
+      setWeek5(false);
+      setDay("주말");
     } else {
       setDay("");
     }
   }, [weekend]);
+
+  useEffect(() => {
+    if (week5) {
+      setMon(false);
+      setTue(false);
+      setWed(false);
+      setThu(false);
+      setFri(false);
+      setSat(false);
+      setSun(false);
+      setWeekday(false);
+      setWeekend(false);
+      setWeek3(false);
+      setWeek4(false);
+      setDay("주 5일");
+    } else {
+      setDay("");
+    }
+  }, [week5]);
+
+  useEffect(() => {
+    if (week4) {
+      setMon(false);
+      setTue(false);
+      setWed(false);
+      setThu(false);
+      setFri(false);
+      setSat(false);
+      setSun(false);
+      setWeekday(false);
+      setWeekend(false);
+      setWeek3(false);
+      setWeek5(false);
+      setDay("주 4일");
+    } else {
+      setDay("");
+    }
+  }, [week4]);
+
+  useEffect(() => {
+    if (week3) {
+      setMon(false);
+      setTue(false);
+      setWed(false);
+      setThu(false);
+      setFri(false);
+      setSat(false);
+      setSun(false);
+      setWeekday(false);
+      setWeekend(false);
+      setWeek5(false);
+      setWeek4(false);
+      setDay("주 3일");
+    } else {
+      setDay("");
+    }
+  }, [week3]);
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [previews, setPreviews] = useState([]);
@@ -257,13 +344,14 @@ function AddEmploy() {
       return "공고 제목을 입력하세요";
     }
 
+    /*
     if (manager === "") {
       return "채용담당자를 입력하세요.\n비공개시 '채용담당자'라고 입력하세요";
     }
-
     if (phone === "") {
       return "연락처를 입력하세요";
     }
+    */
     if (hireStart === "") {
       return "채용시작일을 입력하세요";
     }
@@ -273,9 +361,11 @@ function AddEmploy() {
     if (mainAddr === "") {
       return "주소찾기를 눌러 근무지 주소를 입력하세요";
     }
+    /*
     if (detailAddr === "") {
       return "근무지 근처 역 또는 정류장을 알려주세요";
     }
+    */
     if (day === "") {
       return "근무요일을 입력하세요";
     }
@@ -575,6 +665,30 @@ function AddEmploy() {
                 onClick={() => setWeekend(!weekend)}
               >
                 주말
+              </button>
+              <button
+                className={`p-2 ${
+                  !week5 ? "bg-gray-500" : "bg-green-500"
+                } text-white`}
+                onClick={() => setWeek5(!week5)}
+              >
+                주 5일
+              </button>
+              <button
+                className={`p-2 ${
+                  !week4 ? "bg-gray-500" : "bg-green-500"
+                } text-white`}
+                onClick={() => setWeek4(!week4)}
+              >
+                주 4일
+              </button>
+              <button
+                className={`p-2 ${
+                  !week3 ? "bg-gray-500" : "bg-green-500"
+                } text-white`}
+                onClick={() => setWeek3(!week3)}
+              >
+                주 3일
               </button>
             </div>
           </div>

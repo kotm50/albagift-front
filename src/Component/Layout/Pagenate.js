@@ -59,7 +59,7 @@ function Pagenate(props) {
   }, [props.page]);
   return (
     <>
-      {props.pagenate.length > 1 && (
+      {props.pagenate.length > 0 && (
         <div className="flex flex-row justify-center gap-3 my-5">
           {props.page > 2 && (
             <Link
@@ -113,6 +113,12 @@ function Pagenate(props) {
                 className={`transition duration-300 ease-in-out pageButton hover:scale-110 ${
                   props.page === pageNum ? "selectedPage" : null
                 }`}
+                onClick={e => {
+                  console.log(props.page === pageNum);
+                  if (props.page === pageNum) {
+                    e.preventDefault();
+                  }
+                }}
               >
                 <span>{pageNum}</span>
               </Link>

@@ -310,7 +310,7 @@ function EmployDetail() {
                   </strong>{" "}
                   지급
                 </div>
-                <div className="text-stone-800 mb-4">
+                <div className="text-stone-800 mb-4 hidden">
                   <strong className="font-neoextra">문의</strong> :{" "}
                   {!user.accessToken ? (
                     <>
@@ -333,7 +333,7 @@ function EmployDetail() {
                   <strong className="font-neoextra">마감일</strong> :{" "}
                   {dayjs(jobInfo.postingEndDate).format("YYYY-MM-DD")} 까지
                 </div>
-                <div className="text-stone-800">
+                <div className="text-stone-800 lg:col-span-2">
                   <strong className="font-neoextra">근무지</strong> :{" "}
                   {jobInfo.mainAddr} <br className="lg:hidden" />
                   <a
@@ -416,18 +416,18 @@ function EmployDetail() {
             </div>
             <div className="hidden lg:block w-[29%] min-h-screen">
               <div className="sticky top-10 right-0 w-full h-fit border border-gray-300 p-4">
-                <div className="text-center mb-2 text-lg font-neoextra truncate">
+                <div className="text-center mb-2 text-xl font-neoextra truncate">
                   {jobInfo.title}
                 </div>
                 <div className="text-sm text-gray-600 text-center font-neo mb-4">
                   {dayjs(jobInfo.postingEndDate).format("YYYY-MM-DD")} 까지
                 </div>
                 <div className="flex flex-col justify-center gap-y-2 mb-4 text-center py-4 border-y">
-                  <div>
+                  <div className="hidden">
                     <span className="font-neoextra">😊</span> :{" "}
                     {jobInfo.manager || "지원 후 안내"}
                   </div>
-                  <div>
+                  <div className="hidden">
                     <span className="font-neoextra">📞</span> :{" "}
                     {!user.accessToken ? (
                       <>
@@ -453,11 +453,11 @@ function EmployDetail() {
                   </div>
                 </div>
                 <div className="text-center mb-4">
-                  면접포인트{" "}
+                  💎 면접포인트{" "}
                   <span className="font-neoheavy text-rose-500">
                     {jobInfo.intvPoint.toLocaleString()}P
                   </span>{" "}
-                  지급
+                  지급 💎
                 </div>
                 <button
                   className="w-full bg-blue-500 hover:bg-blue-700 text-white text-lg p-2 rounded-lg"

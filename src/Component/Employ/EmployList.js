@@ -161,7 +161,7 @@ function EmployList() {
       </div>
       {list && list.length > 0 ? (
         <>
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-x-4 gap-y-4 mt-4 px-4 lg:px-0 lg:hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-x-4 gap-y-4 mt-4 px-4 lg:px-0 lg:hidden lg:mt-20">
             {list.map((job, idx) => (
               <div
                 key={idx}
@@ -255,7 +255,6 @@ function EmployList() {
           </table>
         </>
       ) : null}
-
       <Pagenate
         pagenate={pagenate}
         page={Number(page)}

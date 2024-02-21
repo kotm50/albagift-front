@@ -44,6 +44,7 @@ function EmployList() {
     let data = {
       page: p,
       size: 20,
+      gubun: "ING",
     };
 
     if (k !== "") {
@@ -54,6 +55,7 @@ function EmployList() {
         headers: { Authorization: user.accessToken },
       })
       .then(async res => {
+        console.log(res);
         if (res.headers.authorization) {
           await dispatch(
             getNewToken({
@@ -79,7 +81,6 @@ function EmployList() {
         const pagenate = generatePaginationArray(p, totalP);
         setPagenate(pagenate);
         setList(res.data.jobList);
-        console.log(res.data);
       })
       .catch(e => {
         console.log(e);
@@ -247,7 +248,9 @@ function EmployList() {
                     </span>
                   </td>
                   <td className="border-b border-gray-300 text-center px-2 py-4">
-                    {dayjs(job.postingEndDate).format("YYYY-MM-DD")}
+                    {job.openRecruit === "Y"
+                      ? "상시채용"
+                      : `${dayjs(job.postingEndDate).format("YYYY-MM-DD")}`}
                   </td>
                 </tr>
               ))}

@@ -12,7 +12,11 @@ function GiftCategory(props) {
   const thisLocation = useLocation();
   const [menuOn, setMenuOn] = useState(false);
   const [hover, setHover] = useState("");
+  const [brandNum, setBrandNum] = useState("");
+  const [cateNum, setCateNum] = useState("");
   useEffect(() => {
+    setBrandNum(thisLocation.pathname.split("/")[3] || "");
+    setCateNum(thisLocation.pathname.split("/")[2] || "");
     if (thisLocation.pathname.split("/")[2] !== "etc") {
       setHover(
         thisLocation.pathname.split("/")[2]
@@ -41,7 +45,7 @@ function GiftCategory(props) {
     <>
       <div className="flex flex-row flex-nowrap relative gap-x-2">
         <button
-          className="bg-skybluehover text-white lg:w-48 px-4 py-2 flex flex-row justify-start gap-x-2 rounded-t-lg"
+          className="bg-skyblue text-white lg:w-48 px-4 py-2 flex flex-row justify-start gap-x-2 rounded-t-lg"
           onClick={() => setMenuOn(!menuOn)}
         >
           {menuOn ? <MdClose size={24} /> : <GiHamburgerMenu size={24} />} 선물
@@ -49,7 +53,7 @@ function GiftCategory(props) {
         </button>
         <Link
           to="/employ/list"
-          className="hidden py-2 px-5 text-center hover:bg-gray-100 rounded-t-lg"
+          className="py-2 px-5 text-center hover:bg-gray-100 rounded-t-lg hidden"
         >
           채용정보 <span className="text-redorange font-neoheavy">OPEN!</span>
         </Link>
@@ -78,7 +82,11 @@ function GiftCategory(props) {
               ))}
             </div>
             <div className="p-4 flex-1 h-full bg-blue-100 hidden lg:block">
-              <GiftBrand category={hover} />
+              <GiftBrand
+                category={hover}
+                brandNum={brandNum}
+                cateNum={cateNum}
+              />
             </div>
           </div>
         ) : null}

@@ -170,7 +170,7 @@ function App() {
             <Route path="adminpwd" element={<AdminPwd />} />
             <Route path="userdetail" element={<UserDetail />} />
             <Route path="eventdb" element={<EventDBList />} />
-            <Route path="addemploy" element={<AddEmploy />} />
+            <Route path="addemploy/:jid?" element={<AddEmploy />} />
           </Route>
           <Route path="/test" element={<KakaoTest />} />
           <Route path="/popup" element={<PopupTest />} />

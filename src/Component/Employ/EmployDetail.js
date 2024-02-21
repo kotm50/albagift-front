@@ -205,6 +205,37 @@ function EmployDetail() {
     // 추출한 부분들을 '-'로 연결
     return `${part1}-${part2}-${part3}`;
   };
+
+  const deleteIt = jid => {
+    const confirm = window.confirm("게재를 중단합니다 진행할까요?");
+    if (!confirm) {
+      return false;
+    }
+    const data = {
+      jobCode: jid,
+    };
+    axios
+      .patch("/api/v1/board/upt/job/n", data, {
+        headers: {
+          Authorization: user.accessToken,
+        },
+      })
+      .then(response => {
+        // 응답의 data.message를 alert 창으로 띄움
+        alert(response.data.message);
+
+        // response의 data.code가 "C000"일 경우
+        if (response.data.code === "C000") {
+          // alert 창을 닫은 후 "/employ/list" 페이지로 이동
+          navi("/employ/list");
+        }
+        // code가 "C000"이 아닌 경우 다른 처리는 하지 않음
+      })
+      .catch(error => {
+        // 오류 처리
+        console.error("There was an error!", error);
+      });
+  };
   return (
     <>
       <Helmet>
@@ -331,7 +362,11 @@ function EmployDetail() {
                 </div>
                 <div className="text-stone-800 mb-4">
                   <strong className="font-neoextra">마감일</strong> :{" "}
-                  {dayjs(jobInfo.postingEndDate).format("YYYY-MM-DD")} 까지
+                  {jobInfo.openRecruit === "Y"
+                    ? "상시채용"
+                    : `${dayjs(jobInfo.postingEndDate).format(
+                        "YYYY-MM-DD"
+                      )} 까지`}
                 </div>
                 <div className="text-stone-800 lg:col-span-2">
                   <strong className="font-neoextra">근무지</strong> :{" "}
@@ -420,7 +455,11 @@ function EmployDetail() {
                   {jobInfo.title}
                 </div>
                 <div className="text-sm text-gray-600 text-center font-neo mb-4">
-                  {dayjs(jobInfo.postingEndDate).format("YYYY-MM-DD")} 까지
+                  {jobInfo.openRecruit === "Y"
+                    ? "상시채용"
+                    : `${dayjs(jobInfo.postingEndDate).format(
+                        "YYYY-MM-DD"
+                      )} 까지`}
                 </div>
                 <div className="flex flex-col justify-center gap-y-2 mb-4 text-center py-4 border-y">
                   <div className="hidden">
@@ -465,6 +504,24 @@ function EmployDetail() {
                 >
                   지원하기
                 </button>
+
+                {user.admin ? (
+                  <div className="text-center my-4 text-xs">
+                    <Link
+                      to={`/admin/addemploy/${jid}`}
+                      className="hover:underline text-gray-500 inline"
+                    >
+                      수정하기
+                    </Link>{" "}
+                    |{" "}
+                    <button
+                      className="hover:underline text-gray-500 inline"
+                      onClick={() => deleteIt(jid)}
+                    >
+                      미사용
+                    </button>
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>

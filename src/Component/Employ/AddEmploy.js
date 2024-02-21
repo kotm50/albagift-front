@@ -17,8 +17,9 @@ function AddEmploy() {
   const user = useSelector(state => state.user);
   const [compNum, setCompNum] = useState(""); //고객사번호
   const [title, setTitle] = useState(""); //제목
-  const [phone, setPhone] = useState(""); //제목
+  const [phone, setPhone] = useState(""); //연락처
   const [manager, setManager] = useState(""); //채용담당자
+  const [openRecruit, setOpenRecruit] = useState(false); // 채용종료일
   const [hireStart, setHireStart] = useState(""); // 채용종료일
   const [hireEnd, setHireEnd] = useState(""); // 채용종료일
   const [mainAddr, setMainAddr] = useState(""); // 근무지주소
@@ -46,9 +47,16 @@ function AddEmploy() {
 
   const [weekday, setWeekday] = useState(false);
   const [weekend, setWeekend] = useState(false);
-  const [week5, setWeek5] = useState(false);
-  const [week4, setWeek4] = useState(false);
-  const [week3, setWeek3] = useState(false);
+
+  // 체크박스의 변경 이벤트를 처리하는 함수
+  const handleChange = event => {
+    // 체크박스의 체크 상태에 따라 openRecruit 상태 업데이트
+    setOpenRecruit(event.target.checked);
+    if (event.target.checked) {
+      setHireStart("");
+      setHireEnd("");
+    }
+  };
 
   useEffect(() => {
     if (startTime !== "" && endTime !== "") {
@@ -64,57 +72,36 @@ function AddEmploy() {
       list.push("월");
       setWeekday(false);
       setWeekend(false);
-      setWeek3(false);
-      setWeek4(false);
-      setWeek5(false);
     }
     if (tue) {
       list.push("화");
       setWeekday(false);
       setWeekend(false);
-      setWeek3(false);
-      setWeek4(false);
-      setWeek5(false);
     }
     if (wed) {
       list.push("수");
       setWeekday(false);
       setWeekend(false);
-      setWeek3(false);
-      setWeek4(false);
-      setWeek5(false);
     }
     if (thu) {
       list.push("목");
       setWeekday(false);
       setWeekend(false);
-      setWeek3(false);
-      setWeek4(false);
-      setWeek5(false);
     }
     if (fri) {
       list.push("금");
       setWeekday(false);
       setWeekend(false);
-      setWeek3(false);
-      setWeek4(false);
-      setWeek5(false);
     }
     if (sat) {
       list.push("토");
       setWeekday(false);
       setWeekend(false);
-      setWeek3(false);
-      setWeek4(false);
-      setWeek5(false);
     }
     if (sun) {
       list.push("일");
       setWeekday(false);
       setWeekend(false);
-      setWeek3(false);
-      setWeek4(false);
-      setWeek5(false);
     }
     setDay(list.join(", "));
   }, [mon, tue, wed, thu, fri, sat, sun]);
@@ -129,9 +116,6 @@ function AddEmploy() {
       setSat(false);
       setSun(false);
       setWeekend(false);
-      setWeek3(false);
-      setWeek4(false);
-      setWeek5(false);
       setDay("평일");
     } else {
       setDay("");
@@ -148,71 +132,11 @@ function AddEmploy() {
       setSat(false);
       setSun(false);
       setWeekday(false);
-      setWeek3(false);
-      setWeek4(false);
-      setWeek5(false);
       setDay("주말");
     } else {
       setDay("");
     }
   }, [weekend]);
-
-  useEffect(() => {
-    if (week5) {
-      setMon(false);
-      setTue(false);
-      setWed(false);
-      setThu(false);
-      setFri(false);
-      setSat(false);
-      setSun(false);
-      setWeekday(false);
-      setWeekend(false);
-      setWeek3(false);
-      setWeek4(false);
-      setDay("주 5일");
-    } else {
-      setDay("");
-    }
-  }, [week5]);
-
-  useEffect(() => {
-    if (week4) {
-      setMon(false);
-      setTue(false);
-      setWed(false);
-      setThu(false);
-      setFri(false);
-      setSat(false);
-      setSun(false);
-      setWeekday(false);
-      setWeekend(false);
-      setWeek3(false);
-      setWeek5(false);
-      setDay("주 4일");
-    } else {
-      setDay("");
-    }
-  }, [week4]);
-
-  useEffect(() => {
-    if (week3) {
-      setMon(false);
-      setTue(false);
-      setWed(false);
-      setThu(false);
-      setFri(false);
-      setSat(false);
-      setSun(false);
-      setWeekday(false);
-      setWeekend(false);
-      setWeek5(false);
-      setWeek4(false);
-      setDay("주 3일");
-    } else {
-      setDay("");
-    }
-  }, [week3]);
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [previews, setPreviews] = useState([]);
@@ -291,6 +215,7 @@ function AddEmploy() {
         postingEndDate: hireEnd === "" ? null : hireEnd, // 채용 종료일
         manager: manager, //채용담당자
         phone: phone, //담당자연락처
+        openRecruit: openRecruit ? "Y" : "N",
       };
       const formData = new FormData();
       if (selectedFiles.length > 0) {
@@ -352,11 +277,13 @@ function AddEmploy() {
       return "연락처를 입력하세요";
     }
     */
-    if (hireStart === "") {
-      return "채용시작일을 입력하세요";
-    }
-    if (hireEnd === "") {
-      return "채용종료일을 입력하세요";
+    if (!openRecruit) {
+      if (hireStart === "") {
+        return "채용시작일을 입력하시거나\n상시채용 공고에 체크해주세요";
+      }
+      if (hireEnd === "") {
+        return "채용종료일을 입력하시거나\n상시채용 공고에 체크해주세요";
+      }
     }
     if (mainAddr === "") {
       return "주소찾기를 눌러 근무지 주소를 입력하세요";
@@ -381,8 +308,10 @@ function AddEmploy() {
     if (point2 === "") {
       return "면접포인트를 입력하세요, 없으면 0을 입력해 주세요";
     }
-    if (content === "") {
-      return "업무내용을 입력하세요";
+    if (selectedFiles.length < 1) {
+      if (content === "") {
+        return "업무내용을 입력하세요";
+      }
     }
 
     return "완료";
@@ -504,6 +433,26 @@ function AddEmploy() {
             </div>
           </div>
           <div
+            id="hire"
+            className="flex justify-start flex-wrap border-x lg:border-x-0"
+          >
+            <div className="w-full lg:w-[20%] px-4 lg:py-6 py-2 font-neoextra truncate break-keep text-xs lg:text-lg lg:text-right bg-gray-100">
+              상시채용
+            </div>
+            <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-lg font-neo lg:p-4 flex justify-start gap-x-1">
+              <input
+                id="openRecruit"
+                type="checkbox"
+                className="h-full w-auto"
+                checked={openRecruit}
+                onChange={handleChange}
+              />
+              <label htmlFor="openRecruit" className="p-2">
+                상시 채용 공고입니다
+              </label>
+            </div>
+          </div>
+          <div
             id="hireStart"
             className="flex justify-start flex-wrap border-x lg:border-x-0"
           >
@@ -513,10 +462,11 @@ function AddEmploy() {
             <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-lg font-neo lg:p-4">
               <input
                 type="date"
-                className="focus:bg-blue-100 py-2 px-4 border-b w-full"
+                className="focus:bg-blue-100 py-2 px-4 border-b w-full lg:w-1/3"
                 placeholder="채용 시작일을 입력하세요"
                 value={hireStart}
                 onChange={e => setHireStart(e.currentTarget.value)}
+                disabled={openRecruit}
               />
             </div>
           </div>
@@ -530,10 +480,11 @@ function AddEmploy() {
             <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-lg font-neo lg:p-4">
               <input
                 type="date"
-                className="focus:bg-blue-100 py-2 px-4 border-b w-full"
+                className="focus:bg-blue-100 py-2 px-4 border-b w-full lg:w-1/3"
                 placeholder="채용 종료일을 입력하세요"
                 value={hireEnd}
                 onChange={e => setHireEnd(e.currentTarget.value)}
+                disabled={openRecruit}
               />
             </div>
           </div>
@@ -544,10 +495,10 @@ function AddEmploy() {
             <div className="w-full lg:w-[20%] px-4 lg:py-6 py-2 font-neoextra truncate break-keep text-xs lg:text-lg lg:text-right bg-gray-100">
               근무지 위치
             </div>
-            <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-lg font-neo lg:p-4 flex justify-end">
+            <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-lg font-neo lg:p-4 flex justify-end lg:justify-start">
               <input
                 type="text"
-                className="focus:bg-blue-100 py-2 px-4 border-b w-full"
+                className="focus:bg-blue-100 py-2 px-4 border-b w-full lg:w-1/3"
                 placeholder="주소찾기 버튼을 눌러주세요"
                 value={mainAddr}
                 onChange={e => setMainAddr(e.currentTarget.value)}
@@ -665,30 +616,6 @@ function AddEmploy() {
                 onClick={() => setWeekend(!weekend)}
               >
                 주말
-              </button>
-              <button
-                className={`p-2 ${
-                  !week5 ? "bg-gray-500" : "bg-green-500"
-                } text-white`}
-                onClick={() => setWeek5(!week5)}
-              >
-                주 5일
-              </button>
-              <button
-                className={`p-2 ${
-                  !week4 ? "bg-gray-500" : "bg-green-500"
-                } text-white`}
-                onClick={() => setWeek4(!week4)}
-              >
-                주 4일
-              </button>
-              <button
-                className={`p-2 ${
-                  !week3 ? "bg-gray-500" : "bg-green-500"
-                } text-white`}
-                onClick={() => setWeek3(!week3)}
-              >
-                주 3일
               </button>
             </div>
           </div>

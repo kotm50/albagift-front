@@ -348,7 +348,11 @@ function Job() {
                         className="border-b border-gray-300 text-center px-2 py-4"
                         onClick={() => navi(`/employ/detail/${job.jobCode}`)}
                       >
-                        {dayjs(job.postingEndDate).format("YYYY-MM-DD")}
+                        {job.openRecruit === "Y"
+                          ? "상시채용"
+                          : `${dayjs(job.postingEndDate).format(
+                              "YYYY-MM-DD"
+                            )} 까지`}
                       </td>
                       <td
                         className={`border-b border-gray-300 text-center px-2 py-4 ${

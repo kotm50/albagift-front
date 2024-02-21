@@ -30,10 +30,6 @@ function KakaoTest() {
       >
         프로모션가입
       </button>
-      <img
-        src="https://api-echo-bucket.s3.ap-northeast-2.amazonaws.com/images/367b34e3-0aaa-4cc7-8b15-cb9e2305861e.jpg"
-        alt="ㅇㅇㅇ"
-      />
     </div>
   );
 }

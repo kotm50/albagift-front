@@ -742,7 +742,7 @@ function AddEmploy() {
                 onChange={handleFileSelect}
               />
               <button
-                className="p-2 bg-indigo-500 hover:bg-indigo-700 text-white"
+                className="p-2 bg-indigo-500 hover:bg-indigo-700 text-white hidden"
                 onClick={() => uploadFile()}
               >
                 파일업로드

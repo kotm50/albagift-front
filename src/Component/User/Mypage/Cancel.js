@@ -217,7 +217,8 @@ function Cancel() {
                 </li>
               </ol>
             </div>
-            유예기간 중 로그인을 하시면{" "}
+            유예기간 중 로그인을 하시면
+            <br />
             <span className="text-blue-500 font-neoextra">
               탈퇴를 취소하실 수 있습니다.
             </span>

@@ -190,6 +190,27 @@ function AddEmploy() {
     }
   };
 
+  const uploadFile = async () => {
+    const formData = new FormData();
+
+    selectedFiles.forEach(file => {
+      formData.append("files", file);
+    });
+
+    try {
+      const response = await axios.post("/api/v1/board/file/test", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log(response.data);
+      // 업로드 성공 후 처리
+    } catch (error) {
+      console.error("Upload error", error);
+      // 업로드 실패 처리
+    }
+  };
+
   const saveIt = async () => {
     const result = await test();
     if (result !== "완료") {
@@ -277,6 +298,7 @@ function AddEmploy() {
       return "연락처를 입력하세요";
     }
     */
+
     if (!openRecruit) {
       if (hireStart === "") {
         return "채용시작일을 입력하시거나\n상시채용 공고에 체크해주세요";
@@ -719,6 +741,12 @@ function AddEmploy() {
                 multiple
                 onChange={handleFileSelect}
               />
+              <button
+                className="p-2 bg-indigo-500 hover:bg-indigo-700 text-white"
+                onClick={() => uploadFile()}
+              >
+                파일업로드
+              </button>
               1장만 등록 가능합니다
             </div>
           </div>

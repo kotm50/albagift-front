@@ -308,12 +308,13 @@ function AddEmploy() {
     if (point2 === "") {
       return "면접포인트를 입력하세요, 없으면 0을 입력해 주세요";
     }
+    /*
     if (selectedFiles.length < 1) {
       if (content === "") {
         return "업무내용을 입력하세요";
       }
     }
-
+*/
     return "완료";
   };
 

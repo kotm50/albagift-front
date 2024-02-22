@@ -138,8 +138,8 @@ function AddEmploy() {
     }
   }, [weekend]);
 
-  const [selectedFile, setSelectedFile] = useState([]);
-  const [preview, setPreview] = useState([]);
+  const [selectedFile, setSelectedFile] = useState("");
+  const [preview, setPreview] = useState("");
   // 팝업창 상태 관리
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const fileInputRef = useRef(null);
@@ -268,6 +268,7 @@ function AddEmploy() {
   };
 
   const test = () => {
+    /*
     if (compNum === "") {
       return "고객사 번호를 입력하세요";
     }
@@ -275,14 +276,15 @@ function AddEmploy() {
       return "공고 제목을 입력하세요";
     }
 
-    /*
+
+
     if (manager === "") {
       return "채용담당자를 입력하세요.\n비공개시 '채용담당자'라고 입력하세요";
     }
     if (phone === "") {
       return "연락처를 입력하세요";
     }
-    */
+
 
     if (!openRecruit) {
       if (hireStart === "") {
@@ -299,7 +301,7 @@ function AddEmploy() {
     if (detailAddr === "") {
       return "근무지 근처 역 또는 정류장을 알려주세요";
     }
-    */
+
     if (day === "") {
       return "근무요일을 입력하세요";
     }
@@ -315,7 +317,7 @@ function AddEmploy() {
     if (point2 === "") {
       return "면접포인트를 입력하세요, 없으면 0을 입력해 주세요";
     }
-    /*
+
     if (selectedFile.length < 1) {
       if (content === "") {
         return "업무내용을 입력하세요";

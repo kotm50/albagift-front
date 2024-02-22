@@ -47,7 +47,7 @@ function KakaoTest() {
     <div className="mx-auto container">
       <input type="file" accept="image/*" onChange={handleFileChange} />
       <button
-        className="p-2 bg-indigo-500 hover:bg-indigo-700 text-white hidden"
+        className="p-2 bg-indigo-500 hover:bg-indigo-700 text-white"
         onClick={() => uploadFile()}
       >
         파일업로드

@@ -235,6 +235,8 @@ function AddEmploy() {
         "job",
         new Blob([JSON.stringify(data)], { type: "application/json" })
       );
+
+      console.log(Array.from(formData.entries()));
       const response = await axios.post(
         "/api/v1/board/add/job/post",
         formData,

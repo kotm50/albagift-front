@@ -138,8 +138,8 @@ function AddEmploy() {
     }
   }, [weekend]);
 
-  const [selectedFiles, setSelectedFiles] = useState([]);
-  const [previews, setPreviews] = useState([]);
+  const [selectedFile, setSelectedFile] = useState([]);
+  const [preview, setPreview] = useState([]);
   // 팝업창 상태 관리
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const fileInputRef = useRef(null);
@@ -154,48 +154,37 @@ function AddEmploy() {
     setIsPopupOpen(false);
   };
 
+  useEffect(() => {
+    console.log(selectedFile);
+  }, [selectedFile]);
+
   const handleFileSelect = event => {
-    const files = event.target.files;
-
-    // 파일 선택 취소 처리
-    if (!files || files.length === 0) {
-      setSelectedFiles([]);
-      setPreviews([]);
-      return;
+    // 파일이 선택되지 않은 경우 (사용자가 취소 버튼을 클릭한 경우)
+    if (event.target.files.length === 0) {
+      setSelectedFile(""); // selectedFile 상태를 빈 문자열로 설정
+      setPreview(""); // 미리보기도 제거
+      return; // 함수 종료
     }
 
-    // 파일 수 제한 검사
-    if (files.length > 1) {
-      alert("이미지는 한 장만 올릴 수 있습니다");
-      return;
-    }
+    const file = event.target.files[0];
+    if (file.type.startsWith("image/")) {
+      setSelectedFile(file);
 
-    // FileList 객체를 배열로 변환
-    const filesArray = Array.from(files);
-    setSelectedFiles(filesArray);
-
-    // 미리보기 생성
-    const updatedPreviews = [];
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
+      // 파일 미리보기 생성
       const reader = new FileReader();
       reader.onload = e => {
-        updatedPreviews.push(e.target.result);
-        // 모든 파일에 대한 미리보기가 준비되면 상태 업데이트
-        if (updatedPreviews.length === files.length) {
-          setPreviews(updatedPreviews);
-        }
+        setPreview(e.target.result); // 미리보기 상태 업데이트
       };
       reader.readAsDataURL(file);
+    } else {
+      alert("이미지 파일만 업로드 가능합니다.");
     }
   };
 
   const uploadFile = async () => {
     const formData = new FormData();
 
-    selectedFiles.forEach(file => {
-      formData.append("files", file);
-    });
+    formData.append("files", selectedFile);
 
     try {
       const response = await axios.post("/api/v1/board/file/test", formData, {
@@ -238,20 +227,14 @@ function AddEmploy() {
         phone: phone, //담당자연락처
         openRecruit: openRecruit ? "Y" : "N",
       };
+
       const formData = new FormData();
-      if (selectedFiles.length > 0) {
-        selectedFiles.forEach((file, idx) => {
-          formData.append(`files`, file);
-        });
-      } else {
-        formData.append(`files`, "");
-      }
+      formData.append("files", selectedFile);
 
       formData.append(
         "job",
         new Blob([JSON.stringify(data)], { type: "application/json" })
       );
-      console.log(Array.from(formData.entries()));
       const response = await axios.post(
         "/api/v1/board/add/job/post",
         formData,
@@ -264,8 +247,8 @@ function AddEmploy() {
       );
       console.log(response);
       if (response.data.code === "C000") {
-        setSelectedFiles([]);
-        setPreviews([]);
+        setSelectedFile([]);
+        setPreview([]);
         fileInputRef.current.value = "";
 
         const confirm = window.confirm(
@@ -331,7 +314,7 @@ function AddEmploy() {
       return "면접포인트를 입력하세요, 없으면 0을 입력해 주세요";
     }
     /*
-    if (selectedFiles.length < 1) {
+    if (selectedFile.length < 1) {
       if (content === "") {
         return "업무내용을 입력하세요";
       }
@@ -758,7 +741,7 @@ function AddEmploy() {
               미리보기
             </div>
             <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-lg font-neo lg:px-4 lg:py-6">
-              {previews.length > 0 ? (
+              {preview !== "" ? (
                 <>
                   <div className="hidden lg:block text-sm mb-2">
                     마우스 오른쪽 버튼을 누르고{" "}
@@ -771,19 +754,16 @@ function AddEmploy() {
                     선택하시면 원본 이미지를 확인 하실 수 있습니다
                   </div>
                   <div className="flex flex-row justify-start gap-x-2 w-full flex-wrap">
-                    {previews.map((preview, index) => (
-                      <img
-                        key={index}
-                        src={preview}
-                        alt="Preview"
-                        style={{
-                          width: "auto",
-                          height: "120px",
-                          maxWidth: "240px",
-                          minWidth: "120px",
-                        }}
-                      />
-                    ))}
+                    <img
+                      src={preview}
+                      alt="Preview"
+                      style={{
+                        width: "auto",
+                        height: "120px",
+                        maxWidth: "240px",
+                        minWidth: "120px",
+                      }}
+                    />
                   </div>
                 </>
               ) : null}

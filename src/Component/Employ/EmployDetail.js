@@ -504,6 +504,13 @@ function EmployDetail() {
                 >
                   지원하기
                 </button>
+                <div className="text-center text-sm mt-4">
+                  총{" "}
+                  <span className="font-neoextra text-base">
+                    {jobInfo.viewCnt}
+                  </span>
+                  명이 이 공고를 확인했습니다
+                </div>
 
                 {user.admin ? (
                   <div className="text-center my-4 text-xs">

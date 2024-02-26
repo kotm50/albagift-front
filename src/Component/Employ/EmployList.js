@@ -190,14 +190,24 @@ function EmployList() {
                         </span>
                       </div>
                     </div>
-                    <div className="text-sm flex flex-row justify-start gap-x-1">
-                      <div className="flex flex-col justify-center">
-                        <FaMapMarkerAlt className="items-center" size={16} />
+                    <div className="flex justify-between">
+                      <div className="text-sm flex flex-row justify-start gap-x-1">
+                        <div className="flex flex-col justify-center">
+                          <FaMapMarkerAlt className="items-center" size={16} />
+                        </div>
+                        <div className="flex flex-col justify-center">
+                          <span className="items-center">
+                            {job.detailAddr || "위치문의"}
+                          </span>
+                        </div>
                       </div>
-                      <div className="flex flex-col justify-center">
-                        <span className="items-center">
-                          {job.detailAddr || "위치문의"}
-                        </span>
+                      <div className="text-xs flex flex-row justify-start gap-x-1">
+                        <div className="flex flex-col justify-center">
+                          조회수
+                        </div>
+                        <div className="flex flex-col justify-center">
+                          <span className="items-center">{job.viewCnt}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -222,6 +232,9 @@ function EmployList() {
                 </td>
                 <td className="border-y border-t-2 border-stone-500 text-center p-2 w-[200px]">
                   종료일
+                </td>
+                <td className="border-y border-t-2 border-stone-500 text-center p-2 w-[100px]">
+                  조회수
                 </td>
               </tr>
             </thead>
@@ -251,6 +264,9 @@ function EmployList() {
                     {job.openRecruit === "Y"
                       ? "상시채용"
                       : `${dayjs(job.postingEndDate).format("YYYY-MM-DD")}`}
+                  </td>
+                  <td className="border-b border-gray-300 text-center px-2 py-4">
+                    {job.viewCnt}
                   </td>
                 </tr>
               ))}

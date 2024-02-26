@@ -182,9 +182,10 @@ function AddEmploy() {
   };
 
   const uploadFile = async () => {
+    console.log(selectedFile);
     const formData = new FormData();
 
-    formData.append("files", selectedFile);
+    formData.append("file", selectedFile);
 
     try {
       const response = await axios.post("/api/v1/board/file/test", formData, {
@@ -229,7 +230,7 @@ function AddEmploy() {
       };
 
       const formData = new FormData();
-      formData.append("files", selectedFile);
+      formData.append("file", selectedFile);
 
       formData.append(
         "job",
@@ -249,8 +250,8 @@ function AddEmploy() {
       );
       console.log(response);
       if (response.data.code === "C000") {
-        setSelectedFile([]);
-        setPreview([]);
+        setSelectedFile("");
+        setPreview("");
         fileInputRef.current.value = "";
 
         const confirm = window.confirm(
@@ -268,7 +269,6 @@ function AddEmploy() {
   };
 
   const test = () => {
-    /*
     if (compNum === "") {
       return "고객사 번호를 입력하세요";
     }
@@ -276,15 +276,12 @@ function AddEmploy() {
       return "공고 제목을 입력하세요";
     }
 
-
-
     if (manager === "") {
       return "채용담당자를 입력하세요.\n비공개시 '채용담당자'라고 입력하세요";
     }
     if (phone === "") {
       return "연락처를 입력하세요";
     }
-
 
     if (!openRecruit) {
       if (hireStart === "") {
@@ -297,7 +294,6 @@ function AddEmploy() {
     if (mainAddr === "") {
       return "주소찾기를 눌러 근무지 주소를 입력하세요";
     }
-    /*
     if (detailAddr === "") {
       return "근무지 근처 역 또는 정류장을 알려주세요";
     }
@@ -317,7 +313,7 @@ function AddEmploy() {
     if (point2 === "") {
       return "면접포인트를 입력하세요, 없으면 0을 입력해 주세요";
     }
-
+    /*
     if (selectedFile.length < 1) {
       if (content === "") {
         return "업무내용을 입력하세요";
@@ -671,7 +667,7 @@ function AddEmploy() {
             </div>
             <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-lg font-neo lg:p-4">
               <input
-                type="number"
+                type="text"
                 className="focus:bg-blue-100 py-2 px-4 border-b w-full"
                 placeholder="급여를 숫자만 입력하세요"
                 value={salary}
@@ -688,7 +684,7 @@ function AddEmploy() {
             </div>
             <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-lg font-neo lg:p-4">
               <input
-                type="number"
+                type="text"
                 className="focus:bg-blue-100 py-2 px-4 border-b w-full"
                 placeholder="지원만 해도 지급할 포인트입니다"
                 value={point1}
@@ -705,7 +701,7 @@ function AddEmploy() {
             </div>
             <div className="w-full lg:w-fit lg:flex-1 text-xs lg:text-lg font-neo lg:p-4">
               <input
-                type="number"
+                type="text"
                 className="focus:bg-blue-100 py-2 px-4 border-b w-full"
                 placeholder="면접 참석시 지급할 포인트입니다"
                 value={point2}
@@ -729,7 +725,7 @@ function AddEmploy() {
                 onChange={handleFileSelect}
               />
               <button
-                className="p-2 bg-indigo-500 hover:bg-indigo-700 text-white hidden"
+                className="p-2 bg-indigo-500 hover:bg-indigo-700 text-white"
                 onClick={() => uploadFile()}
               >
                 파일업로드

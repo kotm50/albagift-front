@@ -201,6 +201,30 @@ function AddEmploy() {
     }
   };
 
+  const uploadFile1 = async () => {
+    console.log(selectedFile);
+    const formData = new FormData();
+
+    formData.append("file", selectedFile);
+
+    try {
+      const response = await axios.post(
+        "https://inssain.co.kr/api/v1/board/file/test",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log(response.data);
+      // 업로드 성공 후 처리
+    } catch (error) {
+      console.error("Upload error", error);
+      // 업로드 실패 처리
+    }
+  };
+
   const saveIt = async () => {
     const result = await test();
     if (result !== "완료") {
@@ -729,6 +753,12 @@ function AddEmploy() {
                 onClick={() => uploadFile()}
               >
                 파일업로드
+              </button>
+              <button
+                className="p-2 bg-indigo-500 hover:bg-indigo-700 text-white"
+                onClick={() => uploadFile1()}
+              >
+                파일업로드1
               </button>
               1장만 등록 가능합니다
             </div>

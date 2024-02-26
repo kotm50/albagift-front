@@ -21,6 +21,15 @@ import giftbox from "../../Asset/employ/giftbox.png";
 import { Helmet } from "react-helmet";
 
 function EmployList() {
+  axios.interceptors.request.use(config => {
+    console.log(`Request URL: ${config.url}`);
+    return config;
+  });
+
+  axios.interceptors.response.use(response => {
+    console.log(`Response from: ${response.config.url}`, response);
+    return response;
+  });
   const navi = useNavigate();
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();

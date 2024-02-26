@@ -154,6 +154,15 @@ function AddEmploy() {
     setIsPopupOpen(false);
   };
 
+  axios.interceptors.request.use(config => {
+    console.log(`Request URL: ${config.url}`);
+    return config;
+  });
+
+  axios.interceptors.response.use(response => {
+    console.log(`Response from: ${response.config.url}`, response);
+    return response;
+  });
   useEffect(() => {
     console.log(selectedFile);
   }, [selectedFile]);

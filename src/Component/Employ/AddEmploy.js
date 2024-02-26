@@ -188,11 +188,15 @@ function AddEmploy() {
     formData.append("file", selectedFile);
 
     try {
-      const response = await axios.post("/api/v1/board/file/test", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        "https://inssain.co.kr/api/v1/board/file/test",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       console.log(response.data);
       // 업로드 성공 후 처리
     } catch (error) {

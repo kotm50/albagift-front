@@ -191,6 +191,7 @@ function AddEmploy() {
       const response = await axios.post("/api/v1/board/file/test", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: user.accessToken,
         },
       });
       console.log(response.data);
@@ -214,6 +215,7 @@ function AddEmploy() {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: user.accessToken,
           },
         }
       );

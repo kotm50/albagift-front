@@ -13,7 +13,6 @@ function HeaderTop() {
   const [isEmploy, setIsEmploy] = useState(false);
 
   useEffect(() => {
-    console.log(thisLocation.pathname.split("/")[1]);
     if (thisLocation.pathname.split("/")[1] === "employ") {
       setIsEmploy(true);
     } else {

@@ -154,10 +154,6 @@ function AddEmploy() {
     setIsPopupOpen(false);
   };
 
-  useEffect(() => {
-    console.log(selectedFile);
-  }, [selectedFile]);
-
   const handleFileSelect = event => {
     // 파일이 선택되지 않은 경우 (사용자가 취소 버튼을 클릭한 경우)
     if (event.target.files.length === 0) {
@@ -178,52 +174,6 @@ function AddEmploy() {
       reader.readAsDataURL(file);
     } else {
       alert("이미지 파일만 업로드 가능합니다.");
-    }
-  };
-
-  const uploadFile = async () => {
-    console.log(selectedFile);
-    const formData = new FormData();
-
-    formData.append("file", selectedFile);
-
-    try {
-      const response = await axios.post("/api/v1/board/file/test", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: user.accessToken,
-        },
-      });
-      console.log(response.data);
-      // 업로드 성공 후 처리
-    } catch (error) {
-      console.error("Upload error", error);
-      // 업로드 실패 처리
-    }
-  };
-
-  const uploadFile1 = async () => {
-    console.log(selectedFile);
-    const formData = new FormData();
-
-    formData.append("file", selectedFile);
-
-    try {
-      const response = await axios.post(
-        "https://inssain.co.kr/api/v1/board/file/test",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: user.accessToken,
-          },
-        }
-      );
-      console.log(response.data);
-      // 업로드 성공 후 처리
-    } catch (error) {
-      console.error("Upload error", error);
-      // 업로드 실패 처리
     }
   };
 
@@ -263,7 +213,6 @@ function AddEmploy() {
         new Blob([JSON.stringify(data)], { type: "application/json" })
       );
 
-      console.log(Array.from(formData.entries()));
       const response = await axios.post(
         "/api/v1/board/add/job/post",
         formData,
@@ -274,7 +223,6 @@ function AddEmploy() {
           },
         }
       );
-      console.log(response);
       if (response.data.code === "C000") {
         setSelectedFile("");
         setPreview("");
@@ -750,18 +698,6 @@ function AddEmploy() {
                 multiple
                 onChange={handleFileSelect}
               />
-              <button
-                className="p-2 bg-indigo-500 hover:bg-indigo-700 text-white"
-                onClick={() => uploadFile()}
-              >
-                파일업로드
-              </button>
-              <button
-                className="p-2 bg-indigo-500 hover:bg-indigo-700 text-white"
-                onClick={() => uploadFile1()}
-              >
-                파일업로드1
-              </button>
               1장만 등록 가능합니다
             </div>
           </div>

@@ -55,7 +55,6 @@ function EmployList() {
         headers: { Authorization: user.accessToken },
       })
       .then(async res => {
-        console.log(res);
         if (res.headers.authorization) {
           await dispatch(
             getNewToken({

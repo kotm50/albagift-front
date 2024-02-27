@@ -130,6 +130,13 @@ function Content1() {
         />
       </Helmet>
       <div className="fixed w-full max-w-[1000px] h-screen overflow-x-hidden overflow-y-auto top-0 left-1/2 -translate-x-1/2 bg-white z-10 border">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xl ppbold">
+          이벤트가 종료되었습니다.
+          <br />
+          다음 이벤트를 기대해 주세요!
+        </div>
+      </div>
+      <div className="hidden fixed w-full max-w-[1000px] h-screen overflow-x-hidden overflow-y-auto top-0 left-1/2 -translate-x-1/2 bg-white z-10 border">
         <>
           {complete ? (
             <div className="relative w-full h-full bg-[#1a60fe] text-white">

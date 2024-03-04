@@ -16,6 +16,7 @@ function RenewalModal() {
   const [isOneDay, setIsOneDay] = useState(false);
 
   useEffect(() => {
+    console.log(modalState);
     if (user.admin) {
       setIsOpen(false);
     } else {
@@ -81,8 +82,8 @@ function RenewalModal() {
     dispatch(
       dayModal({
         oneDay: modalState.oneDay,
-        //lastOpen: new Date(),
-        lastOpen: "",
+        lastOpen: new Date(),
+        //lastOpen: "",
       })
     );
     navi("/employ/list");
@@ -93,8 +94,8 @@ function RenewalModal() {
     dispatch(
       dayModal({
         oneDay: isOneDay ? "Y" : "N",
-        //lastOpen: new Date(),
-        lastOpen: "",
+        lastOpen: new Date(),
+        //lastOpen: "",
       })
     );
   };

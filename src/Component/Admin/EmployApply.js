@@ -51,7 +51,7 @@ function EmployApply() {
           );
           return false;
         }
-        setApplyList(res.data.applyLists);
+        setApplyList(res.data.applyList);
       })
       .catch(e => {
         console.log(e);

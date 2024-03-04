@@ -74,7 +74,7 @@ function EmployApply() {
 
   return (
     <>
-      {applyList.length > 0 ? (
+      {applyList && applyList.length > 0 ? (
         <div className="flex flex-row justify-start gap-x-2 flex-wrap">
           {applyList.map((apply, idx) => (
             <span key={idx}>

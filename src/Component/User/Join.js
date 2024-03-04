@@ -110,7 +110,7 @@ function Join() {
     });
   };
   const goLogin = () => {
-    navi("/login");
+    navi("/");
   };
   //회원가입 실행
   const join = async e => {

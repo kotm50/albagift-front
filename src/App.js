@@ -64,6 +64,7 @@ import EventDBList from "./Component/Admin/EventDBList";
 import EmployList from "./Component/Employ/EmployList";
 import EmployDetail from "./Component/Employ/EmployDetail";
 import Job from "./Component/User/Mypage/Job";
+import EmployApply from "./Component/Admin/EmployApply";
 //import MyMain from "./Component/User/Mypage/MyMain";
 
 function App() {
@@ -171,6 +172,7 @@ function App() {
             <Route path="userdetail" element={<UserDetail />} />
             <Route path="eventdb" element={<EventDBList />} />
             <Route path="addemploy/:jid?" element={<AddEmploy />} />
+            <Route path="apply" element={<EmployApply />} />
           </Route>
           <Route path="/test" element={<KakaoTest />} />
           <Route path="/popup" element={<PopupTest />} />

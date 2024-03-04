@@ -3,7 +3,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { dayModal } from "../../Reducer/modalSlice";
 //import renewal from "../../Asset/renew/renewal_new.png";
-import couponerr from "../../Asset/renew/couponerr.png";
+//import couponerr from "../../Asset/renew/couponerr.png";
+import boardBanner from "../../Asset/renew/board.gif";
 
 function RenewalModal() {
   const navi = useNavigate();
@@ -84,7 +85,7 @@ function RenewalModal() {
         lastOpen: "",
       })
     );
-    navi("/renew");
+    navi("/employ/list");
   };
 
   const closeIt = () => {
@@ -100,7 +101,7 @@ function RenewalModal() {
   return (
     <>
       {isOpen ? (
-        <div id="renewalmodal" className="hidden drop-shadow-lg rounded-lg">
+        <div id="renewalmodal" className="drop-shadow-lg rounded-lg">
           <div className="flex justify-between">
             <div className="flex items-center mb-2">
               <input
@@ -119,19 +120,20 @@ function RenewalModal() {
             </div>
           </div>
           <img
-            src={couponerr}
+            src={boardBanner}
             alt="리뉴얼 안내"
             className="max-w-full h-auto hover:cursor-pointer"
+            onClick={moveDetail}
           />
-          <div className="grid grid-cols-2 gap-x-2 mt-2">
+          <div className="grid grid-cols-3 gap-x-2 mt-2">
             <button
-              className="p-2 bg-green-500 hover:bg-green-700 text-white hidden"
+              className="p-2 bg-green-500 hover:bg-green-700 text-white col-span-2"
               onClick={moveDetail}
             >
-              자세히 보기
+              면접비 받으러 가기
             </button>
             <button
-              className="p-2 bg-gray-100 hover:bg-gray-200 text-black col-span-2"
+              className="p-2 bg-gray-100 hover:bg-gray-200 text-black"
               onClick={closeIt}
             >
               창 닫기

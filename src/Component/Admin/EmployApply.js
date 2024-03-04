@@ -11,7 +11,7 @@ import AlertModal from "../Layout/AlertModal";
 function EmployApply() {
   const navi = useNavigate();
   const user = useSelector(state => state.user);
-  const dispatch = useDispatch;
+  const dispatch = useDispatch();
   const thisLocation = useLocation();
   const [applyList, setApplyList] = useState([]);
 

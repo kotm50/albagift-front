@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
 import { getNewToken } from "../../Reducer/userSlice";
@@ -403,6 +403,58 @@ function UserList2() {
     }
   };
 
+  const forceLeave = async id => {
+    const confirm = window.confirm(`아이디 : ${id} 탈퇴 ㄱ?`);
+    if (!confirm) {
+      return false;
+    }
+    const data = {
+      userId: id,
+    };
+
+    await axios
+      .patch("/api/v1/user/force/leave", data, {
+        headers: { Authorization: user.accessToken },
+      })
+      .then(async res => {
+        console.log(res);
+        if (res.data.code === "C000") {
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"확인"} // 제목
+                  message={res.data.message} // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                />
+              );
+            },
+          });
+
+          loadList(page, keyword, isAgree);
+        } else {
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"확인"} // 제목
+                  message={res.data.message} // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                />
+              );
+            },
+          });
+        }
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
   return (
     <>
       {loaded ? (
@@ -472,10 +524,10 @@ function UserList2() {
                     <div className="block p-2 ">
                       <div className="grid grid-cols-4 gap-2 mb-2">
                         <div className="font-medium flex flex-col justify-center text-right font-neo">
-                          프로모션
+                          아이디
                         </div>
                         <div className="font-normal col-span-2 flex flex-col justify-center">
-                          {user.promoYn === "Y" ? "프로모션 가입" : "일반 가입"}
+                          {user.userId}
                         </div>
                         <div></div>
                       </div>
@@ -561,12 +613,12 @@ function UserList2() {
                       </div>
                     </div>
                     <div className="text-center px-2 mb-3">
-                      <Link
-                        to={`/admin/userdetail?userId=${user.userId}`}
-                        className="bg-indigo-500 hover:bg-indigo-700 text-white p-2 rounded-lg w-full block"
+                      <button
+                        className="bg-rose-500 hover:bg-rose-700 text-white p-2 rounded-lg w-full block"
+                        onClick={() => forceLeave(user.userId)}
                       >
-                        포인트 내역 확인
-                      </Link>
+                        회원 강제탈퇴
+                      </button>
                     </div>
                     <div className="text-center px-2 mb-3 hidden">
                       <a

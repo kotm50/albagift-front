@@ -432,8 +432,6 @@ function UserList2() {
               );
             },
           });
-
-          loadList(page, keyword, isAgree);
         } else {
           confirmAlert({
             customUI: ({ onClose }) => {

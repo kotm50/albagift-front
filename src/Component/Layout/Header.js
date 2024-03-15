@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+//import { useSelector } from "react-redux";
 
 import GiftCategory from "./Menu/GiftCategory";
 
 import HeaderTop from "./HeaderTop";
 import GiftBrandTop from "./Menu/GiftBrandTop";
 
+//import dayjs from "dayjs";
+
 function Header() {
+  //const user = useSelector(state => state.user);
   const [cateNum, setCateNum] = useState("");
   const [loadBrand, setLoadBrand] = useState(false);
   const [isPromo, setIsPromo] = useState(true);

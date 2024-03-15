@@ -299,10 +299,23 @@ function PointList() {
           const pagenate = generatePaginationArray(p, totalP);
           setPagenate(pagenate);
         }
-        setList(res.data.postList ?? [{ postId: "없음" }]);
+        const postList = res.data.postList;
+
+        if (postList && postList.length > 0) {
+          postList.sort((a, b) => {
+            // "S" 상태인 경우 우선순위를 높여서 먼저 정렬
+            if (a.status === "S" && b.status !== "S") {
+              return -1; // a를 b보다 앞에 배치
+            } else if (a.status !== "S" && b.status === "S") {
+              return 1; // b를 a보다 앞에 배치
+            } else {
+              return 0; // a와 b의 상태가 같거나 "S"가 아닌 경우 순서 유지
+            }
+          });
+        }
+        setList(postList ?? [{ postId: "없음" }]);
       })
       .catch(e => {
-        console.log(e);
         setLoaded(true);
         confirmAlert({
           customUI: ({ onClose }) => {

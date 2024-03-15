@@ -107,7 +107,7 @@ function AdminPwd(props) {
       errAlert("비밀번호가 일치하지 않습니다");
       return false;
     }
-    axios
+    await axios
       .patch(
         "/api/v1/user/admin/pwd/upt",
         { afterPwd: pwd, beforePwd: beforePwd },

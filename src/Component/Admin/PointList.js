@@ -280,7 +280,7 @@ function PointList() {
           );
         }
 
-        if (res.data.code === "E999") {
+        if (res.data.code === "E999" || res.data.code === "E401") {
           logoutAlert(
             null,
             null,
@@ -316,6 +316,7 @@ function PointList() {
         setList(postList ?? [{ postId: "없음" }]);
       })
       .catch(e => {
+        console.log(e);
         setLoaded(true);
         confirmAlert({
           customUI: ({ onClose }) => {

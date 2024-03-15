@@ -102,7 +102,7 @@ function RenewalModal() {
   return (
     <>
       {isOpen ? (
-        <div id="renewalmodal" className="drop-shadow-lg rounded-lg">
+        <div id="renewalmodal" className="drop-shadow-lg rounded-lg hidden">
           <div className="flex justify-between">
             <div className="flex items-center mb-2">
               <input

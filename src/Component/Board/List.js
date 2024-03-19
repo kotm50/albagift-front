@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import queryString from "query-string";
-import axios from "axios";
+
 import { useSelector } from "react-redux";
 import Loading from "../Layout/Loading";
+import axiosInstance from "../../Api/axiosInstance";
 
 function List() {
   const navi = useNavigate();
@@ -23,14 +24,13 @@ function List() {
     const data = {
       boardId: boardId,
     };
-    await axios
+    await axiosInstance
       .post("/api/v1/board/get/pnt/posts/list", data, {
         headers: {
           Authorization: user.accessToken,
         },
       })
       .then(res => {
-        console.log(res);
         res.data.code === "E403" && alert(res.data.message);
         res.data.code === "C000" ? setLoaded(true) : console.log("에러");
 

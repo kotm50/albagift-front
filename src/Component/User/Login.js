@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
-import axios from "axios";
 import queryString from "query-string";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -14,6 +13,7 @@ import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 import { RiKakaoTalkFill } from "react-icons/ri";
 import BeforeJoin from "./BeforeJoin";
 import AlertModal from "../Layout/AlertModal";
+import axiosInstance from "../../Api/axiosInstance";
 
 function Login() {
   const location = useLocation();
@@ -108,7 +108,7 @@ function Login() {
       userId: id,
       userPwd: pwd,
     };
-    await axios
+    await axiosInstance
       .post("/api/v1/user/login", data)
       .then(res => {
         if (res.data.code === "E005") {
@@ -131,6 +131,7 @@ function Login() {
           return false;
         }
         const token = res.headers.authorization;
+        const refresh = res.data.user.refreshToken;
         if (res.data.code === "E002") {
           confirmAlert({
             customUI: ({ onClose }) => {
@@ -150,7 +151,7 @@ function Login() {
           });
         }
         if (res.data.code === "C000") {
-          chkAdmin(token, res.data.user);
+          chkAdmin(token, res.data.user, refresh);
         } else {
           setErrMessage(res.data.message);
           setPwd("");
@@ -171,7 +172,7 @@ function Login() {
     let data = {
       userId: id,
     };
-    await axios
+    await axiosInstance
       .post("/api/v1/user/recusr", data)
       .then(res => {
         if (res.data.code === "C000") {
@@ -227,8 +228,8 @@ function Login() {
     return false;
   };
 
-  const chkAdmin = async (token, user) => {
-    await axios
+  const chkAdmin = async (token, user, refresh) => {
+    await axiosInstance
       .post("/api/v1/user/rolechk", null, {
         headers: { Authorization: token },
       })
@@ -241,6 +242,7 @@ function Login() {
             lastLogin: new Date(),
             point: user.point,
             admin: true,
+            refreshToken: refresh,
           };
           dispatch(loginUser(userData));
           localStorage.setItem("userData", JSON.stringify(userData)); // 로컬 스토리지에 마킹
@@ -266,6 +268,7 @@ function Login() {
             lastLogin: new Date(),
             point: user.point,
             admin: false,
+            refreshToken: refresh,
           };
           dispatch(loginUser(userData));
           localStorage.setItem("userData", JSON.stringify(userData)); // 로컬 스토리지에 마킹
@@ -278,7 +281,7 @@ function Login() {
   };
 
   const chkProto = async (token, user) => {
-    await axios
+    await axiosInstance
       .post("/api/v1/user/search/proto", null, {
         headers: { Authorization: token },
       })
@@ -338,7 +341,7 @@ function Login() {
 
   const kakaoLoginCheck = async code => {
     const loginUrl = `/api/v1/user/login/kakao?code=${code}`;
-    await axios
+    await axiosInstance
       .get(loginUrl)
       .then(res => {
         if (res.data.code === "C001") {
@@ -352,6 +355,7 @@ function Login() {
             userId: res.data.socialUser.userId,
             userName: res.data.socialUser.userName,
             accessToken: res.headers.authorization,
+            refreshToken: res.data.socialUser.refreshToken,
             lastLogin: new Date(),
             point: res.data.socialUser.point,
             admin: false,

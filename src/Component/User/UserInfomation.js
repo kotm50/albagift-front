@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { clearUser, getNewToken, refreshPoint } from "../../Reducer/userSlice";
+import { clearUser, refreshPoint } from "../../Reducer/userSlice";
 import { logout, logoutAlert } from "../LogoutUtil";
-import axios from "axios";
 import BeforeJoin from "./BeforeJoin";
+import axiosInstance from "../../Api/axiosInstance";
 
 function UserInformation() {
   const location = useLocation();
@@ -58,7 +58,7 @@ function UserInformation() {
   };
 
   const refreshPoints = async () => {
-    await axios
+    await axiosInstance
       .post("/api/v1/user/get/point", null, {
         headers: { Authorization: user.accessToken },
       })
@@ -81,15 +81,6 @@ function UserInformation() {
               point: res.data.user.point,
             })
           );
-        }
-        if (res.headers.authorization) {
-          if (res.headers.authorization !== user.accessToken) {
-            dispatch(
-              getNewToken({
-                accessToken: res.headers.authorization,
-              })
-            );
-          }
         }
       })
       .catch(e => {

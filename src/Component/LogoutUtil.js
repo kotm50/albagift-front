@@ -1,6 +1,6 @@
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
-import axios from "axios";
+import axiosInstance from "../Api/axiosInstance";
 
 export const logoutAlert = (
   onClose,
@@ -39,7 +39,7 @@ export const logoutAlert = (
 };
 
 export const forceLogout = async (dispatch, clearUser, navi, user) => {
-  await axios
+  await axiosInstance
     .post("/api/v1/user/logout", null, {
       headers: { Authorization: user.accessToken },
     })
@@ -54,7 +54,7 @@ export const forceLogout = async (dispatch, clearUser, navi, user) => {
 };
 
 export const logout = async (dispatch, clearUser, navi, user) => {
-  await axios
+  await axiosInstance
     .post("/api/v1/user/logout", null, {
       headers: { Authorization: user.accessToken },
     })

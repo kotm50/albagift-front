@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
-import axios from "axios";
-
 import { useSelector } from "react-redux";
 
 import PopupDom from "../Kakao/PopupDom";
@@ -14,6 +12,7 @@ import Timer from "../Timer";
 import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 import AlertModal from "../Layout/AlertModal";
+import axiosInstance from "../../Api/axiosInstance";
 
 function Join() {
   const user = useSelector(state => state.user);
@@ -50,14 +49,12 @@ function Join() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
-    console.log(location.state || "없음");
     if (location.state) {
       setTempId(location.state.tempId);
       if (location.state.email) {
         setEmail(location.state.email);
         setIsSocialLogin(true);
       }
-      console.log(location.state.promo ? "프로모션" : "프로모아님");
       if (
         location.state.promo === null ||
         location.state.promo === undefined ||
@@ -145,7 +142,7 @@ function Join() {
       data.agreeYn = "Y";
     }
     let url = "/api/v1/user/join";
-    await axios
+    await axiosInstance
       .post(url, data)
       .then(res => {
         if (res.data.code === "C000") {
@@ -262,7 +259,7 @@ function Join() {
       const regex = /^[a-z]+([0-9]+[a-z]*)*$/;
       let correct = regex.test(id);
       if (correct) {
-        await axios
+        await axiosInstance
           .get("/api/v1/user/dupchkid", { params: { userId: id } })
           .then(res => {
             if (res.data.code === "C000") {
@@ -287,7 +284,7 @@ function Join() {
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (emailPattern.test(email)) {
       setCorrectEmail(true);
-      await axios
+      await axiosInstance
         .get("/api/v1/user/dupchkemail", { params: { email: email } })
         .then(res => {
           if (res.data.code === "C000") {

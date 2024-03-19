@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const locginSlice = createSlice({
+const loginSlice = createSlice({
   name: "login",
   initialState: {
     saveId: "",
@@ -12,5 +12,5 @@ const locginSlice = createSlice({
   },
 });
 
-export const { saveId } = locginSlice.actions;
-export default locginSlice.reducer;
+export const { saveId } = loginSlice.actions;
+export default loginSlice.reducer;

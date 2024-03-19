@@ -1,17 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
-import axios from "axios";
+import { useSelector } from "react-redux";
 
 import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 import AlertModal from "../../Layout/AlertModal";
-import { getNewToken } from "../../../Reducer/userSlice";
+import axiosInstance from "../../../Api/axiosInstance";
 
 function NewPwd(props) {
   const pwdRef = useRef();
   const user = useSelector(state => state.user);
-  const dispatch = useDispatch();
   const [beforePwd, setBeforePwd] = useState("");
   const [pwd, setPwd] = useState("");
   const [pwdChk, setPwdChk] = useState("");
@@ -104,7 +101,7 @@ function NewPwd(props) {
       errAlert("비밀번호가 일치하지 않습니다");
       return false;
     }
-    axios
+    await axiosInstance
       .patch(
         "/api/v1/user/myinfo/editpwd",
         { afterPwd: pwd, beforePwd: beforePwd },
@@ -115,13 +112,6 @@ function NewPwd(props) {
         }
       )
       .then(res => {
-        if (res.headers.authorization) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         if (res.data.code === "C000") {
           props.setPwdModal(false);
           props.logoutAlert();

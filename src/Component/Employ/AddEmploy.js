@@ -7,10 +7,10 @@ import "react-quill/dist/quill.snow.css";
 
 import PopupDom from "../Kakao/PopupDom";
 import PopupPostCode from "../Kakao/PopupPostCode";
-import axios from "axios";
 
 import { timeList } from "./Timer";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../Api/axiosInstance";
 
 function AddEmploy() {
   const navi = useNavigate();
@@ -213,7 +213,7 @@ function AddEmploy() {
         new Blob([JSON.stringify(data)], { type: "application/json" })
       );
 
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         "/api/v1/board/add/job/post",
         formData,
         {

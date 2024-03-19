@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
+
 import { useSelector, useDispatch } from "react-redux";
-import { clearUser, getNewToken } from "../../Reducer/userSlice";
+import { clearUser } from "../../Reducer/userSlice";
 
 import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
@@ -17,6 +17,7 @@ import Pagenate from "../Layout/Pagenate";
 import AlertModal from "../Layout/AlertModal";
 import Sorry from "../doc/Sorry";
 import { logoutAlert } from "../LogoutUtil";
+import axiosInstance from "../../Api/axiosInstance";
 
 function PointList() {
   const companyRef = useRef();
@@ -198,7 +199,7 @@ function PointList() {
     const request = {
       postList: postList,
     };
-    await axios
+    await axiosInstance
       .patch("/api/v1/board/admin/paymt/sts", request, {
         headers: { Authorization: user.accessToken },
       })
@@ -218,15 +219,7 @@ function PointList() {
             },
           });
         }
-        if (res.headers.authorization === user.accessToken) {
-          loadList(page, keyword, startDate, endDate, select, agree, sType);
-        } else {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
+        loadList(page, keyword, startDate, endDate, select, agree, sType);
         setPoint(0);
         setSelectedDocs([]);
         setSelectedDocsId([]);
@@ -261,7 +254,7 @@ function PointList() {
     if (t !== "") {
       data.searchType = Number(t);
     }
-    await axios
+    await axiosInstance
       .get("/api/v1/board/admin/posts", {
         params: data,
         headers: {
@@ -269,18 +262,7 @@ function PointList() {
         },
       })
       .then(res => {
-        if (
-          res.headers.authorization &&
-          user.accessToken !== res.headers.authorization
-        ) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
-
-        if (res.data.code === "E999" || res.data.code === "E401") {
+        if (res.data.code === "E999") {
           logoutAlert(
             null,
             null,

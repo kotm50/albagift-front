@@ -15,10 +15,11 @@ import rd from "../../../Asset/Content2/d.jpg";
 import PopupDom from "../../Kakao/PopupDom";
 import PopupPostCode from "../../Kakao/PopupPostCode";
 import Modal from "../../doc/Modal";
-import axios from "axios";
+
 import { Helmet } from "react-helmet";
 import { GridLoader } from "react-spinners";
 import { FaCheck } from "react-icons/fa";
+import axiosInstance from "../../../Api/axiosInstance";
 // kakao 기능 동작을 위해 넣어준다.
 const { Kakao } = window;
 
@@ -119,7 +120,7 @@ function Content2() {
     let data = d;
     data.gubun = "event";
     data.jobType = 2;
-    await axios
+    await axiosInstance
       .post("/api/v1/user/nice/dec/result", data)
       .then(res => {
         if (res.data.code === "C000") {
@@ -138,7 +139,7 @@ function Content2() {
       address: mainAddr,
       jobType: 2,
     };
-    await axios
+    await axiosInstance
       .post("/api/v1/user/applicants/add", data)
       .then(res => {
         setResultMsg(res.data.message);

@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
-import axios from "axios";
 import queryString from "query-string";
 import Pagenate from "../Layout/Pagenate";
 import Sorry from "../doc/Sorry";
 import Loading from "../Layout/Loading";
-import { getNewToken } from "../../Reducer/userSlice";
 
 import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 import PointHistoryModal from "../User/PointHistoryModal";
+import axiosInstance from "../../Api/axiosInstance";
 
 function DailyPoint() {
-  const dispatch = useDispatch();
   const location = useLocation();
   const user = useSelector(state => state.user);
   const pathName = location.pathname;
@@ -89,18 +87,11 @@ function DailyPoint() {
     if (s !== "") {
       data.startDate = s;
     }
-    await axios
+    await axiosInstance
       .post("/api/v1/user/admin/search/todayPnt", data, {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        if (res.headers.authorization) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         setLoaded(true);
         if (res.data.logList.length === 0) {
           return false;

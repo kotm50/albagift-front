@@ -3,11 +3,9 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { clearUser, getNewToken } from "../../../Reducer/userSlice";
+import { clearUser } from "../../../Reducer/userSlice";
 
 import queryString from "query-string";
-
-import axios from "axios";
 
 import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
@@ -24,6 +22,7 @@ import { RiKakaoTalkFill } from "react-icons/ri";
 import { logoutAlert } from "../../LogoutUtil";
 import EmailModal from "./EmailModal";
 import Marketing from "./Marketing";
+import axiosInstance from "../../../Api/axiosInstance";
 
 function EditUser() {
   const user = useSelector(state => state.user);
@@ -77,20 +76,13 @@ function EditUser() {
 
   //카카오연동해제
   const deleteKakao = async () => {
-    await axios
+    await axiosInstance
       .post("/api/v1/user/rel/integ/kakao", null, {
         headers: {
           Authorization: user.accessToken,
         },
       })
       .then(res => {
-        if (res.headers.authorization) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         confirmAlert({
           customUI: ({ onClose }) => {
             return (
@@ -113,20 +105,13 @@ function EditUser() {
   //카카오연동체크
   const kakaoLoginCheck = async code => {
     const editUrl = `/api/v1/user/integ/kakao?code=${code}`;
-    await axios
+    await axiosInstance
       .get(editUrl, {
         headers: {
           Authorization: user.accessToken,
         },
       })
       .then(async res => {
-        if (res.headers.authorization) {
-          await dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         if (res.data.code === "C000") {
           confirmAlert({
             customUI: ({ onClose }) => {
@@ -169,18 +154,11 @@ function EditUser() {
   };
   const getUserInfo = async () => {
     setUserInfo({});
-    await axios
+    await axiosInstance
       .post("/api/v1/user/myinfo", null, {
         headers: { Authorization: user.accessToken },
       })
       .then(async res => {
-        if (res.headers.authorization) {
-          await dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         if (res.data.code === "E999") {
           logoutAlert(
             null,
@@ -400,20 +378,13 @@ function EditUser() {
       data = null;
       bValue.agreeYn = agreeYn;
     }
-    axios
+    await axiosInstance
       .patch(url, data, {
         headers: {
           Authorization: user.accessToken,
         },
       })
       .then(res => {
-        if (res.headers.authorization) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         if (res.data.code === "C000") {
           if (type === "password") {
             logoutAlert2();
@@ -482,7 +453,7 @@ function EditUser() {
   };
 
   const logout = async () => {
-    await axios
+    await axiosInstance
       .post("/api/v1/user/logout", null, {
         headers: { Authorization: user.accessToken },
       })
@@ -539,18 +510,11 @@ function EditUser() {
     let data = d;
     data.gubun = "edit";
 
-    await axios
+    await axiosInstance
       .post("/api/v1/user/nice/dec/result", data, {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        if (res.headers.authorization) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         if (res.data.code === "C000") {
           confirmAlert({
             customUI: ({ onClose }) => {

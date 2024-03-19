@@ -70,7 +70,6 @@ function Attendance() {
     const lastDayOfWeek = lastDayOfMonth.toLocaleDateString("ko-KR", {
       weekday: "short",
     });
-    console.log(firstDayOfWeek, lastDayOfWeek);
     await getBeforeAfterDate(firstDayOfWeek, lastDayOfWeek);
     getFullDay();
   };
@@ -78,7 +77,6 @@ function Attendance() {
   const getBeforeAfterDate = (f, l) => {
     const beforeLength = dates.indexOf(f);
     const afterLength = dates.indexOf(l);
-    console.log(beforeLength, afterLength);
     let bArr = [];
     let aArr = [];
     let i, j;

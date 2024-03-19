@@ -10,9 +10,10 @@ import resultBanner from "../../../Asset/Event/banner2.png";
 import PopupDom from "../../Kakao/PopupDom";
 import PopupPostCode from "../../Kakao/PopupPostCode";
 import Modal from "../../doc/Modal";
-import axios from "axios";
+
 import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../../Api/axiosInstance";
 // kakao 기능 동작을 위해 넣어준다.
 const { Kakao } = window;
 
@@ -91,7 +92,7 @@ function Content1() {
   const certToBack = async d => {
     let data = d;
     data.gubun = "event";
-    await axios
+    await axiosInstance
       .post("/api/v1/user/nice/dec/result", data)
       .then(res => {
         if (res.data.code === "C000") {
@@ -111,7 +112,7 @@ function Content1() {
       address: mainAddr,
       jobType: 1,
     };
-    await axios
+    await axiosInstance
       .post("/api/v1/user/applicants/add", data)
       .then(res => {
         setResult(res.data.message);

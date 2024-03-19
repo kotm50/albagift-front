@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { clearUser, getNewToken } from "../../../Reducer/userSlice";
-
-import axios from "axios";
+import { clearUser } from "../../../Reducer/userSlice";
 
 import dayjs from "dayjs";
 import "dayjs/locale/ko"; // 한국어 가져오기
@@ -12,6 +10,7 @@ import CouponModal from "./CouponModal";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import AlertModal from "../../Layout/AlertModal";
+import axiosInstance from "../../../Api/axiosInstance";
 
 function CouponList(props) {
   const dispatch = useDispatch();
@@ -49,19 +48,11 @@ function CouponList(props) {
     const data = {
       trId: c,
     };
-    await axios
+    await axiosInstance
       .post("/api/v1/shop/goods/coupons", data, {
         headers: { Authorization: user.accessToken },
       })
       .then(async res => {
-        console.log(res);
-        if (res.headers.authorization) {
-          await dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         if (res.data.code === "E999") {
           logoutAlert(res.data.message);
           return false;
@@ -179,7 +170,7 @@ function CouponList(props) {
   };
 
   const logout = async () => {
-    await axios
+    await axiosInstance
       .post("/api/v1/user/logout", null, {
         headers: { Authorization: user.accessToken },
       })

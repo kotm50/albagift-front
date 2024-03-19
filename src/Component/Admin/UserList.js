@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { useSelector, useDispatch } from "react-redux";
-import { getNewToken } from "../../Reducer/userSlice";
+import { useSelector } from "react-redux";
 import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
-
-import axios from "axios";
 
 import AlertModal from "../Layout/AlertModal";
 import queryString from "query-string";
@@ -14,12 +11,12 @@ import Pagenate from "../Layout/Pagenate";
 import Sorry from "../doc/Sorry";
 import Loading from "../Layout/Loading";
 import dayjs from "dayjs";
+import axiosInstance from "../../Api/axiosInstance";
 
 //import { dummyUser } from "./dummy";
 
 function UserList() {
   const navi = useNavigate();
-  const dispatch = useDispatch();
   const user = useSelector(state => state.user);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [selectedUsersId, setSelectedUsersId] = useState([]);
@@ -88,21 +85,13 @@ function UserList() {
     if (b) {
       data.agreeYn = "Y";
     }
-    await axios
+    await axiosInstance
       .post("/api/v1/user/admin/userlst", data, {
         headers: {
           Authorization: user.accessToken,
         },
       })
       .then(res => {
-        //console.log(res);
-        if (res.headers.authorization) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         setLoaded(true);
         if (res.data.code === "C000") {
           const totalP = res.data.totalPages;
@@ -302,21 +291,11 @@ function UserList() {
       idList: selectedUsersId,
       point: point,
     };
-    await axios
+    await axiosInstance
       .post("/api/v1/user/admin/manage/point/P", request, {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        if (res.headers.authorization) {
-          if (res.headers.authorization !== user.accessToken) {
-            dispatch(
-              getNewToken({
-                accessToken: res.headers.authroiztion,
-              })
-            );
-          }
-        }
-
         setLoaded(true);
         if (res.data.code === "C000") {
           confirmAlert({
@@ -351,21 +330,12 @@ function UserList() {
       idList: selectedUsersId,
       point: point,
     };
-    await axios
+    await axiosInstance
       .post("/api/v1/user/admin/manage/point/D", request, {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
         setLoaded(true);
-        if (res.headers.authorization) {
-          if (res.headers.authorization !== user.accessToken) {
-            dispatch(
-              getNewToken({
-                accessToken: res.headers.authroiztion,
-              })
-            );
-          }
-        }
         if (res.data.code === "C000") {
           confirmAlert({
             customUI: ({ onClose }) => {

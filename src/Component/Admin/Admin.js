@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 
-import axios from "axios";
 import AlertModal from "../Layout/AlertModal";
-import { getNewToken } from "../../Reducer/userSlice";
+import axiosInstance from "../../Api/axiosInstance";
 
 function Admin() {
-  const dispatch = useDispatch();
   const location = useLocation();
   const [loaded, setLoaded] = useState(false);
   let navi = useNavigate();
@@ -40,21 +38,11 @@ function Admin() {
   const goLogin = () => [navi("/login")];
 
   const resetGoods = async () => {
-    await axios
+    await axiosInstance
       .post("/api/v1/shop/admin/bizapi", null, {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        if (
-          res.headers.authorization &&
-          user.accessToken !== res.headers.authorization
-        ) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         if (res.data.code === "C000") {
           confirmAlert({
             customUI: ({ onClose }) => {
@@ -78,7 +66,7 @@ function Admin() {
   };
 
   const resetBrands = async () => {
-    await axios
+    await axiosInstance
       .post("/api/v1/shop/admin/brand", null, {
         headers: { Authorization: user.accessToken },
       })

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import queryString from "query-string";
-import axios from "axios";
 
 import Pagenate from "../Layout/Pagenate";
 import { Helmet } from "react-helmet";
@@ -11,6 +10,7 @@ import AlertModal from "../Layout/AlertModal";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import Sorry from "../doc/Sorry";
+import axiosInstance from "../../Api/axiosInstance";
 
 function SearchResult() {
   let navi = useNavigate();
@@ -39,7 +39,7 @@ function SearchResult() {
       page: p,
       size: 20,
     };
-    await axios
+    await axiosInstance
       .get(`/api/v1/shop/goods/search/${keyword}`, {
         params: data,
         headers: { Authorization: user.accessToken },

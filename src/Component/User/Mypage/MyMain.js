@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-
-import axios from "axios";
+import axiosInstance from "../../../Api/axiosInstance";
 
 function MyMain() {
   const location = useLocation();
@@ -18,7 +17,7 @@ function MyMain() {
     const data = {
       boardId: "B02",
     };
-    await axios
+    await axiosInstance
       .post("/api/v1/board/get/pnt/posts/list", data, {
         headers: {
           Authorization: user.accessToken,

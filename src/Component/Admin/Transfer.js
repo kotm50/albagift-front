@@ -6,8 +6,7 @@ import { db } from "../../firebase"; // Firebase 초기화 후에 db 객체 가�
 import { useSelector } from "react-redux";
 
 import Apply from "./Apply";
-
-import axios from "axios";
+import axiosInstance from "../../Api/axiosInstance";
 
 function Transfer() {
   const user = useSelector(state => state.user);
@@ -87,7 +86,6 @@ function Transfer() {
           }
         }
       });
-      console.log(total.length, total);
       setApplies(documents);
       setApplies2(documents2);
       setApplies3(documents3);
@@ -128,7 +126,7 @@ function Transfer() {
           documents.push(inputDoc);
         }
       }
-      console.log(documents);
+
       setCoupons(documents);
     } catch (error) {
       console.error("문서 수를 가져오는 동안 오류 발생:", error);
@@ -151,9 +149,13 @@ function Transfer() {
       trId: c,
     };
     try {
-      const response = await axios.post("/api/v1/shop/goods/coupons", data, {
-        headers: { Authorization: user.accessToken },
-      });
+      const response = await axiosInstance.post(
+        "/api/v1/shop/goods/coupons",
+        data,
+        {
+          headers: { Authorization: user.accessToken },
+        }
+      );
       if (response.data.couponDetail.pinStatusCd === "01") {
         return true;
       } else {
@@ -169,15 +171,14 @@ function Transfer() {
     let data = {
       couponList: coupons,
     };
-    console.log(data);
-    await axios
+    await axiosInstance
       .post("/api/v1/shop/proto/coupon", data, {
         headers: { Authorization: user.accessToken },
         maxContentLength: Infinity,
         maxBodyLength: Infinity,
       })
       .then(res => {
-        console.log(res);
+        return true;
       })
       .catch(e => {
         console.log(e);

@@ -4,9 +4,9 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import AlertModal from "../Layout/AlertModal";
-import { getNewToken, clearUser } from "../../Reducer/userSlice";
+import { clearUser } from "../../Reducer/userSlice";
 import { logoutAlert } from "../LogoutUtil";
-import axios from "axios";
+
 import Loading from "../Layout/Loading";
 import dompurify from "dompurify";
 import ShopRecommend from "./ShopRecommend";
@@ -16,6 +16,7 @@ import { AiOutlineArrowLeft } from "react-icons/ai";
 import { FaMapMarkerAlt } from "react-icons/fa";
 
 import { Helmet } from "react-helmet";
+import axiosInstance from "../../Api/axiosInstance";
 
 function EmployDetail() {
   const sanitizer = dompurify.sanitize;
@@ -65,19 +66,11 @@ function EmployDetail() {
       return false;
     }
     const data = { jobCode: jid };
-    await axios
+    await axiosInstance
       .post("/api/v1/board/add/job/apply", data, {
         headers: { Authorization: user.accessToken },
       })
       .then(async res => {
-        if (res.headers.authorization) {
-          await dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
-
         if (res.data.code === "E999") {
           logoutAlert(
             null,
@@ -124,19 +117,11 @@ function EmployDetail() {
 
   const getJob = async () => {
     const data = { jobCode: jid };
-    await axios
+    await axiosInstance
       .post("/api/v1/board/get/job/detail", data, {
         headers: { Authorization: user.accessToken },
       })
       .then(async res => {
-        if (res.headers.authorization) {
-          await dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
-
         if (res.data.code === "E999") {
           logoutAlert(
             null,
@@ -206,7 +191,7 @@ function EmployDetail() {
     return `${part1}-${part2}-${part3}`;
   };
 
-  const deleteIt = jid => {
+  const deleteIt = async jid => {
     const confirm = window.confirm("게재를 중단합니다 진행할까요?");
     if (!confirm) {
       return false;
@@ -214,7 +199,7 @@ function EmployDetail() {
     const data = {
       jobCode: jid,
     };
-    axios
+    await axiosInstance
       .patch("/api/v1/board/upt/job/n", data, {
         headers: {
           Authorization: user.accessToken,

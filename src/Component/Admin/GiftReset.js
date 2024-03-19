@@ -1,25 +1,16 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
-import { getNewToken } from "../../Reducer/userSlice";
+import { useSelector } from "react-redux";
+import axiosInstance from "../../Api/axiosInstance";
 
 function GiftReset() {
-  const dispatch = useDispatch();
   const user = useSelector(state => state.user);
 
   const resetGoods = async () => {
-    await axios
+    await axiosInstance
       .post("/api/v1/shop/admin/bizapi", null, {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        if (res.headers.authorization) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         if (res.data.code === "C200") {
           alert("상품리셋 완료");
         }
@@ -30,18 +21,11 @@ function GiftReset() {
   };
 
   const resetBrands = async () => {
-    await axios
+    await axiosInstance
       .post("/api/v1/shop/admin/brand", null, {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        if (res.headers.authorization) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         alert("브랜드리셋 완료");
       })
       .catch(e => {

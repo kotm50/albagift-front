@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { clearUser, getNewToken } from "../../../Reducer/userSlice";
+import { clearUser } from "../../../Reducer/userSlice";
 
-import axios from "axios";
 import queryString from "query-string";
 import CouponList from "./CouponList";
 import { logoutAlert } from "../../LogoutUtil";
@@ -12,6 +11,7 @@ import Pagenate from "../../Layout/Pagenate";
 
 import Sorry from "../../doc/Sorry";
 import Loading from "../../Layout/Loading";
+import axiosInstance from "../../../Api/axiosInstance";
 
 function Coupon() {
   const dispatch = useDispatch();
@@ -38,18 +38,11 @@ function Coupon() {
       page: p,
       size: 20,
     };
-    await axios
+    await axiosInstance
       .post("/api/v1/shop/goods/buyList", data, {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        if (res.headers.authorization) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         if (res.data.code === "E999") {
           logoutAlert(
             null,

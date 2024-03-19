@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { clearUser, getNewToken } from "../../Reducer/userSlice";
 import { logout } from "../LogoutUtil";
+import axiosInstance from "../../Api/axiosInstance";
 
 function Recommend(props) {
   let navi = useNavigate();
@@ -27,7 +27,7 @@ function Recommend(props) {
       size: 4,
     };
     setGoods([]);
-    await axios
+    await axiosInstance
       .get(listUrl, {
         params: data,
         headers: { Authorization: user.accessToken },

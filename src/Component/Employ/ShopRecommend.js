@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Link, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import AlertModal from "../Layout/AlertModal";
 import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
-import { getNewToken } from "../../Reducer/userSlice";
+import axiosInstance from "../../Api/axiosInstance";
 function ShopRecommend(props) {
-  const dispatch = useDispatch();
   const location = useLocation();
   const user = useSelector(state => state.user);
   const [goods, setGoods] = useState([]);
@@ -24,18 +22,11 @@ function ShopRecommend(props) {
     let listUrl = "/api/v1/shop/get/rand/goods";
 
     setGoods([]);
-    await axios
+    await axiosInstance
       .get(listUrl, {
         headers: { Authorization: user.accessToken },
       })
       .then(async res => {
-        if (res.headers.authorization) {
-          await dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         setLoadMsg(res.data.message);
         if (res.data.code === "C000") {
           if (c === 1) {

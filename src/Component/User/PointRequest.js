@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import queryString from "query-string";
-import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import Loading from "../Layout/Loading";
 
@@ -9,7 +8,8 @@ import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import AlertModal from "../Layout/AlertModal";
 import { logoutAlert } from "../LogoutUtil";
-import { clearUser, getNewToken } from "../../Reducer/userSlice";
+import { clearUser } from "../../Reducer/userSlice";
+import axiosInstance from "../../Api/axiosInstance";
 
 function PointRequest() {
   const dispatch = useDispatch();
@@ -65,7 +65,7 @@ function PointRequest() {
       boardId: boardId,
       postId: pid,
     };
-    await axios
+    await axiosInstance
       .post("/api/v1/board/get/pnt/posts", data, {
         headers: {
           Authorization: user.accessToken,
@@ -139,18 +139,11 @@ function PointRequest() {
         return false;
       }
     }
-    await axios
+    await axiosInstance
       .post("/api/v1/board/pnt/posts", data, {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        if (res.headers.authorization) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         if (res.data.code === "C000") {
           confirmAlert({
             customUI: ({ onClose }) => {

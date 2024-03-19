@@ -1,6 +1,5 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import axios from "axios";
 
 import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
@@ -13,11 +12,12 @@ import AlertModal from "../Layout/AlertModal";
 import phone from "../../Asset/marketing/phone.png";
 import speech from "../../Asset/marketing/speech.png";
 import object from "../../Asset/marketing/object.png";
+import axiosInstance from "../../Api/axiosInstance";
 
 function Agree() {
   const user = useSelector(state => state.user);
   const agreeIt = async () => {
-    await axios
+    await axiosInstance
       .patch("/api/v1/user/upt/agree/y", null, {
         headers: {
           Authorization: user.accessToken,

@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import axiosInstance from "../../Api/axiosInstance";
 
 function Apply(props) {
   const updateAll = async () => {
@@ -12,14 +12,14 @@ function Apply(props) {
       let data = {
         protoList: a,
       };
-      await axios
+      await axiosInstance
         .post("/api/v1/user/proto", data, {
           headers: { Authorization: props.user.accessToken },
           maxContentLength: Infinity,
           maxBodyLength: Infinity,
         })
         .then(res => {
-          console.log(res);
+          return true;
         })
         .catch(e => {
           console.log(e);
@@ -35,13 +35,13 @@ function Apply(props) {
       page: 1,
       size: 20,
     };
-    await axios
+    await axiosInstance
       .get(listUrl, {
         params: data,
         headers: { Authorization: props.user.accessToken },
       })
       .then(res => {
-        console.log(res);
+        return true;
       })
       .catch(e => {
         console.log(e, "에러");

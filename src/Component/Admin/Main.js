@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import queryString from "query-string";
@@ -8,15 +8,12 @@ import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
-
-import axios from "axios";
-import { getNewToken } from "../../Reducer/userSlice";
 import Sorry from "../doc/Sorry";
 import Loading from "../Layout/Loading";
 import AlertModal from "../Layout/AlertModal";
+import axiosInstance from "../../Api/axiosInstance";
 
 function Main() {
-  const dispatch = useDispatch();
   const user = useSelector(state => state.user);
   const navi = useNavigate();
   const location = useLocation();
@@ -77,18 +74,11 @@ function Main() {
       startDate: s,
       endDate: e,
     };
-    await axios
+    await axiosInstance
       .post("/api/v1/user/admin/search/datePnt", data, {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        if (res.headers.authorization) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         setLoaded(true);
         if (res.data.pointList.length === 0) {
           return false;

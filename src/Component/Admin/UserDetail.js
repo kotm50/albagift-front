@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
+
 import Loading from "../Layout/Loading";
 import queryString from "query-string";
 import Pagenate from "../Layout/Pagenate";
 import { logoutAlert } from "../LogoutUtil";
-import { clearUser, getNewToken } from "../../Reducer/userSlice";
+import { clearUser } from "../../Reducer/userSlice";
 import UserDetailList from "./UserDetailList";
 import Sorry from "../doc/Sorry";
 import AlertModal from "../Layout/AlertModal";
 
 import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
+import axiosInstance from "../../Api/axiosInstance";
 
 function UserDetail() {
   const dispatch = useDispatch();
@@ -66,22 +67,13 @@ function UserDetail() {
       page: p || 1,
       size: 20,
     };
-    console.log(data);
-    await axios
+    await axiosInstance
       .post("/api/v1/user/admin/usrpnt/history", data, {
         headers: {
           Authorization: user.accessToken,
         },
       })
       .then(res => {
-        console.log(res);
-        if (res.headers.authorization) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         setLoaded(true);
         if (res.data.code === "C000") {
           const totalP = res.data.totalPages;

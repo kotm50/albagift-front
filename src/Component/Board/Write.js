@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import queryString from "query-string";
-import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import Loading from "../Layout/Loading";
 
@@ -9,7 +8,8 @@ import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import AlertModal from "../Layout/AlertModal";
 import { logoutAlert } from "../LogoutUtil";
-import { clearUser, getNewToken } from "../../Reducer/userSlice";
+import { clearUser } from "../../Reducer/userSlice";
+import axiosInstance from "../../Api/axiosInstance";
 
 function Write() {
   const dispatch = useDispatch();
@@ -65,7 +65,7 @@ function Write() {
       boardId: boardId,
       postId: pid,
     };
-    await axios
+    await axiosInstance
       .post("/api/v1/board/get/pnt/posts", data, {
         headers: {
           Authorization: user.accessToken,
@@ -142,18 +142,11 @@ function Write() {
     let postId = pid || "";
     if (postId !== "") {
       data.postId = postId;
-      await axios
+      await axiosInstance
         .patch("/api/v1/board/upt/pnt/posts", data, {
           headers: { Authorization: user.accessToken },
         })
         .then(res => {
-          if (res.headers.authorization) {
-            dispatch(
-              getNewToken({
-                accessToken: res.headers.authorization,
-              })
-            );
-          }
           if (res.data.code === "C000") {
             confirmAlert({
               customUI: ({ onClose }) => {
@@ -191,18 +184,11 @@ function Write() {
           return false;
         });
     } else {
-      await axios
+      await axiosInstance
         .post("/api/v1/board/pnt/posts", data, {
           headers: { Authorization: user.accessToken },
         })
         .then(res => {
-          if (res.headers.authorization) {
-            dispatch(
-              getNewToken({
-                accessToken: res.headers.authorization,
-              })
-            );
-          }
           if (res.data.code === "C000") {
             confirmAlert({
               customUI: ({ onClose }) => {

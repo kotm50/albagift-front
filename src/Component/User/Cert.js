@@ -3,8 +3,7 @@ import giftbox from "../../Asset/giftbox.png";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import queryString from "query-string";
-
-import axios from "axios";
+import axiosInstance from "../../Api/axiosInstance";
 
 function Cert() {
   const navi = useNavigate();
@@ -50,7 +49,7 @@ function Cert() {
     }
 
     //data = {token, enc, int, gubun, id, email}
-    await axios
+    await axiosInstance
       .post("/api/v1/user/nice/dec/result", data)
       .then(res => {
         if (res.data.code === "E888") {

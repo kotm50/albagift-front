@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import queryString from "query-string";
 
 import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 
-import axios from "axios";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import Pagenate from "../Layout/Pagenate";
-import { getNewToken } from "../../Reducer/userSlice";
 import AlertModal from "../Layout/AlertModal";
 import Sorry from "../doc/Sorry";
 import Loading from "../Layout/Loading";
+import axiosInstance from "../../Api/axiosInstance";
 
 function LoginLog() {
-  const dispatch = useDispatch();
   const navi = useNavigate();
   const location = useLocation();
   const pathName = location.pathname;
@@ -83,22 +81,12 @@ function LoginLog() {
     if (e !== "") {
       data.endDate = e;
     }
-    await axios
+    await axiosInstance
       .get("/api/v1/user/admin/get/log", {
         params: data,
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        if (
-          res.headers.authorization &&
-          user.accessToken !== res.headers.authorization
-        ) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         setLoaded(true);
         if (res.data.loginLogList.length === 0) {
           return false;

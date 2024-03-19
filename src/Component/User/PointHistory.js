@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
 import Loading from "../Layout/Loading";
 import queryString from "query-string";
 import Pagenate from "../Layout/Pagenate";
 import { logoutAlert } from "../LogoutUtil";
-import { clearUser, getNewToken } from "../../Reducer/userSlice";
+import { clearUser } from "../../Reducer/userSlice";
 import PointHistoryList from "./PointHistoryList";
 import Sorry from "../doc/Sorry";
 
 import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 import PointHistoryModal from "./PointHistoryModal";
+import axiosInstance from "../../Api/axiosInstance";
 
 function PointHistory() {
   const dispatch = useDispatch();
@@ -56,20 +56,13 @@ function PointHistory() {
     if (r !== "") {
       data.gubun = r;
     }
-    await axios
+    await axiosInstance
       .post("/api/v1/user/mypage/pnt/log", data, {
         headers: {
           Authorization: user.accessToken,
         },
       })
       .then(res => {
-        if (res.headers.authorization) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         setLoaded(true);
         if (res.data.code === "C000") {
           const totalP = res.data.totalPages;

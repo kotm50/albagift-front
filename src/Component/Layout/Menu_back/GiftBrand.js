@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-
-import axios from "axios";
+import axiosInstance from "../../../Api/axiosInstance";
 
 function GiftBrand(props) {
   const user = useSelector(state => state.user);
@@ -31,7 +30,7 @@ function GiftBrand(props) {
     if (n !== "") {
       listUrl = listUrl + "/" + n;
     }
-    await axios
+    await axiosInstance
       .get(listUrl, { token: user.accessToken })
       .then(res => {
         setBrandList(res.data.brandsList);

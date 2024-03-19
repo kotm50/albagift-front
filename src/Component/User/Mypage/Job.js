@@ -3,9 +3,8 @@ import React, { useEffect, useState } from "react";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
 import queryString from "query-string";
-import { clearUser, getNewToken } from "../../../Reducer/userSlice";
+import { clearUser } from "../../../Reducer/userSlice";
 import { logoutAlert } from "../../LogoutUtil";
 import AlertModal from "../../Layout/AlertModal";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +12,7 @@ import Pagenate from "../../Layout/Pagenate";
 import Loading from "../../Layout/Loading";
 import dayjs from "dayjs";
 import Sorry from "../../doc/Sorry";
+import axiosInstance from "../../../Api/axiosInstance";
 
 function Job() {
   const navi = useNavigate();
@@ -37,19 +37,11 @@ function Job() {
       page: p,
       size: 20,
     };
-    await axios
+    await axiosInstance
       .post("/api/v1/board/get/mypage/applylist", data, {
         headers: { Authorization: user.accessToken },
       })
       .then(async res => {
-        if (res.headers.authorization) {
-          await dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
-
         if (res.data.code === "E999") {
           logoutAlert(
             null,
@@ -155,20 +147,12 @@ function Job() {
       applyCode: code,
     };
 
-    await axios
+    await axiosInstance
       .delete("/api/v1/board/apply/cancel", {
         data,
         headers: { Authorization: user.accessToken },
       })
       .then(async res => {
-        console.log(res);
-        if (res.headers.authorization) {
-          await dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         if (res.data.code === "E999") {
           logoutAlert(
             null,

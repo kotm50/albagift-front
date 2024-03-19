@@ -3,9 +3,9 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { logoutAlert } from "../LogoutUtil";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { clearUser, getNewToken } from "../../Reducer/userSlice";
+import { clearUser } from "../../Reducer/userSlice";
 import dayjs from "dayjs";
+import axiosInstance from "../../Api/axiosInstance";
 
 function EventDBList() {
   const thisLocation = useLocation();
@@ -20,21 +20,13 @@ function EventDBList() {
   }, [thisLocation]);
 
   const getDBList = async () => {
-    await axios
+    await axiosInstance
       .post("/api/v1/user/applicants/get/list", null, {
         headers: {
           Authorization: user.accessToken,
         },
       })
       .then(res => {
-        console.log(res);
-        if (res.headers.authorization) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         if (res.data.code === "C000") {
           setDbList(res.data.applicantsList);
         } else {

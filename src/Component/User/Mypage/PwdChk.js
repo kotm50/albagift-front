@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getNewToken } from "../../../Reducer/userSlice";
+import axiosInstance from "../../../Api/axiosInstance";
 
 function PwdChk() {
-  const dispatch = useDispatch();
   const user = useSelector(state => state.user);
   const [id, setId] = useState("");
   const [pwd, setPwd] = useState("");
@@ -23,18 +21,11 @@ function PwdChk() {
     const data = {
       userPwd: pwd,
     };
-    await axios
+    await axiosInstance
       .post("/api/v1/user/myinfo/pwdchk", data, {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        if (res.headers.authorization) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         if (res.data.code === "C000") {
           let mypageURL = `${domain}/mypage/edit`;
           window.location.href = mypageURL;

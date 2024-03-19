@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-import axios from "axios";
-
 import queryString from "query-string";
 import Loading from "../Layout/Loading";
+import axiosInstance from "../../Api/axiosInstance";
 
 function Certification() {
   const location = useLocation();
@@ -38,7 +37,7 @@ function Certification() {
   };
 
   const getData = async () => {
-    await axios
+    await axiosInstance
       .post("/api/v1/common/nice/sec/req")
       .then(res => {
         autoSubmit(

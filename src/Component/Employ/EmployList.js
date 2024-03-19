@@ -1,10 +1,9 @@
-import axios from "axios";
 import queryString from "query-string";
 import React, { useEffect, useState } from "react";
 import { logoutAlert } from "../LogoutUtil";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { getNewToken, clearUser } from "../../Reducer/userSlice";
+import { clearUser } from "../../Reducer/userSlice";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import AlertModal from "../Layout/AlertModal";
@@ -19,6 +18,7 @@ import coinleft from "../../Asset/employ/coinleft.png";
 import coinright from "../../Asset/employ/coinright.png";
 import giftbox from "../../Asset/employ/giftbox.png";
 import { Helmet } from "react-helmet";
+import axiosInstance from "../../Api/axiosInstance";
 
 function EmployList() {
   const navi = useNavigate();
@@ -50,19 +50,11 @@ function EmployList() {
     if (k !== "") {
       data.searchKeyword = k;
     }
-    await axios
+    await axiosInstance
       .post("/api/v1/board/get/job/postlist", data, {
         headers: { Authorization: user.accessToken },
       })
       .then(async res => {
-        if (res.headers.authorization) {
-          await dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
-
         if (res.data.code === "E999") {
           logoutAlert(
             null,

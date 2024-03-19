@@ -1,12 +1,12 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { logoutAlert } from "../LogoutUtil";
-import { clearUser, getNewToken } from "../../Reducer/userSlice";
+import { clearUser } from "../../Reducer/userSlice";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import AlertModal from "../Layout/AlertModal";
+import axiosInstance from "../../Api/axiosInstance";
 
 function EmployApply() {
   const navi = useNavigate();
@@ -25,20 +25,11 @@ function EmployApply() {
       page: 1,
       size: 99,
     };
-    axios
+    await axiosInstance
       .post("/api/v1/board/get/job/applylist", data, {
         headers: { Authorization: user.accessToken },
       })
       .then(async res => {
-        console.log(res);
-        if (res.headers.authorization) {
-          await dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
-
         if (res.data.code === "E999") {
           logoutAlert(
             null,

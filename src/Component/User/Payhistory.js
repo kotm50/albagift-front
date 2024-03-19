@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
 import Loading from "../Layout/Loading";
 import PayList from "./PayList";
 import queryString from "query-string";
@@ -11,8 +10,9 @@ import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 import PayModal from "./PayModal";
 import { logoutAlert } from "../LogoutUtil";
-import { clearUser, getNewToken } from "../../Reducer/userSlice";
+import { clearUser } from "../../Reducer/userSlice";
 import Sorry from "../doc/Sorry";
+import axiosInstance from "../../Api/axiosInstance";
 
 function Payhistory() {
   const dispatch = useDispatch();
@@ -51,20 +51,13 @@ function Payhistory() {
     if (s !== "") {
       data.status = s;
     }
-    await axios
+    await axiosInstance
       .post("/api/v1/board/get/pnt/posts/list", data, {
         headers: {
           Authorization: user.accessToken,
         },
       })
       .then(res => {
-        if (res.headers.authorization) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         setLoaded(true);
         if (res.data.code === "C000") {
           const totalP = res.data.totalPages;
@@ -179,18 +172,11 @@ function Payhistory() {
       intvTime: hour,
       intvMin: minute,
     };
-    await axios
+    await axiosInstance
       .patch("/api/v1/board/upt/pnt/posts", data, {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        if (res.headers.authorization) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         if (res.data.code === "E999") {
           doLogout(res.data.message);
           return false;
@@ -219,20 +205,13 @@ function Payhistory() {
 
   const deleteIt = async doc => {
     const data = { boardId: "B02", postId: doc.postId };
-    await axios
+    await axiosInstance
       .patch("/api/v1/board/del/posts", data, {
         headers: {
           Authorization: user.accessToken,
         },
       })
       .then(res => {
-        if (res.headers.authorization) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         confirmAlert({
           customUI: ({ onClose }) => {
             return (

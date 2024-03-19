@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { buyGift, getNewToken } from "../../Reducer/userSlice";
+import { buyGift } from "../../Reducer/userSlice";
 
 import { clearUser } from "../../Reducer/userSlice";
-import axios from "axios";
 
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
@@ -18,6 +17,7 @@ import { RiKakaoTalkFill } from "react-icons/ri";
 import RecomMall from "./RecomMall";
 import AlertModal from "../Layout/AlertModal";
 import { logoutAlert } from "../LogoutUtil";
+import axiosInstance from "../../Api/axiosInstance";
 
 // kakao 기능 동작을 위해 넣어준다.
 const { Kakao } = window;
@@ -54,16 +54,9 @@ function Detail() {
 
   const getGoods = async () => {
     setImgLoaded(false);
-    await axios
+    await axiosInstance
       .get(`/api/v1/shop/goods/detail/${goodscode}`)
       .then(async res => {
-        if (res.headers.authorization) {
-          await dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         setGoods(res.data.goods);
         contentForm(res.data.goods.content);
         if (isMobileDevice()) {
@@ -174,18 +167,11 @@ function Detail() {
     if (!isLocalhost) {
       url = "/api/v1/shop/local/goods/send";
     }
-    await axios
+    await axiosInstance
       .post(url, data, {
         headers: { Authorization: user.accessToken },
       })
       .then(async res => {
-        if (res.headers.authorization) {
-          await dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         if (res.data.code === "E999") {
           logoutAlert(null, null, dispatch, clearUser, navi, user);
           setGoods("");

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+
 import { Link, useLocation } from "react-router-dom";
+import axiosInstance from "../../Api/axiosInstance";
 
 function RecomMall(props) {
   const location = useLocation();
@@ -20,7 +21,7 @@ function RecomMall(props) {
       category1Seq: Number(c),
     };
     setGoods([]);
-    await axios
+    await axiosInstance
       .post(listUrl, data)
       .then(res => {
         setLoadMsg(res.data.message);

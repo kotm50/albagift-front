@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 
-import axios from "axios";
-
 import { useSelector } from "react-redux";
 
 import PopupDom from "../Kakao/PopupDom";
@@ -13,6 +11,7 @@ import Modal from "../doc/Modal";
 import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 import AlertModal from "../Layout/AlertModal";
+import axiosInstance from "../../Api/axiosInstance";
 
 function JoinBack() {
   const user = useSelector(state => state.user);
@@ -54,7 +53,6 @@ function JoinBack() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
-    console.log(location.state);
     if (location.state) {
       setSocialId(location.state.id);
       setEmail(location.state.email);
@@ -98,12 +96,11 @@ function JoinBack() {
     if (marketingAgree) {
       data.agreeYn = "Y";
     }
-    console.log(data);
     let url = "/api/v1/user/join";
     if (isSocialLogin) {
       url = `${url}/${socialType}`;
     }
-    await axios
+    await axiosInstance
       .post(url, data)
       .then(res => {
         if (res.data.code === "C000") {
@@ -179,7 +176,6 @@ function JoinBack() {
     }
     if (e.target.value.length > 0) {
       const inputValue = e.target.value;
-      console.log(e.target.value);
       const lastStr = inputValue.charAt(inputValue.length - 1);
       if (e.target.value.length === 1) {
         setRealPwd(lastStr);
@@ -209,7 +205,6 @@ function JoinBack() {
     }
     if (e.target.value.length > 0) {
       const inputValue = e.target.value;
-      console.log(e.target.value);
       const lastStr = inputValue.charAt(inputValue.length - 1);
       if (e.target.value.length === 1) {
         setRealPwdChk(lastStr);
@@ -229,7 +224,6 @@ function JoinBack() {
 
   //비밀번호 양식 확인
   const testPwd = () => {
-    console.log(realPwd);
     setPwdMsg("");
     setCorrectPwd(false);
     const regex = /^(?=.*[a-zA-Z])(?=.*[0-9!@#$%^&*]).{2,}$/;
@@ -272,7 +266,7 @@ function JoinBack() {
       const regex = /^[a-z]+([0-9]+[a-z]*)*$/;
       let correct = regex.test(id);
       if (correct) {
-        await axios
+        await axiosInstance
           .get("/api/v1/user/dupchkid", { params: { userId: id } })
           .then(res => {
             if (res.data.code === "C000") {
@@ -454,9 +448,6 @@ function JoinBack() {
           className="block p-2 bg-gray-500 text-white"
           onClick={e => {
             e.preventDefault();
-            console.log(realPwd);
-            console.log(realPwdChk);
-            console.log(realPwd === realPwdChk);
           }}
         >
           비번테스트

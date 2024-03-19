@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import axios from "axios";
-
 import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 import AlertModal from "../Layout/AlertModal";
+import axiosInstance from "../../Api/axiosInstance";
 
 function FindPwd() {
   const navi = useNavigate();
@@ -91,13 +90,12 @@ function FindPwd() {
       errAlert("비밀번호가 일치하지 않습니다");
       return false;
     }
-    axios
+    await axiosInstance
       .patch("/api/v1/user/upt/new/pwd", {
         userId: location.state.id,
         userPwd: pwd,
       })
       .then(res => {
-        console.log(res);
         if (res.data.code === "C000") {
           confirmAlert({
             customUI: ({ onClose }) => {
@@ -125,7 +123,7 @@ function FindPwd() {
 
   //아이디 중복검사
   const chkId = async () => {
-    await axios
+    await axiosInstance
       .post("/api/v1/user/nice/auth/pwd", { userId: id })
       .then(res => {
         if (res.data.code !== "C000") {

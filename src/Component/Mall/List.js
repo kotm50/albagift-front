@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Link, useLocation, useParams } from "react-router-dom";
 
 import { confirmAlert } from "react-confirm-alert"; // Import
@@ -13,11 +12,9 @@ import ImgLoad from "./ImgLoad";
 import { Helmet } from "react-helmet";
 import AlertModal from "../Layout/AlertModal";
 import Sorry from "../doc/Sorry";
-import { useDispatch } from "react-redux";
-import { getNewToken } from "../../Reducer/userSlice";
+import axiosInstance from "../../Api/axiosInstance";
 
 function List() {
-  const dispatch = useDispatch();
   const [goods, setGoods] = useState([]);
   const location = useLocation();
   const pathName = location.pathname;
@@ -81,18 +78,11 @@ function List() {
       page: p,
       size: 20,
     };
-    await axios
+    await axiosInstance
       .get(listUrl, {
         params: data,
       })
       .then(async res => {
-        if (res.headers.authorization) {
-          await dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
         const totalP = res.data.totalPages;
         setTotalPage(res.data.totalPages);
         const pagenate = generatePaginationArray(p, totalP);

@@ -1,35 +1,62 @@
 import axios from "axios";
 import { store } from "../Reducer/store"; // 스토어 가져오기
+import { refreshAccessToken } from "../Reducer/userSlice"; // 비동기 액션 생성 함수
 
 const axiosInstance = axios.create();
 
-axiosInstance.interceptors.request.use(config => {
-  // 스토어에서 accessToken 가져오기
-  const { user } = store.getState();
-  if (user && user.accessToken) {
-    config.headers.Authorization = `${user.accessToken}`;
-  }
-  console.log("요청", config.headers.Authorization);
-  return config;
-});
+let isRefreshing = false;
+let refreshTokenPromise = null;
 
+/*
+axiosInstance.interceptors.request.use(
+  config => {
+    // API URL 출력
+    console.log(`Request URL: ${config.url}`);
+
+    // Authorization 헤더의 맨 끝 5글자 출력
+    const authToken =
+      config.headers.Authorization || config.headers.authorization;
+    if (authToken) {
+      const tokenEnd = authToken.slice(-5);
+      console.log(`Authorization: ...${tokenEnd}`);
+    }
+
+    return config;
+  },
+  error => {
+    // 요청 에러 처리
+    return Promise.reject(error);
+  }
+);
+*/
 axiosInstance.interceptors.response.use(
-  response => {
-    const newAccessToken = response.headers.authorization;
-    console.log("응답", newAccessToken);
-    if (newAccessToken) {
-      const { user } = store.getState();
-      if (newAccessToken !== `${user.accessToken}`) {
-        // 스토어에 토큰 업데이트 액션 디스패치
-        store.dispatch({
-          type: "UPDATE_ACCESS_TOKEN",
-          payload: newAccessToken,
-        });
+  async response => {
+    console.log(response.data.code);
+    if (response.data.code === "E401") {
+      if (!isRefreshing) {
+        isRefreshing = true;
+        refreshTokenPromise = store
+          .dispatch(refreshAccessToken())
+          .unwrap()
+          .finally(() => {
+            isRefreshing = false;
+            refreshTokenPromise = null;
+          });
+      }
+
+      try {
+        const newAccessToken = await refreshTokenPromise;
+        axiosInstance.defaults.headers.common["Authorization"] = newAccessToken;
+        response.config.headers["Authorization"] = newAccessToken;
+        return axiosInstance(response.config);
+      } catch (error) {
+        return Promise.reject(error);
       }
     }
     return response;
   },
   error => {
+    // 오류 처리
     return Promise.reject(error);
   }
 );

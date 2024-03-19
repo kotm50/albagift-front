@@ -2,13 +2,12 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import axios from "axios";
-
 import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 
-import { clearUser, getNewToken } from "../../Reducer/userSlice";
+import { clearUser } from "../../Reducer/userSlice";
 import AlertModal from "../Layout/AlertModal";
+import axiosInstance from "../../Api/axiosInstance";
 
 function AdminPwd(props) {
   const navi = useNavigate();
@@ -107,7 +106,7 @@ function AdminPwd(props) {
       errAlert("비밀번호가 일치하지 않습니다");
       return false;
     }
-    await axios
+    await axiosInstance
       .patch(
         "/api/v1/user/admin/pwd/upt",
         { afterPwd: pwd, beforePwd: beforePwd },
@@ -118,14 +117,6 @@ function AdminPwd(props) {
         }
       )
       .then(res => {
-        if (res.headers.authorization) {
-          dispatch(
-            getNewToken({
-              accessToken: res.headers.authorization,
-            })
-          );
-        }
-
         if (res.data.code === "C000") {
           logoutAlert();
         } else if (res.data.code === "E001") {
@@ -159,7 +150,7 @@ function AdminPwd(props) {
   };
 
   const logout = async () => {
-    await axios
+    await axiosInstance
       .post("/api/v1/user/logout", null, {
         headers: { Authorization: user.accessToken },
       })

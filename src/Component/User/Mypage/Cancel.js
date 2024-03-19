@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
@@ -11,6 +10,7 @@ import { FaTicketAlt } from "react-icons/fa";
 import AlertModal from "../../Layout/AlertModal";
 
 import dompurify from "dompurify";
+import axiosInstance from "../../../Api/axiosInstance";
 
 function Cancel() {
   const sanitizer = dompurify.sanitize;
@@ -70,7 +70,7 @@ function Cancel() {
     const data = {
       userPwd: pwd,
     };
-    await axios
+    await axiosInstance
       .post("/api/v1/user/myinfo/pwdchk", data, {
         headers: { Authorization: user.accessToken },
       })
@@ -88,7 +88,7 @@ function Cancel() {
   };
 
   const deleteId = async () => {
-    await axios
+    await axiosInstance
       .patch("/api/v1/user/myinfo/delete", null, {
         headers: { Authorization: user.accessToken },
       })
@@ -118,7 +118,7 @@ function Cancel() {
       });
   };
   const logout = async () => {
-    await axios
+    await axiosInstance
       .post("/api/v1/user/logout", null, {
         headers: { Authorization: user.accessToken },
       })

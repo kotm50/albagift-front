@@ -6,7 +6,10 @@ import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 import AlertModal from "../Layout/AlertModal";
 import axiosInstance from "../../Api/axiosInstance";
 
+import { useSelector } from "react-redux";
+
 function FindPwd() {
+  const user = useSelector(state => state.user);
   const navi = useNavigate();
   const location = useLocation();
   const [id, setId] = useState("");
@@ -17,6 +20,9 @@ function FindPwd() {
   const [correctPwd, setCorrectPwd] = useState(true);
 
   useEffect(() => {
+    if (user.accessToken !== "") {
+      navi("/");
+    }
     if (location.state) {
       if (location.state.id) {
         setId(location.state.id);

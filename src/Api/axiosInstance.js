@@ -31,7 +31,6 @@ axiosInstance.interceptors.request.use(
 */
 axiosInstance.interceptors.response.use(
   async response => {
-    console.log(response.data.code);
     if (response.data.code === "E401") {
       if (!isRefreshing) {
         isRefreshing = true;

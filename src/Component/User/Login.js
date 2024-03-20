@@ -13,7 +13,8 @@ import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
 import { RiKakaoTalkFill } from "react-icons/ri";
 import BeforeJoin from "./BeforeJoin";
 import AlertModal from "../Layout/AlertModal";
-import axiosInstance from "../../Api/axiosInstance";
+
+import axios from "axios";
 
 function Login() {
   const location = useLocation();
@@ -108,7 +109,7 @@ function Login() {
       userId: id,
       userPwd: pwd,
     };
-    await axiosInstance
+    await axios
       .post("/api/v1/user/login", data)
       .then(res => {
         if (res.data.code === "E005") {
@@ -172,7 +173,7 @@ function Login() {
     let data = {
       userId: id,
     };
-    await axiosInstance
+    await axios
       .post("/api/v1/user/recusr", data)
       .then(res => {
         if (res.data.code === "C000") {
@@ -229,7 +230,7 @@ function Login() {
   };
 
   const chkAdmin = async (token, user, refresh) => {
-    await axiosInstance
+    await axios
       .post("/api/v1/user/rolechk", null, {
         headers: { Authorization: token },
       })
@@ -281,7 +282,7 @@ function Login() {
   };
 
   const chkProto = async (token, user) => {
-    await axiosInstance
+    await axios
       .post("/api/v1/user/search/proto", null, {
         headers: { Authorization: token },
       })
@@ -341,7 +342,7 @@ function Login() {
 
   const kakaoLoginCheck = async code => {
     const loginUrl = `/api/v1/user/login/kakao?code=${code}`;
-    await axiosInstance
+    await axios
       .get(loginUrl)
       .then(res => {
         if (res.data.code === "C001") {

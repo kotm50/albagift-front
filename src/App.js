@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -70,6 +70,7 @@ function App() {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
 
+  const navi = useNavigate();
   const [isMobile, setIsMobile] = useState(false);
   const thisLocation = useLocation();
   useEffect(() => {
@@ -80,6 +81,7 @@ function App() {
         user.refreshToken === null
       ) {
         dispatch(clearUser());
+        navi("/");
       }
     }
     // location이 바뀔 때마다 스크롤을 맨 위로 이동

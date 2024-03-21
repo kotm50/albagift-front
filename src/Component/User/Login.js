@@ -131,8 +131,6 @@ function Login() {
           });
           return false;
         }
-        const token = res.headers.authorization;
-        const refresh = res.data.user.refreshToken;
         if (res.data.code === "E002") {
           confirmAlert({
             customUI: ({ onClose }) => {
@@ -152,11 +150,14 @@ function Login() {
           });
         }
         if (res.data.code === "C000") {
+          const token = res.headers.authorization;
+          const refresh = res.data.user.refreshToken;
           chkAdmin(token, res.data.user, refresh);
         } else {
           setErrMessage(res.data.message);
           setPwd("");
           if (res.data.code === "E003") {
+            setErrMessage(res.data.message);
             inputPwdRef.current.focus();
           }
           setIsErr(true);

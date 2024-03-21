@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-/*
-import { useDispatch } from "react-redux";
-import { clearUser, loginUser } from "./Reducer/userSlice";
-*/
+
+import { useSelector, useDispatch } from "react-redux";
+import { clearUser } from "./Reducer/userSlice";
 
 import dayjs from "dayjs";
 
@@ -68,41 +67,21 @@ import EmployApply from "./Component/Admin/EmployApply";
 //import MyMain from "./Component/User/Mypage/MyMain";
 
 function App() {
-  //const dispatch = useDispatch();
-
-  /*
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      // beforeunload 이벤트 발생 시 실행할 함수
-      dispatch(clearUser()); // Redux 상태 초기화
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, [dispatch]);
-  */
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
 
   const [isMobile, setIsMobile] = useState(false);
   const thisLocation = useLocation();
   useEffect(() => {
-    /*
-    const handleStorageChange = event => {
-      if (event.key === "userCleared") {
-        dispatch(clearUser()); // 다른 탭에서 상태 초기화
+    if (user.accessToken) {
+      if (
+        user.refreshToken === "" ||
+        user.refreshToken === undefined ||
+        user.refreshToken === null
+      ) {
+        dispatch(clearUser());
       }
-      if (event.key === "userData") {
-        const retrievedUserData = JSON.parse(
-          localStorage.getItem("userData") || "{}"
-        );
-        dispatch(loginUser(retrievedUserData)); // 다른 탭에서 상태 초기화
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    */
+    }
     // location이 바뀔 때마다 스크롤을 맨 위로 이동
     window.scrollTo(0, 0);
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);

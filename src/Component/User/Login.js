@@ -246,7 +246,7 @@ function Login() {
             refreshToken: refresh,
           };
           dispatch(loginUser(userData));
-          localStorage.setItem("userData", JSON.stringify(userData)); // 로컬 스토리지에 마킹
+
           confirmAlert({
             customUI: ({ onClose }) => {
               return (
@@ -272,7 +272,7 @@ function Login() {
             refreshToken: refresh,
           };
           dispatch(loginUser(userData));
-          localStorage.setItem("userData", JSON.stringify(userData)); // 로컬 스토리지에 마킹
+
           chkProto(token, user);
         }
       })
@@ -362,7 +362,7 @@ function Login() {
             admin: false,
           };
           dispatch(loginUser(userData));
-          localStorage.setItem("userData", JSON.stringify(userData)); // 로컬 스토리지에 마킹
+
           navi("/");
         }
       })

@@ -1,5 +1,4 @@
 import axios from "axios";
-import { store } from "../Reducer/store"; // 스토어 가져오기
 import { refreshAccessToken } from "../Reducer/userSlice"; // 비동기 액션 생성 함수
 
 const axiosInstance = axios.create();
@@ -34,8 +33,7 @@ axiosInstance.interceptors.response.use(
     if (response.data.code === "E401") {
       if (!isRefreshing) {
         isRefreshing = true;
-        refreshTokenPromise = store
-          .dispatch(refreshAccessToken())
+        refreshTokenPromise = refreshAccessToken() // store.dispatch 대신 직접 호출
           .unwrap()
           .finally(() => {
             isRefreshing = false;

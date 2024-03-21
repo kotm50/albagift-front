@@ -38,7 +38,7 @@ function UserInformation() {
       loginCompare(user.lastLogin);
     }
     //eslint-disable-next-line
-  }, [location, user.accessToken]);
+  }, [location, user]);
 
   const loginCompare = lastLogin => {
     const loginTime = new Date(lastLogin);

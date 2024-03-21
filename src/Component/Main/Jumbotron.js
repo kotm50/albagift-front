@@ -28,7 +28,7 @@ function Jumbotron() {
             </div>
 
             <div className="flex flex-row justify-center lg:justify-start gap-3 my-2">
-              {user.accessToken === "" ? (
+              {user.accessToken ? (
                 <Link
                   to="/promo"
                   className="block bg-teal-500 hover:bg-teal-700 text-white p-2 rounded-lg text-sm lg:text-base"

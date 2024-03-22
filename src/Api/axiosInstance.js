@@ -40,7 +40,6 @@ axiosInstance.interceptors.response.use(
             refreshTokenPromise = null;
           });
       }
-
       try {
         const newAccessToken = await refreshTokenPromise;
         axiosInstance.defaults.headers.common["Authorization"] = newAccessToken;

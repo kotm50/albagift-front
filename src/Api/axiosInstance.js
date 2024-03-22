@@ -20,33 +20,11 @@ const processQueue = (error, token = null) => {
   }
 };
 
-axiosInstance.interceptors.request.use(
-  config => {
-    // API URL 출력
-    console.log(`Request URL: ${config.url}`);
-
-    // Authorization 헤더의 맨 끝 5글자 출력
-    const authToken =
-      config.headers.Authorization || config.headers.authorization;
-    if (authToken) {
-      const tokenEnd = authToken.slice(-5);
-      console.log(`Authorization: ...${tokenEnd}`);
-    }
-
-    return config;
-  },
-  error => {
-    // 요청 에러 처리
-    return Promise.reject(error);
-  }
-);
-
 //eslint-disable-next-line
 let refreshTokenPromise = null;
 
 axiosInstance.interceptors.response.use(
   async response => {
-    console.log(response.data);
     if (response.data.code === "E401") {
       const originalRequest = response.config;
       if (!isRefreshing && !refreshTokenPromise) {
@@ -56,7 +34,6 @@ axiosInstance.interceptors.response.use(
           .dispatch(refreshAccessToken())
           .unwrap()
           .then(newAccessToken => {
-            console.log(newAccessToken);
             if (newAccessToken) {
               axiosInstance.defaults.headers.common["Authorization"] =
                 newAccessToken;

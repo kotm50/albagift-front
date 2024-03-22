@@ -1,6 +1,9 @@
+import axios from "axios";
+import React from "react";
+
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
-import axiosInstance from "../Api/axiosInstance";
+import { useNavigate } from "react-router-dom";
 
 export const logoutAlert = (
   onClose,
@@ -39,7 +42,7 @@ export const logoutAlert = (
 };
 
 export const forceLogout = async (dispatch, clearUser, navi, user) => {
-  await axiosInstance
+  await axios
     .post("/api/v1/user/logout", null, {
       headers: { Authorization: user.accessToken },
     })
@@ -54,7 +57,7 @@ export const forceLogout = async (dispatch, clearUser, navi, user) => {
 };
 
 export const logout = async (dispatch, clearUser, navi, user) => {
-  await axiosInstance
+  await axios
     .post("/api/v1/user/logout", null, {
       headers: { Authorization: user.accessToken },
     })
@@ -68,7 +71,10 @@ export const logout = async (dispatch, clearUser, navi, user) => {
     });
 };
 
-export const logoutAlert2 = () => {
+const LogoutAlert2 = () => {
+  const navi = useNavigate();
   alert("세션 만료, 다시 로그인 후 이용해 주세요");
-  window.location.href = "/";
+  navi("/");
 };
+
+export default LogoutAlert2;

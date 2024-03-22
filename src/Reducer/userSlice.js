@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { logoutAlert2 } from "../Component/LogoutUtil";
 
 // 비동기 액션 생성
 export const refreshAccessToken = createAsyncThunk(
@@ -8,9 +7,6 @@ export const refreshAccessToken = createAsyncThunk(
   async (_, { getState, rejectWithValue }) => {
     const { user } = getState();
     try {
-      if (!user.refreshToken) {
-        return rejectWithValue("E999");
-      }
       const response = await axios.post("/api/v1/common/reissu/token", {
         resolveToken: user.accessToken,
         refreshToken: user.refreshToken,
@@ -59,12 +55,12 @@ const userSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(refreshAccessToken.fulfilled, (state, action) => {
-        state.accessToken = action.payload;
+        state.accessToken = action.payload; // accessToken 업데이트
       })
       .addCase(refreshAccessToken.rejected, (state, action) => {
         if (action.payload === "E999") {
+          // E999 오류 발생 시 clearUser 실행
           userSlice.caseReducers.clearUser(state);
-          logoutAlert2(); // logoutAlert 함수 호출
         }
       });
   },

@@ -554,7 +554,7 @@ function PointList() {
               </button>
             </div>
           </div>
-          {list.length > 0 ? (
+          {list && list.length > 0 ? (
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-2 mt-2 bg-white p-2 container mx-auto">
               {list.map((doc, idx) => (
                 <div key={idx}>
@@ -595,7 +595,7 @@ function PointList() {
                         연락처
                       </div>
                       <div className="font-normal col-span-2 flex flex-col justify-center">
-                        {getPhone(doc.phone)}
+                        {doc.phone ? getPhone(doc.phone) : " "}
                       </div>
                     </div>
                     <div className="grid grid-cols-3 gap-2 mb-2">

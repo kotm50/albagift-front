@@ -17,12 +17,12 @@ export const refreshAccessToken = createAsyncThunk(
         resolveToken: user.accessToken,
         refreshToken: user.refreshToken,
       });
-      console.log("재발급API", response.data);
+      //console.log("재발급API", response.data);
       if (response.data.code === "C000") {
         // 정상적으로 새 토큰을 받았을 때
         return response.headers.authorization; // 새 accessToken 반환
       } else {
-        console.log(response.headers);
+        //console.log(response.headers);
         return response.headers.authorization;
       }
     } catch (error) {

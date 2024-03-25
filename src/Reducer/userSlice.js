@@ -7,12 +7,14 @@ export const refreshAccessToken = createAsyncThunk(
   async (_, { getState, rejectWithValue }) => {
     const { user } = getState();
     try {
+      /*
       if (!user.accessToken) {
         return alert("멈춰!!");
       }
       if (!user.refreshToken) {
         return alert("멈춰!");
       }
+      */
       const response = await axios.post("/api/v1/common/reissu/token", {
         resolveToken: user.accessToken,
         refreshToken: user.refreshToken,

@@ -273,7 +273,6 @@ function Login() {
             refreshToken: refresh,
           };
           dispatch(loginUser(userData));
-
           chkProto(token, user);
         }
       })

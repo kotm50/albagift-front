@@ -4,17 +4,16 @@ import axios from "axios";
 // 비동기 액션 생성
 export const refreshAccessToken = createAsyncThunk(
   "user/refreshAccessToken",
-  async (_, { getState, rejectWithValue }) => {
+  async (_, { getState }) => {
     const { user } = getState();
     try {
-      /*
       if (!user.accessToken) {
-        return alert("멈춰!!");
+        return alert("accErr : 로그인을 다시 진행해 주세요");
       }
       if (!user.refreshToken) {
-        return alert("멈춰!");
+        return alert("refErr : 로그인을 다시 진행해 주세요");
       }
-      */
+
       const response = await axios.post("/api/v1/common/reissu/token", {
         resolveToken: user.accessToken,
         refreshToken: user.refreshToken,
@@ -25,7 +24,7 @@ export const refreshAccessToken = createAsyncThunk(
         return response.headers.authorization; // 새 accessToken 반환
       } else {
         //console.log(response.headers);
-        return response.headers.authorization;
+        return "E999";
       }
     } catch (error) {
       console.log(error);
@@ -67,16 +66,16 @@ const userSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(refreshAccessToken.fulfilled, (state, action) => {
-        state.accessToken = action.payload; // accessToken 업데이트
-      })
-      .addCase(refreshAccessToken.rejected, (state, action) => {
         if (action.payload === "E999") {
           // E999 오류 발생 시 clearUser 실행
           userSlice.caseReducers.clearUser(state);
         } else {
-          // 기타 오류 코드 처리
-          console.log("Error:", action.payload);
+          state.accessToken = action.payload; // accessToken 업데이트
         }
+      })
+      .addCase(refreshAccessToken.rejected, (state, action) => {
+        // 기타 오류 코드 처리
+        console.log("Error:", action.payload);
       });
   },
 });

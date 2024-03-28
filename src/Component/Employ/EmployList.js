@@ -266,7 +266,7 @@ function EmployList() {
           </table>
         </>
       ) : (
-        <Sorry />
+        <Sorry message={"현재 올라온 채용정보가 없습니다."} />
       )}
       <Pagenate
         pagenate={pagenate}

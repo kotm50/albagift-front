@@ -19,6 +19,7 @@ import coinright from "../../Asset/employ/coinright.png";
 import giftbox from "../../Asset/employ/giftbox.png";
 import { Helmet } from "react-helmet";
 import axiosInstance from "../../Api/axiosInstance";
+import Sorry from "../doc/Sorry";
 
 function EmployList() {
   const navi = useNavigate();
@@ -264,7 +265,9 @@ function EmployList() {
             </tbody>
           </table>
         </>
-      ) : null}
+      ) : (
+        <Sorry />
+      )}
       <Pagenate
         pagenate={pagenate}
         page={Number(page)}

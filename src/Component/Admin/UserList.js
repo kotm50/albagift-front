@@ -261,7 +261,7 @@ function UserList() {
     }
 
     const firstPart = str.substring(0, 3); // 1, 2, 3번째 문자열
-    const secondPart = "****"; // 4, 5, 6, 7번째 문자열은 '*'로 대체
+    const secondPart = str.substring(3, 7); // 4, 5, 6, 7번째 문자열은 '*'로 대체
     const thirdPart = str.substring(7, 11); // 8, 9, 10, 11번째 문자열
 
     // 조합하여 원하는 형식의 문자열을 만듭니다.

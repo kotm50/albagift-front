@@ -416,7 +416,6 @@ function PointList() {
     setInputEndDate("");
   };
   const getPhone = str => {
-    console.log(str);
     if (str.length !== 11) {
       // 문자열이 11자리가 아닌 경우에 대한 예외 처리
       return "미입력";

@@ -15,6 +15,8 @@ import axiosInstance from "../../Api/axiosInstance";
 
 //import { dummyUser } from "./dummy";
 
+import { MdMenu, MdOutlineGridOn } from "react-icons/md";
+
 function UserList() {
   const navi = useNavigate();
   const user = useSelector(state => state.user);
@@ -34,6 +36,8 @@ function UserList() {
   const [totalPage, setTotalPage] = useState(1);
   const [pagenate, setPagenate] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
+
+  const [listType, setListType] = useState(0);
 
   useEffect(() => {
     if (point < 0) {
@@ -419,45 +423,178 @@ function UserList() {
                   </div>
                 </div>
               </div>
-              <div className="grid grid-cols-1 lg:grid-cols-5 gap-2 mt-2 bg-white p-2 container mx-auto">
-                {users.map((user, idx) => (
-                  <div
-                    key={idx}
-                    className={`group bg-teal-50 hover:bg-teal-200 text-black rounded-lg border-2  ${
-                      selectedUsersId.some(item => item.userId === user.userId)
-                        ? " border-teal-500 hover:border-teal-500"
-                        : "border-teal-50 hover:border-teal-200"
-                    }`}
-                  >
-                    <input
-                      type="checkbox"
-                      value={user.userId}
-                      className="hidden peer"
-                      id={user.userId}
-                      onChange={e => checkUsers(user, e.target.checked)}
-                    />
-                    <label htmlFor={user.userId} className="block p-2 ">
-                      <div className="grid grid-cols-3 gap-2 mb-2">
-                        <div className="font-medium flex flex-col justify-center text-right font-neo">
-                          프로모션
+
+              <div className="my-2 grid grid-cols-2 gap-x-2 bg-gray-100 rounded p-1 container mx-auto">
+                <button
+                  className={`p-2 ${
+                    listType === 0
+                      ? "bg-green-600 text-white"
+                      : "bg-white hover:bg-green-100 hover:text-green-600"
+                  } border `}
+                  onClick={() => setListType(0)}
+                >
+                  <MdMenu size={32} className="block mx-auto" />
+                </button>
+                <button
+                  className={`p-2 ${
+                    listType === 1
+                      ? "bg-green-600 text-white"
+                      : "bg-white hover:bg-green-100 hover:text-green-600"
+                  } border `}
+                  onClick={() => setListType(1)}
+                >
+                  <MdOutlineGridOn size={32} className="block mx-auto" />
+                </button>
+              </div>
+              {listType === 1 ? (
+                <div className="grid grid-cols-1 lg:grid-cols-5 gap-2 mt-2 bg-white p-2 container mx-auto">
+                  {users.map((user, idx) => (
+                    <div
+                      key={idx}
+                      className={`group bg-teal-50 hover:bg-teal-200 text-black rounded-lg border-2  ${
+                        selectedUsersId.some(
+                          item => item.userId === user.userId
+                        )
+                          ? " border-teal-500 hover:border-teal-500"
+                          : "border-teal-50 hover:border-teal-200"
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        value={user.userId}
+                        className="hidden peer"
+                        id={user.userId}
+                        onChange={e => checkUsers(user, e.target.checked)}
+                      />
+                      <label htmlFor={user.userId} className="block p-2 ">
+                        <div className="grid grid-cols-3 gap-2 mb-2">
+                          <div className="font-medium flex flex-col justify-center text-right font-neo">
+                            프로모션
+                          </div>
+                          <div className="font-normal col-span-2 flex flex-col justify-center">
+                            {user.promoYn === "Y"
+                              ? "프로모션 가입"
+                              : "일반 가입"}
+                          </div>
                         </div>
-                        <div className="font-normal col-span-2 flex flex-col justify-center">
+                        <div className="grid grid-cols-3 gap-2 mb-2">
+                          <div className="font-medium flex flex-col justify-center text-right font-neo">
+                            가입일
+                          </div>
+                          <div className="font-normal col-span-2 flex flex-col justify-center">
+                            {dayjs(user.regDate).format("YYYY-MM-DD")}
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-2 mb-2">
+                          <div className="font-medium flex flex-col justify-center text-right font-neo">
+                            아이디
+                          </div>
+                          <div className="font-normal col-span-2 flex flex-col justify-center">
+                            {user.userId}
+                            {user.useYn === "S" && (
+                              <span className="text-rose-500 text-sm ml-2">
+                                (탈퇴예정)
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-2 mb-2">
+                          <div className="font-medium flex flex-col justify-center text-right font-neo">
+                            이름
+                          </div>
+                          <div className="font-normal col-span-2 flex flex-col justify-center">
+                            {user.userName}
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-2 mb-2">
+                          <div className="font-medium flex flex-col justify-center text-right font-neo">
+                            연락처
+                          </div>
+                          <div className="font-normal col-span-2 flex flex-col justify-center">
+                            {isAgree
+                              ? getAgreePhone(user.phone || "00000000000")
+                              : getPhone(user.phone || "00000000000")}
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-2 mb-2">
+                          <div className="font-medium flex flex-col justify-center text-right font-neo">
+                            성별
+                          </div>
+                          <div className="font-normal col-span-2 flex flex-col justify-center">
+                            {user.gender === "1" ? "남자" : "여자"}
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-2 mb-2">
+                          <div className="font-medium flex flex-col justify-center text-right font-neo">
+                            생년월일
+                          </div>
+                          <div className="font-normal col-span-2 flex flex-col justify-center">
+                            {getBirth(user.birth || "000000", ".", 2)}
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-2 mb-2">
+                          <div className="font-medium flex flex-col justify-center text-right font-neo">
+                            포인트
+                          </div>
+                          <div
+                            className="font-normal col-span-2 flex flex-col justify-center"
+                            title={user.point}
+                          >
+                            {Number(user.point).toLocaleString()} point
+                          </div>
+                        </div>
+                      </label>
+                      <div className="text-center px-2 mb-3">
+                        <button
+                          className="bg-indigo-500 hover:bg-indigo-700 text-white p-2 rounded-lg w-full"
+                          onClick={e =>
+                            navi(`/admin/userdetail?userId=${user.userId}`)
+                          }
+                        >
+                          포인트 내역 확인
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="container mx-auto grid grid-cols-1 divide-y">
+                  <div className="grid grid-cols-9 px-2 py-4 border gap-x-4 text-center">
+                    <div>프로모션</div>
+                    <div>가입일</div>
+                    <div>아이디</div>
+                    <div>이름</div>
+                    <div>연락처</div>
+                    <div>성별</div>
+                    <div>생년월일</div>
+                    <div>보유포인트</div>
+                    <div>포인트사용내역</div>
+                  </div>
+                  {users.map((user, idx) => (
+                    <div key={idx}>
+                      <input
+                        type="checkbox"
+                        value={user.postId}
+                        className="hidden peer"
+                        id={user.postId}
+                        onChange={e => checkUsers(user, e.target.checked)}
+                        disabled={user.status !== "S"}
+                      />
+                      <label
+                        htmlFor={user.postId}
+                        className={`block p-2 ${
+                          user.status === "S"
+                            ? "bg-teal-50 hover:bg-teal-200 text-black border-2 border-teal-50 hover:border-teal-200 peer-checked:border-teal-500 peer-checked:hover:border-teal-500"
+                            : "bg-gray-50 hover:bg-gray-200 text-black border-2 border-gray-50 hover:border-gray-200 peer-checked:border-gray-500 peer-checked:hover:border-gray-500"
+                        } grid grid-cols-9 px-2 py-4 gap-x-4 text-center`}
+                      >
+                        <div className="font-normal flex flex-col justify-center">
                           {user.promoYn === "Y" ? "프로모션 가입" : "일반 가입"}
                         </div>
-                      </div>
-                      <div className="grid grid-cols-3 gap-2 mb-2">
-                        <div className="font-medium flex flex-col justify-center text-right font-neo">
-                          가입일
-                        </div>
-                        <div className="font-normal col-span-2 flex flex-col justify-center">
+                        <div className="font-normal flex flex-col justify-center">
                           {dayjs(user.regDate).format("YYYY-MM-DD")}
                         </div>
-                      </div>
-                      <div className="grid grid-cols-3 gap-2 mb-2">
-                        <div className="font-medium flex flex-col justify-center text-right font-neo">
-                          아이디
-                        </div>
-                        <div className="font-normal col-span-2 flex flex-col justify-center">
+                        <div className="font-normal flex flex-col justify-center">
                           {user.userId}
                           {user.useYn === "S" && (
                             <span className="text-rose-500 text-sm ml-2">
@@ -465,66 +602,57 @@ function UserList() {
                             </span>
                           )}
                         </div>
-                      </div>
-                      <div className="grid grid-cols-3 gap-2 mb-2">
-                        <div className="font-medium flex flex-col justify-center text-right font-neo">
-                          이름
-                        </div>
-                        <div className="font-normal col-span-2 flex flex-col justify-center">
+                        <div
+                          className="font-normal flex flex-col justify-center"
+                          title={user.userName}
+                        >
                           {user.userName}
                         </div>
-                      </div>
-                      <div className="grid grid-cols-3 gap-2 mb-2">
-                        <div className="font-medium flex flex-col justify-center text-right font-neo">
-                          연락처
-                        </div>
-                        <div className="font-normal col-span-2 flex flex-col justify-center">
+                        <div
+                          className="font-normal flex flex-col justify-center"
+                          title={user.phone}
+                        >
                           {isAgree
                             ? getAgreePhone(user.phone || "00000000000")
                             : getPhone(user.phone || "00000000000")}
                         </div>
-                      </div>
-                      <div className="grid grid-cols-3 gap-2 mb-2">
-                        <div className="font-medium flex flex-col justify-center text-right font-neo">
-                          성별
-                        </div>
-                        <div className="font-normal col-span-2 flex flex-col justify-center">
+
+                        <div
+                          className="font-normal flex flex-col justify-center"
+                          title={user.gender}
+                        >
                           {user.gender === "1" ? "남자" : "여자"}
                         </div>
-                      </div>
-                      <div className="grid grid-cols-3 gap-2 mb-2">
-                        <div className="font-medium flex flex-col justify-center text-right font-neo">
-                          생년월일
-                        </div>
-                        <div className="font-normal col-span-2 flex flex-col justify-center">
+                        <div
+                          className="font-normal flex flex-col justify-center"
+                          title={user.birth}
+                        >
                           {getBirth(user.birth || "000000", ".", 2)}
                         </div>
-                      </div>
-                      <div className="grid grid-cols-3 gap-2 mb-2">
-                        <div className="font-medium flex flex-col justify-center text-right font-neo">
-                          포인트
-                        </div>
                         <div
-                          className="font-normal col-span-2 flex flex-col justify-center"
+                          className="font-normal flex flex-col justify-center"
                           title={user.point}
                         >
                           {Number(user.point).toLocaleString()} point
                         </div>
-                      </div>
-                    </label>
-                    <div className="text-center px-2 mb-3">
-                      <button
-                        className="bg-indigo-500 hover:bg-indigo-700 text-white p-2 rounded-lg w-full"
-                        onClick={e =>
-                          navi(`/admin/userdetail?userId=${user.userId}`)
-                        }
-                      >
-                        포인트 내역 확인
-                      </button>
+                        <div
+                          className="font-normal flex flex-col justify-center"
+                          title="내역보기"
+                        >
+                          <button
+                            className="bg-indigo-500 hover:bg-indigo-700 text-white p-2 rounded-lg w-full"
+                            onClick={e =>
+                              navi(`/admin/userdetail?userId=${user.userId}`)
+                            }
+                          >
+                            포인트 내역 확인
+                          </button>
+                        </div>
+                      </label>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </>
           ) : (
             <Sorry message={"조회된 내역이 없습니다"} />

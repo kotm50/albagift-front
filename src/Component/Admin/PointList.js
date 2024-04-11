@@ -19,6 +19,8 @@ import Sorry from "../doc/Sorry";
 import { logoutAlert } from "../LogoutUtil";
 import axiosInstance from "../../Api/axiosInstance";
 
+import { MdMenu, MdOutlineGridOn } from "react-icons/md";
+
 function PointList() {
   const companyRef = useRef();
   const navi = useNavigate();
@@ -51,6 +53,8 @@ function PointList() {
   const [company, setCompany] = useState("");
   const [isAgree, setIsAgree] = useState(false);
   const [searchType, setSearchType] = useState("");
+
+  const [listType, setListType] = useState(0);
 
   useEffect(() => {
     setList([]);
@@ -555,89 +559,181 @@ function PointList() {
             </div>
           </div>
           {list && list.length > 0 ? (
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-2 mt-2 bg-white p-2 container mx-auto">
-              {list.map((doc, idx) => (
-                <div key={idx}>
-                  <input
-                    type="checkbox"
-                    value={doc.postId}
-                    className="hidden peer"
-                    id={doc.postId}
-                    onChange={e => checkDocs(doc, e.target.checked)}
-                    disabled={doc.status !== "S"}
-                  />
-                  <label
-                    htmlFor={doc.postId}
-                    className={`block p-2 ${
-                      doc.status === "S"
-                        ? "bg-teal-50 hover:bg-teal-200 text-black rounded-lg border-2 border-teal-50 hover:border-teal-200 peer-checked:border-teal-500 peer-checked:hover:border-teal-500"
-                        : "bg-gray-50 hover:bg-gray-200 text-black rounded-lg border-2 border-gray-50 hover:border-gray-200 peer-checked:border-gray-500 peer-checked:hover:border-gray-500"
-                    }`}
-                  >
-                    <div className="grid grid-cols-3 gap-2 mb-2">
-                      <div className="font-medium flex flex-col justify-center text-right">
-                        고객사
-                      </div>
-                      <div className="font-normal col-span-2 flex flex-col justify-center">
-                        {doc.companyCode ? doc.companyCode : "미입력"}
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-3 gap-2 mb-2">
-                      <div className="font-medium flex flex-col justify-center text-right">
-                        이름
-                      </div>
-                      <div className="font-normal col-span-2 flex flex-col justify-center">
-                        {doc.userName}
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-3 gap-2 mb-2">
-                      <div className="font-medium flex flex-col justify-center text-right">
-                        연락처
-                      </div>
-                      <div className="font-normal col-span-2 flex flex-col justify-center">
-                        {doc.phone ? getPhone(doc.phone) : " "}
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-3 gap-2 mb-2">
-                      <div className="font-medium flex flex-col justify-center text-right">
-                        면접일시
-                      </div>
-                      <div
-                        className="font-normal col-span-2 flex flex-col justify-center"
-                        title={doc.intvDate}
+            <>
+              <div className="my-2 grid grid-cols-2 gap-x-2 bg-gray-100 rounded p-1 container mx-auto">
+                <button
+                  className={`p-2 ${
+                    listType === 0
+                      ? "bg-green-600 text-white"
+                      : "bg-white hover:bg-green-100 hover:text-green-600"
+                  } border `}
+                  onClick={() => setListType(0)}
+                >
+                  <MdMenu size={32} className="block mx-auto" />
+                </button>
+                <button
+                  className={`p-2 ${
+                    listType === 1
+                      ? "bg-green-600 text-white"
+                      : "bg-white hover:bg-green-100 hover:text-green-600"
+                  } border `}
+                  onClick={() => setListType(1)}
+                >
+                  <MdOutlineGridOn size={32} className="block mx-auto" />
+                </button>
+              </div>
+              {listType === 1 ? (
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-2 mt-2 bg-white p-2 container mx-auto">
+                  {list.map((doc, idx) => (
+                    <div key={idx}>
+                      <input
+                        type="checkbox"
+                        value={doc.postId}
+                        className="hidden peer"
+                        id={doc.postId}
+                        onChange={e => checkDocs(doc, e.target.checked)}
+                        disabled={doc.status !== "S"}
+                      />
+                      <label
+                        htmlFor={doc.postId}
+                        className={`block p-2 ${
+                          doc.status === "S"
+                            ? "bg-teal-50 hover:bg-teal-200 text-black rounded-lg border-2 border-teal-50 hover:border-teal-200 peer-checked:border-teal-500 peer-checked:hover:border-teal-500"
+                            : "bg-gray-50 hover:bg-gray-200 text-black rounded-lg border-2 border-gray-50 hover:border-gray-200 peer-checked:border-gray-500 peer-checked:hover:border-gray-500"
+                        }`}
                       >
-                        {doc.intvDate} {doc.intvTime}시 {doc.intvMin}분
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-3 gap-2 mb-2">
-                      <div className="font-medium flex flex-col justify-center text-right">
-                        지급여부
-                      </div>
-                      <div
-                        className="font-normal col-span-2 flex flex-col justify-center"
-                        title="지급여부"
-                      >
-                        {doc.status === "S" ? (
-                          <span className="text-blue-500">지급대기</span>
-                        ) : doc.status === "N" ? (
-                          <div>
-                            <span className="text-red-500">지급불가</span> (
-                            {doc.result})
+                        <div className="grid grid-cols-3 gap-2 mb-2">
+                          <div className="font-medium flex flex-col justify-center text-right">
+                            고객사
                           </div>
-                        ) : doc.status === "Y" ? (
-                          <div>
-                            <span className="text-green-500">지급완료</span> (
-                            {Number(doc.result).toLocaleString()}p)
+                          <div className="font-normal col-span-2 flex flex-col justify-center">
+                            {doc.companyCode ? doc.companyCode : "미입력"}
                           </div>
-                        ) : (
-                          "오류"
-                        )}
-                      </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-2 mb-2">
+                          <div className="font-medium flex flex-col justify-center text-right">
+                            이름
+                          </div>
+                          <div className="font-normal col-span-2 flex flex-col justify-center">
+                            {doc.userName}
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-2 mb-2">
+                          <div className="font-medium flex flex-col justify-center text-right">
+                            연락처
+                          </div>
+                          <div className="font-normal col-span-2 flex flex-col justify-center">
+                            {doc.phone ? getPhone(doc.phone) : " "}
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-2 mb-2">
+                          <div className="font-medium flex flex-col justify-center text-right">
+                            면접일시
+                          </div>
+                          <div
+                            className="font-normal col-span-2 flex flex-col justify-center"
+                            title={doc.intvDate}
+                          >
+                            {doc.intvDate} {doc.intvTime}시 {doc.intvMin}분
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-2 mb-2">
+                          <div className="font-medium flex flex-col justify-center text-right">
+                            지급여부
+                          </div>
+                          <div
+                            className="font-normal col-span-2 flex flex-col justify-center"
+                            title="지급여부"
+                          >
+                            {doc.status === "S" ? (
+                              <span className="text-blue-500">지급대기</span>
+                            ) : doc.status === "N" ? (
+                              <div>
+                                <span className="text-red-500">지급불가</span> (
+                                {doc.result})
+                              </div>
+                            ) : doc.status === "Y" ? (
+                              <div>
+                                <span className="text-green-500">지급완료</span>{" "}
+                                ({Number(doc.result).toLocaleString()}p)
+                              </div>
+                            ) : (
+                              "오류"
+                            )}
+                          </div>
+                        </div>
+                      </label>
                     </div>
-                  </label>
+                  ))}
                 </div>
-              ))}
-            </div>
+              ) : (
+                <div className="container mx-auto grid grid-cols-1 divide-y">
+                  <div className="grid grid-cols-8 px-2 py-4 border gap-x-4 text-center">
+                    <div>고객사</div>
+                    <div>이름</div>
+                    <div className="col-span-2">연락처</div>
+                    <div className="col-span-2">면접일시</div>
+                    <div className="col-span-2">지급여부</div>
+                  </div>
+                  {list.map((doc, idx) => (
+                    <div key={idx}>
+                      <input
+                        type="checkbox"
+                        value={doc.postId}
+                        className="hidden peer"
+                        id={doc.postId}
+                        onChange={e => checkDocs(doc, e.target.checked)}
+                        disabled={doc.status !== "S"}
+                      />
+                      <label
+                        htmlFor={doc.postId}
+                        className={`block p-2 ${
+                          doc.status === "S"
+                            ? "bg-teal-50 hover:bg-teal-200 text-black border-2 border-teal-50 hover:border-teal-200 peer-checked:border-teal-500 peer-checked:hover:border-teal-500"
+                            : "bg-gray-50 hover:bg-gray-200 text-black border-2 border-gray-50 hover:border-gray-200 peer-checked:border-gray-500 peer-checked:hover:border-gray-500"
+                        } grid grid-cols-8 px-2 py-4 gap-x-4 text-center`}
+                      >
+                        <div className="font-normal flex flex-col justify-center">
+                          {doc.companyCode ? doc.companyCode : "미입력"}
+                        </div>
+                        <div className="font-normal flex flex-col justify-center">
+                          {doc.userName}
+                        </div>
+                        <div className="font-normal flex flex-col justify-center col-span-2">
+                          {doc.phone ? getPhone(doc.phone) : " "}
+                        </div>
+                        <div
+                          className="font-normal flex flex-col justify-center col-span-2"
+                          title={doc.intvDate}
+                        >
+                          {doc.intvDate} {doc.intvTime}시 {doc.intvMin}분
+                        </div>
+                        <div
+                          className="font-normal flex flex-col justify-center col-span-2"
+                          title="지급여부"
+                        >
+                          {doc.status === "S" ? (
+                            <span className="text-blue-500">지급대기</span>
+                          ) : doc.status === "N" ? (
+                            <div>
+                              <span className="text-red-500">지급불가</span> (
+                              {doc.result})
+                            </div>
+                          ) : doc.status === "Y" ? (
+                            <div>
+                              <span className="text-green-500">지급완료</span> (
+                              {Number(doc.result).toLocaleString()}p)
+                            </div>
+                          ) : (
+                            "오류"
+                          )}
+                        </div>
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
           ) : (
             <Sorry message={"조회된 내역이 없습니다"} />
           )}

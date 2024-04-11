@@ -574,22 +574,27 @@ function UserList() {
                     <div key={idx}>
                       <input
                         type="checkbox"
-                        value={user.postId}
+                        value={user.userId}
                         className="hidden peer"
-                        id={user.postId}
+                        id={user.userId}
                         onChange={e => checkUsers(user, e.target.checked)}
-                        disabled={user.status !== "S"}
                       />
                       <label
-                        htmlFor={user.postId}
+                        htmlFor={user.userId}
                         className={`block p-2 ${
-                          user.status === "S"
+                          selectedUsersId.some(
+                            item => item.userId === user.userId
+                          )
                             ? "bg-teal-50 hover:bg-teal-200 text-black border-2 border-teal-50 hover:border-teal-200 peer-checked:border-teal-500 peer-checked:hover:border-teal-500"
                             : "bg-gray-50 hover:bg-gray-200 text-black border-2 border-gray-50 hover:border-gray-200 peer-checked:border-gray-500 peer-checked:hover:border-gray-500"
                         } grid grid-cols-9 px-2 py-4 gap-x-4 text-center`}
                       >
                         <div className="font-normal flex flex-col justify-center">
-                          {user.promoYn === "Y" ? "프로모션 가입" : "일반 가입"}
+                          <label htmlFor={user.userId}>
+                            {user.promoYn === "Y"
+                              ? "프로모션 가입"
+                              : "일반 가입"}
+                          </label>
                         </div>
                         <div className="font-normal flex flex-col justify-center">
                           {dayjs(user.regDate).format("YYYY-MM-DD")}

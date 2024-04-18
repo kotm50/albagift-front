@@ -14,48 +14,20 @@ function UserInformation() {
   const [modal, setModal] = useState(false);
 
   useEffect(() => {
-    const lastLogin = new Date(user.lastLogin);
-    const now = new Date(); // 현재 시간을 가져옴 // 조건 1: lastLogin이 현재 시간보다 10시간 이상 이전이면 true
-    const condition1 = now - lastLogin >= 10 * 60 * 60 * 1000;
-
-    // 조건 2: lastLogin이 날짜 기준으로 하루 이상 지났고, 현재 시간이 오전 9시 이후 라면 true
-    const condition2 =
-      now.getDate() > lastLogin.getDate() && now.getHours() >= 9;
-
-    if (condition1 || condition2) {
-      // 조건 1 또는 조건 2를 만족하면 true
-      dispatch(clearUser());
-    }
-
-    //eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
     // const now = new Date();
     if (user.userId !== "") {
       // const diffTime = Math.floor((now - user.lastLogin) / 1000 / 60);
       refreshPoints();
-      loginCompare(user.lastLogin);
+    }
+    if (
+      user.refreshToken === "" ||
+      user.refreshToken === undefined ||
+      user.refreshToken === null
+    ) {
+      dispatch(clearUser());
     }
     //eslint-disable-next-line
   }, [location, user]);
-
-  const loginCompare = lastLogin => {
-    const loginTime = new Date(lastLogin);
-    // 현재 시간을 가져옵니다.
-    const currentTime = new Date();
-
-    // lastLogin에서 현재 시간을 빼서 경과 시간을 계산합니다.
-    const elapsedMilliseconds = currentTime - loginTime;
-
-    // 2시간(밀리초 단위) 이상 경과되었는지 확인합니다.
-    const twoHoursInMilliseconds = 2 * 60 * 60 * 1000; // 2시간을 밀리초로 변환
-    const isLate = elapsedMilliseconds >= twoHoursInMilliseconds;
-
-    if (isLate) {
-      dispatch(clearUser());
-    }
-  };
 
   const refreshPoints = async () => {
     await axiosInstance

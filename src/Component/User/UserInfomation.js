@@ -24,7 +24,9 @@ function UserInformation() {
       user.refreshToken === undefined ||
       user.refreshToken === null
     ) {
-      dispatch(clearUser());
+      if (user.accessToken) {
+        dispatch(clearUser());
+      }
     }
     //eslint-disable-next-line
   }, [location, user]);

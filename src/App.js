@@ -65,6 +65,7 @@ import EmployDetail from "./Component/Employ/EmployDetail";
 import Job from "./Component/User/Mypage/Job";
 import EmployApply from "./Component/Admin/EmployApply";
 //import MyMain from "./Component/User/Mypage/MyMain";
+import Error from "./Component/Info/Error";
 
 function App() {
   const dispatch = useDispatch();
@@ -116,6 +117,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/new" element={<NewMain />} />
+          <Route path="/error" element={<Error />} />
           <Route path="/attendance" element={<Attendance />} />
           <Route path="/renew" element={<Renew />} />
           <Route path="/promo/:id?" element={<Promo />} />

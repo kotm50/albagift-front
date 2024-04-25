@@ -125,7 +125,7 @@ function Admin() {
                 알바선물 메인으로
               </button>
             </div>
-            <div className="grid grid-cols-6 divide-x-2 bg-indigo-50 mb-2 border">
+            <div className="grid grid-cols-7 divide-x-2 bg-indigo-50 mb-2 border">
               <Link
                 to="/admin/"
                 className="hover:bg-indigo-100 p-2 text-center"

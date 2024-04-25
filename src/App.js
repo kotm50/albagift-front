@@ -66,6 +66,7 @@ import Job from "./Component/User/Mypage/Job";
 import EmployApply from "./Component/Admin/EmployApply";
 //import MyMain from "./Component/User/Mypage/MyMain";
 import Error from "./Component/Info/Error";
+import GifticonLog from "./Component/Admin/GifticonLog";
 
 function App() {
   const dispatch = useDispatch();
@@ -156,6 +157,7 @@ function App() {
             <Route path="eventdb" element={<EventDBList />} />
             <Route path="addemploy/:jid?" element={<AddEmploy />} />
             <Route path="apply" element={<EmployApply />} />
+            <Route path="giftlog" element={<GifticonLog />} />
           </Route>
           <Route path="/test" element={<KakaoTest />} />
           <Route path="/popup" element={<PopupTest />} />

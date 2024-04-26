@@ -145,6 +145,12 @@ function Admin() {
                 회원목록
               </Link>
               <Link
+                to="/admin/giftlog"
+                className="hover:bg-indigo-100 p-2 text-center"
+              >
+                기프티콘 기록
+              </Link>
+              <Link
                 to="/admin/loginlog"
                 className="hover:bg-indigo-100 p-2 text-center"
               >

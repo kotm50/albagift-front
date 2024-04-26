@@ -12,6 +12,8 @@ import Sorry from "../doc/Sorry";
 import Loading from "../Layout/Loading";
 import axiosInstance from "../../Api/axiosInstance";
 
+import dayjs from "dayjs";
+
 function GifticonLog() {
   const dispatch = useDispatch();
   const navi = useNavigate();
@@ -25,6 +27,7 @@ function GifticonLog() {
   const [totalPage, setTotalPage] = useState(1);
   const [pagenate, setPagenate] = useState([]);
   const [loaded, setLoaded] = useState(false);
+  const [hover, setHover] = useState(0);
 
   useEffect(() => {
     getGifticonList(page);
@@ -109,18 +112,87 @@ function GifticonLog() {
     ];
   }
 
+  //휴대폰변환
+  const getPhone = str => {
+    if (str.length !== 11) {
+      // 문자열이 11자리가 아닌 경우에 대한 예외 처리
+      return "Invalid input";
+    }
+
+    const firstPart = str.substring(0, 3); // 1, 2, 3번째 문자열
+    const secondPart = str.substring(3, 7); // 4, 5, 6, 7번째 문자열은 '*'로 대체
+    const thirdPart = str.substring(7, 11); // 8, 9, 10, 11번째 문자열
+
+    // 조합하여 원하는 형식의 문자열을 만듭니다.
+    const transformedString = `${firstPart}-${secondPart}-${thirdPart}`;
+    return transformedString;
+  };
+
   return (
     <div className="lg:container lg:mx-auto">
       {loaded ? (
         <>
           {couponList.length > 0 ? (
-            <div className="grid grid-cols-2 lg:grid-cols-5 gap-2">
-              {couponList.map((coupon, idx) => (
-                <div className="border p-2" key={idx}>
-                  {coupon.userId}
-                </div>
-              ))}
-            </div>
+            <table className="w-full border-collapse">
+              <thead>
+                <tr>
+                  <th className="bg-blue-600 text-white p-2 border">
+                    상품사진
+                  </th>
+                  <th className="bg-blue-600 text-white p-2 border">구매자</th>
+                  <th className="bg-blue-600 text-white p-2 border">제품명</th>
+                  <th className="bg-blue-600 text-white p-2 border">구매일</th>
+                  <th className="bg-blue-600 text-white p-2 border">만료일</th>
+                </tr>
+              </thead>
+              <tbody>
+                {couponList.map((coupon, idx) => (
+                  <tr key={idx}>
+                    <td className="w-fit border p-2 align-middle">
+                      <div
+                        className="w-12 h-12 mx-auto relative"
+                        onMouseEnter={() => {
+                          setHover(idx + 1);
+                        }}
+                        onMouseLeave={() => {
+                          setHover(0);
+                        }}
+                      >
+                        <img
+                          src={coupon.goodsImgB}
+                          className="w-full"
+                          alt={coupon.goodsName}
+                        />
+                        {hover === idx + 1 && (
+                          <div className="absolute top-[100%] left-[50%] w-[250px] h-[250px] p-1 border drop-shadow z-20 bg-white">
+                            <img
+                              src={coupon.goodsImgB}
+                              className="w-full border"
+                              alt={coupon.goodsName}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                    <td className="align-middle border p-2">
+                      {coupon.userName}
+                      <span className="font-neo text-gray-500">
+                        ({getPhone(coupon.phone || "00000000000")})
+                      </span>
+                    </td>
+                    <td className="align-middle border p-2">
+                      {coupon.goodsName}
+                    </td>
+                    <td className="align-middle border p-2">
+                      {dayjs(new Date(coupon.regDate)).format("YYYY-MM-DD")}
+                    </td>
+                    <td className="align-middle border p-2">
+                      {dayjs(new Date(coupon.limitDate)).format("YYYY-MM-DD")}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           ) : (
             <>
               <Sorry message={loadList} />

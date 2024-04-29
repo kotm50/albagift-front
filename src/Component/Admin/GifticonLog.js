@@ -210,14 +210,7 @@ function GifticonLog() {
                       </span>
                     </td>
                     <td className="align-middle border p-2">
-                      <a
-                        href={`/search/${coupon.goodsCode}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="hover:text-orange-500"
-                      >
-                        {coupon.goodsName}
-                      </a>
+                      {coupon.goodsName}
                     </td>
                     <td className="align-middle border p-2">
                       {dayjs(new Date(coupon.regDate)).format("YYYY-MM-DD")}

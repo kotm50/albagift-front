@@ -174,7 +174,7 @@ function GifticonLog() {
     <div className="lg:container lg:mx-auto p-2">
       {loaded ? (
         <>
-          <div className="flex flex-row justify-start mb-2 gap-x-1 hidden">
+          <div className="flex flex-row justify-start mb-2 gap-x-1">
             <input
               value={searchKeyword}
               className="border border-gray-300 p-2 w-80 block rounded font-neo"

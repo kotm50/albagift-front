@@ -128,8 +128,30 @@ function GifticonLog() {
     return transformedString;
   };
 
+  const isExpire = limit => {
+    const today = new Date();
+    const limitDay = new Date(limit);
+
+    // limitDay에서 today를 뺀 결과를 밀리초 단위로 계산
+    const diff = limitDay - today;
+
+    // 밀리초를 일수로 변환 (1일 = 24 * 60 * 60 * 1000 밀리초)
+    const days = diff / (1000 * 60 * 60 * 24);
+
+    console.log(days);
+
+    // 조건에 따라 결과 반환
+    if (days < 0) {
+      return "만료됨";
+    } else if (days <= 3) {
+      return "만료예정";
+    } else {
+      return false;
+    }
+  };
+
   return (
-    <div className="lg:container lg:mx-auto">
+    <div className="lg:container lg:mx-auto p-2">
       {loaded ? (
         <>
           {couponList.length > 0 ? (
@@ -175,19 +197,38 @@ function GifticonLog() {
                       </div>
                     </td>
                     <td className="align-middle border p-2">
-                      {coupon.userName}
+                      <a
+                        href={`/admin/userdetail?userId=${coupon.userId}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="hover:text-orange-500"
+                      >
+                        {coupon.userName}
+                      </a>
                       <span className="font-neo text-gray-500">
                         ({getPhone(coupon.phone || "00000000000")})
                       </span>
                     </td>
                     <td className="align-middle border p-2">
-                      {coupon.goodsName}
+                      <a
+                        href={`/detail/${coupon.goodsCode}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="hover:text-orange-500"
+                      >
+                        {coupon.goodsName}
+                      </a>
                     </td>
                     <td className="align-middle border p-2">
                       {dayjs(new Date(coupon.regDate)).format("YYYY-MM-DD")}
                     </td>
                     <td className="align-middle border p-2">
                       {dayjs(new Date(coupon.limitDate)).format("YYYY-MM-DD")}
+                      {isExpire(coupon.limitDate) ? (
+                        <span className="text-rose-500 ml-2">
+                          {isExpire(coupon.limitDate)}
+                        </span>
+                      ) : null}
                     </td>
                   </tr>
                 ))}

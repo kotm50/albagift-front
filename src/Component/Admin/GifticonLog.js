@@ -13,7 +13,7 @@ import Loading from "../Layout/Loading";
 import axiosInstance from "../../Api/axiosInstance";
 
 import dayjs from "dayjs";
-
+import { FaSearch } from "react-icons/fa";
 function GifticonLog() {
   const dispatch = useDispatch();
   const navi = useNavigate();
@@ -22,30 +22,36 @@ function GifticonLog() {
   const pathName = location.pathname;
   const parsed = queryString.parse(location.search);
   const page = parsed.page || 1;
+  const keyword = parsed.keyword || "";
   const [couponList, setGifticonList] = useState([]);
   const [loadList, setLoadList] = useState("쿠폰을 불러오고 있습니다");
   const [totalPage, setTotalPage] = useState(1);
   const [pagenate, setPagenate] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [hover, setHover] = useState(0);
+  const [searchKeyword, setSearchKeyword] = useState("");
 
   useEffect(() => {
-    getGifticonList(page);
+    //setSearchKeyword(keyword);
+    getGifticonList(page, keyword);
     //eslint-disable-next-line
   }, [location]);
 
-  const getGifticonList = async p => {
+  const getGifticonList = async (p, k) => {
     setLoaded(false);
-    const data = {
+    let data = {
       page: p,
       size: 20,
     };
+
+    if (keyword) {
+      data.searchKeyword = k;
+    }
     await axiosInstance
       .post("/api/v1/shop/goods/all/buyList", data, {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        console.log(res);
         if (res.data.code === "E999") {
           logoutAlert(
             null,
@@ -57,6 +63,7 @@ function GifticonLog() {
             res.data.message
           );
         }
+
         if (res.data.couponList.length === 0) {
           setLoadList("조회된 쿠폰이 없습니다");
         }
@@ -138,8 +145,6 @@ function GifticonLog() {
     // 밀리초를 일수로 변환 (1일 = 24 * 60 * 60 * 1000 밀리초)
     const days = diff / (1000 * 60 * 60 * 24);
 
-    console.log(days);
-
     // 조건에 따라 결과 반환
     if (days < 0) {
       return "만료됨";
@@ -150,10 +155,40 @@ function GifticonLog() {
     }
   };
 
+  const handleKeyDown = e => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      searchIt();
+    }
+  };
+
+  const searchIt = () => {
+    const keyword = searchKeyword.trim();
+    let domain = `${pathName}?page=1${
+      keyword !== "" ? `&keyword=${keyword}` : ""
+    }`;
+    navi(domain);
+  };
+
   return (
     <div className="lg:container lg:mx-auto p-2">
       {loaded ? (
         <>
+          <div className="flex flex-row justify-start mb-2 gap-x-1">
+            <input
+              value={searchKeyword}
+              className="border border-gray-300 p-2 w-80 block rounded font-neo"
+              placeholder="이름/연락처로 검색"
+              onChange={e => setSearchKeyword(e.currentTarget.value)}
+              onKeyDown={handleKeyDown}
+            />
+            <button
+              className="py-2 px-3 bg-green-600 hover:bg-green-700 text-white rounded transition-all duration-300"
+              onClick={() => searchIt()}
+            >
+              <FaSearch />
+            </button>
+          </div>
           {couponList.length > 0 ? (
             <table className="w-full border-collapse">
               <thead>
@@ -242,6 +277,7 @@ function GifticonLog() {
             </>
           )}
           <Pagenate
+            keyword={keyword}
             pagenate={pagenate}
             page={Number(page)}
             totalPage={Number(totalPage)}

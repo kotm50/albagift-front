@@ -211,7 +211,7 @@ function GifticonLog() {
                     </td>
                     <td className="align-middle border p-2">
                       <a
-                        href={`/detail/${coupon.goodsCode}`}
+                        href={`/search/${coupon.goodsCode}`}
                         target="_blank"
                         rel="noreferrer"
                         className="hover:text-orange-500"

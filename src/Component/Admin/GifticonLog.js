@@ -252,7 +252,9 @@ function GifticonLog() {
                         {coupon.goodsName}
                       </td>
                       <td className="align-middle border p-2">
-                        {dayjs(new Date(coupon.regDate)).format("YYYY-MM-DD")}
+                        {dayjs(new Date(coupon.regDate)).format(
+                          "YYYY-MM-DD hh:mm:ss"
+                        )}
                       </td>
                       <td className="align-middle border p-2">
                         {dayjs(new Date(coupon.limitDate)).format("YYYY-MM-DD")}

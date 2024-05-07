@@ -262,7 +262,7 @@ function Login() {
               );
             },
           });
-        } else {
+        } else if (res.data.code === "A200") {
           const userData = {
             userId: id,
             userName: user.userName,
@@ -274,6 +274,8 @@ function Login() {
           };
           dispatch(loginUser(userData));
           chkProto(token, user);
+        } else {
+          doNotRestore();
         }
       })
       .catch(e => {

@@ -64,9 +64,11 @@ import EmployList from "./Component/Employ/EmployList";
 import EmployDetail from "./Component/Employ/EmployDetail";
 import Job from "./Component/User/Mypage/Job";
 import EmployApply from "./Component/Admin/EmployApply";
+import CareList from "./Component/Admin/Care/CareList";
 //import MyMain from "./Component/User/Mypage/MyMain";
 import Error from "./Component/Info/Error";
 import GifticonLog from "./Component/Admin/GifticonLog";
+import GifticonLog2 from "./Component/Admin/GifticonLog2";
 
 function App() {
   const dispatch = useDispatch();
@@ -158,6 +160,9 @@ function App() {
             <Route path="addemploy/:jid?" element={<AddEmploy />} />
             <Route path="apply" element={<EmployApply />} />
             <Route path="giftlog" element={<GifticonLog />} />
+            <Route path="giftlog2" element={<GifticonLog2 />} />
+
+            <Route path="carelist" element={<CareList />} />
           </Route>
           <Route path="/test" element={<KakaoTest />} />
           <Route path="/popup" element={<PopupTest />} />

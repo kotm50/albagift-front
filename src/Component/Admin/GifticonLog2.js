@@ -15,7 +15,7 @@ import axiosInstance from "../../Api/axiosInstance";
 import dayjs from "dayjs";
 import { FaSearch } from "react-icons/fa";
 import CouponChk from "./CouponChk";
-function GifticonLog() {
+function GifticonLog2() {
   const dispatch = useDispatch();
   const navi = useNavigate();
   const user = useSelector(state => state.user);
@@ -301,4 +301,4 @@ function GifticonLog() {
   );
 }
 
-export default GifticonLog;
+export default GifticonLog2;

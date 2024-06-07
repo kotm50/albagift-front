@@ -14,7 +14,6 @@ import axiosInstance from "../../Api/axiosInstance";
 
 import dayjs from "dayjs";
 import { FaSearch } from "react-icons/fa";
-import CouponChk from "./CouponChk";
 function GifticonLog2() {
   const dispatch = useDispatch();
   const navi = useNavigate();
@@ -37,6 +36,26 @@ function GifticonLog2() {
     getGifticonList(page, keyword);
     //eslint-disable-next-line
   }, [location]);
+
+  const chkCoupon = async c => {
+    const data = {
+      trId: c,
+    };
+    await axiosInstance
+      .post("/api/v1/shop/goods/coupons", data, {
+        headers: { Authorization: user.accessToken },
+      })
+      .then(async res => {
+        if (res.data.code === "E999") {
+          logoutAlert(res.data.message);
+          return false;
+        }
+        console.log(res);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
 
   const getGifticonList = async (p, k) => {
     setLoaded(false);
@@ -202,73 +221,74 @@ function GifticonLog2() {
                   <th className="bg-blue-600 text-white p-2 border">제품명</th>
                   <th className="bg-blue-600 text-white p-2 border">구매일</th>
                   <th className="bg-blue-600 text-white p-2 border">만료일</th>
-                  <th className="bg-blue-600 text-white p-2 border">확인</th>
+                  <th className="bg-blue-600 text-white p-2 border">ㅇㅇ</th>
                 </tr>
               </thead>
               <tbody>
                 {couponList.map((coupon, idx) => (
-                  <>
-                    <tr key={idx}>
-                      <td className="w-fit border p-2 align-middle">
-                        <div
-                          className="w-12 h-12 mx-auto relative"
-                          onMouseEnter={() => {
-                            setHover(idx + 1);
-                          }}
-                          onMouseLeave={() => {
-                            setHover(0);
-                          }}
-                        >
-                          <img
-                            src={coupon.goodsImgB}
-                            className="w-full"
-                            alt={coupon.goodsName}
-                          />
-                          {hover === idx + 1 && (
-                            <div className="absolute top-[100%] left-[50%] w-[250px] h-[250px] p-1 border drop-shadow z-20 bg-white">
-                              <img
-                                src={coupon.goodsImgB}
-                                className="w-full border"
-                                alt={coupon.goodsName}
-                              />
-                            </div>
-                          )}
-                        </div>
-                      </td>
-                      <td className="align-middle border p-2">
-                        <a
-                          href={`/admin/userdetail?userId=${coupon.userId}`}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="hover:text-orange-500"
-                        >
-                          {coupon.userName}
-                        </a>
-                        <span className="font-neo text-gray-500">
-                          ({getPhone(coupon.phone || "00000000000")})
-                        </span>
-                      </td>
-                      <td className="align-middle border p-2">
-                        {coupon.goodsName}
-                      </td>
-                      <td className="align-middle border p-2">
-                        {dayjs(new Date(coupon.regDate)).format(
-                          "YYYY-MM-DD hh:mm:ss"
+                  <tr key={idx}>
+                    <td className="w-fit border p-2 align-middle">
+                      <div
+                        className="w-12 h-12 mx-auto relative"
+                        onMouseEnter={() => {
+                          setHover(idx + 1);
+                        }}
+                        onMouseLeave={() => {
+                          setHover(0);
+                        }}
+                      >
+                        <img
+                          src={coupon.goodsImgB}
+                          className="w-full"
+                          alt={coupon.goodsName}
+                        />
+                        {hover === idx + 1 && (
+                          <div className="absolute top-[100%] left-[50%] w-[250px] h-[250px] p-1 border drop-shadow z-20 bg-white">
+                            <img
+                              src={coupon.goodsImgB}
+                              className="w-full border"
+                              alt={coupon.goodsName}
+                            />
+                          </div>
                         )}
-                      </td>
-                      <td className="align-middle border p-2">
-                        {dayjs(new Date(coupon.limitDate)).format("YYYY-MM-DD")}
-                        {isExpire(coupon.limitDate) ? (
-                          <span className="text-rose-500 ml-2">
-                            {isExpire(coupon.limitDate)}
-                          </span>
-                        ) : null}
-                      </td>
-                      <td>
-                        <CouponChk user={user} coupon={coupon} />
-                      </td>
-                    </tr>
-                  </>
+                      </div>
+                    </td>
+                    <td className="align-middle border p-2">
+                      <a
+                        href={`/admin/userdetail?userId=${coupon.userId}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="hover:text-orange-500"
+                      >
+                        {coupon.userName}
+                      </a>
+                      <span className="font-neo text-gray-500">
+                        ({getPhone(coupon.phone || "00000000000")})
+                      </span>
+                    </td>
+                    <td className="align-middle border p-2">
+                      {coupon.goodsName}
+                    </td>
+                    <td className="align-middle border p-2">
+                      {dayjs(new Date(coupon.regDate)).format("YYYY-MM-DD")}
+                    </td>
+                    <td className="align-middle border p-2">
+                      {dayjs(new Date(coupon.limitDate)).format("YYYY-MM-DD")}
+                      {isExpire(coupon.limitDate) ? (
+                        <span className="text-rose-500 ml-2">
+                          {isExpire(coupon.limitDate)}
+                        </span>
+                      ) : null}
+                    </td>
+                    <td className="align-middle border p-2">
+                      <button
+                        className="transition duration-300 w-full border border-sky-500 hover:border-sky-700 text-sky-500 hover:text-sky-700 hover:bg-sky-100 text-lg p-2"
+                        onClick={e => chkCoupon(coupon.trId)}
+                      >
+                        사용가능확인
+                      </button>
+                    </td>
+                  </tr>
                 ))}
               </tbody>
             </table>

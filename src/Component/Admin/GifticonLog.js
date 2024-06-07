@@ -138,6 +138,7 @@ function GifticonLog() {
 
   const isExpire = limit => {
     const today = new Date();
+    today.setDate(today.getDate() - 1);
     const limitDay = new Date(limit);
 
     // limitDay에서 today를 뺀 결과를 밀리초 단위로 계산

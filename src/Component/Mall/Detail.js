@@ -358,10 +358,10 @@ function Detail() {
                 }}
               />
               <div className="lg:w-5/6 mx-auto leading-7">
-                구매 취소는 구매 후 7일 이내에 신청하셔야 가능합니다.
                 <br />
-                기타 이용 관련 문의는 기프티콘 고객센터 1588-6474 로 문의
-                바랍니다.
+                - 구매 취소는 구매 후 7일 이내에 신청하셔야 가능합니다.
+                <br />- 기타 이용 관련 문의는 기프티콘 고객센터 1588-6474 로
+                문의 바랍니다.
               </div>
             </div>
             <RecomMall category={goods.category1Seq} />

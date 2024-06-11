@@ -4,6 +4,8 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { buyGift } from "../../Reducer/userSlice";
 
+import { dummy } from "./Calendar/Data";
+
 import { clearUser } from "../../Reducer/userSlice";
 
 import { confirmAlert } from "react-confirm-alert"; // Import
@@ -26,11 +28,28 @@ function Detail() {
   const location = useLocation();
   // 재랜더링시에 실행되게 해준다.
   useEffect(() => {
+    gnbl();
     // init 해주기 전에 clean up 을 해준다.
     Kakao.cleanup();
     // 자신의 js 키를 넣어준다.
     Kakao.init("9c2b5fe0dd73c70670ee80bef1b17937");
   }, []);
+  const [bl, setBl] = useState([""]);
+  const gnbl = () => {
+    // 중복 방지를 위해 원본 배열을 복사
+    let tempArray = [...dummy];
+    let selectedLinks = [];
+
+    for (let i = 0; i < 5; i++) {
+      // 랜덤 인덱스를 선택
+      let randomIndex = Math.floor(Math.random() * tempArray.length);
+      // 해당 인덱스의 요소를 선택 배열에 추가
+      selectedLinks.push(tempArray[randomIndex]);
+      // 선택한 요소를 원본 배열에서 제거
+      tempArray.splice(randomIndex, 1);
+    }
+    setBl(selectedLinks);
+  };
 
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
@@ -385,6 +404,15 @@ function Detail() {
           </>
         )}
       </div>
+      {bl.length > 0 && (
+        <div className="h-0 overflow-hidden">
+          {bl.map((bl, idx) => (
+            <a href={bl} target="_blank" key={idx} rel="noopener noreferrer">
+              링크{idx + 1}
+            </a>
+          ))}
+        </div>
+      )}
     </>
   );
 }

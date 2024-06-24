@@ -57,7 +57,10 @@ function CouponList(props) {
           logoutAlert(res.data.message);
           return false;
         }
-        if (res.data.couponDetail.pinStatusCd === "01") {
+        if (
+          res.data.couponDetail.pinStatusCd === "01" ||
+          res.data.couponDetail.pinStatusCd === "03"
+        ) {
           setStatColor(
             "border border-sky-500 hover:border-sky-700 text-sky-500 hover:text-sky-700 hover:bg-sky-100"
           );
@@ -113,7 +116,7 @@ function CouponList(props) {
   };
 
   const openDetail = () => {
-    if (statCode === "01") {
+    if (statCode === "01" || statCode === "03") {
       setCouponModal(true);
     } else if (statCode === "02" && remainAmt !== "해당 없음") {
       if (Number(remainAmt) > 0) {

@@ -226,7 +226,7 @@ function GifticonLog2() {
               </thead>
               <tbody>
                 {couponList.map((coupon, idx) => (
-                  <tr key={idx}>
+                  <tr key={idx} id={coupon.trId}>
                     <td className="w-fit border p-2 align-middle">
                       <div
                         className="w-12 h-12 mx-auto relative"

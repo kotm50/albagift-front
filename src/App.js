@@ -69,6 +69,7 @@ import CareList from "./Component/Admin/Care/CareList";
 import Error from "./Component/Info/Error";
 import GifticonLog from "./Component/Admin/GifticonLog";
 import GifticonLog2 from "./Component/Admin/GifticonLog2";
+import InterviewList from "./Component/Admin/Care/InterviewList";
 
 function App() {
   const dispatch = useDispatch();
@@ -161,7 +162,7 @@ function App() {
             <Route path="apply" element={<EmployApply />} />
             <Route path="giftlog" element={<GifticonLog />} />
             <Route path="giftlog2" element={<GifticonLog2 />} />
-
+            <Route path="interviewlist" element={<InterviewList />} />
             <Route path="carelist" element={<CareList />} />
           </Route>
           <Route path="/test" element={<KakaoTest />} />

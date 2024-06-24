@@ -13,7 +13,7 @@ function Jumbotron() {
   const user = useSelector(state => state.user);
   return (
     <>
-      <div className="hidden w-full bg-gradient-to-b from-teal-100 to-blue-100 pt-5 lg:pt-0 lg:px-20 jumbotron transition-all duration-200">
+      <div className="w-full bg-gradient-to-b from-teal-100 to-blue-100 pt-5 lg:pt-0 lg:px-20 jumbotron transition-all duration-200">
         <div className="lg:container mx-auto grid grid-cols-1 lg:grid-cols-4">
           <div className="flex flex-col justify-center gap-3">
             <div className="text-lg lg:text-2xl font-neobold text-center lg:text-left">
@@ -33,7 +33,7 @@ function Jumbotron() {
                   to="/promo"
                   className="block bg-teal-500 hover:bg-teal-700 text-white p-2 rounded-lg text-sm lg:text-base"
                 >
-                  가입하고 1000p 받기
+                  회원가입하기
                 </Link>
               ) : (
                 <button
@@ -73,7 +73,7 @@ function Jumbotron() {
           </div>
         </div>
       </div>
-      <div className="w-full bg-gradient-to-r from-pink-100 to-pink-200 pt-5 lg:pt-0 lg:px-20 jumbotron transition-all duration-200">
+      <div className="hidden w-full bg-gradient-to-r from-pink-100 to-pink-200 pt-5 lg:pt-0 lg:px-20 jumbotron transition-all duration-200">
         <div className="lg:container mx-auto grid grid-cols-1 lg:grid-cols-4">
           <div className="flex flex-col justify-center gap-3">
             <div className="text-lg lg:text-2xl font-neobold text-center lg:text-left">

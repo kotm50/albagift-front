@@ -116,7 +116,7 @@ function CouponList(props) {
   };
 
   const openDetail = () => {
-    if (statCode === "01" || statCode === "03") {
+    if (statCode === "01" || statCode === "03" || statCode === "02") {
       setCouponModal(true);
     } else if (statCode === "02" && remainAmt !== "해당 없음") {
       if (Number(remainAmt) > 0) {

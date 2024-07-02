@@ -53,6 +53,7 @@ function CouponList(props) {
         headers: { Authorization: user.accessToken },
       })
       .then(async res => {
+        console.log(res);
         if (res.data.code === "E999") {
           logoutAlert(res.data.message);
           return false;
@@ -65,7 +66,7 @@ function CouponList(props) {
             "border border-sky-500 hover:border-sky-700 text-sky-500 hover:text-sky-700 hover:bg-sky-100"
           );
 
-          setStat("사용가능");
+          setStat("");
         } else if (res.data.couponDetail.pinStatusCd === "02") {
           if (
             res.data.couponDetail.remainAmt !== "해당 없음" &&
@@ -75,7 +76,7 @@ function CouponList(props) {
               "border border-sky-500 hover:border-sky-700 text-sky-500 hover:text-sky-700 hover:bg-sky-100"
             );
 
-            setStat("사용가능");
+            setStat("확인가능");
           } else {
             setStatColor(
               "border border-indigo-500 hover:border-indigo-700 text-indigo-500 hover:text-indigo-700 hover:bg-indigo-100"
@@ -116,9 +117,9 @@ function CouponList(props) {
   };
 
   const openDetail = () => {
-    if (statCode === "01" || statCode === "03") {
+    if (statCode === "01" || statCode === "02" || statCode === "03") {
       setCouponModal(true);
-    } else if (statCode === "02" && remainAmt !== "해당 없음") {
+    } /* else if (statCode === "02" && remainAmt !== "해당 없음") {
       if (Number(remainAmt) > 0) {
         setCouponModal(true);
       } else {
@@ -137,7 +138,7 @@ function CouponList(props) {
         });
         return false;
       }
-    } else if (statCode === "") {
+    } */ else if (statCode === "") {
       confirmAlert({
         customUI: ({ onClose }) => {
           return (

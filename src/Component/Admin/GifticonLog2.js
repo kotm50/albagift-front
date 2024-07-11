@@ -225,8 +225,8 @@ function GifticonLog2() {
                   <th className="bg-blue-600 text-white p-2 border">제품명</th>
                   <th className="bg-blue-600 text-white p-2 border">구매일</th>
                   <th className="bg-blue-600 text-white p-2 border">만료일</th>
-                  <th className="bg-blue-600 text-white p-2 border">ㅇㅇ</th>
-                  <th className="bg-blue-600 text-white p-2 border">ㅁㅁ</th>
+                  <th className="bg-blue-600 text-white p-2 border">확인</th>
+                  <th className="bg-blue-600 text-white p-2 border">취소</th>
                 </tr>
               </thead>
               <tbody>
@@ -295,7 +295,7 @@ function GifticonLog2() {
                     </td>
                     <td className="align-middle border p-2">
                       <button
-                        className="transition duration-300 w-full border border-sky-500 hover:border-sky-700 text-sky-500 hover:text-sky-700 hover:bg-sky-100 text-lg p-2"
+                        className="transition duration-300 w-full border border-rose-500 hover:border-rose-700 text-rose-500 hover:text-rose-700 hover:bg-rose-100 text-lg p-2"
                         onClick={e => cancelCoupon(coupon.trId)}
                       >
                         구매취소

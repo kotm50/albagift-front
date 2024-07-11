@@ -191,6 +191,10 @@ function GifticonLog2() {
     navi(domain);
   };
 
+  const cancelCoupon = trId => {
+    console.log(trId);
+  };
+
   return (
     <div className="lg:container lg:mx-auto p-2">
       {loaded ? (
@@ -222,6 +226,7 @@ function GifticonLog2() {
                   <th className="bg-blue-600 text-white p-2 border">구매일</th>
                   <th className="bg-blue-600 text-white p-2 border">만료일</th>
                   <th className="bg-blue-600 text-white p-2 border">ㅇㅇ</th>
+                  <th className="bg-blue-600 text-white p-2 border">ㅁㅁ</th>
                 </tr>
               </thead>
               <tbody>
@@ -286,6 +291,14 @@ function GifticonLog2() {
                         onClick={e => chkCoupon(coupon.trId)}
                       >
                         사용가능확인
+                      </button>
+                    </td>
+                    <td className="align-middle border p-2">
+                      <button
+                        className="transition duration-300 w-full border border-sky-500 hover:border-sky-700 text-sky-500 hover:text-sky-700 hover:bg-sky-100 text-lg p-2"
+                        onClick={e => cancelCoupon(coupon.trId)}
+                      >
+                        구매취소
                       </button>
                     </td>
                   </tr>

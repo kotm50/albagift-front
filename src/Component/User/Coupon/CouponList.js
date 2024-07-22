@@ -53,7 +53,6 @@ function CouponList(props) {
         headers: { Authorization: user.accessToken },
       })
       .then(async res => {
-        console.log(res);
         if (res.data.code === "E999") {
           logoutAlert(res.data.message);
           return false;

@@ -67,6 +67,8 @@ function DailyPoint() {
                 ? "면접 지급"
                 : doc.logType === "PO"
                 ? "포인트 이관"
+                : doc.logType === "CE"
+                ? "구매취소"
                 : "확인불가"
             }`} // 내용
             type={"alert"} // 타입 confirm, alert
@@ -92,6 +94,7 @@ function DailyPoint() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
+        console.log(res);
         setLoaded(true);
         if (res.data.logList.length === 0) {
           return false;
@@ -159,7 +162,7 @@ function DailyPoint() {
             {startDate} 포인트 내역
           </h2>
           {log !== "" ? (
-            <div className="grid grid-cols-10 divide-x border mb-3">
+            <div className="grid grid-cols-11 divide-x border mb-3">
               <div className="p-2 text-center bg-green-700 text-white text-sm">
                 관리자 지급 포인트
               </div>
@@ -171,6 +174,9 @@ function DailyPoint() {
               </div>
               <div className="p-2 text-center bg-green-700 text-white text-sm">
                 면접 포인트
+              </div>
+              <div className="p-2 text-center bg-green-700 text-white text-sm">
+                취소 포인트
               </div>
               <div className="p-2 text-center bg-green-700 text-white text-sm">
                 총 지급 포인트
@@ -188,7 +194,7 @@ function DailyPoint() {
                 총 차감 포인트
               </div>
               <div className="p-2 text-center bg-gray-700 text-white text-sm">
-                기프티쇼 실제 사용액
+                실제 사용액
               </div>
               <div className="p-2 text-center">
                 {log.apPnt.toLocaleString()}p
@@ -201,6 +207,9 @@ function DailyPoint() {
               </div>
               <div className="p-2 text-center">
                 {log.abPnt.toLocaleString()}p
+              </div>
+              <div className="p-2 text-center">
+                {log.cePnt.toLocaleString()}p
               </div>
               <div className="p-2 text-center">
                 {log.plusPnt.toLocaleString()}p
@@ -299,6 +308,8 @@ function DailyPoint() {
                           ? "면접 지급"
                           : doc.logType === "TR"
                           ? "포인트 이관"
+                          : doc.logType === "CE"
+                          ? "구매 취소"
                           : "확인불가"}
                       </div>
                     </div>

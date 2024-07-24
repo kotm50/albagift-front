@@ -38,6 +38,7 @@ function Main() {
   const [cpPntTotal, setCpPntTotal] = useState(0);
   const [miunsPntTotal, setMinusPntTotal] = useState(0);
   const [bizPntTotal, setBizPntTotal] = useState(0);
+  const [cePntTotal, setCePntTotal] = useState(0);
   useEffect(() => {
     setDataList([]);
     if (startDate !== "") {
@@ -80,6 +81,7 @@ function Main() {
       })
       .then(res => {
         setLoaded(true);
+        const total = res.data.totalResult;
         if (res.data.pointList.length === 0) {
           return false;
         }
@@ -106,16 +108,17 @@ function Main() {
           bizPntTotal = bizPntTotal + doc.bizPnt;
         });
 
-        setApPntTotal(apPntTotal);
-        setTrPntTotal(trPntTotal);
-        setPrPntTotal(prPntTotal);
-        setAbPntTotal(abPntTotal);
-        setPlusPntTotal(plusPntTotal);
-        setExPntTotal(exPntTotal);
-        setAdPntTotal(adPntTotal);
-        setCpPntTotal(cpPntTotal);
-        setMinusPntTotal(miunsPntTotal);
-        setBizPntTotal(bizPntTotal);
+        setApPntTotal(total.totalApPnt);
+        setTrPntTotal(total.totalTrPnt);
+        setPrPntTotal(total.totalPrPnt);
+        setAbPntTotal(total.totalAbPnt);
+        setPlusPntTotal(total.totalPlusPnt);
+        setExPntTotal(total.totalExPnt);
+        setAdPntTotal(total.totalAdPnt);
+        setCpPntTotal(total.totalCpPnt);
+        setMinusPntTotal(total.totalMiunsPnt);
+        setBizPntTotal(total.totalBizPnt);
+        setCePntTotal(total.totalCePnt);
 
         setDataList(res.data.pointList);
       })
@@ -241,6 +244,9 @@ function Main() {
                       면접 포인트
                     </td>
                     <td className="p-2 text-center border bg-green-700">
+                      취소 포인트
+                    </td>
+                    <td className="p-2 text-center border bg-green-700">
                       총 지급 포인트
                     </td>
                     <td className="p-2 text-center border bg-rose-700">
@@ -256,7 +262,7 @@ function Main() {
                       총 차감 포인트
                     </td>
                     <td className="p-2 text-center border bg-gray-500">
-                      기프티쇼 실제 사용 금액
+                      실제 사용 금액
                     </td>
                   </tr>
                 </thead>
@@ -274,6 +280,9 @@ function Main() {
                     </td>
                     <td className="p-2 text-center border">
                       {abPntTotal.toLocaleString()}p
+                    </td>
+                    <td className="p-2 text-center border">
+                      {cePntTotal.toLocaleString()}p
                     </td>
                     <td className="p-2 text-center border">
                       {plusPntTotal.toLocaleString()}p
@@ -318,6 +327,9 @@ function Main() {
                       </td>
                       <td className="p-2 text-center border">
                         {log.abPnt.toLocaleString()}p
+                      </td>
+                      <td className="p-2 text-center border">
+                        {log.cePnt.toLocaleString()}p
                       </td>
                       <td className="p-2 text-center border">
                         {log.plusPnt.toLocaleString()}p

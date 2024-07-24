@@ -292,6 +292,11 @@ function GifticonLog2() {
                       >
                         사용가능확인
                       </button>
+                      <img
+                        src={coupon.couponImgUrl}
+                        alt={coupon.trId}
+                        className="h-full"
+                      />
                     </td>
                     <td className="align-middle border p-2">
                       <button

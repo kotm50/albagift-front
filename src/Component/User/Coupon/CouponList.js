@@ -141,14 +141,14 @@ function CouponList(props) {
     setCouponModal(true);
   };
 
-  const showStat = txt => {
+  const showStat = code, txt => {
     confirmAlert({
       customUI: ({ onClose }) => {
         return (
           <AlertModal
             onClose={onClose} // 닫기
             title={"쿠폰상태확인"} // 제목
-            message={txt} // 내용
+            message={`${code}. ${txt}`} // 내용
             type={"alert"} // 타입 confirm, alert
             yes={"확인"} // 확인버튼 제목
           />
@@ -234,10 +234,10 @@ function CouponList(props) {
             </button>
           ) : (
             <div
-              className={`transition duration-300 w-full ${statColor} text-lg text-center p-2`}
-              onClick={() => showStat(statDetail)}
+              className={`transition duration-300 w-full ${statColor} text-lg text-center p-2 hover:cursor-pointer`}
+              onClick={() => showStat(statCode, statDetail)}
             >
-              {stat} 코드 : {statCode}
+              {stat}
             </div>
           )}
         </div>

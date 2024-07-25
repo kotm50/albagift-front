@@ -141,7 +141,7 @@ function CouponList(props) {
     setCouponModal(true);
   };
 
-  const showStat = code, txt => {
+  const showStat = (code, txt) => {
     confirmAlert({
       customUI: ({ onClose }) => {
         return (

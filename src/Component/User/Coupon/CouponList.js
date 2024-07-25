@@ -115,28 +115,7 @@ function CouponList(props) {
   };
 
   const openDetail = () => {
-    if (statCode === "01" || statCode === "02" || statCode === "03") {
-      setCouponModal(true);
-    } /* else if (statCode === "02" && remainAmt !== "해당 없음") {
-      if (Number(remainAmt) > 0) {
-        setCouponModal(true);
-      } else {
-        confirmAlert({
-          customUI: ({ onClose }) => {
-            return (
-              <AlertModal
-                onClose={onClose} // 닫기
-                title={"쿠폰 확인"} // 제목
-                message={`사용이 불가능한 쿠폰입니다\n사용불가사유 : ${statDetail}`} // 내용
-                type={"alert"} // 타입 confirm, alert
-                yes={"확인"} // 확인버튼 제목
-              />
-            );
-          },
-        });
-        return false;
-      }
-    } */ else if (statCode === "") {
+    if (statCode !== "01" || statCode !== "03") {
       confirmAlert({
         customUI: ({ onClose }) => {
           return (
@@ -144,31 +123,22 @@ function CouponList(props) {
               onClose={onClose} // 닫기
               title={"쿠폰상세보기"} // 제목
               message={
-                "'사용가능 확인' 버튼을 눌러서\n쿠폰이 사용가능한지 확인해주세요"
+                "사용 가능 상태가 아닌 쿠폰 사용시\n오류가 발생할 수 있습니다\n사용가능 여부를 먼저 확인해 주세요"
               } // 내용
               type={"alert"} // 타입 confirm, alert
               yes={"확인"} // 확인버튼 제목
+              doIt={modalOn}
             />
           );
         },
       });
-      return false;
     } else {
-      confirmAlert({
-        customUI: ({ onClose }) => {
-          return (
-            <AlertModal
-              onClose={onClose} // 닫기
-              title={"쿠폰 확인"} // 제목
-              message={`사용이 불가능한 쿠폰입니다\n사용불가사유 : ${statDetail}`} // 내용
-              type={"alert"} // 타입 confirm, alert
-              yes={"확인"} // 확인버튼 제목
-            />
-          );
-        },
-      });
-      return false;
+      setCouponModal(true);
     }
+  };
+
+  const modalOn = () => {
+    setCouponModal(true);
   };
 
   const logout = async () => {
@@ -250,7 +220,7 @@ function CouponList(props) {
             <div
               className={`transition duration-300 w-full ${statColor} text-lg text-center p-2`}
             >
-              {stat}
+              {stat} 코드 : {statCode}
             </div>
           )}
         </div>

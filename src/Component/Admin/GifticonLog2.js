@@ -295,7 +295,7 @@ function GifticonLog2() {
                       <img
                         src={coupon.couponImgUrl}
                         alt={coupon.trId}
-                        className="h-full"
+                        className="h-[20px] max-h-full"
                       />
                     </td>
                     <td className="align-middle border p-2">

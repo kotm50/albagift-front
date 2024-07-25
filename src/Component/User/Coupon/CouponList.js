@@ -141,6 +141,22 @@ function CouponList(props) {
     setCouponModal(true);
   };
 
+  const showStat = txt => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <AlertModal
+            onClose={onClose} // 닫기
+            title={"쿠폰상태확인"} // 제목
+            message={txt} // 내용
+            type={"alert"} // 타입 confirm, alert
+            yes={"확인"} // 확인버튼 제목
+          />
+        );
+      },
+    });
+  };
+
   const logout = async () => {
     await axiosInstance
       .post("/api/v1/user/logout", null, {
@@ -219,6 +235,7 @@ function CouponList(props) {
           ) : (
             <div
               className={`transition duration-300 w-full ${statColor} text-lg text-center p-2`}
+              onClick={() => showStat(statDetail)}
             >
               {stat} 코드 : {statCode}
             </div>

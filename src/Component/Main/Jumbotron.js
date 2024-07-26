@@ -69,7 +69,7 @@ function Jumbotron() {
           </div>
           <div></div>
           <div className="py-3 px-2 lg:px-0 lg:col-span-2">
-            <img src={bg} alt="알바선물" className="w-full h-fit" />
+            <img src={bg} alt="알바선물" className="w-full h-auto" />
           </div>
         </div>
       </div>
@@ -103,7 +103,7 @@ function Jumbotron() {
           </div>
           <div></div>
           <div className="py-3 px-2 lg:px-0 lg:col-span-2">
-            <img src={insta} alt="알바선물 인스타" className="w-full h-fit" />
+            <img src={insta} alt="알바선물 인스타" className="w-full h-auto" />
           </div>
         </div>
       </div>

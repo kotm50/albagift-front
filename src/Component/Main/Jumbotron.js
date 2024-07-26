@@ -24,7 +24,7 @@ function Jumbotron() {
             </div>
             <div className="text-sm lg:text-lg text-center font-neo lg:text-left">
               취업하기 어려운 요즘 시대 <br />
-              당신의 구직활동을 응원하겠습니다.
+              당신의 구직활동을 응원하겠습니다!
             </div>
 
             <div className="flex flex-row justify-center lg:justify-start gap-3 my-2">

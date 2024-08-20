@@ -29,7 +29,7 @@ function CouponModal(props) {
               <img src={props.coupon.couponImgUrl} alt="쿠폰이미지" />
             </div>
             {props.remainAmt !== "해당 없음" ? (
-              <div className="text-lg my-1 p-2 text-center bg-gray-100">
+              <div className="text-lg my-1 p-2 text-center bg-gray-100 hidden">
                 사용 가능한 금액 :{" "}
                 <span className="font-neoheavy text-rose-500">
                   {Number(props.remainAmt).toLocaleString()}

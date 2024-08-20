@@ -67,7 +67,6 @@ function GifticonLog() {
         if (res.data.couponList.length === 0) {
           setLoadList("조회된 쿠폰이 없습니다");
         }
-        console.log(res.data.couponList);
         const totalP = res.data.totalPages;
         setTotalPage(res.data.totalPages);
         const pagenate = generatePaginationArray(p, totalP);

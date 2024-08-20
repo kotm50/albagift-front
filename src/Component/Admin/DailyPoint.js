@@ -94,7 +94,6 @@ function DailyPoint() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        console.log(res);
         setLoaded(true);
         if (res.data.logList.length === 0) {
           return false;

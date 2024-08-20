@@ -14,6 +14,7 @@ import Footer from "./Component/Layout/Footer";
 import ToTop from "./Component/Layout/ToTop";
 import Join from "./Component/User/Join";
 import KakaoTest from "./Component/KakaoTest";
+import Test from "./Component/Test";
 import Mypage from "./Component/User/Mypage";
 import Admin from "./Component/Admin/Admin";
 import AdminMain from "./Component/Admin/Main";
@@ -166,6 +167,7 @@ function App() {
             <Route path="carelist" element={<CareList />} />
           </Route>
           <Route path="/test" element={<KakaoTest />} />
+          <Route path="/test2" element={<Test />} />
           <Route path="/popup" element={<PopupTest />} />
           <Route path="/board" element={<Board />}>
             <Route path="list/:id?" element={<BoardList />} />

@@ -64,7 +64,7 @@ function CouponList(props) {
           setStatColor(
             "border border-sky-500 hover:border-sky-700 text-sky-500 hover:text-sky-700 hover:bg-sky-100"
           );
-          setStat("");
+          setStat("사용가능");
         } else if (res.data.couponDetail.pinStatusCd === "02") {
           if (
             res.data.couponDetail.remainAmt !== "해당 없음" &&

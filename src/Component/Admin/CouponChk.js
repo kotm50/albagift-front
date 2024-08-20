@@ -41,7 +41,6 @@ function CouponChk(props) {
         headers: { Authorization: props.user.accessToken },
       })
       .then(async res => {
-        console.log(res);
         if (res.data.couponDetail.pinStatusCd === "01") {
           setStatColor(
             "border border-sky-500 hover:border-sky-700 text-sky-500 hover:text-sky-700 hover:bg-sky-100"

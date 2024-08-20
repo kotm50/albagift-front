@@ -30,12 +30,16 @@ function KakaoTest() {
     const formData = new FormData();
     formData.append("file", selectedFile);
     try {
-      const response = await axios.post("/api/v1/shop/excel/test", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: user.accessToken,
-        },
-      });
+      const response = await axios.post(
+        "/api/v1/shop/admin/add/intv/excel",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: user.accessToken,
+          },
+        }
+      );
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -48,7 +52,7 @@ function KakaoTest() {
     };
 
     try {
-      const response = await axios.post("/api/v1/shop/excel/test", data, {
+      const response = await axios.post("/api/v1/shop/add/intv/excel", data, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: user.accessToken,
@@ -77,10 +81,10 @@ function KakaoTest() {
           테스트
         </div>
         <button className="bg-[#333] p-2 text-white" onClick={() => saveIt()}>
-          버튼
+          버튼1
         </button>
         <button className="bg-[#dcf] p-2 text-white" onClick={() => saveIt2()}>
-          버튼
+          버튼2
         </button>
       </div>
     </>

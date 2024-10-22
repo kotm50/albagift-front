@@ -67,7 +67,7 @@ function Footer(props) {
                       setModalOn(true);
                     }}
                   >
-                    개인정보처리방침
+                    개인정보처리방침1
                   </div>
                   <div
                     className="text-center hover:cursor-pointer hover:text-rose-500"

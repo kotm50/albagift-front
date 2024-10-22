@@ -69,5 +69,5 @@
     "react-app-rewired": "^2.2.1",
     "tailwindcss": "^3.3.2"
   },
-  "proxy": "http://192.168.0.59:8080"
+  "proxy": "http://192.168.0.35:8080"
 }

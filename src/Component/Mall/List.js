@@ -92,6 +92,7 @@ function List() {
         if (res.data.goodsList.length > 0) {
           setLoaded(true);
         }
+        console.log(res);
       })
       .catch(e => {
         console.log(e);

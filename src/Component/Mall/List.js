@@ -78,6 +78,7 @@ function List() {
       page: p,
       size: 20,
     };
+    console.log(listUrl);
     await axiosInstance
       .get(listUrl, {
         params: data,

@@ -40,6 +40,7 @@ function Certification() {
     await axiosInstance
       .post("/api/v1/common/nice/sec/req")
       .then(res => {
+        console.log(res);
         autoSubmit(
           res.data.tokenVersionId,
           res.data.encData,

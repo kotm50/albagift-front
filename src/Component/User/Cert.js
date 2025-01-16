@@ -52,6 +52,7 @@ function Cert() {
     await axiosInstance
       .post("/api/v1/user/nice/dec/result", data)
       .then(res => {
+        console.log(res);
         if (res.data.code === "E888") {
           alert(res.data.message);
           navi("/");

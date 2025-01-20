@@ -114,7 +114,6 @@ function Pagenate(props) {
                   props.page === pageNum ? "selectedPage" : null
                 }`}
                 onClick={e => {
-                  console.log(props.page === pageNum);
                   if (props.page === pageNum) {
                     e.preventDefault();
                   }

@@ -234,7 +234,7 @@ function GifticonLog3() {
             <table className="w-full border-collapse">
               <thead>
                 <tr>
-                  <th className="bg-blue-600 text-white p-2 border hidden">
+                  <th className="bg-blue-600 text-white p-2 border">
                     상품사진
                   </th>
                   <th className="bg-blue-600 text-white p-2 border">구매자</th>
@@ -254,10 +254,7 @@ function GifticonLog3() {
               <tbody>
                 {couponList.map((coupon, idx) => (
                   <tr key={idx} id={coupon.trId}>
-                    <th className="bg-blue-600 text-white p-2 border hidden">
-                      취소
-                    </th>
-                    <td className="w-fit border p-2 align-middle ">
+                    <td className="w-fit border p-2 align-middle">
                       <div
                         className="w-12 h-12 mx-auto relative"
                         onMouseEnter={() => {

@@ -91,10 +91,22 @@ function GifticonLog3() {
         setTotalPage(res.data.totalPages);
         const pagenate = generatePaginationArray(p, totalP);
         setPagenate(pagenate);
-        const uniqueCoupons = Array.from(
-          new Map(
-            res.data.couponList.map(item => [item.goodsName, item])
-          ).values()
+        const couponList = res.data.couponList;
+
+        // 1. goodsName을 기준으로 중복 제거하면서 count 추가
+        const countMap = new Map();
+
+        couponList.forEach(item => {
+          if (countMap.has(item.goodsName)) {
+            countMap.get(item.goodsName).count += 1;
+          } else {
+            countMap.set(item.goodsName, { ...item, count: 1 });
+          }
+        });
+
+        // 2. count가 높은 순으로 정렬
+        const uniqueCoupons = Array.from(countMap.values()).sort(
+          (a, b) => b.count - a.count
         );
         setGifticonList(uniqueCoupons);
         setLoaded(true);
@@ -222,21 +234,30 @@ function GifticonLog3() {
             <table className="w-full border-collapse">
               <thead>
                 <tr>
-                  <th className="bg-blue-600 text-white p-2 border">
+                  <th className="bg-blue-600 text-white p-2 border hidden">
                     상품사진
                   </th>
                   <th className="bg-blue-600 text-white p-2 border">구매자</th>
                   <th className="bg-blue-600 text-white p-2 border">제품명</th>
-                  <th className="bg-blue-600 text-white p-2 border">구매일</th>
-                  <th className="bg-blue-600 text-white p-2 border">만료일</th>
-                  <th className="bg-blue-600 text-white p-2 border">확인</th>
-                  <th className="bg-blue-600 text-white p-2 border">취소</th>
+                  <th className="bg-blue-600 text-white p-2 border">구매수</th>
+                  <th className="bg-blue-600 text-white p-2 border hidden">
+                    만료일
+                  </th>
+                  <th className="bg-blue-600 text-white p-2 border hidden">
+                    확인
+                  </th>
+                  <th className="bg-blue-600 text-white p-2 border hidden">
+                    취소
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {couponList.map((coupon, idx) => (
                   <tr key={idx} id={coupon.trId}>
-                    <td className="w-fit border p-2 align-middle">
+                    <th className="bg-blue-600 text-white p-2 border hidden">
+                      취소
+                    </th>
+                    <td className="w-fit border p-2 align-middle ">
                       <div
                         className="w-12 h-12 mx-auto relative"
                         onMouseEnter={() => {
@@ -279,17 +300,19 @@ function GifticonLog3() {
                       {coupon.goodsName}
                     </td>
                     <td className="align-middle border p-2">
-                      {dayjs(new Date(coupon.regDate)).format("YYYY-MM-DD")}
+                      {coupon.count
+                        ? Number(coupon.count).toLocaleString()
+                        : ""}
                     </td>
-                    <td className="align-middle border p-2">
+                    <td className="align-middle border p-2 hidden">
                       {dayjs(new Date(coupon.limitDate)).format("YYYY-MM-DD")}
                       {isExpire(coupon.limitDate) ? (
-                        <span className="text-rose-500 ml-2">
+                        <span className="text-rose-500 ml-2 hidden">
                           {isExpire(coupon.limitDate)}
                         </span>
                       ) : null}
                     </td>
-                    <td className="align-middle border p-2">
+                    <td className="align-middle border p-2 hidden">
                       <button
                         className="transition duration-300 w-full border border-sky-500 hover:border-sky-700 text-sky-500 hover:text-sky-700 hover:bg-sky-100 text-lg p-2"
                         onClick={e => chkCoupon(coupon.trId)}
@@ -302,7 +325,7 @@ function GifticonLog3() {
                         className="h-[20px] max-h-full"
                       />
                     </td>
-                    <td className="align-middle border p-2">
+                    <td className="align-middle border p-2 hidden">
                       <button
                         className="transition duration-300 w-full border border-rose-500 hover:border-rose-700 text-rose-500 hover:text-rose-700 hover:bg-rose-100 text-lg p-2"
                         onClick={e => cancelCoupon(coupon.trId)}

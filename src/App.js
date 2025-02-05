@@ -71,8 +71,10 @@ import Error from "./Component/Info/Error";
 import GifticonLog from "./Component/Admin/GifticonLog";
 import GifticonLog2 from "./Component/Admin/GifticonLog2";
 import InterviewList from "./Component/Admin/Care/InterviewList";
+import useHardReload from "./useHardReload";
 
 function App() {
+  useHardReload(); // ✅ 페이지 로드 시 강제 새로고침 실행
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
 

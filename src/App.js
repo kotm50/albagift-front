@@ -72,6 +72,7 @@ import GifticonLog from "./Component/Admin/GifticonLog";
 import GifticonLog2 from "./Component/Admin/GifticonLog2";
 import InterviewList from "./Component/Admin/Care/InterviewList";
 import useHardReload from "./useHardReload";
+import GifticonLog3 from "./Component/Admin/GifticonLog3";
 
 function App() {
   useHardReload(); // ✅ 페이지 로드 시 강제 새로고침 실행
@@ -165,6 +166,7 @@ function App() {
             <Route path="apply" element={<EmployApply />} />
             <Route path="giftlog" element={<GifticonLog />} />
             <Route path="giftlog2" element={<GifticonLog2 />} />
+            <Route path="giftlog3" element={<GifticonLog3 />} />
             <Route path="interviewlist" element={<InterviewList />} />
             <Route path="carelist" element={<CareList />} />
           </Route>

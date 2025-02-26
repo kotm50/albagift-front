@@ -13,6 +13,7 @@
     "dayjs": "^1.11.9",
     "dompurify": "^3.0.4",
     "firebase": "^10.4.0",
+    "fs": "^0.0.1-security",
     "history": "^5.3.0",
     "html2canvas": "^1.4.1",
     "http-proxy-middleware": "^2.0.6",
@@ -37,12 +38,13 @@
     "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.2",
+    "sitemap": "^8.0.0",
     "smoothscroll-polyfill": "^0.4.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "prebuild": "node -e \"require('fs').writeFileSync('.env.production', 'REACT_APP_VERSION=' + new Date().toISOString().replace(/[-:T.]/g, '').slice(0, 14) + '\\n');\"",
+    "prebuild": "node -e \"require('fs').writeFileSync('.env.production', 'REACT_APP_VERSION=' + new Date().toISOString().replace(/[-:T.]/g, '').slice(0, 14) + '\\n');\" && node sitemap-generator.js",
     "build": "react-app-rewired build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

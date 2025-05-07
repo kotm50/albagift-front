@@ -121,7 +121,7 @@ function Footer(props) {
                       코리아밸리 유한회사
                     </div>
                     <div className="text-left font-neo">
-                      개인정보보호책임자 : 이태준
+                      개인정보보호책임자 : 이건영
                     </div>
                     <div className="text-left font-neo">
                       경기도 남양주시 별내중앙로 26,10층

@@ -57,6 +57,7 @@ function Detail() {
     await axiosInstance
       .get(`/api/v1/shop/goods/detail/${goodscode}`)
       .then(async res => {
+        console.log(res.data.goods);
         setGoods(res.data.goods);
         contentForm(res.data.goods.content);
         if (isMobileDevice()) {

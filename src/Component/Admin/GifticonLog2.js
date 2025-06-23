@@ -46,7 +46,7 @@ function GifticonLog2() {
         headers: { Authorization: user.accessToken },
       })
       .then(async res => {
-        console.log(res.data);
+        //console.log(res.data);
         if (res.data.code === "E999") {
           logoutAlert(res.data.message);
           return false;

@@ -57,6 +57,6 @@ async function generateSitemap() {
   // public 폴더에 sitemap.xml 저장
   fs.writeFileSync("./public/sitemap.xml", sitemap, "utf8");
 
-  console.log("✅ 사이트맵 생성 완료: public/sitemap.xml");
+  //console.log("✅ 사이트맵 생성 완료: public/sitemap.xml");
 }
 generateSitemap();

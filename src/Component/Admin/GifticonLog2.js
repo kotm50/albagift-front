@@ -300,7 +300,7 @@ function GifticonLog2() {
                     </td>
                     <td className="align-middle border p-2">
                       <button
-                        className="transition duration-300 w-full border border-rose-500 hover:border-rose-700 text-rose-500 hover:text-rose-700 hover:bg-rose-100 text-lg p-2"
+                        className="hidden transition duration-300 w-full border border-rose-500 hover:border-rose-700 text-rose-500 hover:text-rose-700 hover:bg-rose-100 text-lg p-2"
                         onClick={e => cancelCoupon(coupon.trId)}
                       >
                         구매취소

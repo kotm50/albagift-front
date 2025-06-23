@@ -1,6 +1,4 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:/admin/
-Disallow:/mypage/
-Allow: /$
+Disallow:*
 Sitemap: https://albagift.com/sitemap.xml

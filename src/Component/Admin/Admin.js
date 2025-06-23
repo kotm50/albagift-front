@@ -43,6 +43,7 @@ function Admin() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
+        console.log(res);
         if (res.data.code === "C000") {
           confirmAlert({
             customUI: ({ onClose }) => {
@@ -71,6 +72,7 @@ function Admin() {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
+        console.log(res);
         if (res.data.code === "C000") {
           confirmAlert({
             customUI: ({ onClose }) => {

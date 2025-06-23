@@ -158,6 +158,24 @@ function Detail() {
   };
 
   const doBuy = async () => {
+    const b = false;
+    if (b === false) {
+      confirmAlert({
+        customUI: ({ onClose }) => {
+          return (
+            <AlertModal
+              onClose={onClose} // 닫기
+              title={"구매 오류"} // 제목
+              message={"포인트가 부족합니다"} // 내용
+              type={"alert"} // 타입 confirm, alert
+              yes={"확인"} // 확인버튼 제목
+            />
+          );
+        },
+      });
+      return false;
+    }
+
     const currentDomain = window.location.href;
     let data = {
       goodsCode: goodscode,

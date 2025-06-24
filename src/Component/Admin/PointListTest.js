@@ -155,62 +155,56 @@ function PointListTest() {
   const pointSubmit = async b => {
     if (b && point === 0) {
       confirmAlert({
-        customUI: ({ onClose }) => (
-          <AlertModal
-            onClose={onClose}
-            title={"오류"}
-            message={"지급 포인트를 입력해 주세요"}
-            type={"alert"}
-            yes={"확인"}
-          />
-        ),
+        customUI: ({ onClose }) => {
+          return (
+            <AlertModal
+              onClose={onClose} // 닫기
+              title={"오류"} // 제목
+              message={"지급 포인트를 입력해 주세요"} // 내용
+              type={"alert"} // 타입 confirm, alert
+              yes={"확인"} // 확인버튼 제목
+            />
+          );
+        },
       });
       return false;
     }
-
     if (!b && reason === "") {
       confirmAlert({
-        customUI: ({ onClose }) => (
-          <AlertModal
-            onClose={onClose}
-            title={"오류"}
-            message={"지급불가 사유를 입력해 주세요"}
-            type={"alert"}
-            yes={"확인"}
-          />
-        ),
+        customUI: ({ onClose }) => {
+          return (
+            <AlertModal
+              onClose={onClose} // 닫기
+              title={"오류"} // 제목
+              message={"지급불가 사유를 입력해 주세요"} // 내용
+              type={"alert"} // 타입 confirm, alert
+              yes={"확인"} // 확인버튼 제목
+            />
+          );
+        },
       });
       return false;
     }
-
     if (company === "" || company.length < 4) {
       confirmAlert({
-        customUI: ({ onClose }) => (
-          <AlertModal
-            onClose={onClose}
-            title={"오류"}
-            message={"고객사번호를 정확히 입력해 주세요"}
-            type={"alert"}
-            yes={"확인"}
-          />
-        ),
+        customUI: ({ onClose }) => {
+          return (
+            <AlertModal
+              onClose={onClose} // 닫기
+              title={"오류"} // 제목
+              message={"고객사번호를 정확히 입력해 주세요"} // 내용
+              type={"alert"} // 타입 confirm, alert
+              yes={"확인"} // 확인버튼 제목
+            />
+          );
+        },
       });
       return false;
     }
-
-    // ✅ postList 객체 배열 생성
-    const postList = [
-      {
-        postId: selectedDocsId,
-        companyCode: company,
-        payPoint: b ? point : 0,
-        payYn: b,
-        reason: b ? null : reason,
-      },
-    ];
-
-    const request = { postList };
-
+    const postList = await payments([selectedDocsId], b);
+    const request = {
+      postList: postList,
+    };
     await axiosInstance
       .patch("/api/v1/board/admin/paymt/sts", request, {
         headers: { Authorization: user.accessToken },
@@ -218,25 +212,26 @@ function PointListTest() {
       .then(res => {
         if (res.data.code === "C000") {
           confirmAlert({
-            customUI: ({ onClose }) => (
-              <AlertModal
-                onClose={onClose}
-                title={"완료"}
-                message={res.data.message}
-                type={"alert"}
-                yes={"확인"}
-              />
-            ),
+            customUI: ({ onClose }) => {
+              return (
+                <AlertModal
+                  onClose={onClose} // 닫기
+                  title={"완료"} // 제목
+                  message={res.data.message} // 내용
+                  type={"alert"} // 타입 confirm, alert
+                  yes={"확인"} // 확인버튼 제목
+                />
+              );
+            },
           });
         }
-
         loadList(page, keyword, startDate, endDate, select, agree, sType);
         setPoint(0);
         setSelectedDocs(null);
         setSelectedDocsId(null);
       })
       .catch(e => {
-        console.error(e);
+        console.log(e);
       });
   };
 

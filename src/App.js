@@ -74,6 +74,7 @@ import InterviewList from "./Component/Admin/Care/InterviewList";
 import useHardReload from "./useHardReload";
 import GifticonLog3 from "./Component/Admin/GifticonLog3";
 import PointCharge from "./Component/Admin/PointCharge";
+import PointListTest from "./Component/Admin/PointListTest";
 
 function App() {
   useHardReload(); // ✅ 페이지 로드 시 강제 새로고침 실행
@@ -158,6 +159,7 @@ function App() {
             <Route path="reset" element={<GiftReset />} />
             <Route path="loginlog" element={<LoginLog />} />
             <Route path="pointlist" element={<PointList />} />
+            <Route path="pointlist2" element={<PointListTest />} />
             <Route path="dailypoint" element={<DailyPoint />} />
             <Route path="transfer" element={<Transfer />} />
             <Route path="adminpwd" element={<AdminPwd />} />

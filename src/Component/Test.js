@@ -1,4 +1,3 @@
-// Test.jsx
 import { useState } from "react";
 
 const Test = () => {
@@ -17,14 +16,14 @@ const Test = () => {
     setResult(null);
 
     try {
-      const url = `https://albagift.com/adapi/check?name=${encodeURIComponent(
+      const url = `/adapi/check?name=${encodeURIComponent(
         name
       )}&phone=${encodeURIComponent(phone)}`;
       const res = await fetch(url);
       const data = await res.json();
 
-      if (data.exists === true) {
-        setResult({ message: "✅ 면접 대상자입니다.", type: "success" });
+      if (data.exists === true && Array.isArray(data.matched)) {
+        setResult({ type: "success", matched: data.matched });
       } else if (data.exists === false) {
         setResult({ message: "❌ 면접 대상자가 아닙니다.", type: "notfound" });
       } else {
@@ -40,9 +39,11 @@ const Test = () => {
 
   return (
     <div
-      style={{ maxWidth: 400, margin: "2em auto", fontFamily: "sans-serif" }}
+      style={{ maxWidth: 500, margin: "2em auto", fontFamily: "sans-serif" }}
     >
-      <h2>면접 대상자 확인</h2>
+      <h2 style={{ fontWeight: "bold", marginBottom: "1em" }}>
+        면접 대상자 확인
+      </h2>
       <input
         type="text"
         placeholder="이름"
@@ -65,7 +66,7 @@ const Test = () => {
         {loading ? "조회 중..." : "확인하기"}
       </button>
 
-      {result && (
+      {result && result.message && (
         <div
           style={{
             marginTop: "1.5em",
@@ -76,11 +77,47 @@ const Test = () => {
           {result.message}
         </div>
       )}
+
+      {result && result.type === "success" && (
+        <div style={{ marginTop: "1.5em" }}>
+          <h3 style={{ fontWeight: "bold", marginBottom: "0.5em" }}>
+            조회 결과
+          </h3>
+          {result.matched.map((item, idx) => (
+            <div
+              key={idx}
+              style={{
+                border: "1px solid #ddd",
+                borderRadius: "8px",
+                padding: "1em",
+                marginBottom: "1em",
+                backgroundColor: item.owner ? "#e6ffed" : "#f9f9f9",
+              }}
+            >
+              <div>
+                <strong>이름 일치 여부:</strong>{" "}
+                {item.owner ? "✅ 일치함" : "❌ 다름"}
+              </div>
+              <div>
+                <strong>면접상태:</strong> {item.apply_status}
+              </div>
+              <div>
+                <strong>면접시간:</strong> {item.interview_time}
+              </div>
+              <div>
+                <strong>고객사명:</strong> {item.com_name}
+              </div>
+              <div>
+                <strong>지점명:</strong> {item.com_area}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
 
-// 색상 결정 함수
 function getColor(type) {
   switch (type) {
     case "success":

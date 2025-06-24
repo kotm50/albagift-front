@@ -28,7 +28,7 @@ function PointListTest() {
   const [loaded, setLoaded] = useState(false);
   const [list, setList] = useState([]);
   const user = useSelector(state => state.user);
-  const [selectedDocs, setSelectedDocs] = useState([]);
+  const [selectedDocs, setSelectedDocs] = useState(null);
   const [selectedDocsId, setSelectedDocsId] = useState([]);
   const location = useLocation();
   const pathName = location.pathname;
@@ -458,6 +458,35 @@ function PointListTest() {
     return payArr;
   };
 
+  const handleDocClick = async doc => {
+    try {
+      const res = await fetch(
+        `/adapi/check?name=${encodeURIComponent(
+          doc.userName
+        )}&phone=${encodeURIComponent(getPhone(doc.phone))}`
+      );
+      const data = await res.json();
+
+      if (
+        !data.exists ||
+        !Array.isArray(data.matched) ||
+        data.matched.length === 0
+      ) {
+        alert("해당 지원자는 면접 대상자가 아닙니다.");
+        return;
+      }
+
+      setSelectedDocs({
+        name: doc.userName,
+        phone: doc.phone,
+        info: data.matched,
+      });
+    } catch (err) {
+      console.error("검사 실패:", err);
+      alert("서버 오류로 확인에 실패했습니다.");
+    }
+  };
+
   return (
     <>
       {loaded ? (
@@ -585,78 +614,19 @@ function PointListTest() {
               {listType === 1 ? (
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-2 mt-2 bg-white p-2 container mx-auto">
                   {list.map((doc, idx) => (
-                    <div key={idx} className="relative">
-                      <input
-                        type="checkbox"
-                        value={doc.postId}
-                        className="hidden"
-                        id={`checkbox-${doc.postId}`}
-                        disabled={doc.status !== "S"}
-                        checked={selectedDocs.some(
-                          item => item.postId === doc.postId
-                        )}
-                        readOnly
-                      />
-                      <div
-                        className={`block p-2 ${
-                          doc.status === "S"
-                            ? "bg-teal-50 text-black border-2 border-teal-200"
-                            : "bg-gray-50 text-black border-2 border-gray-200"
-                        } rounded-lg`}
-                      >
-                        {/* ... 기존 고객사/이름/연락처 등 생략 ... */}
-
-                        {/* 지급여부 영역 */}
-                        <div className="grid grid-cols-3 gap-2 mb-2">
-                          <div className="font-medium text-right">지급여부</div>
-                          <div className="col-span-2 flex flex-wrap items-center gap-2">
-                            {doc.status === "S" ? (
-                              <>
-                                <span className="text-blue-500">지급대기</span>
-                                <button
-                                  className="text-sm bg-blue-500 hover:bg-blue-700 text-white px-2 py-1 rounded"
-                                  onClick={async () => {
-                                    const name = doc.userName;
-                                    const phone = doc.phone;
-                                    try {
-                                      const res = await fetch(
-                                        `/adapi/check?name=${encodeURIComponent(
-                                          name
-                                        )}&phone=${encodeURIComponent(phone)}`
-                                      );
-                                      const data = await res.json();
-                                      if (data.exists === true) {
-                                        checkDocs(doc, true);
-                                      } else {
-                                        alert(
-                                          "해당 지원자는 면접 대상자가 아닙니다."
-                                        );
-                                      }
-                                    } catch (err) {
-                                      console.error("검사 요청 실패:", err);
-                                      alert(
-                                        "서버 오류로 대상자 확인에 실패했습니다."
-                                      );
-                                    }
-                                  }}
-                                >
-                                  추가
-                                </button>
-                              </>
-                            ) : doc.status === "N" ? (
-                              <span className="text-red-500">
-                                지급불가 ({doc.result})
-                              </span>
-                            ) : doc.status === "Y" ? (
-                              <span className="text-green-500">
-                                지급완료 ({Number(doc.result).toLocaleString()}
-                                p)
-                              </span>
-                            ) : (
-                              "오류"
-                            )}
-                          </div>
-                        </div>
+                    <div
+                      key={idx}
+                      onClick={() => handleDocClick(doc)}
+                      className="cursor-pointer p-3 bg-white hover:bg-green-50 border rounded-md shadow-sm"
+                    >
+                      <div>
+                        <strong>이름:</strong> {doc.userName}
+                      </div>
+                      <div>
+                        <strong>연락처:</strong> {getPhone(doc.phone)}
+                      </div>
+                      <div>
+                        <strong>고객사:</strong> {doc.companyCode || "미입력"}
                       </div>
                     </div>
                   ))}
@@ -670,15 +640,12 @@ function PointListTest() {
                     <div className="col-span-2">면접일시</div>
                     <div className="col-span-2">지급여부</div>
                   </div>
+
                   {list.map((doc, idx) => (
                     <div
                       key={idx}
-                      className={`grid grid-cols-8 px-2 py-4 gap-x-4 text-center border
-        ${
-          doc.status === "S"
-            ? "bg-teal-50 hover:bg-teal-100"
-            : "bg-gray-50 hover:bg-gray-100"
-        }`}
+                      className={`grid grid-cols-8 px-2 py-4 gap-x-4 text-center border cursor-pointer hover:bg-green-50`}
+                      onClick={() => handleDocClick(doc)}
                     >
                       <div className="flex flex-col justify-center">
                         {doc.companyCode || "미입력"}
@@ -697,48 +664,15 @@ function PointListTest() {
                       </div>
                       <div className="flex flex-col justify-center col-span-2">
                         {doc.status === "S" ? (
-                          <div className="flex justify-center items-center gap-2">
-                            <span className="text-blue-500">지급대기</span>
-                            <button
-                              className="text-sm bg-blue-500 hover:bg-blue-700 text-white px-2 py-1 rounded"
-                              onClick={async () => {
-                                const name = doc.userName;
-                                const phone = getPhone(doc.phone);
-                                try {
-                                  const res = await fetch(
-                                    `/adapi/check?name=${encodeURIComponent(
-                                      name
-                                    )}&phone=${encodeURIComponent(phone)}`
-                                  );
-                                  const data = await res.json();
-                                  if (data.exists === true) {
-                                    checkDocs(doc, true);
-                                  } else {
-                                    alert(
-                                      "해당 지원자는 면접 대상자가 아닙니다."
-                                    );
-                                  }
-                                } catch (err) {
-                                  console.error("검사 요청 실패:", err);
-                                  alert(
-                                    "서버 오류로 대상자 확인에 실패했습니다."
-                                  );
-                                }
-                              }}
-                            >
-                              추가
-                            </button>
-                          </div>
+                          <span className="text-blue-500">지급대기</span>
                         ) : doc.status === "N" ? (
-                          <div>
-                            <span className="text-red-500">지급불가</span> (
-                            {doc.result})
-                          </div>
+                          <span className="text-red-500">
+                            지급불가 ({doc.result})
+                          </span>
                         ) : doc.status === "Y" ? (
-                          <div>
-                            <span className="text-green-500">지급완료</span> (
-                            {Number(doc.result).toLocaleString()}p)
-                          </div>
+                          <span className="text-green-500">
+                            지급완료 ({Number(doc.result).toLocaleString()}p)
+                          </span>
                         ) : (
                           "오류"
                         )}
@@ -765,80 +699,22 @@ function PointListTest() {
             sType={sType}
           />
 
-          {selectedDocs.length > 0 && (
-            <>
-              <div className="fixed container bottom-0 left-1/2 -translate-x-1/2 bg-white p-3 rounded-t-xl drop-shadow-xl">
-                <div className="test-xl lg:text-2xl font-medium text-left">
-                  포인트 지급(차감)대상
-                </div>
-                <div className="mt-2 flex flex-row flex-wrap gap-2">
-                  {selectedDocs.map((doc, idx) => (
-                    <div
-                      key={idx}
-                      className="p-2 bg-yellow-50 rounded-xl flex flex-col gap-2 justify-center"
-                    >
-                      <p>이름 : {doc.name}</p>
-                      <p>연락처 : {getPhone(doc.phone)}</p>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-2 grid grid-cols-1 lg:grid-cols-3 gap-2">
-                  <div className="grid grid-cols-1 gap-2 bg-blue-50 p-2">
-                    <div className="text-lg font-neoextra">포인트 지급처리</div>
-                    <input
-                      type="number"
-                      className="p-2 bg-white border font-medium"
-                      value={point}
-                      onChange={e => setPoint(e.currentTarget.value)}
-                      onBlur={e => setPoint(e.currentTarget.value)}
-                    />
-                    <button
-                      className="transition duration-150 ease-out p-2 bg-sky-500 hover:bg-sky-700 text-white rounded-lg font-medium hover:animate-wiggle"
-                      onClick={e => pointSubmit(true)}
-                    >
-                      지급처리
-                    </button>
+          {selectedDocs && (
+            <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 shadow-md">
+              <div className="font-bold mb-2">✅ 면접 대상자 정보</div>
+              <div className="mb-2">이름: {selectedDocs.name}</div>
+              <div className="mb-2">연락처: {getPhone(selectedDocs.phone)}</div>
+              <div className="space-y-2">
+                {selectedDocs.info.map((item, idx) => (
+                  <div key={idx} className="border p-2 rounded-md bg-gray-50">
+                    <div>면접상태: {item.apply_status}</div>
+                    <div>면접시간: {item.interview_time}</div>
+                    <div>고객사명: {item.com_name}</div>
+                    <div>지점명: {item.com_area}</div>
                   </div>
-                  <div className="grid grid-cols-1 gap-2 bg-rose-50 p-2">
-                    <div className="text-lg font-neoextra">
-                      포인트 지급불가처리
-                    </div>
-                    <select
-                      className="p-2 bg-white border font-medium"
-                      onChange={handleChangeSelect}
-                      value={reason}
-                    >
-                      <option value="">불가사유를 선택해 주세요</option>
-                      <option value="중복신청">중복신청</option>
-                      <option value="면접기록없음">면접기록없음</option>
-                      <option value="지점에서지급">지점에서지급</option>
-                    </select>
-                    <button
-                      className="transition duration-150 ease-out p-2  border bg-red-500 text-white font-medium rounded-lg  hover:bg-red-700  hover:animate-wiggle"
-                      onClick={e => pointSubmit(false)}
-                    >
-                      지급불가처리
-                    </button>
-                  </div>
-                  <div className="grid grid-cols-1 gap-2 bg-emerald-50 p-2">
-                    <div className="text-lg font-neoextra">고객사 입력</div>
-                    <input
-                      ref={companyRef}
-                      type="text"
-                      className="p-2 bg-white border font-medium"
-                      maxLength={4}
-                      value={company}
-                      onKeyDown={handleNumberKeyDown}
-                      onChange={e => setCompany(e.currentTarget.value)}
-                      onBlur={e => setCompany(e.currentTarget.value)}
-                    />
-                    <div className="transition duration-150 ease-out p-2 bg-gray-500 text-white rounded-lg font-medium text-center">
-                      지급처리 or 지급불가처리를 눌러주세요
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
-            </>
+            </div>
           )}
         </>
       ) : (

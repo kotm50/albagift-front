@@ -647,7 +647,11 @@ function PointListTest() {
                   {list.map((doc, idx) => (
                     <div
                       key={idx}
-                      className={`grid grid-cols-8 px-2 py-4 gap-x-4 text-center border cursor-pointer hover:bg-green-50`}
+                      className={`grid grid-cols-8 px-2 py-4 gap-x-4 text-center border cursor-pointer ${
+                        doc.status === "S"
+                          ? "bg-teal-50 hover:bg-teal-200"
+                          : "bg-gray-50 hover:bg-gray-200"
+                      }`}
                       onClick={() => handleDocClick(doc)}
                     >
                       <div className="flex flex-col justify-center">

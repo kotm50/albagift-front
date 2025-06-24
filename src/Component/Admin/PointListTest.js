@@ -204,7 +204,7 @@ function PointListTest() {
     }
     const postList = [
       {
-        postId: selectedDocsId, // 문자열이어야 함
+        postId: selectedDocsId[0], // 문자열이어야 함
         boardId: selectedDocs?.info?.[0]?.boardId || "B02", // boardId 추출 필요
         companyCode: company,
         status: b ? "Y" : "N",

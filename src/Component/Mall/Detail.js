@@ -192,7 +192,7 @@ function Detail() {
         headers: { Authorization: user.accessToken },
       })
       .then(async res => {
-        //console.log(res);
+        console.log(res);
         if (res.data.code === "E999") {
           logoutAlert(null, null, dispatch, clearUser, navi, user);
           setGoods("");

@@ -585,85 +585,90 @@ function PointList() {
               {listType === 1 ? (
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-2 mt-2 bg-white p-2 container mx-auto">
                   {list.map((doc, idx) => (
-                    <div key={idx} className="relative">
+                    <div key={idx}>
                       <input
                         type="checkbox"
                         value={doc.postId}
-                        className="hidden"
-                        id={`checkbox-${doc.postId}`}
+                        className="hidden peer"
+                        id={doc.postId}
+                        onChange={e => checkDocs(doc, e.target.checked)}
                         disabled={doc.status !== "S"}
-                        checked={selectedDocs.some(
-                          item => item.postId === doc.postId
-                        )}
-                        readOnly
                       />
-                      <div
+                      <label
+                        htmlFor={doc.postId}
                         className={`block p-2 ${
                           doc.status === "S"
-                            ? "bg-teal-50 text-black border-2 border-teal-200"
-                            : "bg-gray-50 text-black border-2 border-gray-200"
-                        } rounded-lg`}
+                            ? "bg-teal-50 hover:bg-teal-200 text-black rounded-lg border-2 border-teal-50 hover:border-teal-200 peer-checked:border-teal-500 peer-checked:hover:border-teal-500"
+                            : "bg-gray-50 hover:bg-gray-200 text-black rounded-lg border-2 border-gray-50 hover:border-gray-200 peer-checked:border-gray-500 peer-checked:hover:border-gray-500"
+                        }`}
                       >
-                        {/* ... 기존 고객사/이름/연락처 등 생략 ... */}
-
-                        {/* 지급여부 영역 */}
                         <div className="grid grid-cols-3 gap-2 mb-2">
-                          <div className="font-medium text-right">지급여부</div>
-                          <div className="col-span-2 flex flex-wrap items-center gap-2">
+                          <div className="font-medium flex flex-col justify-center text-right">
+                            고객사
+                          </div>
+                          <div className="font-normal col-span-2 flex flex-col justify-center">
+                            {doc.companyCode ? doc.companyCode : "미입력"}
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-2 mb-2">
+                          <div className="font-medium flex flex-col justify-center text-right">
+                            이름
+                          </div>
+                          <div className="font-normal col-span-2 flex flex-col justify-center">
+                            {doc.userName}
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-2 mb-2">
+                          <div className="font-medium flex flex-col justify-center text-right">
+                            연락처
+                          </div>
+                          <div className="font-normal col-span-2 flex flex-col justify-center">
+                            {doc.phone ? getPhone(doc.phone) : " "}
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-2 mb-2">
+                          <div className="font-medium flex flex-col justify-center text-right">
+                            면접일시
+                          </div>
+                          <div
+                            className="font-normal col-span-2 flex flex-col justify-center"
+                            title={doc.intvDate}
+                          >
+                            {doc.intvDate} {doc.intvTime}시 {doc.intvMin}분
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-2 mb-2">
+                          <div className="font-medium flex flex-col justify-center text-right">
+                            지급여부
+                          </div>
+                          <div
+                            className="font-normal col-span-2 flex flex-col justify-center"
+                            title="지급여부"
+                          >
                             {doc.status === "S" ? (
-                              <>
-                                <span className="text-blue-500">지급대기</span>
-                                <button
-                                  className="text-sm bg-blue-500 hover:bg-blue-700 text-white px-2 py-1 rounded"
-                                  onClick={async () => {
-                                    const name = doc.userName;
-                                    const phone = doc.phone;
-                                    try {
-                                      const res = await fetch(
-                                        `/adapi/check?name=${encodeURIComponent(
-                                          name
-                                        )}&phone=${encodeURIComponent(phone)}`
-                                      );
-                                      const data = await res.json();
-                                      if (data.exists === true) {
-                                        checkDocs(doc, true);
-                                      } else {
-                                        alert(
-                                          "해당 지원자는 면접 대상자가 아닙니다."
-                                        );
-                                      }
-                                    } catch (err) {
-                                      console.error("검사 요청 실패:", err);
-                                      alert(
-                                        "서버 오류로 대상자 확인에 실패했습니다."
-                                      );
-                                    }
-                                  }}
-                                >
-                                  추가
-                                </button>
-                              </>
+                              <span className="text-blue-500">지급대기</span>
                             ) : doc.status === "N" ? (
-                              <span className="text-red-500">
-                                지급불가 ({doc.result})
-                              </span>
+                              <div>
+                                <span className="text-red-500">지급불가</span> (
+                                {doc.result})
+                              </div>
                             ) : doc.status === "Y" ? (
-                              <span className="text-green-500">
-                                지급완료 ({Number(doc.result).toLocaleString()}
-                                p)
-                              </span>
+                              <div>
+                                <span className="text-green-500">지급완료</span>{" "}
+                                ({Number(doc.result).toLocaleString()}p)
+                              </div>
                             ) : (
                               "오류"
                             )}
                           </div>
                         </div>
-                      </div>
+                      </label>
                     </div>
                   ))}
                 </div>
               ) : (
                 <div className="container mx-auto grid grid-cols-1 divide-y">
-                  <div className="grid grid-cols-8 px-2 py-4 border gap-x-4 text-center bg-gray-100">
+                  <div className="grid grid-cols-8 px-2 py-4 border gap-x-4 text-center">
                     <div>고객사</div>
                     <div>이름</div>
                     <div className="col-span-2">연락처</div>
@@ -671,78 +676,59 @@ function PointList() {
                     <div className="col-span-2">지급여부</div>
                   </div>
                   {list.map((doc, idx) => (
-                    <div
-                      key={idx}
-                      className={`grid grid-cols-8 px-2 py-4 gap-x-4 text-center border
-        ${
-          doc.status === "S"
-            ? "bg-teal-50 hover:bg-teal-100"
-            : "bg-gray-50 hover:bg-gray-100"
-        }`}
-                    >
-                      <div className="flex flex-col justify-center">
-                        {doc.companyCode || "미입력"}
-                      </div>
-                      <div className="flex flex-col justify-center">
-                        {doc.userName}
-                      </div>
-                      <div className="flex flex-col justify-center col-span-2">
-                        {doc.phone ? getPhone(doc.phone) : " "}
-                      </div>
-                      <div
-                        className="flex flex-col justify-center col-span-2"
-                        title={doc.intvDate}
+                    <div key={idx}>
+                      <input
+                        type="checkbox"
+                        value={doc.postId}
+                        className="hidden peer"
+                        id={doc.postId}
+                        onChange={e => checkDocs(doc, e.target.checked)}
+                        disabled={doc.status !== "S"}
+                      />
+                      <label
+                        htmlFor={doc.postId}
+                        className={`block p-2 ${
+                          doc.status === "S"
+                            ? "bg-teal-50 hover:bg-teal-200 text-black border-2 border-teal-50 hover:border-teal-200 peer-checked:border-teal-500 peer-checked:hover:border-teal-500"
+                            : "bg-gray-50 hover:bg-gray-200 text-black border-2 border-gray-50 hover:border-gray-200 peer-checked:border-gray-500 peer-checked:hover:border-gray-500"
+                        } grid grid-cols-8 px-2 py-4 gap-x-4 text-center`}
                       >
-                        {doc.intvDate} {doc.intvTime}시 {doc.intvMin}분
-                      </div>
-                      <div className="flex flex-col justify-center col-span-2">
-                        {doc.status === "S" ? (
-                          <div className="flex justify-center items-center gap-2">
+                        <div className="font-normal flex flex-col justify-center">
+                          {doc.companyCode ? doc.companyCode : "미입력"}
+                        </div>
+                        <div className="font-normal flex flex-col justify-center">
+                          {doc.userName}
+                        </div>
+                        <div className="font-normal flex flex-col justify-center col-span-2">
+                          {doc.phone ? getPhone(doc.phone) : " "}
+                        </div>
+                        <div
+                          className="font-normal flex flex-col justify-center col-span-2"
+                          title={doc.intvDate}
+                        >
+                          {doc.intvDate} {doc.intvTime}시 {doc.intvMin}분
+                        </div>
+                        <div
+                          className="font-normal flex flex-col justify-center col-span-2"
+                          title="지급여부"
+                        >
+                          {doc.status === "S" ? (
                             <span className="text-blue-500">지급대기</span>
-                            <button
-                              className="text-sm bg-blue-500 hover:bg-blue-700 text-white px-2 py-1 rounded"
-                              onClick={async () => {
-                                const name = doc.userName;
-                                const phone = doc.phone;
-                                try {
-                                  const res = await fetch(
-                                    `/adapi/check?name=${encodeURIComponent(
-                                      name
-                                    )}&phone=${encodeURIComponent(phone)}`
-                                  );
-                                  const data = await res.json();
-                                  if (data.exists === true) {
-                                    checkDocs(doc, true);
-                                  } else {
-                                    alert(
-                                      "해당 지원자는 면접 대상자가 아닙니다."
-                                    );
-                                  }
-                                } catch (err) {
-                                  console.error("검사 요청 실패:", err);
-                                  alert(
-                                    "서버 오류로 대상자 확인에 실패했습니다."
-                                  );
-                                }
-                              }}
-                            >
-                              추가
-                            </button>
-                          </div>
-                        ) : doc.status === "N" ? (
-                          <div>
-                            <span className="text-red-500">지급불가</span> (
-                            {doc.result})
-                          </div>
-                        ) : doc.status === "Y" ? (
-                          <div>
-                            <span className="text-green-500">지급완료</span> (
-                            {Number(doc.result).toLocaleString()}p)
-                          </div>
-                        ) : (
-                          "오류"
-                        )}
-                      </div>
+                          ) : doc.status === "N" ? (
+                            <div>
+                              <span className="text-red-500">지급불가</span> (
+                              {doc.result})
+                            </div>
+                          ) : doc.status === "Y" ? (
+                            <div>
+                              <span className="text-green-500">지급완료</span> (
+                              {Number(doc.result).toLocaleString()}p)
+                            </div>
+                          ) : (
+                            "오류"
+                          )}
+                        </div>
+                      </label>
                     </div>
                   ))}
                 </div>

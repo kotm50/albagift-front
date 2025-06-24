@@ -453,7 +453,7 @@ function PointListTest() {
   const handleSearchType = e => {
     setSearchType(e.currentTarget.value);
   };
-
+  /*
   const payments = (p, b) => {
     let payArr = [];
 
@@ -470,6 +470,7 @@ function PointListTest() {
     });
     return payArr;
   };
+  */
 
   const handleDocClick = async doc => {
     try {

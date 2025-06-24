@@ -205,7 +205,7 @@ function PointListTest() {
       });
       return false;
     }
-    const postList = await payments([selectedDocsId], b);
+    const postList = await payments(selectedDocsId, b);
     const request = {
       postList: postList,
     };

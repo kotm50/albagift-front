@@ -203,7 +203,6 @@ function PointList() {
     const request = {
       postList: postList,
     };
-    console.log(request);
     await axiosInstance
       .patch("/api/v1/board/admin/paymt/sts", request, {
         headers: { Authorization: user.accessToken },

@@ -208,7 +208,7 @@ function PointListTest() {
         boardId: selectedDocs?.info?.[0]?.boardId || "B02", // boardId 추출 필요
         companyCode: company,
         status: b ? "Y" : "N",
-        result: b ? undefined : reason,
+        result: b ? Number(point) : reason,
       },
     ];
 

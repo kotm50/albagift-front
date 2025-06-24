@@ -17,8 +17,7 @@ import Pagenate from "../Layout/Pagenate";
 import AlertModal from "../Layout/AlertModal";
 import Sorry from "../doc/Sorry";
 import { logoutAlert } from "../LogoutUtil";
-import axios from "axios";
-//import axiosInstance from "../../Api/axiosInstance";
+import axiosInstance from "../../Api/axiosInstance";
 
 import { MdMenu, MdOutlineGridOn } from "react-icons/md";
 
@@ -204,17 +203,16 @@ function PointListTest() {
     }
     const postList = [
       {
-        postId: selectedDocsId,
+        postId: selectedDocsId, // 문자열이어야 함
+        boardId: selectedDocs?.info?.[0]?.boardId || "B02", // boardId 추출 필요
         companyCode: company,
-        payPoint: b ? point : 0,
-        payYn: b,
-        reason: b ? null : reason,
+        status: b ? "Y" : "N",
+        result: b ? undefined : reason,
       },
     ];
 
     const request = { postList };
-    console.log(request);
-    await axios
+    await axiosInstance
       .patch("/api/v1/board/admin/paymt/sts", request, {
         headers: { Authorization: user.accessToken },
       })
@@ -269,7 +267,7 @@ function PointListTest() {
     if (t !== "") {
       data.searchType = Number(t);
     }
-    await axios
+    await axiosInstance
       .get("/api/v1/board/admin/posts", {
         params: data,
         headers: {

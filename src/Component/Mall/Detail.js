@@ -158,6 +158,7 @@ function Detail() {
   };
 
   const doBuy = async () => {
+    /*
     const b = false;
     if (b === false) {
       confirmAlert({
@@ -175,6 +176,7 @@ function Detail() {
       });
       return false;
     }
+      */
 
     const currentDomain = window.location.href;
     let data = {

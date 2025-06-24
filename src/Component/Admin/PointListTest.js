@@ -205,10 +205,17 @@ function PointListTest() {
       });
       return false;
     }
-    const postList = await payments(selectedDocsId, b);
-    const request = {
-      postList: postList,
-    };
+    const postList = [
+      {
+        postId: selectedDocsId,
+        companyCode: company,
+        payPoint: b ? point : 0,
+        payYn: b,
+        reason: b ? null : reason,
+      },
+    ];
+
+    const request = { postList };
     await axiosInstance
       .patch("/api/v1/board/admin/paymt/sts", request, {
         headers: { Authorization: user.accessToken },

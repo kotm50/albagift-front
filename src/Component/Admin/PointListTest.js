@@ -707,7 +707,7 @@ function PointListTest() {
           />
 
           {selectedDocs && (
-            <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 shadow-md z-50">
+            <div className="fixed container left-1/2 -translate-x-1/2 bottom-0 bg-white border-t p-4 rounded-t-xl drop-shadow-xl z-50">
               <div className="flex justify-between items-center mb-4">
                 <div className="font-bold text-lg">✅ 면접 대상자 정보</div>
                 <button

@@ -153,7 +153,7 @@ function PointListTest() {
     }
   };
 
-  const pointSubmit = async b => {
+  const pointSubmit = async (b, d) => {
     if (b && point === 0) {
       confirmAlert({
         customUI: ({ onClose }) => {
@@ -186,6 +186,37 @@ function PointListTest() {
       });
       return false;
     }
+
+    if (b) {
+      const checkLimit = await axios.post(
+        "/api/hdd/check-point-limit",
+        {
+          user_name: selectedDocs?.phone || "", // 이름
+          phone: selectedDocs?.phone || "", // 연락처
+        },
+        {
+          headers: { Authorization: user.accessToken },
+        }
+      );
+
+      if (checkLimit?.data?.total_today + Number(point) > 200000) {
+        confirmAlert({
+          customUI: ({ onClose }) => {
+            return (
+              <AlertModal
+                onClose={onClose}
+                title={"지급 제한"}
+                message={"오늘 지급한도를 넘겼습니다. 다음에 다시 시도하세요"}
+                type={"alert"}
+                yes={"확인"}
+              />
+            );
+          },
+        });
+        return false;
+      }
+    }
+
     if (company === "" || company.length < 4) {
       confirmAlert({
         customUI: ({ onClose }) => {
@@ -224,8 +255,20 @@ function PointListTest() {
       .patch("/api/v1/board/admin/paymt/sts", request, {
         headers: { Authorization: user.accessToken },
       })
-      .then(res => {
+      .then(async res => {
         if (res.data.code === "C000") {
+          // 지급 이력 저장 API 호출
+          await axios.post(
+            "/adapi/point-history/add",
+            {
+              user_name: d.name,
+              phone: d.phone,
+              point: pointNumber,
+            },
+            {
+              headers: { Authorization: user.accessToken },
+            }
+          );
           confirmAlert({
             customUI: ({ onClose }) => {
               return (

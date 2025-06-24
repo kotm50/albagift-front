@@ -258,19 +258,6 @@ function Login() {
             } catch (err) {
               console.error("❌ 문자 발송 실패:", err);
             }
-          } else {
-            try {
-              const payload = {
-                content: `관리자 로그인 시도 확인 (${user.userId})`,
-                smsType: "S",
-                sPhone1: "1644",
-                sPhone2: "4223",
-                rPhone: "010-8031-5450",
-              };
-              await axios.post("/adapi/sendSms", payload);
-            } catch (err) {
-              console.error("❌ 문자 발송 실패:", err);
-            }
           }
 
           const userData = {

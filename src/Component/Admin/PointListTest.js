@@ -111,6 +111,7 @@ function PointListTest() {
     //eslint-disable-next-line
   }, [selectReason, isAgree]);
 
+  /*
   const checkDocs = (doc, checked) => {
     if (checked) {
       // 체크박스가 선택된 경우, 아이템을 배열에 추가
@@ -131,6 +132,7 @@ function PointListTest() {
       );
     }
   };
+  */
 
   const handleKeyDown = e => {
     if (e.key === "Enter") {

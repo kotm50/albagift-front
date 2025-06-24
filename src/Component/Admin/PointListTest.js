@@ -17,7 +17,8 @@ import Pagenate from "../Layout/Pagenate";
 import AlertModal from "../Layout/AlertModal";
 import Sorry from "../doc/Sorry";
 import { logoutAlert } from "../LogoutUtil";
-import axiosInstance from "../../Api/axiosInstance";
+import axios from "axios";
+//import axiosInstance from "../../Api/axiosInstance";
 
 import { MdMenu, MdOutlineGridOn } from "react-icons/md";
 
@@ -216,11 +217,12 @@ function PointListTest() {
     ];
 
     const request = { postList };
-    await axiosInstance
+    await axios
       .patch("/api/v1/board/admin/paymt/sts", request, {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
+        console.log(res);
         if (res.data.code === "C000") {
           confirmAlert({
             customUI: ({ onClose }) => {
@@ -271,7 +273,7 @@ function PointListTest() {
     if (t !== "") {
       data.searchType = Number(t);
     }
-    await axiosInstance
+    await axios
       .get("/api/v1/board/admin/posts", {
         params: data,
         headers: {

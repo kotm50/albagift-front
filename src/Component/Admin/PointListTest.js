@@ -202,13 +202,19 @@ function PointListTest() {
       });
       return false;
     }
+
+    let pointNumber = Number(point);
+    if (pointNumber > 50000) {
+      pointNumber = 50000; // 최대 지급 포인트 제한
+    }
+
     const postList = [
       {
         postId: selectedDocsId[0], // 문자열이어야 함
         boardId: selectedDocs?.info?.[0]?.boardId || "B02", // boardId 추출 필요
         companyCode: company,
         status: b ? "Y" : "N",
-        result: b ? Number(point) : reason,
+        result: b ? pointNumber : reason,
       },
     ];
 
@@ -758,7 +764,14 @@ function PointListTest() {
                     className="p-2 bg-white border font-medium"
                     value={point}
                     onChange={e => setPoint(e.currentTarget.value)}
-                    onBlur={e => setPoint(e.currentTarget.value)}
+                    onBlur={e => {
+                      if (Number(e.currentTarget.value) > 50000) {
+                        setPoint(50000);
+                      } else {
+                        setPoint(Number(e.currentTarget.value));
+                      }
+                    }}
+                    maxLength="5"
                   />
                   <button
                     className="transition duration-150 ease-out p-2 bg-sky-500 hover:bg-sky-700 text-white rounded-lg font-medium hover:animate-wiggle"

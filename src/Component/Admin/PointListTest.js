@@ -29,7 +29,7 @@ function PointListTest() {
   const [list, setList] = useState([]);
   const user = useSelector(state => state.user);
   const [selectedDocs, setSelectedDocs] = useState(null);
-  const [selectedDocsId, setSelectedDocsId] = useState([]);
+  const [selectedDocsId, setSelectedDocsId] = useState(null);
   const location = useLocation();
   const pathName = location.pathname;
   const parsed = queryString.parse(location.search);
@@ -227,8 +227,8 @@ function PointListTest() {
         }
         loadList(page, keyword, startDate, endDate, select, agree, sType);
         setPoint(0);
-        setSelectedDocs([]);
-        setSelectedDocsId([]);
+        setSelectedDocs(null);
+        setSelectedDocsId(null);
       })
       .catch(e => {
         console.log(e);
@@ -483,6 +483,7 @@ function PointListTest() {
         phone: doc.phone,
         info: data.matched,
       });
+      setSelectedDocsId([doc.postId]); // ← 이거 빠지면 지급처리 실패
     } catch (err) {
       console.error("검사 실패:", err);
       alert("서버 오류로 확인에 실패했습니다.");
@@ -706,7 +707,10 @@ function PointListTest() {
               <div className="flex justify-between items-center mb-4">
                 <div className="font-bold text-lg">✅ 면접 대상자 정보</div>
                 <button
-                  onClick={() => setSelectedDocs(null)}
+                  onClick={() => {
+                    setSelectedDocs(null);
+                    setSelectedDocsId(null);
+                  }}
                   className="text-sm bg-gray-300 hover:bg-gray-400 text-black px-4 py-1 rounded"
                 >
                   닫기
@@ -718,11 +722,14 @@ function PointListTest() {
 
               <div className="space-y-2 mb-4">
                 {selectedDocs.info.map((item, idx) => (
-                  <div key={idx} className="border p-2 rounded-md bg-gray-50">
-                    <div>면접상태: {item.apply_status}</div>
-                    <div>면접시간: {item.interview_time}</div>
-                    <div>고객사명: {item.com_name}</div>
-                    <div>지점명: {item.com_area}</div>
+                  <div
+                    key={idx}
+                    className="border p-2 rounded-md bg-gray-50 flex flex-col gap-x-2"
+                  >
+                    <div>
+                      {item.apply_status} | {item.interview_time} |{" "}
+                      {item.com_name} {item.com_area}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -744,6 +751,7 @@ function PointListTest() {
                     onClick={() => {
                       pointSubmit(true, selectedDocs);
                       setSelectedDocs(null);
+                      setSelectedDocsId(null);
                     }}
                   >
                     지급처리
@@ -770,6 +778,7 @@ function PointListTest() {
                     onClick={() => {
                       pointSubmit(false, selectedDocs);
                       setSelectedDocs(null);
+                      setSelectedDocsId(null);
                     }}
                   >
                     지급불가처리

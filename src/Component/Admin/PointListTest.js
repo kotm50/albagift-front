@@ -58,10 +58,6 @@ function PointListTest() {
   const [listType, setListType] = useState(0);
 
   useEffect(() => {
-    console.log(user);
-  }, [user]);
-
-  useEffect(() => {
     setList([]);
     setTotalPage(1);
     setPagenate([]);
@@ -217,12 +213,12 @@ function PointListTest() {
     ];
 
     const request = { postList };
+    console.log(request);
     await axios
       .patch("/api/v1/board/admin/paymt/sts", request, {
         headers: { Authorization: user.accessToken },
       })
       .then(res => {
-        console.log(res);
         if (res.data.code === "C000") {
           confirmAlert({
             customUI: ({ onClose }) => {

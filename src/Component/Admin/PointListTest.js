@@ -57,6 +57,10 @@ function PointListTest() {
   const [listType, setListType] = useState(0);
 
   useEffect(() => {
+    console.log(user);
+  }, [user]);
+
+  useEffect(() => {
     setList([]);
     setTotalPage(1);
     setPagenate([]);

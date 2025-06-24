@@ -700,11 +700,21 @@ function PointListTest() {
           />
 
           {selectedDocs && (
-            <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 shadow-md">
-              <div className="font-bold mb-2">✅ 면접 대상자 정보</div>
+            <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 shadow-md z-50">
+              <div className="flex justify-between items-center mb-4">
+                <div className="font-bold text-lg">✅ 면접 대상자 정보</div>
+                <button
+                  onClick={() => setSelectedDocs(null)}
+                  className="text-sm bg-gray-300 hover:bg-gray-400 text-black px-4 py-1 rounded"
+                >
+                  닫기
+                </button>
+              </div>
+
               <div className="mb-2">이름: {selectedDocs.name}</div>
-              <div className="mb-2">연락처: {getPhone(selectedDocs.phone)}</div>
-              <div className="space-y-2">
+              <div className="mb-4">연락처: {getPhone(selectedDocs.phone)}</div>
+
+              <div className="space-y-2 mb-4">
                 {selectedDocs.info.map((item, idx) => (
                   <div key={idx} className="border p-2 rounded-md bg-gray-50">
                     <div>면접상태: {item.apply_status}</div>
@@ -713,6 +723,74 @@ function PointListTest() {
                     <div>지점명: {item.com_area}</div>
                   </div>
                 ))}
+              </div>
+
+              {/* ✅ 지급/불가 처리 및 고객사 입력 UI */}
+              <div className="mt-2 grid grid-cols-1 lg:grid-cols-3 gap-2">
+                {/* 포인트 지급처리 */}
+                <div className="grid grid-cols-1 gap-2 bg-blue-50 p-2">
+                  <div className="text-lg font-neoextra">포인트 지급처리</div>
+                  <input
+                    type="number"
+                    className="p-2 bg-white border font-medium"
+                    value={point}
+                    onChange={e => setPoint(e.currentTarget.value)}
+                    onBlur={e => setPoint(e.currentTarget.value)}
+                  />
+                  <button
+                    className="transition duration-150 ease-out p-2 bg-sky-500 hover:bg-sky-700 text-white rounded-lg font-medium hover:animate-wiggle"
+                    onClick={() => {
+                      pointSubmit(true, selectedDocs);
+                      setSelectedDocs(null);
+                    }}
+                  >
+                    지급처리
+                  </button>
+                </div>
+
+                {/* 포인트 지급불가처리 */}
+                <div className="grid grid-cols-1 gap-2 bg-rose-50 p-2">
+                  <div className="text-lg font-neoextra">
+                    포인트 지급불가처리
+                  </div>
+                  <select
+                    className="p-2 bg-white border font-medium"
+                    onChange={handleChangeSelect}
+                    value={reason}
+                  >
+                    <option value="">불가사유를 선택해 주세요</option>
+                    <option value="중복신청">중복신청</option>
+                    <option value="면접기록없음">면접기록없음</option>
+                    <option value="지점에서지급">지점에서지급</option>
+                  </select>
+                  <button
+                    className="transition duration-150 ease-out p-2 bg-red-500 text-white font-medium rounded-lg hover:bg-red-700 hover:animate-wiggle"
+                    onClick={() => {
+                      pointSubmit(false, selectedDocs);
+                      setSelectedDocs(null);
+                    }}
+                  >
+                    지급불가처리
+                  </button>
+                </div>
+
+                {/* 고객사 코드 입력 */}
+                <div className="grid grid-cols-1 gap-2 bg-emerald-50 p-2">
+                  <div className="text-lg font-neoextra">고객사 입력</div>
+                  <input
+                    ref={companyRef}
+                    type="text"
+                    className="p-2 bg-white border font-medium"
+                    maxLength={4}
+                    value={company}
+                    onKeyDown={handleNumberKeyDown}
+                    onChange={e => setCompany(e.currentTarget.value)}
+                    onBlur={e => setCompany(e.currentTarget.value)}
+                  />
+                  <div className="transition duration-150 ease-out p-2 bg-gray-500 text-white rounded-lg font-medium text-center">
+                    지급처리 or 지급불가처리를 눌러주세요
+                  </div>
+                </div>
               </div>
             </div>
           )}

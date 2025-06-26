@@ -1,18 +1,28 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { clearUser } from "../Reducer/userSlice";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../Api/axiosInstance";
+
+import { logout } from "./LogoutUtil";
 
 function Main() {
   const user = useSelector(state => state.user);
+  const navi = useNavigate();
+  const dispatch = useDispatch();
   const [userInfo, setUserInfo] = useState({});
   const [selectedGift, setSelectedGift] = useState(null);
 
   useEffect(() => {
     if (user.userId) {
-      getUserInfo();
+      if (user.admin) {
+        navi("/admin");
+        return;
+      } else {
+        getUserInfo();
+      }
     }
     //eslint-disable-next-line
   }, []);
@@ -79,7 +89,7 @@ function Main() {
           <span className="text-blue-500">"GS편의점 상품권"</span>
           또는 <span className="text-green-700">"스타벅스 교환권"</span>을
           지급해드리겠습니다.
-          <div className="bg-gray-100 p-2 rounded-lg border border-gray-300 mt-2 w-[90%] max-w-[600px] mx-auto">
+          <div className="bg-gray-100 p-2 rounded-lg border border-gray-300 mt-4 w-[90%] max-w-[600px] mx-auto">
             {!user.userId && (
               <>
                 <p className="text-center">로그인이 필요합니다</p>
@@ -160,6 +170,14 @@ function Main() {
               </>
             )}
           </div>
+          {user.userId && (
+            <button
+              className="block font-neobold p-2 border border-gray-300 text-gray-500 hover:text-gray-700 hover:border-gray-700 hover:bg-gray-100 rounded lg:col-span-1 col-span-2 mx-auto mt-4"
+              onClick={e => logout(dispatch, clearUser, navi, user)}
+            >
+              로그아웃
+            </button>
+          )}
         </div>
       </div>
     </>

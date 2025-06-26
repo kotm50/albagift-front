@@ -141,6 +141,7 @@ function Join() {
     if (marketingAgree) {
       data.agreeYn = "Y";
     }
+    console.log(data);
     let url = "/api/v1/user/join";
     await axiosInstance
       .post(url, data)

@@ -237,27 +237,31 @@ function Login() {
       })
       .then(async res => {
         if (res.data.code === "A100") {
-          const now = new Date();
-          const hour = now.getHours();
-          const day = now.getDay(); // 0=일요일, 6=토요일
+          if (user.userId === "kotiadmin") {
+            const now = new Date();
+            const hour = now.getHours();
+            const day = now.getDay(); // 0=일요일, 6=토요일
 
-          const isWeekend = day === 0 || day === 6;
-          const isOutOfHours = hour >= 19 || hour < 9;
+            const isWeekend = day === 0 || day === 6;
+            const isOutOfHours = hour >= 19 || hour < 9;
 
-          // ✅ 조건: 주말 또는 평일 19시~9시 사이
-          if (isWeekend || isOutOfHours) {
-            try {
-              const payload = {
-                content: `관리자 로그인 시도 확인 (${user.userId})`,
-                smsType: "S",
-                sPhone1: "1644",
-                sPhone2: "4223",
-                rPhone: "010-8031-5450",
-              };
-              await axios.post("/adapi/sendSms", payload);
-            } catch (err) {
-              console.error("❌ 문자 발송 실패:", err);
+            // ✅ 조건: 주말 또는 평일 19시~9시 사이
+            if (isWeekend || isOutOfHours) {
+              try {
+                const payload = {
+                  content: `관리자 로그인 시도 확인 (${user.userId})`,
+                  smsType: "S",
+                  sPhone1: "1644",
+                  sPhone2: "4223",
+                  rPhone: "010-8031-5450",
+                };
+                await axios.post("/adapi/sendSms", payload);
+              } catch (err) {
+                console.error("❌ 문자 발송 실패:", err);
+              }
             }
+          } else {
+            return false;
           }
 
           const userData = {

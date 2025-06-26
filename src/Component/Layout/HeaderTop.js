@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import logo from "../../Asset/albaseonmul.svg";
-import employlogo from "../../Asset/employlogo.svg";
-import employlogoM from "../../Asset/employlogo_m.png";
 import mLogo from "../../Asset/aslogo-m.png";
-
-import SearchArea from "./SearchArea";
 
 function HeaderTop() {
   const thisLocation = useLocation();
@@ -36,13 +32,6 @@ function HeaderTop() {
                   alt="알바선물 로고 데스크탑"
                 />
               </Link>
-              <Link to="/employ/list" className="lg:inline-block hidden">
-                <img
-                  src={employlogo}
-                  className="h-16 mx-auto w-auto"
-                  alt="채용게시판 로고 데스크탑"
-                />
-              </Link>
               <Link
                 to="/"
                 className="inline-block p-2 lg:hidden w-12 h-12 mt-2"
@@ -51,16 +40,6 @@ function HeaderTop() {
                   src={mLogo}
                   className="w-full mx-auto"
                   alt="알바선물 로고 모바일"
-                />
-              </Link>
-              <Link
-                to="/employ/list"
-                className="inline-block lg:hidden mt-2 h-12 text-xl pplight"
-              >
-                <img
-                  src={employlogoM}
-                  className="h-full w-auto"
-                  alt="채용게시판 로고 모바일"
                 />
               </Link>
             </div>
@@ -84,9 +63,6 @@ function HeaderTop() {
                   alt="알바선물 로고 모바일"
                 />
               </Link>
-            </div>
-            <div className="flex-1 flex flex-col justify-center">
-              <SearchArea />
             </div>
           </div>
         </div>

@@ -50,7 +50,6 @@ import Payhistory from "./Component/User/Payhistory";
 import PointHistory from "./Component/User/PointHistory";
 import PointRequest from "./Component/User/PointRequest";
 import DailyPoint from "./Component/Admin/DailyPoint";
-import RenewalModal from "./Component/Mall/RenewalModal";
 import Renew from "./Component/Mall/Renew";
 import AdminPwd from "./Component/Admin/AdminPwd";
 import UserDetail from "./Component/Admin/UserDetail";
@@ -85,6 +84,7 @@ function App() {
   const [isMobile, setIsMobile] = useState(false);
   const thisLocation = useLocation();
   useEffect(() => {
+    console.log(user);
     if (user.accessToken) {
       if (
         user.refreshToken === "" ||
@@ -117,7 +117,6 @@ function App() {
         <title>알바선물 | 면접보고 선물받자! ver {now}</title>
       </Helmet>
       <Header />
-      <RenewalModal />
       <div
         id="content"
         className={`w-full font-pretendard ${

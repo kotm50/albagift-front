@@ -473,19 +473,6 @@ function Login() {
               아이디 저장
             </label>
           </div>
-          <div className="text-center text-sm text-gray-500 border-b pb-2">
-            <Link
-              to="/beforejoin"
-              onClick={e => {
-                e.preventDefault();
-                setModal(true);
-              }}
-            >
-              처음이신가요? 여기를 눌러 <br className="block lg:hidden" />
-              <span className="text-blue-500 border-b">회원가입</span>을 진행해
-              주세요
-            </Link>
-          </div>
           {modal ? <BeforeJoin setModal={setModal} /> : null}
           <div className="w-full">
             <button
@@ -503,19 +490,6 @@ function Login() {
               <RiKakaoTalkFill size={28} className="inline-block" /> 카카오
               간편로그인
             </button>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-2 pb-2">
-            <div className="text-sm text-center lg:text-left lg:pl-3">
-              로그인 정보가 기억나지 않으세요?
-            </div>
-            <div className="grid grid-cols-2 divide-x pb-2">
-              <div className="text-center text-sm text-gray-500 hover:text-rose-500">
-                <Link to="/cert?gubun=find">아이디 찾기</Link>
-              </div>
-              <div className="text-center text-sm text-gray-500 hover:text-rose-500">
-                <Link to="/findpwd">비밀번호 찾기</Link>
-              </div>
-            </div>
           </div>
         </div>
       </form>

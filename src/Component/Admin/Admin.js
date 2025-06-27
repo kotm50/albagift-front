@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { clearUser } from "../../Reducer/userSlice";
+import { logout } from "../LogoutUtil";
 
 import { confirmAlert } from "react-confirm-alert"; // 모달창 모듈
 import "react-confirm-alert/src/react-confirm-alert.css"; // 모달창 css
@@ -10,6 +12,8 @@ import axiosInstance from "../../Api/axiosInstance";
 
 function Admin() {
   const location = useLocation();
+
+  const dispatch = useDispatch();
   const [loaded, setLoaded] = useState(false);
   let navi = useNavigate();
   const user = useSelector(state => state.user);
@@ -125,6 +129,12 @@ function Admin() {
                 onClick={e => navi("/")}
               >
                 알바선물 메인으로
+              </button>
+              <button
+                className="block font-neobold p-2 border border-gray-300 text-gray-500 hover:text-gray-700 hover:border-gray-700 hover:bg-gray-100 rounded lg:col-span-1 col-span-2 mx-auto mt-4"
+                onClick={e => logout(dispatch, clearUser, navi, user)}
+              >
+                로그아웃
               </button>
             </div>
             <div className="grid grid-cols-7 divide-x-2 bg-indigo-50 mb-2 border">

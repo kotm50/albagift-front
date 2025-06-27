@@ -88,7 +88,7 @@ function Main() {
           기프티콘 발송 요청을 하시면 보유하신 포인트에 맞춰{" "}
           <span className="text-blue-500">"GS편의점 상품권"</span>
           또는 <span className="text-green-700">"스타벅스 교환권"</span>을
-          지급해드리겠습니다.
+          지급해드리겠습니다. (당사 제휴업체 면접자에 한함.)
           <div className="bg-gray-100 p-2 rounded-lg border border-gray-300 mt-4 w-[90%] max-w-[600px] mx-auto">
             {!user.userId && (
               <>

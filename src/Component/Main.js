@@ -132,10 +132,10 @@ function Main() {
                         setSelectedGift(null);
                       }
                     }}
-                    disabled={Number(userInfo.point) < 1000}
+                    disabled={Number(userInfo.point) < 3000}
                   >
                     GS편의점 상품권
-                    {Number(userInfo.point) < 1000 && "(1,000P 이상 필요)"}
+                    {Number(userInfo.point) < 3000 && "(3,000P 이상 필요)"}
                   </button>
                   <button
                     className={`text-white ${

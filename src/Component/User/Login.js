@@ -449,7 +449,7 @@ function Login() {
               value={pwd}
               onChange={e => setPwd(e.currentTarget.value)}
               onBlur={e => setPwd(e.currentTarget.value)}
-              autoComplete="on"
+              autoComplete="off"
               ref={inputPwdRef}
             />
           </div>

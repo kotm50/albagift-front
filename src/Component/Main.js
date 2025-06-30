@@ -120,6 +120,10 @@ function Main() {
                 </div>
                 <div className="text-center my-2">
                   아래 기프티콘을 보유하신 포인트에 맞춰 보내드립니다
+                  <span className="text-sm">
+                    (프로모션 포인트 제외, 프로모션 포인트는 추후 서비스 재개 시
+                    사용 가능합니다)
+                  </span>
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
                   <button

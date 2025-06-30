@@ -799,6 +799,7 @@ function PointList() {
                     <option value="중복신청">중복신청</option>
                     <option value="면접기록없음">면접기록없음</option>
                     <option value="지점에서지급">지점에서지급</option>
+                    <option value="쿠폰으로지급">쿠폰으로지급</option>
                   </select>
                   <button
                     className="transition duration-150 ease-out p-2 bg-red-500 text-white font-medium rounded-lg hover:bg-red-700 hover:animate-wiggle"

@@ -83,6 +83,8 @@ function Main() {
       <div className="mx-auto container">
         <div className="text-center my-2 text-2xl">
           서비스 점검중 입니다. 불편을 끼쳐드려 죄송합니다
+          <br />
+          7월 중 재오픈 예정!
         </div>
         <div className="text-center my-2 p-2">
           기프티콘 발송 요청을 하시면 보유하신 포인트에 맞춰{" "}

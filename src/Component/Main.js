@@ -81,7 +81,11 @@ function Main() {
         </div>
         <div className="text-center my-2 p-2">
           포인트 이관신청을 하시면 재오픈 후 회원가입 하시면 신청한 포인트를
-          지급해드립니다.
+          지급해드립니다. <br />
+          <span className="text-sm">
+            (프로모션 포인트 제외, 프로모션 포인트는 추후 서비스 재개 시 사용
+            가능합니다)
+          </span>
           <div className="bg-gray-100 p-2 rounded-lg border border-gray-300 mt-4 w-[90%] max-w-[600px] mx-auto">
             {!user.userId && (
               <>
@@ -109,13 +113,6 @@ function Main() {
                     <p className="font-bold">보유 포인트</p>
                     <p>{userInfo.point}P</p>
                   </div>
-                </div>
-                <div className="text-center my-2">
-                  아래 기프티콘을 보유하신 포인트에 맞춰 보내드립니다
-                  <span className="text-sm">
-                    (프로모션 포인트 제외, 프로모션 포인트는 추후 서비스 재개 시
-                    사용 가능합니다)
-                  </span>
                 </div>
                 <div className="mt-4">
                   <button

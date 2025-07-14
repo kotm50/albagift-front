@@ -13,7 +13,6 @@ function Main() {
   const navi = useNavigate();
   const dispatch = useDispatch();
   const [userInfo, setUserInfo] = useState({});
-  const [selectedGift, setSelectedGift] = useState(null);
 
   useEffect(() => {
     if (user.userId) {
@@ -49,22 +48,16 @@ function Main() {
   }
 
   const handleGiftRequest = async () => {
-    if (!selectedGift) {
-      alert("기프티콘 종류를 선택하세요.");
-      return;
-    }
-
     try {
       const res = await axiosInstance.post("/adapi/addgift", {
         name: userInfo.userName,
         phone: userInfo.phone,
         point: userInfo.point,
-        gifticon: selectedGift,
+        gifticon: "transfer",
       });
 
       if (res.data.success) {
-        alert("기프티콘 요청이 완료되었습니다.");
-        setSelectedGift(null);
+        alert("이관신청이 완료되었습니다.");
       } else {
         alert(res.data.message || "요청 중 오류가 발생했습니다.");
       }
@@ -84,14 +77,11 @@ function Main() {
         <div className="text-center my-2 text-2xl">
           서비스 점검중 입니다. 불편을 끼쳐드려 죄송합니다
           <br />
-          7월 중 재오픈 예정!
+          7월 말 재오픈 예정!
         </div>
         <div className="text-center my-2 p-2">
-          기프티콘 발송 요청을 하시면 보유하신 포인트에 맞춰{" "}
-          <span className="text-blue-500">"GS편의점 상품권"</span>
-          또는 <span className="text-green-700">"스타벅스 교환권"</span>을
-          지급해드리겠습니다. <br />
-          (당사 제휴업체 면접자에 한함.)
+          포인트 이관신청을 하시면 재오픈 후 회원가입 하시면 신청한 포인트를
+          지급해드립니다.
           <div className="bg-gray-100 p-2 rounded-lg border border-gray-300 mt-4 w-[90%] max-w-[600px] mx-auto">
             {!user.userId && (
               <>
@@ -127,51 +117,12 @@ function Main() {
                     사용 가능합니다)
                   </span>
                 </div>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-                  <button
-                    className={`text-white ${
-                      selectedGift === "gs" ? "bg-blue-500" : "bg-gray-400"
-                    } p-2 rounded-lg w-full`}
-                    onClick={() => {
-                      if (selectedGift !== "gs") {
-                        setSelectedGift("gs");
-                      } else {
-                        setSelectedGift(null);
-                      }
-                    }}
-                    disabled={Number(userInfo.point) < 3000}
-                  >
-                    GS편의점 상품권
-                    {Number(userInfo.point) < 3000 && "(3,000P 이상 필요)"}
-                  </button>
-                  <button
-                    className={`text-white ${
-                      selectedGift === "starbucks"
-                        ? "bg-green-700"
-                        : "bg-gray-400"
-                    } p-2 rounded-lg w-full`}
-                    onClick={() => {
-                      if (selectedGift !== "starbucks") {
-                        setSelectedGift("starbucks");
-                      } else {
-                        setSelectedGift(null);
-                      }
-                    }}
-                    disabled={Number(userInfo.point) < 10000}
-                  >
-                    스타벅스 교환권
-                    {Number(userInfo.point) < 10000 && "(10,000P 이상 필요)"}
-                  </button>
-                </div>
                 <div className="mt-4">
                   <button
                     className="bg-teal-500 hover:bg-teal-700 text-white px-4 py-2 rounded w-full"
                     onClick={handleGiftRequest}
-                    disabled={!selectedGift}
                   >
-                    {selectedGift
-                      ? "기프티콘 요청하기"
-                      : "기프티콘 종류 선택 후 요청"}
+                    포인트 이관신청
                   </button>
                 </div>
               </>
